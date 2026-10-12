@@ -1,0 +1,125 @@
+name: TwoBufQueue
+on: [push, pull_request, workflow_dispatch]
+permissions:
+  contents: read
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        portable_clock: ["OFF", "ON"]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Locate component
+        shell: bash
+        run: |
+          if test -f src/TwoBufQueue/CMakeLists.txt; then
+            echo "BRQ_SOURCE=src/TwoBufQueue" >> "$GITHUB_ENV"
+          else
+            echo "BRQ_SOURCE=." >> "$GITHUB_ENV"
+          fi
+      - name: Configure
+        shell: bash
+        run: cmake -S "$BRQ_SOURCE" -B build-brq -DCMAKE_BUILD_TYPE=Release -DBRQ_DISABLE_TSC=${{ matrix.portable_clock }}
+      - run: cmake --build build-brq --config Release --parallel 2
+      - run: ctest --test-dir build-brq -C Release --output-on-failure
+      - name: Validate publication documents and evidence
+        shell: bash
+        run: |
+          if test -f "$BRQ_SOURCE/release-manifest.json"; then
+            python "$BRQ_SOURCE/tools/verify_release.py" --skip-manifest
+          fi
+      - name: Check vendored source and local FetchContent consumers
+        shell: bash
+        run: |
+          for mode in add_subdirectory fetchcontent; do
+            cmake -S "$BRQ_SOURCE/test/integration" -B "build-consumer-$mode" -DCMAKE_BUILD_TYPE=Release -DBRQ_INTEGRATION_MODE="$mode" -DBRQ_SOURCE_DIR="$PWD/$BRQ_SOURCE"
+            cmake --build "build-consumer-$mode" --config Release --parallel 2
+            ctest --test-dir "build-consumer-$mode" -C Release --output-on-failure
+          done
+      - name: Check relocated installed package
+        shell: bash
+        run: |
+          cmake --install build-brq --config Release --prefix "$PWD/package-original"
+          mv package-original package-relocated
+          cp -R "$BRQ_SOURCE/test/integration" package-consumer-src
+          cmake -S package-consumer-src -B build-consumer-package -DCMAKE_BUILD_TYPE=Release -DBRQ_INTEGRATION_MODE=package -DCMAKE_PREFIX_PATH="$PWD/package-relocated"
+          cmake --build build-consumer-package --config Release --parallel 2
+          ctest --test-dir build-consumer-package -C Release --output-on-failure
+  sanitizer:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Configure and test with ASan and UBSan
+        shell: bash
+        run: |
+          source=.
+          if test -f src/TwoBufQueue/CMakeLists.txt; then source=src/TwoBufQueue; fi
+          cmake -S "$source" -B build-sanitized -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_BUILD_TYPE=Debug -DBRQ_DISABLE_TSC=ON -DCMAKE_CXX_FLAGS="-fsanitize=address,undefined -fno-omit-frame-pointer" -DCMAKE_EXE_LINKER_FLAGS="-fsanitize=address,undefined"
+          cmake --build build-sanitized --parallel 2
+          ctest --test-dir build-sanitized --output-on-failure
+
+  third-party:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Locate component
+        shell: bash
+        run: |
+          if test -f src/TwoBufQueue/CMakeLists.txt; then
+            echo "BRQ_SOURCE=src/TwoBufQueue" >> "$GITHUB_ENV"
+          else
+            echo "BRQ_SOURCE=." >> "$GITHUB_ENV"
+          fi
+      - uses: actions/cache@v4
+        with:
+          path: |
+            .deps
+            src/TwoBufQueue/.deps
+          key: brq-deps-${{ runner.os }}-spsc-pinned-v1-${{ hashFiles('**/spsc_dependencies.json') }}
+      - name: Fetch verified benchmark-only dependencies
+        shell: bash
+        run: python "$BRQ_SOURCE/benchmarks/bootstrap_spsc.py"
+      - name: Build and validate adapters
+        shell: bash
+        run: |
+          cmake -S "$BRQ_SOURCE" -B build-compare -DCMAKE_BUILD_TYPE=Release -DBRQ_BUILD_SPSC_BENCHMARKS=ON
+          cmake --build build-compare --config Release --parallel 2
+          ctest --test-dir build-compare -C Release --output-on-failure
+      - name: Validate small benchmark runs and report generation
+        shell: bash
+        run: |
+          binary=build-compare/brq_tunable_benchmark
+          if test -f build-compare/Release/brq_tunable_benchmark.exe; then binary=build-compare/Release/brq_tunable_benchmark.exe;
+          elif test -f build-compare/brq_tunable_benchmark.exe; then binary=build-compare/brq_tunable_benchmark.exe; fi
+          python "$BRQ_SOURCE/benchmarks/run_release_benchmarks.py" --binary "$binary" --output benchmark-smoke --report-dir benchmark-smoke/reports --cache 8 --payload 8 16 32 64 --messages 10000 --repetitions 1 --producer-qos unchanged --timer steady
+      - name: Save benchmark smoke evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: benchmark-smoke-${{ runner.os }}
+          path: benchmark-smoke
+
+  pool-depth:
+    name: Pool-depth contracts (${{ matrix.os }})
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Fetch verified benchmark headers
+        shell: bash
+        run: python benchmarks/bootstrap_spsc.py
+      - name: Build instrumented pool contracts
+        shell: bash
+        run: |
+          cmake -S . -B build-depth -DCMAKE_BUILD_TYPE=Release -DBRQ_BUILD_EXAMPLES=OFF -DBRQ_BUILD_FUNCTIONAL_TESTS=OFF -DBRQ_BUILD_SPSC_BENCHMARKS=ON -DBRQ_ENABLE_POOL_DEPTH_STATS=ON
+          cmake --build build-depth --config Release --target test_per_writer_block_size test_per_write_block_size_only_writer --parallel 2
+          ctest --test-dir build-depth -C Release --output-on-failure -R "^per_(writer_block_size|write_block_size_only_writer)_contract$"

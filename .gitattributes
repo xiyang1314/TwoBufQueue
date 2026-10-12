@@ -1,0 +1,6 @@
+* text=auto eol=lf
+docs/performance_data/** -text
+*.gz -text
+*.png -text
+*.jpg -text
+*.pdf -text

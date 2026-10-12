@@ -1,0 +1,65 @@
+{
+  "date": "2026-10-13",
+  "recorded_at": "2026-10-13T01:22:52.702228+08:00",
+  "source_commit": "a9ecaf116914542cb2e843e67cade5e4d2795649",
+  "platform": "macOS 14.4.1 arm64 / Apple M3",
+  "default_compiler": "AppleClang 15.0.0",
+  "benchmark_compiler": "Clang 18.1.8",
+  "default_build": {
+    "passed": true,
+    "tests_passed": 567,
+    "tests_failed": 0
+  },
+  "instrumented_performance_contracts": {
+    "passed": true,
+    "tests_passed": 8,
+    "tests_failed": 0
+  },
+  "integration": {
+    "add_subdirectory": true,
+    "fetchcontent": true,
+    "relocated_find_package": true,
+    "installed_source_build_paths_absent": true
+  },
+  "benchmark_smoke": {
+    "passed": true,
+    "runs": 60,
+    "payload_bytes": [
+      8,
+      16,
+      32,
+      64
+    ],
+    "messages": 10000,
+    "repetitions": 1,
+    "timer": "steady",
+    "pool_depth_stats": true,
+    "formal_performance_measurement": false,
+    "reports_generated": 2
+  },
+  "publication_checks": {
+    "manifest_files": 552,
+    "local_links_checked": 425,
+    "compressed_files_verified": 28,
+    "files_over_50_mib": 0,
+    "passed": true
+  },
+  "preservation": {
+    "source_original_files_retained": 9155,
+    "original_files_modified": [
+      ".github/workflows/ci.yml",
+      "README.md",
+      "README.zh-CN.md",
+      "benchmarks/run_release_benchmarks.py",
+      "docs/PERFORMANCE.md",
+      "docs/RELEASE_CONTENTS.md",
+      "tools/export_release.py"
+    ],
+    "original_measurement_files_unchanged": true,
+    "release_original_files_retained": 752
+  },
+  "cloud_ci_executed": false,
+  "github_repository_created": false,
+  "github_pages_deployed": false,
+  "notes": "Recorded performance reports were not remeasured. Smoke output checks correctness and packaging only."
+}

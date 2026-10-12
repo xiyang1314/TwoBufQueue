@@ -1,0 +1,33 @@
+{
+  "cache_mib": 8,
+  "callback_policy": "zero",
+  "payload_bytes": [
+    8,
+    16,
+    32,
+    64
+  ],
+  "messages": 10000000,
+  "repetitions": 5,
+  "publish_count": 10,
+  "write_mode": "normal",
+  "report_peers": [
+    {
+      "file": "performance_256m_callback.html",
+      "label": "256M 普通"
+    },
+    {
+      "file": "performance_256m_callback_session.html",
+      "label": "256M Session"
+    },
+    {
+      "file": "performance_8m_zero.html",
+      "label": "8M 普通"
+    },
+    {
+      "file": "performance_8m_zero_session.html",
+      "label": "8M Session"
+    }
+  ],
+  "block_note": "按长度保留冻结的块大小和每层容量。普通 write 与 Session 的读端及发布配置各自独立，完整参数如下。"
+}

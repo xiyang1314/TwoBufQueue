@@ -1,0 +1,15 @@
+{
+  "started": "2026-10-11T00:54:41.108996+08:00",
+  "source_control": "/Users/lc/Documents/TwoBufQueue/docs/performance_data/copy_sensitivity_20261011/raw.jsonl",
+  "conditions": "16 B, 8 MiB, callback 0, 10M messages, same arguments except mode/verification and binary path; alternating variants; 5 repetitions",
+  "binaries": {
+    "member_init": {
+      "path": "/Users/lc/Documents/Codex/2026-10-08/twobufqueue/work/release-readiness-20261011/performance/brq_tunable_benchmark",
+      "sha256": "3dfbaca5d43d9f4780ff48b0528ec85440308d25d5a81898d0acc2f7d356fbf4"
+    },
+    "body_memcpy": {
+      "path": "/Users/lc/Documents/Codex/2026-10-08/twobufqueue/work/release-readiness-20261011/copy-control/body_memcpy",
+      "sha256": "56c3e9572a28a2deff8b57704e57dfc1ac62579492dca00af78fbe237ffe71a8"
+    }
+  }
+}

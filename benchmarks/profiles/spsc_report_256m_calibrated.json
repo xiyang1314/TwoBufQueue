@@ -1,0 +1,44 @@
+{
+  "payload_bytes": [
+    8,
+    16,
+    32,
+    64
+  ],
+  "cache_mib": 256,
+  "messages": 10000000,
+  "repetitions": 3,
+  "validation_messages": 20000,
+  "publish_count": 4294967295,
+  "callback_policy": "calibrated",
+  "base": {
+    "warmup_messages": 50000,
+    "latency_batch_size": 1000,
+    "round_storage_bytes": 214748364,
+    "source_block_size": 65536,
+    "source_pool_min": 4096,
+    "source_pool_max": 4096,
+    "source_queue_capacity": 16384,
+    "output_block_size": 65536,
+    "output_pool_min": 4096,
+    "output_pool_max": 4096,
+    "output_queue_capacity": 16384,
+    "output_frame_capacity": 1024,
+    "output_mode": "spsc",
+    "output_reader_mode": "wait_signal",
+    "buffer_budget_bytes": 1073741824,
+    "spsc_buffer_bytes": 268435456,
+    "prefault_producer_buffers": true,
+    "timeout_seconds": 180,
+    "measure_callback_time": true,
+    "producer_qos": "user_interactive",
+    "is_scan_current": false
+  },
+  "callback_calibration": {
+    "target_ratio": 2.5,
+    "min_ratio": 2,
+    "max_ratio": 3,
+    "max_iterations": 1024,
+    "max_candidates": 10
+  }
+}

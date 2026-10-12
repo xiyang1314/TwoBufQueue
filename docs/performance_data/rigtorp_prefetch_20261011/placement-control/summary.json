@@ -1,0 +1,110 @@
+{
+  "cacheline_bytes": 128,
+  "cacheline_collection": "/usr/sbin/sysctl -n hw.cachelinesize -> 128",
+  "change": "Only rigtorp queue object placement changes: offset 0 or 64 modulo 128. Both use bytes(other.bytes). Upstream header unchanged.",
+  "timestamp": "2026-10-11T01:17:06.957375+08:00",
+  "formal_runs": 40,
+  "validation_runs": 8,
+  "groups": [
+    {
+      "payload_bytes": 8,
+      "variant": "offset0",
+      "p50_ns": 22.63333333334,
+      "p50_runs_ns": [
+        23.75,
+        22.5416666667,
+        20.6666666667,
+        23.875,
+        22.3333333333
+      ]
+    },
+    {
+      "payload_bytes": 8,
+      "variant": "offset64",
+      "p50_ns": 22.67499999998,
+      "p50_runs_ns": [
+        21.9583333333,
+        23.4583333333,
+        22.8333333333,
+        24.0416666667,
+        21.0833333333
+      ]
+    },
+    {
+      "payload_bytes": 16,
+      "variant": "offset0",
+      "p50_ns": 23.09999999998,
+      "p50_runs_ns": [
+        22.0416666667,
+        22.4583333333,
+        23.4583333333,
+        24.2083333333,
+        23.3333333333
+      ]
+    },
+    {
+      "payload_bytes": 16,
+      "variant": "offset64",
+      "p50_ns": 23.275,
+      "p50_runs_ns": [
+        22.7916666667,
+        23.4583333333,
+        23.25,
+        23.625,
+        23.25
+      ]
+    },
+    {
+      "payload_bytes": 32,
+      "variant": "offset0",
+      "p50_ns": 23.50000000002,
+      "p50_runs_ns": [
+        24.0416666667,
+        24.1666666667,
+        23.4583333333,
+        22.9166666667,
+        22.9166666667
+      ]
+    },
+    {
+      "payload_bytes": 32,
+      "variant": "offset64",
+      "p50_ns": 23.64166666668,
+      "p50_runs_ns": [
+        23.5416666667,
+        23.5416666667,
+        23.9583333333,
+        24.25,
+        22.9166666667
+      ]
+    },
+    {
+      "payload_bytes": 64,
+      "variant": "offset0",
+      "p50_ns": 21.70833333332,
+      "p50_runs_ns": [
+        21.125,
+        22.125,
+        19.25,
+        23.0833333333,
+        22.9583333333
+      ]
+    },
+    {
+      "payload_bytes": 64,
+      "variant": "offset64",
+      "p50_ns": 21.51666666666,
+      "p50_runs_ns": [
+        22.25,
+        20.9583333333,
+        22,
+        20.875,
+        21.5
+      ]
+    }
+  ],
+  "binary_sha256": {
+    "offset0": "846635e8884c1ba129edf1479af94c90349414184e296e6ff7e3c655a8c33ef7",
+    "offset64": "2019c6d5cc89ed23c80e2ab837858366b897ab0067b1f1730d14a0b4992bf6a4"
+  }
+}

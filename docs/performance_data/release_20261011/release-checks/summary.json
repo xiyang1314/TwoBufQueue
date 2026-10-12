@@ -1,0 +1,37 @@
+{
+  "checks": [
+    {
+      "name": "clean-default-release",
+      "passed": 564,
+      "failed": 0,
+      "log": "ctest-clean.log"
+    },
+    {
+      "name": "default-release",
+      "passed": 564,
+      "failed": 0,
+      "log": "ctest-default-final.log"
+    },
+    {
+      "name": "debug-asan-ubsan",
+      "passed": 564,
+      "failed": 0,
+      "log": "ctest-sanitized-final.log"
+    },
+    {
+      "name": "release-spsc",
+      "passed": 567,
+      "failed": 0,
+      "log": "ctest-performance.log"
+    }
+  ],
+  "host": "macOS 14.4.1 arm64",
+  "cloud_ci_executed": false,
+  "cpp_sources_match_measured_snapshot": true,
+  "formal_runs": 400,
+  "full_validation_runs": 40,
+  "calibration_runs": 45,
+  "control_formal_runs": 120,
+  "control_validation_runs": 24,
+  "defaulted_constructor_validation_runs": 12
+}

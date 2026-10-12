@@ -1,0 +1,295 @@
+{
+  "groups": [
+    {
+      "label": "readerwriterqueue_8",
+      "member_init": {
+        "p50_runs_ns": [
+          1.29166666667,
+          1.29166666667,
+          1.29166666667,
+          1.29166666667,
+          1.29166666667
+        ],
+        "p50_ns": 1.29166666667
+      },
+      "body_memcpy": {
+        "p50_runs_ns": [
+          2.125,
+          2.45833333333,
+          2.125,
+          2.125,
+          2.125
+        ],
+        "p50_ns": 2.191666666666
+      }
+    },
+    {
+      "label": "rigtorp_8",
+      "member_init": {
+        "p50_runs_ns": [
+          22.7916666667,
+          22.375,
+          22.5,
+          21.6666666667,
+          21.1666666667
+        ],
+        "p50_ns": 22.10000000002
+      },
+      "body_memcpy": {
+        "p50_runs_ns": [
+          2.625,
+          2.625,
+          2.625,
+          2.625,
+          2.625
+        ],
+        "p50_ns": 2.625
+      }
+    },
+    {
+      "label": "atomic_queue_8",
+      "member_init": {
+        "p50_runs_ns": [
+          4.83333333333,
+          5.29166666667,
+          5.54166666667,
+          5.375,
+          6.125
+        ],
+        "p50_ns": 5.433333333334
+      },
+      "body_memcpy": {
+        "p50_runs_ns": [
+          5.5,
+          5.5,
+          5.20833333333,
+          5.25,
+          5.91666666667
+        ],
+        "p50_ns": 5.475
+      }
+    },
+    {
+      "label": "readerwriterqueue_16",
+      "member_init": {
+        "p50_runs_ns": [
+          9.70833333333,
+          9.16666666667,
+          9.33333333333,
+          9.20833333333,
+          9.58333333333
+        ],
+        "p50_ns": 9.399999999997998
+      },
+      "body_memcpy": {
+        "p50_runs_ns": [
+          1.29166666667,
+          1.29166666667,
+          1.29166666667,
+          1.29166666667,
+          1.29166666667
+        ],
+        "p50_ns": 1.29166666667
+      }
+    },
+    {
+      "label": "rigtorp_16",
+      "member_init": {
+        "p50_runs_ns": [
+          23.0833333333,
+          23.4583333333,
+          23.5833333333,
+          23.625,
+          23.625
+        ],
+        "p50_ns": 23.47499999998
+      },
+      "body_memcpy": {
+        "p50_runs_ns": [
+          2.66666666667,
+          2.66666666667,
+          2.625,
+          2.66666666667,
+          2.66666666667
+        ],
+        "p50_ns": 2.658333333336
+      }
+    },
+    {
+      "label": "atomic_queue_16",
+      "member_init": {
+        "p50_runs_ns": [
+          6.875,
+          6.66666666667,
+          7,
+          6.91666666667,
+          6.83333333333
+        ],
+        "p50_ns": 6.8583333333339995
+      },
+      "body_memcpy": {
+        "p50_runs_ns": [
+          6.83333333333,
+          6.66666666667,
+          6.66666666667,
+          6.91666666667,
+          7.125
+        ],
+        "p50_ns": 6.841666666668
+      }
+    },
+    {
+      "label": "readerwriterqueue_32",
+      "member_init": {
+        "p50_runs_ns": [
+          19.2916666667,
+          19.5833333333,
+          19.4583333333,
+          20.2916666667,
+          19.5416666667
+        ],
+        "p50_ns": 19.633333333339998
+      },
+      "body_memcpy": {
+        "p50_runs_ns": [
+          1.70833333333,
+          1.66666666667,
+          1.66666666667,
+          1.66666666667,
+          1.66666666667
+        ],
+        "p50_ns": 1.6750000000020002
+      }
+    },
+    {
+      "label": "rigtorp_32",
+      "member_init": {
+        "p50_runs_ns": [
+          23.6666666667,
+          23.5,
+          23.8333333333,
+          23.375,
+          23.0833333333
+        ],
+        "p50_ns": 23.491666666660002
+      },
+      "body_memcpy": {
+        "p50_runs_ns": [
+          3.20833333333,
+          3.25,
+          3.25,
+          3.25,
+          3.20833333333
+        ],
+        "p50_ns": 3.233333333332
+      }
+    },
+    {
+      "label": "atomic_queue_32",
+      "member_init": {
+        "p50_runs_ns": [
+          8.04166666667,
+          8.33333333333,
+          8.20833333333,
+          8.375,
+          9.29166666667
+        ],
+        "p50_ns": 8.45
+      },
+      "body_memcpy": {
+        "p50_runs_ns": [
+          8.41666666667,
+          8.375,
+          10.0833333333,
+          8.16666666667,
+          8.29166666667
+        ],
+        "p50_ns": 8.666666666662
+      }
+    },
+    {
+      "label": "readerwriterqueue_64",
+      "member_init": {
+        "p50_runs_ns": [
+          2.875,
+          2.95833333333,
+          2.95833333333,
+          2.83333333333,
+          3.20833333333
+        ],
+        "p50_ns": 2.966666666664
+      },
+      "body_memcpy": {
+        "p50_runs_ns": [
+          3.375,
+          4.125,
+          3.25,
+          3.375,
+          3.375
+        ],
+        "p50_ns": 3.5
+      }
+    },
+    {
+      "label": "rigtorp_64",
+      "member_init": {
+        "p50_runs_ns": [
+          20.4166666667,
+          20.9583333333,
+          21.1666666667,
+          21.2916666667,
+          21.0833333333
+        ],
+        "p50_ns": 20.98333333334
+      },
+      "body_memcpy": {
+        "p50_runs_ns": [
+          4.29166666667,
+          4.29166666667,
+          4.375,
+          4.33333333333,
+          4.29166666667
+        ],
+        "p50_ns": 4.3166666666680005
+      }
+    },
+    {
+      "label": "atomic_queue_64",
+      "member_init": {
+        "p50_runs_ns": [
+          10.5,
+          10.375,
+          11.5833333333,
+          10.5,
+          10.375
+        ],
+        "p50_ns": 10.666666666660001
+      },
+      "body_memcpy": {
+        "p50_runs_ns": [
+          10.3333333333,
+          10.1666666667,
+          10.25,
+          10.7083333333,
+          11.5
+        ],
+        "p50_ns": 10.59166666666
+      }
+    }
+  ],
+  "validation_runs": 24,
+  "formal_runs": 120,
+  "binary_sha256": {
+    "member_init": "3dfbaca5d43d9f4780ff48b0528ec85440308d25d5a81898d0acc2f7d356fbf4",
+    "body_memcpy": "56c3e9572a28a2deff8b57704e57dfc1ac62579492dca00af78fbe237ffe71a8"
+  },
+  "source_data": "/Users/lc/Documents/TwoBufQueue/docs/performance_data/release_20261011",
+  "change": "Only external Payload copy constructor differs. All timing/data/allocation/scheduling/queue code unchanged.",
+  "timestamp": "2026-10-11T00:16:44.565737+08:00",
+  "data_directory": "copy_sensitivity_20261011",
+  "upstream_headers_unchanged": true,
+  "source_baseline": "../release_20261011/source.tar.gz",
+  "interpretation": "Changing only the external copy constructor changes these measured results. The exact processor/compiler mechanism has not been established; these differences are not evidence of a queue algorithm advantage.",
+  "defaulted_copy_constructor_validation": "defaulted-validation.json",
+  "library_sha256": "f3718d0df946c322ee658073f4e9924c0c3a18b4e45b70cefed5a2bd9fdef524"
+}

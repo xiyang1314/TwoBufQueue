@@ -1,0 +1,1168 @@
+Test project /Users/lc/Documents/Codex/2026-10-08/twobufqueue/work/publish-readiness-20261011/release-build
+        Start   1: scan_current_options
+  1/567 Test   #1: scan_current_options ...............................................   Passed    2.00 sec
+        Start   2: sync_writer_callbacks
+  2/567 Test   #2: sync_writer_callbacks ..............................................   Passed    0.43 sec
+        Start   3: two_buf_queue_output_options
+  3/567 Test   #3: two_buf_queue_output_options .......................................   Passed    0.41 sec
+        Start   4: live_handoff_roles
+  4/567 Test   #4: live_handoff_roles .................................................   Passed    0.41 sec
+        Start   5: live_handoff_capacity
+  5/567 Test   #5: live_handoff_capacity ..............................................   Passed    0.00 sec
+        Start   6: live_handoff_current_snapshot
+  6/567 Test   #6: live_handoff_current_snapshot ......................................   Passed    0.00 sec
+        Start   7: live_handoff_single_pool
+  7/567 Test   #7: live_handoff_single_pool ...........................................   Passed    0.00 sec
+        Start   8: live_handoff_fifo_concurrent
+  8/567 Test   #8: live_handoff_fifo_concurrent .......................................   Passed    0.03 sec
+        Start   9: live_handoff_resource_failures
+  9/567 Test   #9: live_handoff_resource_failures .....................................   Passed    0.00 sec
+        Start  10: live_handoff_finish_publish_window
+ 10/567 Test  #10: live_handoff_finish_publish_window .................................   Passed    0.00 sec
+        Start  11: writer_queue_tests
+ 11/567 Test  #11: writer_queue_tests .................................................   Passed    0.42 sec
+        Start  12: test_writer
+ 12/567 Test  #12: test_writer ........................................................   Passed    0.42 sec
+        Start  13: test_write_session
+ 13/567 Test  #13: test_write_session .................................................   Passed    0.45 sec
+        Start  14: test_unified_data
+ 14/567 Test  #14: test_unified_data ..................................................   Passed    0.42 sec
+        Start  15: test_fixed_slice_bitmap
+ 15/567 Test  #15: test_fixed_slice_bitmap ............................................   Passed    0.42 sec
+        Start  16: test_slice_pool
+ 16/567 Test  #16: test_slice_pool ....................................................   Passed    0.42 sec
+        Start  17: test_slice_release_check
+ 17/567 Test  #17: test_slice_release_check ...........................................   Passed    0.45 sec
+        Start  18: read_ctrl_item_empty_backoff
+ 18/567 Test  #18: read_ctrl_item_empty_backoff .......................................   Passed    0.42 sec
+        Start  19: read_ctrl_item_early_scan
+ 19/567 Test  #19: read_ctrl_item_early_scan ..........................................   Passed    0.00 sec
+        Start  20: read_ctrl_item_data_resets
+ 20/567 Test  #20: read_ctrl_item_data_resets .........................................   Passed    0.00 sec
+        Start  21: read_ctrl_item_force_and_independent
+ 21/567 Test  #21: read_ctrl_item_force_and_independent ...............................   Passed    0.00 sec
+        Start  22: read_ctrl_item_saturation
+ 22/567 Test  #22: read_ctrl_item_saturation ..........................................   Passed    0.00 sec
+        Start  23: read_ctrl_service_empty_records
+ 23/567 Test  #23: read_ctrl_service_empty_records ....................................   Passed    0.42 sec
+        Start  24: read_ctrl_service_completed_priority
+ 24/567 Test  #24: read_ctrl_service_completed_priority ...............................   Passed    0.01 sec
+        Start  25: read_ctrl_service_completed_rejection
+ 25/567 Test  #25: read_ctrl_service_completed_rejection ..............................   Passed    0.00 sec
+        Start  26: read_ctrl_service_current_rejection
+ 26/567 Test  #26: read_ctrl_service_current_rejection ................................   Passed    0.00 sec
+        Start  27: read_ctrl_service_retry_reclassified
+ 27/567 Test  #27: read_ctrl_service_retry_reclassified ...............................   Passed    0.00 sec
+        Start  28: read_ctrl_service_fixed_prefix
+ 28/567 Test  #28: read_ctrl_service_fixed_prefix .....................................   Passed    0.00 sec
+        Start  29: read_ctrl_service_current_snapshot
+ 29/567 Test  #29: read_ctrl_service_current_snapshot .................................   Passed    0.00 sec
+        Start  30: read_ctrl_service_scan_timing
+ 30/567 Test  #30: read_ctrl_service_scan_timing ......................................   Passed    0.00 sec
+        Start  31: read_ctrl_service_cancelled_or_expired
+ 31/567 Test  #31: read_ctrl_service_cancelled_or_expired .............................   Passed    0.00 sec
+        Start  32: read_ctrl_service_begin_current_stop
+ 32/567 Test  #32: read_ctrl_service_begin_current_stop ...............................   Passed    0.10 sec
+        Start  33: read_ctrl_service_stop_after_success
+ 33/567 Test  #33: read_ctrl_service_stop_after_success ...............................   Passed    0.00 sec
+        Start  34: read_ctrl_service_registration
+ 34/567 Test  #34: read_ctrl_service_registration .....................................   Passed    0.00 sec
+        Start  35: read_ctrl_service_writer_lifetime
+ 35/567 Test  #35: read_ctrl_service_writer_lifetime ..................................   Passed    0.00 sec
+        Start  36: read_ctrl_service_generation_stats
+ 36/567 Test  #36: read_ctrl_service_generation_stats .................................   Passed    0.00 sec
+        Start  37: read_ctrl_handoff_accepted_current
+ 37/567 Test  #37: read_ctrl_handoff_accepted_current .................................   Passed    0.78 sec
+        Start  38: read_ctrl_handoff_rejected_current
+ 38/567 Test  #38: read_ctrl_handoff_rejected_current .................................   Passed    0.01 sec
+        Start  39: read_ctrl_handoff_prefix_append
+ 39/567 Test  #39: read_ctrl_handoff_prefix_append ....................................   Passed    0.00 sec
+        Start  40: read_ctrl_handoff_single_pool_reacquire
+ 40/567 Test  #40: read_ctrl_handoff_single_pool_reacquire ............................   Passed    0.00 sec
+        Start  41: read_ctrl_worker_immediate_concurrent
+ 41/567 Test  #41: read_ctrl_worker_immediate_concurrent ..............................   Passed    0.42 sec
+        Start  42: read_ctrl_worker_batched_concurrent
+ 42/567 Test  #42: read_ctrl_worker_batched_concurrent ................................   Passed    0.01 sec
+        Start  43: read_ctrl_worker_single_block_concurrent
+ 43/567 Test  #43: read_ctrl_worker_single_block_concurrent ...........................   Passed    0.00 sec
+        Start  44: read_ctrl_worker_current_without_send
+ 44/567 Test  #44: read_ctrl_worker_current_without_send ..............................   Passed    0.00 sec
+        Start  45: read_ctrl_worker_notify_retry
+ 45/567 Test  #45: read_ctrl_worker_notify_retry ......................................   Passed    0.00 sec
+        Start  46: read_ctrl_worker_fast_stop_restart
+ 46/567 Test  #46: read_ctrl_worker_fast_stop_restart .................................   Passed    0.00 sec
+        Start  47: read_ctrl_worker_slow_stop_timeout
+ 47/567 Test  #47: read_ctrl_worker_slow_stop_timeout .................................   Passed    0.03 sec
+        Start  48: read_ctrl_worker_interrupt_slow_stop
+ 48/567 Test  #48: read_ctrl_worker_interrupt_slow_stop ...............................   Passed    0.00 sec
+        Start  49: read_ctrl_worker_validation
+ 49/567 Test  #49: read_ctrl_worker_validation ........................................   Passed    0.00 sec
+        Start  50: read_ctrl_notification_selective_and_coalesced
+ 50/567 Test  #50: read_ctrl_notification_selective_and_coalesced .....................   Passed    0.41 sec
+        Start  51: read_ctrl_notification_completed_before_current
+ 51/567 Test  #51: read_ctrl_notification_completed_before_current ....................   Passed    0.00 sec
+        Start  52: read_ctrl_notification_full_scan_with_notification
+ 52/567 Test  #52: read_ctrl_notification_full_scan_with_notification .................   Passed    0.00 sec
+        Start  53: read_ctrl_notification_notify_during_read
+ 53/567 Test  #53: read_ctrl_notification_notify_during_read ..........................   Passed    0.00 sec
+        Start  54: read_ctrl_notification_multiple_words
+ 54/567 Test  #54: read_ctrl_notification_multiple_words ..............................   Passed    0.00 sec
+        Start  55: read_ctrl_notification_rejected_and_cancelled
+ 55/567 Test  #55: read_ctrl_notification_rejected_and_cancelled ......................   Passed    0.00 sec
+        Start  56: read_ctrl_notification_full_scan_rejection_retains_notifications
+ 56/567 Test  #56: read_ctrl_notification_full_scan_rejection_retains_notifications ...   Passed    0.00 sec
+        Start  57: read_ctrl_notification_batched_tail_flush
+ 57/567 Test  #57: read_ctrl_notification_batched_tail_flush ..........................   Passed    0.00 sec
+        Start  58: read_ctrl_notification_worker_flush_and_memory_retry
+ 58/567 Test  #58: read_ctrl_notification_worker_flush_and_memory_retry ...............   Passed    0.00 sec
+        Start  59: read_ctrl_notification_worker_selective_and_restart
+ 59/567 Test  #59: read_ctrl_notification_worker_selective_and_restart ................   Passed    0.00 sec
+        Start  60: read_ctrl_single_complete_then_current
+ 60/567 Test  #60: read_ctrl_single_complete_then_current .............................   Passed    0.41 sec
+        Start  61: read_ctrl_single_rejection_and_transfer
+ 61/567 Test  #61: read_ctrl_single_rejection_and_transfer ............................   Passed    0.00 sec
+        Start  62: read_ctrl_single_current_snapshot_and_notification
+ 62/567 Test  #62: read_ctrl_single_current_snapshot_and_notification .................   Passed    0.00 sec
+        Start  63: read_ctrl_single_cancelled_and_current_rejection
+ 63/567 Test  #63: read_ctrl_single_cancelled_and_current_rejection ...................   Passed    0.00 sec
+        Start  64: read_ctrl_single_accepted_current
+ 64/567 Test  #64: read_ctrl_single_accepted_current ..................................   Passed    0.00 sec
+        Start  65: read_ctrl_single_rejected_current
+ 65/567 Test  #65: read_ctrl_single_rejected_current ..................................   Passed    0.00 sec
+        Start  66: read_ctrl_single_prefix_append
+ 66/567 Test  #66: read_ctrl_single_prefix_append .....................................   Passed    0.00 sec
+        Start  67: read_ctrl_single_immediate_concurrent
+ 67/567 Test  #67: read_ctrl_single_immediate_concurrent ..............................   Passed    0.01 sec
+        Start  68: read_ctrl_single_single_pool_batched
+ 68/567 Test  #68: read_ctrl_single_single_pool_batched ...............................   Passed    0.00 sec
+        Start  69: read_ctrl_single_worker_flush_finish
+ 69/567 Test  #69: read_ctrl_single_worker_flush_finish ...............................   Passed    0.00 sec
+        Start  70: read_ctrl_single_current_without_send
+ 70/567 Test  #70: read_ctrl_single_current_without_send ..............................   Passed    0.00 sec
+        Start  71: read_ctrl_single_notify_retry
+ 71/567 Test  #71: read_ctrl_single_notify_retry ......................................   Passed    0.00 sec
+        Start  72: read_ctrl_single_fast_stop_restart
+ 72/567 Test  #72: read_ctrl_single_fast_stop_restart .................................   Passed    0.00 sec
+        Start  73: read_ctrl_single_slow_stop_timeout
+ 73/567 Test  #73: read_ctrl_single_slow_stop_timeout .................................   Passed    0.03 sec
+        Start  74: read_ctrl_single_interrupt_slow_stop
+ 74/567 Test  #74: read_ctrl_single_interrupt_slow_stop ...............................   Passed    0.00 sec
+        Start  75: read_ctrl_single_restart_current
+ 75/567 Test  #75: read_ctrl_single_restart_current ...................................   Passed    0.00 sec
+        Start  76: read_ctrl_single_begin_stop_and_deadline
+ 76/567 Test  #76: read_ctrl_single_begin_stop_and_deadline ...........................   Passed    0.00 sec
+        Start  77: read_ctrl_single_validation
+ 77/567 Test  #77: read_ctrl_single_validation ........................................   Passed    0.00 sec
+        Start  78: example_01_basic
+ 78/567 Test  #78: example_01_basic ...................................................   Passed    0.42 sec
+        Start  79: example_component_11_warm_pool
+ 79/567 Test  #79: example_component_11_warm_pool .....................................   Passed    0.41 sec
+        Start  80: example_component_12_warm_pool_factory
+ 80/567 Test  #80: example_component_12_warm_pool_factory .............................   Passed    0.42 sec
+        Start  81: example_component_13_spsc_live_handoff_queue
+ 81/567 Test  #81: example_component_13_spsc_live_handoff_queue .......................   Passed    0.41 sec
+        Start  82: example_component_14_spsc_live_handoff_queue_claim
+ 82/567 Test  #82: example_component_14_spsc_live_handoff_queue_claim .................   Passed    0.42 sec
+        Start  83: example_component_15_handoff_queue
+ 83/567 Test  #83: example_component_15_handoff_queue .................................   Passed    0.42 sec
+        Start  84: example_component_16_handoff_queue_mpmc
+ 84/567 Test  #84: example_component_16_handoff_queue_mpmc ............................   Passed    0.41 sec
+        Start  85: example_tbq_02_batch_callback
+ 85/567 Test  #85: example_tbq_02_batch_callback ......................................   Passed    0.41 sec
+        Start  86: example_tbq_03_multi_thread_writer
+ 86/567 Test  #86: example_tbq_03_multi_thread_writer .................................   Passed    0.41 sec
+        Start  87: example_tbq_04_layer1_callback
+ 87/567 Test  #87: example_tbq_04_layer1_callback .....................................   Passed    0.42 sec
+        Start  88: example_tbq_05_seq_writer
+ 88/567 Test  #88: example_tbq_05_seq_writer ..........................................   Passed    0.41 sec
+        Start  89: example_tbq_06_sync_writer
+ 89/567 Test  #89: example_tbq_06_sync_writer .........................................   Passed    0.42 sec
+        Start  90: example_tbq_07_quick_write_muti_msg
+ 90/567 Test  #90: example_tbq_07_quick_write_muti_msg ................................   Passed    1.18 sec
+        Start  91: example_tbq_08_all_parameters
+ 91/567 Test  #91: example_tbq_08_all_parameters ......................................   Passed    0.42 sec
+        Start  92: example_tbq_09_async_logger
+ 92/567 Test  #92: example_tbq_09_async_logger ........................................   Passed    2.10 sec
+        Start  93: example_logger_block
+ 93/567 Test  #93: example_logger_block ...............................................   Passed    1.64 sec
+        Start  94: example_logger_drop
+ 94/567 Test  #94: example_logger_drop ................................................   Passed    0.03 sec
+        Start  95: func_W_len_0
+ 95/567 Test  #95: func_W_len_0 .......................................................   Passed    0.43 sec
+        Start  96: func_W_len_1
+ 96/567 Test  #96: func_W_len_1 .......................................................   Passed    0.00 sec
+        Start  97: func_W_len_2
+ 97/567 Test  #97: func_W_len_2 .......................................................   Passed    0.00 sec
+        Start  98: func_W_len_3
+ 98/567 Test  #98: func_W_len_3 .......................................................   Passed    0.00 sec
+        Start  99: func_W_len_4
+ 99/567 Test  #99: func_W_len_4 .......................................................   Passed    0.00 sec
+        Start 100: func_W_len_31
+100/567 Test #100: func_W_len_31 ......................................................   Passed    0.00 sec
+        Start 101: func_W_len_32
+101/567 Test #101: func_W_len_32 ......................................................   Passed    0.00 sec
+        Start 102: func_W_len_255
+102/567 Test #102: func_W_len_255 .....................................................   Passed    0.00 sec
+        Start 103: func_W_len_256
+103/567 Test #103: func_W_len_256 .....................................................   Passed    0.00 sec
+        Start 104: func_W_len_1023
+104/567 Test #104: func_W_len_1023 ....................................................   Passed    0.00 sec
+        Start 105: func_W_len_1024
+105/567 Test #105: func_W_len_1024 ....................................................   Passed    0.00 sec
+        Start 106: func_W_len_65534
+106/567 Test #106: func_W_len_65534 ...................................................   Passed    0.00 sec
+        Start 107: func_W_len_65535
+107/567 Test #107: func_W_len_65535 ...................................................   Passed    0.00 sec
+        Start 108: func_W_reject_null
+108/567 Test #108: func_W_reject_null .................................................   Passed    0.00 sec
+        Start 109: func_W_reject_oversize
+109/567 Test #109: func_W_reject_oversize .............................................   Passed    0.00 sec
+        Start 110: func_W_short_payload
+110/567 Test #110: func_W_short_payload ...............................................   Passed    0.00 sec
+        Start 111: func_W_reject_block
+111/567 Test #111: func_W_reject_block ................................................   Passed    0.00 sec
+        Start 112: func_W_publish_1
+112/567 Test #112: func_W_publish_1 ...................................................   Passed    0.00 sec
+        Start 113: func_W_publish_2
+113/567 Test #113: func_W_publish_2 ...................................................   Passed    0.00 sec
+        Start 114: func_W_publish_32
+114/567 Test #114: func_W_publish_32 ..................................................   Passed    0.00 sec
+        Start 115: func_W_pack
+115/567 Test #115: func_W_pack ........................................................   Passed    0.00 sec
+        Start 116: func_W_finish
+116/567 Test #116: func_W_finish ......................................................   Passed    0.00 sec
+        Start 117: func_R_active
+117/567 Test #117: func_R_active ......................................................   Passed    0.00 sec
+        Start 118: func_R_reject
+118/567 Test #118: func_R_reject ......................................................   Passed    0.00 sec
+        Start 119: func_R_retain
+119/567 Test #119: func_R_retain ......................................................   Passed    0.00 sec
+        Start 120: func_R_cancel
+120/567 Test #120: func_R_cancel ......................................................   Passed    0.00 sec
+        Start 121: func_R_deadline
+121/567 Test #121: func_R_deadline ....................................................   Passed    0.00 sec
+        Start 122: func_R_reg_nullwriter
+122/567 Test #122: func_R_reg_nullwriter ..............................................   Passed    0.00 sec
+        Start 123: func_R_reg_nullqueue
+123/567 Test #123: func_R_reg_nullqueue ...............................................   Passed    0.00 sec
+        Start 124: func_R_reg_queue_negative
+124/567 Test #124: func_R_reg_queue_negative ..........................................   Passed    0.00 sec
+        Start 125: func_R_reg_duplicate
+125/567 Test #125: func_R_reg_duplicate ...............................................   Passed    0.00 sec
+        Start 126: func_R_reg_duplicateid
+126/567 Test #126: func_R_reg_duplicateid .............................................   Passed    0.00 sec
+        Start 127: func_R_reg_negative
+127/567 Test #127: func_R_reg_negative ................................................   Passed    0.00 sec
+        Start 128: func_R_reg_running
+128/567 Test #128: func_R_reg_running .................................................   Passed    0.00 sec
+        Start 129: func_R_config_scan0
+129/567 Test #129: func_R_config_scan0 ................................................   Passed    0.00 sec
+        Start 130: func_R_config_max0
+130/567 Test #130: func_R_config_max0 .................................................   Passed    0.00 sec
+        Start 131: func_R_config_finish0
+131/567 Test #131: func_R_config_finish0 ..............................................   Passed    0.00 sec
+        Start 132: func_R_config_wait0
+132/567 Test #132: func_R_config_wait0 ................................................   Passed    0.00 sec
+        Start 133: func_R_config_retry0
+133/567 Test #133: func_R_config_retry0 ...............................................   Passed    0.00 sec
+        Start 134: func_R_config_callback
+134/567 Test #134: func_R_config_callback .............................................   Passed    0.00 sec
+        Start 135: func_R_config_writers
+135/567 Test #135: func_R_config_writers ..............................................   Passed    0.00 sec
+        Start 136: func_S_copy
+136/567 Test #136: func_S_copy ........................................................   Passed    0.00 sec
+        Start 137: func_S_split
+137/567 Test #137: func_S_split .......................................................   Passed    0.00 sec
+        Start 138: func_S_zero
+138/567 Test #138: func_S_zero ........................................................   Passed    0.00 sec
+        Start 139: func_S_queuefull
+139/567 Test #139: func_S_queuefull ...................................................   Passed    0.00 sec
+        Start 140: func_S_poolfull
+140/567 Test #140: func_S_poolfull ....................................................   Passed    0.00 sec
+        Start 141: func_S_slots
+141/567 Test #141: func_S_slots .......................................................   Passed    0.00 sec
+        Start 142: func_S_closed
+142/567 Test #142: func_S_closed ......................................................   Passed    0.00 sec
+        Start 143: func_S_retry
+143/567 Test #143: func_S_retry .......................................................   Passed    0.00 sec
+        Start 144: func_S_notify
+144/567 Test #144: func_S_notify ......................................................   Passed    0.00 sec
+        Start 145: func_S_timeout
+145/567 Test #145: func_S_timeout .....................................................   Passed    0.00 sec
+        Start 146: func_S_invalid_null
+146/567 Test #146: func_S_invalid_null ................................................   Passed    0.00 sec
+        Start 147: func_S_invalid_id
+147/567 Test #147: func_S_invalid_id ..................................................   Passed    0.00 sec
+        Start 148: func_S_invalid_block
+148/567 Test #148: func_S_invalid_block ...............................................   Passed    0.00 sec
+        Start 149: func_S_invalid_batch
+149/567 Test #149: func_S_invalid_batch ...............................................   Passed    0.00 sec
+        Start 150: func_S_invalid_prevalidate
+150/567 Test #150: func_S_invalid_prevalidate .........................................   Passed    0.00 sec
+        Start 151: func_P_align_11_1
+151/567 Test #151: func_P_align_11_1 ..................................................   Passed    0.00 sec
+        Start 152: func_P_align_11_2
+152/567 Test #152: func_P_align_11_2 ..................................................   Passed    0.00 sec
+        Start 153: func_P_align_11_4
+153/567 Test #153: func_P_align_11_4 ..................................................   Passed    0.00 sec
+        Start 154: func_P_align_11_8
+154/567 Test #154: func_P_align_11_8 ..................................................   Passed    0.00 sec
+        Start 155: func_P_align_11_16
+155/567 Test #155: func_P_align_11_16 .................................................   Passed    0.00 sec
+        Start 156: func_P_align_11_32
+156/567 Test #156: func_P_align_11_32 .................................................   Passed    0.00 sec
+        Start 157: func_P_align_11_64
+157/567 Test #157: func_P_align_11_64 .................................................   Passed    0.00 sec
+        Start 158: func_P_slots_11_1
+158/567 Test #158: func_P_slots_11_1 ..................................................   Passed    0.00 sec
+        Start 159: func_P_slots_11_63
+159/567 Test #159: func_P_slots_11_63 .................................................   Passed    0.00 sec
+        Start 160: func_P_slots_11_64
+160/567 Test #160: func_P_slots_11_64 .................................................   Passed    0.00 sec
+        Start 161: func_P_slots_11_65
+161/567 Test #161: func_P_slots_11_65 .................................................   Passed    0.00 sec
+        Start 162: func_P_slots_11_129
+162/567 Test #162: func_P_slots_11_129 ................................................   Passed    0.00 sec
+        Start 163: func_P_move_11
+163/567 Test #163: func_P_move_11 .....................................................   Passed    0.00 sec
+        Start 164: func_P_align_1N_1
+164/567 Test #164: func_P_align_1N_1 ..................................................   Passed    0.00 sec
+        Start 165: func_P_align_1N_2
+165/567 Test #165: func_P_align_1N_2 ..................................................   Passed    0.00 sec
+        Start 166: func_P_align_1N_4
+166/567 Test #166: func_P_align_1N_4 ..................................................   Passed    0.00 sec
+        Start 167: func_P_align_1N_8
+167/567 Test #167: func_P_align_1N_8 ..................................................   Passed    0.00 sec
+        Start 168: func_P_align_1N_16
+168/567 Test #168: func_P_align_1N_16 .................................................   Passed    0.00 sec
+        Start 169: func_P_align_1N_32
+169/567 Test #169: func_P_align_1N_32 .................................................   Passed    0.00 sec
+        Start 170: func_P_align_1N_64
+170/567 Test #170: func_P_align_1N_64 .................................................   Passed    0.00 sec
+        Start 171: func_P_slots_1N_1
+171/567 Test #171: func_P_slots_1N_1 ..................................................   Passed    0.00 sec
+        Start 172: func_P_slots_1N_63
+172/567 Test #172: func_P_slots_1N_63 .................................................   Passed    0.00 sec
+        Start 173: func_P_slots_1N_64
+173/567 Test #173: func_P_slots_1N_64 .................................................   Passed    0.00 sec
+        Start 174: func_P_slots_1N_65
+174/567 Test #174: func_P_slots_1N_65 .................................................   Passed    0.00 sec
+        Start 175: func_P_slots_1N_129
+175/567 Test #175: func_P_slots_1N_129 ................................................   Passed    0.00 sec
+        Start 176: func_P_move_1N
+176/567 Test #176: func_P_move_1N .....................................................   Passed    0.00 sec
+        Start 177: func_P_align_NN_1
+177/567 Test #177: func_P_align_NN_1 ..................................................   Passed    0.00 sec
+        Start 178: func_P_align_NN_2
+178/567 Test #178: func_P_align_NN_2 ..................................................   Passed    0.00 sec
+        Start 179: func_P_align_NN_4
+179/567 Test #179: func_P_align_NN_4 ..................................................   Passed    0.00 sec
+        Start 180: func_P_align_NN_8
+180/567 Test #180: func_P_align_NN_8 ..................................................   Passed    0.00 sec
+        Start 181: func_P_align_NN_16
+181/567 Test #181: func_P_align_NN_16 .................................................   Passed    0.00 sec
+        Start 182: func_P_align_NN_32
+182/567 Test #182: func_P_align_NN_32 .................................................   Passed    0.00 sec
+        Start 183: func_P_align_NN_64
+183/567 Test #183: func_P_align_NN_64 .................................................   Passed    0.00 sec
+        Start 184: func_P_slots_NN_1
+184/567 Test #184: func_P_slots_NN_1 ..................................................   Passed    0.00 sec
+        Start 185: func_P_slots_NN_63
+185/567 Test #185: func_P_slots_NN_63 .................................................   Passed    0.00 sec
+        Start 186: func_P_slots_NN_64
+186/567 Test #186: func_P_slots_NN_64 .................................................   Passed    0.00 sec
+        Start 187: func_P_slots_NN_65
+187/567 Test #187: func_P_slots_NN_65 .................................................   Passed    0.00 sec
+        Start 188: func_P_slots_NN_129
+188/567 Test #188: func_P_slots_NN_129 ................................................   Passed    0.00 sec
+        Start 189: func_P_move_NN
+189/567 Test #189: func_P_move_NN .....................................................   Passed    0.00 sec
+        Start 190: func_P_config_bytes
+190/567 Test #190: func_P_config_bytes ................................................   Passed    0.00 sec
+        Start 191: func_P_config_max
+191/567 Test #191: func_P_config_max ..................................................   Passed    0.00 sec
+        Start 192: func_P_config_initial
+192/567 Test #192: func_P_config_initial ..............................................   Passed    0.00 sec
+        Start 193: func_P_config_slots
+193/567 Test #193: func_P_config_slots ................................................   Passed    0.00 sec
+        Start 194: func_P_config_storequeue
+194/567 Test #194: func_P_config_storequeue ...........................................   Passed    0.00 sec
+        Start 195: func_C_direct_1_1
+195/567 Test #195: func_C_direct_1_1 ..................................................   Passed    0.00 sec
+        Start 196: func_C_direct_1_32
+196/567 Test #196: func_C_direct_1_32 .................................................   Passed    0.00 sec
+        Start 197: func_C_direct_4_1
+197/567 Test #197: func_C_direct_4_1 ..................................................   Passed    0.00 sec
+        Start 198: func_C_direct_4_32
+198/567 Test #198: func_C_direct_4_32 .................................................   Passed    0.00 sec
+        Start 199: func_C_buffered_1_1
+199/567 Test #199: func_C_buffered_1_1 ................................................   Passed    0.00 sec
+        Start 200: func_C_buffered_1_32
+200/567 Test #200: func_C_buffered_1_32 ...............................................   Passed    0.00 sec
+        Start 201: func_C_buffered_4_1
+201/567 Test #201: func_C_buffered_4_1 ................................................   Passed    0.00 sec
+        Start 202: func_C_buffered_4_32
+202/567 Test #202: func_C_buffered_4_32 ...............................................   Passed    0.00 sec
+        Start 203: func_C_seal1N
+203/567 Test #203: func_C_seal1N ......................................................   Passed    0.00 sec
+        Start 204: func_C_sealNN
+204/567 Test #204: func_C_sealNN ......................................................   Passed    0.00 sec
+        Start 205: func_C_allocNN
+205/567 Test #205: func_C_allocNN .....................................................   Passed    0.00 sec
+        Start 206: func_C_release1N
+206/567 Test #206: func_C_release1N ...................................................   Passed    0.00 sec
+        Start 207: func_M_seed_1
+207/567 Test #207: func_M_seed_1 ......................................................   Passed    0.00 sec
+        Start 208: func_M_seed_7
+208/567 Test #208: func_M_seed_7 ......................................................   Passed    0.00 sec
+        Start 209: func_M_seed_42
+209/567 Test #209: func_M_seed_42 .....................................................   Passed    0.00 sec
+        Start 210: func_M_seed_20260925
+210/567 Test #210: func_M_seed_20260925 ...............................................   Passed    0.00 sec
+        Start 211: func_D_empty
+211/567 Test #211: func_D_empty .......................................................   Passed    0.07 sec
+        Start 212: func_D_double
+212/567 Test #212: func_D_double ......................................................   Passed    0.03 sec
+        Start 213: func_D_zero
+213/567 Test #213: func_D_zero ........................................................   Passed    0.03 sec
+        Start 214: func_D_align3
+214/567 Test #214: func_D_align3 ......................................................   Passed    0.02 sec
+        Start 215: func_D_align128
+215/567 Test #215: func_D_align128 ....................................................   Passed    0.03 sec
+        Start 216: func_D_seal
+216/567 Test #216: func_D_seal ........................................................   Passed    0.02 sec
+        Start 217: func_D_range
+217/567 Test #217: func_D_range .......................................................   Passed    0.02 sec
+        Start 218: func_D_foreign
+218/567 Test #218: func_D_foreign .....................................................   Passed    0.02 sec
+        Start 219: func_D_livepool
+219/567 Test #219: func_D_livepool ....................................................   Passed    0.02 sec
+        Start 220: func_T_pointer
+220/567 Test #220: func_T_pointer .....................................................   Passed    1.13 sec
+        Start 221: func_T_array
+221/567 Test #221: func_T_array .......................................................   Passed    0.72 sec
+        Start 222: func_T_nontrivial
+222/567 Test #222: func_T_nontrivial ..................................................   Passed    0.71 sec
+        Start 223: func_T_maximum
+223/567 Test #223: func_T_maximum .....................................................   Passed    0.76 sec
+        Start 224: func_T_publish0
+224/567 Test #224: func_T_publish0 ....................................................   Passed    0.72 sec
+        Start 225: func_U_signal
+225/567 Test #225: func_U_signal ......................................................   Passed    0.00 sec
+        Start 226: func_U_cancel
+226/567 Test #226: func_U_cancel ......................................................   Passed    0.00 sec
+        Start 227: func_U_timeout
+227/567 Test #227: func_U_timeout .....................................................   Passed    0.00 sec
+        Start 228: func_P_tolerant_11_old
+228/567 Test #228: func_P_tolerant_11_old .............................................   Passed    0.00 sec
+        Start 229: func_P_tolerant_11_zero
+229/567 Test #229: func_P_tolerant_11_zero ............................................   Passed    0.00 sec
+        Start 230: func_P_tolerant_11_free
+230/567 Test #230: func_P_tolerant_11_free ............................................   Passed    0.00 sec
+        Start 231: func_P_tolerant_11_index
+231/567 Test #231: func_P_tolerant_11_index ...........................................   Passed    0.00 sec
+        Start 232: func_P_tolerant_11_duplicate
+232/567 Test #232: func_P_tolerant_11_duplicate .......................................   Passed    0.00 sec
+        Start 233: func_P_tolerant_1N_old
+233/567 Test #233: func_P_tolerant_1N_old .............................................   Passed    0.00 sec
+        Start 234: func_P_tolerant_1N_zero
+234/567 Test #234: func_P_tolerant_1N_zero ............................................   Passed    0.00 sec
+        Start 235: func_P_tolerant_1N_free
+235/567 Test #235: func_P_tolerant_1N_free ............................................   Passed    0.00 sec
+        Start 236: func_P_tolerant_1N_index
+236/567 Test #236: func_P_tolerant_1N_index ...........................................   Passed    0.00 sec
+        Start 237: func_P_tolerant_1N_duplicate
+237/567 Test #237: func_P_tolerant_1N_duplicate .......................................   Passed    0.00 sec
+        Start 238: func_P_tolerant_NN_old
+238/567 Test #238: func_P_tolerant_NN_old .............................................   Passed    0.00 sec
+        Start 239: func_P_tolerant_NN_zero
+239/567 Test #239: func_P_tolerant_NN_zero ............................................   Passed    0.00 sec
+        Start 240: func_P_tolerant_NN_free
+240/567 Test #240: func_P_tolerant_NN_free ............................................   Passed    0.00 sec
+        Start 241: func_P_tolerant_NN_index
+241/567 Test #241: func_P_tolerant_NN_index ...........................................   Passed    0.00 sec
+        Start 242: func_P_tolerant_NN_duplicate
+242/567 Test #242: func_P_tolerant_NN_duplicate .......................................   Passed    0.00 sec
+        Start 243: func_D_strict_old
+243/567 Test #243: func_D_strict_old ..................................................   Passed    0.05 sec
+        Start 244: func_D_strict_free
+244/567 Test #244: func_D_strict_free .................................................   Passed    0.03 sec
+        Start 245: func_D_strict_index
+245/567 Test #245: func_D_strict_index ................................................   Passed    0.03 sec
+        Start 246: func_D_strict_duplicate
+246/567 Test #246: func_D_strict_duplicate ............................................   Passed    0.03 sec
+        Start 247: func_W_pressure_drop
+247/567 Test #247: func_W_pressure_drop ...............................................   Passed    0.00 sec
+        Start 248: func_W_pressure_block_timeout
+248/567 Test #248: func_W_pressure_block_timeout ......................................   Passed    0.01 sec
+        Start 249: func_W_pressure_block_resume
+249/567 Test #249: func_W_pressure_block_resume .......................................   Passed    0.00 sec
+        Start 250: func_R_stop_fast
+250/567 Test #250: func_R_stop_fast ...................................................   Passed    0.00 sec
+        Start 251: func_R_stop_timeout
+251/567 Test #251: func_R_stop_timeout ................................................   Passed    0.01 sec
+        Start 252: func_S_config_callback
+252/567 Test #252: func_S_config_callback .............................................   Passed    0.00 sec
+        Start 253: func_S_config_retry
+253/567 Test #253: func_S_config_retry ................................................   Passed    0.00 sec
+        Start 254: func_M_complete_11
+254/567 Test #254: func_M_complete_11 .................................................   Passed    0.00 sec
+        Start 255: func_M_complete_1N
+255/567 Test #255: func_M_complete_1N .................................................   Passed    0.00 sec
+        Start 256: func_M_complete_NN
+256/567 Test #256: func_M_complete_NN .................................................   Passed    0.00 sec
+        Start 257: func_M_source_complete
+257/567 Test #257: func_M_source_complete .............................................   Passed    0.00 sec
+        Start 258: func_D_complete_free
+258/567 Test #258: func_D_complete_free ...............................................   Passed    0.03 sec
+        Start 259: func_W_layout_u8_prefix_p1
+259/567 Test #259: func_W_layout_u8_prefix_p1 .........................................   Passed    0.00 sec
+        Start 260: func_W_layout_u8_prefix_p3
+260/567 Test #260: func_W_layout_u8_prefix_p3 .........................................   Passed    0.00 sec
+        Start 261: func_W_layout_u8_prefix_buffered
+261/567 Test #261: func_W_layout_u8_prefix_buffered ...................................   Passed    0.00 sec
+        Start 262: func_W_slots_u8_prefix
+262/567 Test #262: func_W_slots_u8_prefix .............................................   Passed    0.00 sec
+        Start 263: func_W_layout_u8_raw_p1
+263/567 Test #263: func_W_layout_u8_raw_p1 ............................................   Passed    0.00 sec
+        Start 264: func_W_layout_u8_raw_p3
+264/567 Test #264: func_W_layout_u8_raw_p3 ............................................   Passed    0.00 sec
+        Start 265: func_W_layout_u8_raw_buffered
+265/567 Test #265: func_W_layout_u8_raw_buffered ......................................   Passed    0.00 sec
+        Start 266: func_W_slots_u8_raw
+266/567 Test #266: func_W_slots_u8_raw ................................................   Passed    0.00 sec
+        Start 267: func_W_limits_u8
+267/567 Test #267: func_W_limits_u8 ...................................................   Passed    0.00 sec
+        Start 268: func_W_layout_u16_prefix_p1
+268/567 Test #268: func_W_layout_u16_prefix_p1 ........................................   Passed    0.00 sec
+        Start 269: func_W_layout_u16_prefix_p3
+269/567 Test #269: func_W_layout_u16_prefix_p3 ........................................   Passed    0.00 sec
+        Start 270: func_W_layout_u16_prefix_buffered
+270/567 Test #270: func_W_layout_u16_prefix_buffered ..................................   Passed    0.00 sec
+        Start 271: func_W_slots_u16_prefix
+271/567 Test #271: func_W_slots_u16_prefix ............................................   Passed    0.00 sec
+        Start 272: func_W_layout_u16_raw_p1
+272/567 Test #272: func_W_layout_u16_raw_p1 ...........................................   Passed    0.00 sec
+        Start 273: func_W_layout_u16_raw_p3
+273/567 Test #273: func_W_layout_u16_raw_p3 ...........................................   Passed    0.00 sec
+        Start 274: func_W_layout_u16_raw_buffered
+274/567 Test #274: func_W_layout_u16_raw_buffered .....................................   Passed    0.00 sec
+        Start 275: func_W_slots_u16_raw
+275/567 Test #275: func_W_slots_u16_raw ...............................................   Passed    0.00 sec
+        Start 276: func_W_limits_u16
+276/567 Test #276: func_W_limits_u16 ..................................................   Passed    0.00 sec
+        Start 277: func_W_layout_u32_prefix_p1
+277/567 Test #277: func_W_layout_u32_prefix_p1 ........................................   Passed    0.00 sec
+        Start 278: func_W_layout_u32_prefix_p3
+278/567 Test #278: func_W_layout_u32_prefix_p3 ........................................   Passed    0.00 sec
+        Start 279: func_W_layout_u32_prefix_buffered
+279/567 Test #279: func_W_layout_u32_prefix_buffered ..................................   Passed    0.00 sec
+        Start 280: func_W_slots_u32_prefix
+280/567 Test #280: func_W_slots_u32_prefix ............................................   Passed    0.00 sec
+        Start 281: func_W_layout_u32_raw_p1
+281/567 Test #281: func_W_layout_u32_raw_p1 ...........................................   Passed    0.00 sec
+        Start 282: func_W_layout_u32_raw_p3
+282/567 Test #282: func_W_layout_u32_raw_p3 ...........................................   Passed    0.00 sec
+        Start 283: func_W_layout_u32_raw_buffered
+283/567 Test #283: func_W_layout_u32_raw_buffered .....................................   Passed    0.00 sec
+        Start 284: func_W_slots_u32_raw
+284/567 Test #284: func_W_slots_u32_raw ...............................................   Passed    0.00 sec
+        Start 285: func_W_limits_u32
+285/567 Test #285: func_W_limits_u32 ..................................................   Passed    0.00 sec
+        Start 286: func_W_layout_u64_prefix_p1
+286/567 Test #286: func_W_layout_u64_prefix_p1 ........................................   Passed    0.00 sec
+        Start 287: func_W_layout_u64_prefix_p3
+287/567 Test #287: func_W_layout_u64_prefix_p3 ........................................   Passed    0.00 sec
+        Start 288: func_W_layout_u64_prefix_buffered
+288/567 Test #288: func_W_layout_u64_prefix_buffered ..................................   Passed    0.00 sec
+        Start 289: func_W_slots_u64_prefix
+289/567 Test #289: func_W_slots_u64_prefix ............................................   Passed    0.00 sec
+        Start 290: func_W_layout_u64_raw_p1
+290/567 Test #290: func_W_layout_u64_raw_p1 ...........................................   Passed    0.00 sec
+        Start 291: func_W_layout_u64_raw_p3
+291/567 Test #291: func_W_layout_u64_raw_p3 ...........................................   Passed    0.00 sec
+        Start 292: func_W_layout_u64_raw_buffered
+292/567 Test #292: func_W_layout_u64_raw_buffered .....................................   Passed    0.00 sec
+        Start 293: func_W_slots_u64_raw
+293/567 Test #293: func_W_slots_u64_raw ...............................................   Passed    0.00 sec
+        Start 294: func_W_limits_u64
+294/567 Test #294: func_W_limits_u64 ..................................................   Passed    0.00 sec
+        Start 295: func_W_layout_empty_config
+295/567 Test #295: func_W_layout_empty_config .........................................   Passed    0.00 sec
+        Start 296: func_W_layout_registration
+296/567 Test #296: func_W_layout_registration .........................................   Passed    0.00 sec
+        Start 297: func_W_layout_worker
+297/567 Test #297: func_W_layout_worker ...............................................   Passed    0.00 sec
+        Start 298: func_T_len_signed
+298/567 Test #298: func_T_len_signed ..................................................   Passed    0.82 sec
+        Start 299: func_T_len_bool
+299/567 Test #299: func_T_len_bool ....................................................   Passed    0.82 sec
+        Start 300: func_T_len_float
+300/567 Test #300: func_T_len_float ...................................................   Passed    0.75 sec
+        Start 301: func_T_len_const
+301/567 Test #301: func_T_len_const ...................................................   Passed    0.74 sec
+        Start 302: func_T_len_u8_payload
+302/567 Test #302: func_T_len_u8_payload ..............................................   Passed    0.76 sec
+        Start 303: func_T_raw_empty
+303/567 Test #303: func_T_raw_empty ...................................................   Passed    0.77 sec
+        Start 304: func_W_pressure_timeout_invalid
+304/567 Test #304: func_W_pressure_timeout_invalid ....................................   Passed    0.00 sec
+        Start 305: func_W_pressure_timeout_limit
+305/567 Test #305: func_W_pressure_timeout_limit ......................................   Passed    0.00 sec
+        Start 306: func_W_pressure_spin_timeout
+306/567 Test #306: func_W_pressure_spin_timeout .......................................   Passed    0.06 sec
+        Start 307: func_catalog
+307/567 Test #307: func_catalog .......................................................   Passed    0.04 sec
+        Start 308: concurrent_pipe_direct_sync_1_1
+308/567 Test #308: concurrent_pipe_direct_sync_1_1 ....................................   Passed    0.44 sec
+        Start 309: concurrent_pipe_direct_sync_1_32
+309/567 Test #309: concurrent_pipe_direct_sync_1_32 ...................................   Passed    0.00 sec
+        Start 310: concurrent_pipe_direct_sync_4_1
+310/567 Test #310: concurrent_pipe_direct_sync_4_1 ....................................   Passed    0.01 sec
+        Start 311: concurrent_pipe_direct_sync_4_32
+311/567 Test #311: concurrent_pipe_direct_sync_4_32 ...................................   Passed    0.01 sec
+        Start 312: concurrent_pipe_direct_async_1_1
+312/567 Test #312: concurrent_pipe_direct_async_1_1 ...................................   Passed    0.00 sec
+        Start 313: concurrent_pipe_direct_async_1_32
+313/567 Test #313: concurrent_pipe_direct_async_1_32 ..................................   Passed    0.00 sec
+        Start 314: concurrent_pipe_direct_async_4_1
+314/567 Test #314: concurrent_pipe_direct_async_4_1 ...................................   Passed    0.01 sec
+        Start 315: concurrent_pipe_direct_async_4_32
+315/567 Test #315: concurrent_pipe_direct_async_4_32 ..................................   Passed    0.01 sec
+        Start 316: concurrent_pipe_direct_reject_1_1
+316/567 Test #316: concurrent_pipe_direct_reject_1_1 ..................................   Passed    0.00 sec
+        Start 317: concurrent_pipe_direct_reject_1_32
+317/567 Test #317: concurrent_pipe_direct_reject_1_32 .................................   Passed    0.00 sec
+        Start 318: concurrent_pipe_direct_reject_4_1
+318/567 Test #318: concurrent_pipe_direct_reject_4_1 ..................................   Passed    0.00 sec
+        Start 319: concurrent_pipe_direct_reject_4_32
+319/567 Test #319: concurrent_pipe_direct_reject_4_32 .................................   Passed    0.00 sec
+        Start 320: concurrent_large_direct_1
+320/567 Test #320: concurrent_large_direct_1 ..........................................   Passed    0.02 sec
+        Start 321: concurrent_large_direct_4
+321/567 Test #321: concurrent_large_direct_4 ..........................................   Passed    0.07 sec
+        Start 322: concurrent_pipe_buffered_sync_1_1
+322/567 Test #322: concurrent_pipe_buffered_sync_1_1 ..................................   Passed    0.00 sec
+        Start 323: concurrent_pipe_buffered_sync_1_32
+323/567 Test #323: concurrent_pipe_buffered_sync_1_32 .................................   Passed    0.00 sec
+        Start 324: concurrent_pipe_buffered_sync_4_1
+324/567 Test #324: concurrent_pipe_buffered_sync_4_1 ..................................   Passed    0.00 sec
+        Start 325: concurrent_pipe_buffered_sync_4_32
+325/567 Test #325: concurrent_pipe_buffered_sync_4_32 .................................   Passed    0.01 sec
+        Start 326: concurrent_pipe_buffered_async_1_1
+326/567 Test #326: concurrent_pipe_buffered_async_1_1 .................................   Passed    0.02 sec
+        Start 327: concurrent_pipe_buffered_async_1_32
+327/567 Test #327: concurrent_pipe_buffered_async_1_32 ................................   Passed    0.07 sec
+        Start 328: concurrent_pipe_buffered_async_4_1
+328/567 Test #328: concurrent_pipe_buffered_async_4_1 .................................   Passed    0.07 sec
+        Start 329: concurrent_pipe_buffered_async_4_32
+329/567 Test #329: concurrent_pipe_buffered_async_4_32 ................................   Passed    0.09 sec
+        Start 330: concurrent_pipe_buffered_reject_1_1
+330/567 Test #330: concurrent_pipe_buffered_reject_1_1 ................................   Passed    0.02 sec
+        Start 331: concurrent_pipe_buffered_reject_1_32
+331/567 Test #331: concurrent_pipe_buffered_reject_1_32 ...............................   Passed    0.02 sec
+        Start 332: concurrent_pipe_buffered_reject_4_1
+332/567 Test #332: concurrent_pipe_buffered_reject_4_1 ................................   Passed    0.08 sec
+        Start 333: concurrent_pipe_buffered_reject_4_32
+333/567 Test #333: concurrent_pipe_buffered_reject_4_32 ...............................   Passed    0.07 sec
+        Start 334: concurrent_large_buffered_1
+334/567 Test #334: concurrent_large_buffered_1 ........................................   Passed    0.03 sec
+        Start 335: concurrent_large_buffered_4
+335/567 Test #335: concurrent_large_buffered_4 ........................................   Passed    0.13 sec
+        Start 336: concurrent_pool_1N_1
+336/567 Test #336: concurrent_pool_1N_1 ...............................................   Passed    0.00 sec
+        Start 337: concurrent_pool_1N_64
+337/567 Test #337: concurrent_pool_1N_64 ..............................................   Passed    0.00 sec
+        Start 338: concurrent_pool_1N_65
+338/567 Test #338: concurrent_pool_1N_65 ..............................................   Passed    0.00 sec
+        Start 339: concurrent_pin_1N
+339/567 Test #339: concurrent_pin_1N ..................................................   Passed    0.00 sec
+        Start 340: concurrent_pool_NN_1
+340/567 Test #340: concurrent_pool_NN_1 ...............................................   Passed    0.02 sec
+        Start 341: concurrent_pool_NN_64
+341/567 Test #341: concurrent_pool_NN_64 ..............................................   Passed    0.03 sec
+        Start 342: concurrent_pool_NN_65
+342/567 Test #342: concurrent_pool_NN_65 ..............................................   Passed    0.03 sec
+        Start 343: concurrent_pin_NN
+343/567 Test #343: concurrent_pin_NN ..................................................   Passed    0.00 sec
+        Start 344: concurrent_queue_1
+344/567 Test #344: concurrent_queue_1 .................................................   Passed    0.01 sec
+        Start 345: concurrent_queue_2
+345/567 Test #345: concurrent_queue_2 .................................................   Passed    0.01 sec
+        Start 346: concurrent_queue_3
+346/567 Test #346: concurrent_queue_3 .................................................   Passed    0.01 sec
+        Start 347: concurrent_queue_7
+347/567 Test #347: concurrent_queue_7 .................................................   Passed    0.01 sec
+        Start 348: concurrent_queue_64
+348/567 Test #348: concurrent_queue_64 ................................................   Passed    0.01 sec
+        Start 349: concurrent_queue_65
+349/567 Test #349: concurrent_queue_65 ................................................   Passed    0.01 sec
+        Start 350: concurrent_active_direct
+350/567 Test #350: concurrent_active_direct ...........................................   Passed    0.00 sec
+        Start 351: concurrent_active_buffered
+351/567 Test #351: concurrent_active_buffered .........................................   Passed    0.00 sec
+        Start 352: concurrent_block_NN_slots_1
+352/567 Test #352: concurrent_block_NN_slots_1 ........................................   Passed    0.00 sec
+        Start 353: concurrent_block_NN_slots_63
+353/567 Test #353: concurrent_block_NN_slots_63 .......................................   Passed    0.00 sec
+        Start 354: concurrent_block_NN_slots_64
+354/567 Test #354: concurrent_block_NN_slots_64 .......................................   Passed    0.00 sec
+        Start 355: concurrent_block_NN_slots_65
+355/567 Test #355: concurrent_block_NN_slots_65 .......................................   Passed    0.00 sec
+        Start 356: concurrent_block_NN_slots_129
+356/567 Test #356: concurrent_block_NN_slots_129 ......................................   Passed    0.00 sec
+        Start 357: concurrent_block_NN_bytes
+357/567 Test #357: concurrent_block_NN_bytes ..........................................   Passed    0.00 sec
+        Start 358: concurrent_block_NN_streaming
+358/567 Test #358: concurrent_block_NN_streaming ......................................   Passed    0.00 sec
+        Start 359: concurrent_block_without_lock_11
+359/567 Test #359: concurrent_block_without_lock_11 ...................................   Passed    0.00 sec
+        Start 360: concurrent_block_without_lock_1N
+360/567 Test #360: concurrent_block_without_lock_1N ...................................   Passed    0.00 sec
+        Start 361: concurrent_block_without_lock_NN
+361/567 Test #361: concurrent_block_without_lock_NN ...................................   Passed    0.00 sec
+        Start 362: concurrent_direct_pool_cross_11
+362/567 Test #362: concurrent_direct_pool_cross_11 ....................................   Passed    0.00 sec
+        Start 363: concurrent_direct_pool_1N
+363/567 Test #363: concurrent_direct_pool_1N ..........................................   Passed    0.00 sec
+        Start 364: concurrent_direct_pool_N1
+364/567 Test #364: concurrent_direct_pool_N1 ..........................................   Passed    0.01 sec
+        Start 365: concurrent_direct_pool_NN_preallocated
+365/567 Test #365: concurrent_direct_pool_NN_preallocated .............................   Passed    0.01 sec
+        Start 366: concurrent_direct_pool_NN_growth
+366/567 Test #366: concurrent_direct_pool_NN_growth ...................................   Passed    0.01 sec
+        Start 367: concurrent_direct_pool_external_lock
+367/567 Test #367: concurrent_direct_pool_external_lock ...............................   Passed    0.01 sec
+        Start 368: concurrent_direct_pool_same_thread
+368/567 Test #368: concurrent_direct_pool_same_thread .................................   Passed    0.00 sec
+        Start 369: concurrent_direct_pool_held_block
+369/567 Test #369: concurrent_direct_pool_held_block ..................................   Passed    0.00 sec
+        Start 370: concurrent_direct_pool_wait_ready_blocks
+370/567 Test #370: concurrent_direct_pool_wait_ready_blocks ...........................   Passed    0.00 sec
+        Start 371: concurrent_direct_pool_wait_burst
+371/567 Test #371: concurrent_direct_pool_wait_burst ..................................   Passed    0.02 sec
+        Start 372: concurrent_direct_pool_wait_timeout
+372/567 Test #372: concurrent_direct_pool_wait_timeout ................................   Passed    0.05 sec
+        Start 373: concurrent_direct_pool_wait_nonpositive
+373/567 Test #373: concurrent_direct_pool_wait_nonpositive ............................   Passed    0.00 sec
+        Start 374: concurrent_direct_pool_wait_independent
+374/567 Test #374: concurrent_direct_pool_wait_independent ............................   Passed    0.05 sec
+        Start 375: concurrent_direct_pool_wait_max_millis
+375/567 Test #375: concurrent_direct_pool_wait_max_millis .............................   Passed    0.02 sec
+        Start 376: concurrent_direct_pool_wait_max_ticks
+376/567 Test #376: concurrent_direct_pool_wait_max_ticks ..............................   Passed    0.02 sec
+        Start 377: concurrent_catalog
+377/567 Test #377: concurrent_catalog .................................................   Passed    0.03 sec
+        Start 378: source_lifecycle_finished_before_read
+378/567 Test #378: source_lifecycle_finished_before_read ..............................   Passed    0.80 sec
+        Start 379: source_lifecycle_unread_tail
+379/567 Test #379: source_lifecycle_unread_tail .......................................   Passed    0.00 sec
+        Start 380: source_lifecycle_consume_before_handoff
+380/567 Test #380: source_lifecycle_consume_before_handoff ............................   Passed    0.00 sec
+        Start 381: source_lifecycle_empty_finished
+381/567 Test #381: source_lifecycle_empty_finished ....................................   Passed    0.00 sec
+        Start 382: source_lifecycle_claimed_generation
+382/567 Test #382: source_lifecycle_claimed_generation ................................   Passed    0.00 sec
+        Start 383: source_lifecycle_callback_reuse
+383/567 Test #383: source_lifecycle_callback_reuse ....................................   Passed    0.00 sec
+        Start 384: source_lifecycle_rejected_finished
+384/567 Test #384: source_lifecycle_rejected_finished .................................   Passed    0.01 sec
+        Start 385: source_lifecycle_finish_read_race
+385/567 Test #385: source_lifecycle_finish_read_race ..................................   Passed    0.01 sec
+        Start 386: source_lifecycle_queued_finish_reuse
+386/567 Test #386: source_lifecycle_queued_finish_reuse ...............................   Passed    0.00 sec
+        Start 387: source_lifecycle_write_finished_holds_block
+387/567 Test #387: source_lifecycle_write_finished_holds_block ........................   Passed    0.00 sec
+        Start 388: source_lifecycle_empty_interleaved
+388/567 Test #388: source_lifecycle_empty_interleaved .................................   Passed    0.00 sec
+        Start 389: source_lifecycle_repeated_current
+389/567 Test #389: source_lifecycle_repeated_current ..................................   Passed    0.00 sec
+        Start 390: source_lifecycle_empty_callback
+390/567 Test #390: source_lifecycle_empty_callback ....................................   Passed    0.00 sec
+        Start 391: source_lifecycle_direct_handoff
+391/567 Test #391: source_lifecycle_direct_handoff ....................................   Passed    0.00 sec
+        Start 392: source_lifecycle_current_handoff
+392/567 Test #392: source_lifecycle_current_handoff ...................................   Passed    0.00 sec
+        Start 393: source_lifecycle_buffered_retry_without_release_notify
+393/567 Test #393: source_lifecycle_buffered_retry_without_release_notify .............   Passed    0.02 sec
+        Start 394: source_lifecycle_discard_unread_tail
+394/567 Test #394: source_lifecycle_discard_unread_tail ...............................   Passed    0.00 sec
+        Start 395: block_lifecycle_state_single
+395/567 Test #395: block_lifecycle_state_single .......................................   Passed    0.43 sec
+        Start 396: block_lifecycle_state_1n
+396/567 Test #396: block_lifecycle_state_1n ...........................................   Passed    0.00 sec
+        Start 397: block_lifecycle_state_nn
+397/567 Test #397: block_lifecycle_state_nn ...........................................   Passed    0.00 sec
+        Start 398: block_lifecycle_read_progress
+398/567 Test #398: block_lifecycle_read_progress ......................................   Passed    0.00 sec
+        Start 399: block_lifecycle_force_ignore
+399/567 Test #399: block_lifecycle_force_ignore .......................................   Passed    0.00 sec
+        Start 400: block_lifecycle_scan_skip_head
+400/567 Test #400: block_lifecycle_scan_skip_head .....................................   Passed    0.00 sec
+        Start 401: block_lifecycle_scan_before_create
+401/567 Test #401: block_lifecycle_scan_before_create .................................   Passed    0.00 sec
+        Start 402: block_lifecycle_bounds_single
+402/567 Test #402: block_lifecycle_bounds_single ......................................   Passed    0.00 sec
+        Start 403: block_lifecycle_bounds_1n
+403/567 Test #403: block_lifecycle_bounds_1n ..........................................   Passed    0.00 sec
+        Start 404: block_lifecycle_bounds_nn
+404/567 Test #404: block_lifecycle_bounds_nn ..........................................   Passed    0.00 sec
+        Start 405: block_lifecycle_bitmap_reuse
+405/567 Test #405: block_lifecycle_bitmap_reuse .......................................   Passed    0.00 sec
+        Start 406: block_lifecycle_last_release_scan
+406/567 Test #406: block_lifecycle_last_release_scan ..................................   Passed    0.01 sec
+        Start 407: block_lifecycle_many_getters
+407/567 Test #407: block_lifecycle_many_getters .......................................   Passed    0.01 sec
+        Start 408: block_lifecycle_same_block_alloc_release
+408/567 Test #408: block_lifecycle_same_block_alloc_release ...........................   Passed    0.00 sec
+        Start 409: block_lifecycle_wait_timeouts
+409/567 Test #409: block_lifecycle_wait_timeouts ......................................   Passed    0.02 sec
+        Start 410: block_lifecycle_wait_multiple
+410/567 Test #410: block_lifecycle_wait_multiple ......................................   Passed    0.01 sec
+        Start 411: block_lifecycle_slice_pool_single
+411/567 Test #411: block_lifecycle_slice_pool_single ..................................   Passed    0.00 sec
+        Start 412: block_lifecycle_slice_pool_1n
+412/567 Test #412: block_lifecycle_slice_pool_1n ......................................   Passed    0.00 sec
+        Start 413: block_lifecycle_slice_pool_nn
+413/567 Test #413: block_lifecycle_slice_pool_nn ......................................   Passed    0.00 sec
+        Start 414: block_lifecycle_close_then_release
+414/567 Test #414: block_lifecycle_close_then_release .................................   Passed    0.00 sec
+        Start 415: block_lifecycle_notifications
+415/567 Test #415: block_lifecycle_notifications ......................................   Passed    0.00 sec
+        Start 416: block_lifecycle_destructor_scan
+416/567 Test #416: block_lifecycle_destructor_scan ....................................   Passed    0.00 sec
+        Start 417: block_lifecycle_pointer_single
+417/567 Test #417: block_lifecycle_pointer_single .....................................   Passed    0.00 sec
+        Start 418: block_lifecycle_pointer_1n
+418/567 Test #418: block_lifecycle_pointer_1n .........................................   Passed    0.00 sec
+        Start 419: block_lifecycle_pointer_nn
+419/567 Test #419: block_lifecycle_pointer_nn .........................................   Passed    0.00 sec
+        Start 420: block_lifecycle_pointer_publication
+420/567 Test #420: block_lifecycle_pointer_publication ................................   Passed    0.00 sec
+        Start 421: block_lifecycle_slice_state_range
+421/567 Test #421: block_lifecycle_slice_state_range ..................................   Passed    0.00 sec
+        Start 422: block_lifecycle_intrusive_queue
+422/567 Test #422: block_lifecycle_intrusive_queue ....................................   Passed    0.00 sec
+        Start 423: block_lifecycle_derived_recycle_condition
+423/567 Test #423: block_lifecycle_derived_recycle_condition ..........................   Passed    0.00 sec
+        Start 424: block_lifecycle_death_force_writing
+424/567 Test #424: block_lifecycle_death_force_writing ................................   Passed    0.02 sec
+        Start 425: block_lifecycle_death_force_finished
+425/567 Test #425: block_lifecycle_death_force_finished ...............................   Passed    0.02 sec
+        Start 426: block_lifecycle_death_force_free
+426/567 Test #426: block_lifecycle_death_force_free ...................................   Passed    0.02 sec
+        Start 427: block_lifecycle_death_force_twice
+427/567 Test #427: block_lifecycle_death_force_twice ..................................   Passed    0.02 sec
+        Start 428: block_lifecycle_death_leave_writing
+428/567 Test #428: block_lifecycle_death_leave_writing ................................   Passed    0.02 sec
+        Start 429: block_lifecycle_death_leave_twice
+429/567 Test #429: block_lifecycle_death_leave_twice ..................................   Passed    0.04 sec
+        Start 430: block_lifecycle_death_finish_twice
+430/567 Test #430: block_lifecycle_death_finish_twice .................................   Passed    0.02 sec
+        Start 431: block_lifecycle_death_allocate_finished
+431/567 Test #431: block_lifecycle_death_allocate_finished ............................   Passed    0.02 sec
+        Start 432: block_lifecycle_death_slice_bounds
+432/567 Test #432: block_lifecycle_death_slice_bounds .................................   Passed    0.02 sec
+        Start 433: block_lifecycle_death_slice_free
+433/567 Test #433: block_lifecycle_death_slice_free ...................................   Passed    0.02 sec
+        Start 434: block_lifecycle_death_slice_forced
+434/567 Test #434: block_lifecycle_death_slice_forced .................................   Passed    0.02 sec
+        Start 435: block_lifecycle_death_release_twice
+435/567 Test #435: block_lifecycle_death_release_twice ................................   Passed    0.02 sec
+        Start 436: block_lifecycle_death_release_forced
+436/567 Test #436: block_lifecycle_death_release_forced ...............................   Passed    0.02 sec
+        Start 437: block_lifecycle_death_release_stale
+437/567 Test #437: block_lifecycle_death_release_stale ................................   Passed    0.02 sec
+        Start 438: block_lifecycle_death_destructor_writing
+438/567 Test #438: block_lifecycle_death_destructor_writing ...........................   Passed    0.02 sec
+        Start 439: block_lifecycle_death_destructor_unread
+439/567 Test #439: block_lifecycle_death_destructor_unread ............................   Passed    0.02 sec
+        Start 440: block_lifecycle_death_destructor_slice
+440/567 Test #440: block_lifecycle_death_destructor_slice .............................   Passed    0.02 sec
+        Start 441: block_pool_trim_single
+441/567 Test #441: block_pool_trim_single .............................................   Passed    1.19 sec
+        Start 442: block_pool_trim_1n
+442/567 Test #442: block_pool_trim_1n .................................................   Passed    0.01 sec
+        Start 443: block_pool_trim_nn
+443/567 Test #443: block_pool_trim_nn .................................................   Passed    0.00 sec
+        Start 444: block_pool_trim_held
+444/567 Test #444: block_pool_trim_held ...............................................   Passed    0.00 sec
+        Start 445: block_pool_trim_preallocate
+445/567 Test #445: block_pool_trim_preallocate ........................................   Passed    0.00 sec
+        Start 446: block_pool_trim_force_ignore
+446/567 Test #446: block_pool_trim_force_ignore .......................................   Passed    0.00 sec
+        Start 447: block_pool_trim_concurrent
+447/567 Test #447: block_pool_trim_concurrent .........................................   Passed    0.03 sec
+        Start 448: block_pool_trim_hot_prefix
+448/567 Test #448: block_pool_trim_hot_prefix .........................................   Passed    0.00 sec
+        Start 449: block_pool_trim_restore_failure
+449/567 Test #449: block_pool_trim_restore_failure ....................................   Passed    0.00 sec
+        Start 450: block_pool_trim_actual_destroy
+450/567 Test #450: block_pool_trim_actual_destroy .....................................   Passed    0.00 sec
+        Start 451: block_pool_trim_slice_access_overlap
+451/567 Test #451: block_pool_trim_slice_access_overlap ...............................   Passed    0.00 sec
+        Start 452: block_pool_trim_death_free
+452/567 Test #452: block_pool_trim_death_free .........................................   Passed    0.02 sec
+        Start 453: block_pool_trim_death_stale
+453/567 Test #453: block_pool_trim_death_stale ........................................   Passed    0.02 sec
+        Start 454: block_roles_interfaces
+454/567 Test #454: block_roles_interfaces .............................................   Passed    0.41 sec
+        Start 455: block_roles_mixed_batch
+455/567 Test #455: block_roles_mixed_batch ............................................   Passed    0.00 sec
+        Start 456: block_roles_reader_single
+456/567 Test #456: block_roles_reader_single ..........................................   Passed    0.00 sec
+        Start 457: block_roles_reader_1n
+457/567 Test #457: block_roles_reader_1n ..............................................   Passed    0.00 sec
+        Start 458: block_roles_reader_nn
+458/567 Test #458: block_roles_reader_nn ..............................................   Passed    0.00 sec
+        Start 459: block_roles_writer_publish
+459/567 Test #459: block_roles_writer_publish .........................................   Passed    0.00 sec
+        Start 460: block_roles_writer_trim_restore
+460/567 Test #460: block_roles_writer_trim_restore ....................................   Passed    0.00 sec
+        Start 461: block_roles_writer_scan_release
+461/567 Test #461: block_roles_writer_scan_release ....................................   Passed    0.01 sec
+        Start 462: block_roles_reader_finish_with_held_slice
+462/567 Test #462: block_roles_reader_finish_with_held_slice ..........................   Passed    0.00 sec
+        Start 463: block_templates_interfaces
+463/567 Test #463: block_templates_interfaces .........................................   Passed    0.41 sec
+        Start 464: block_templates_writer_00
+464/567 Test #464: block_templates_writer_00 ..........................................   Passed    0.00 sec
+        Start 465: block_templates_writer_01
+465/567 Test #465: block_templates_writer_01 ..........................................   Passed    0.00 sec
+        Start 466: block_templates_writer_10
+466/567 Test #466: block_templates_writer_10 ..........................................   Passed    0.00 sec
+        Start 467: block_templates_writer_11
+467/567 Test #467: block_templates_writer_11 ..........................................   Passed    0.00 sec
+        Start 468: block_templates_reader_10
+468/567 Test #468: block_templates_reader_10 ..........................................   Passed    0.01 sec
+        Start 469: block_templates_writer_parallel_10
+469/567 Test #469: block_templates_writer_parallel_10 .................................   Passed    0.01 sec
+        Start 470: block_templates_writer_parallel_11
+470/567 Test #470: block_templates_writer_parallel_11 .................................   Passed    0.02 sec
+        Start 471: block_templates_force_writer
+471/567 Test #471: block_templates_force_writer .......................................   Passed    0.00 sec
+        Start 472: block_templates_force_reader
+472/567 Test #472: block_templates_force_reader .......................................   Passed    0.00 sec
+        Start 473: block_templates_death_writer_state
+473/567 Test #473: block_templates_death_writer_state .................................   Passed    0.02 sec
+        Start 474: block_templates_death_reader_state
+474/567 Test #474: block_templates_death_reader_state .................................   Passed    0.02 sec
+        Start 475: block_templates_header_only
+475/567 Test #475: block_templates_header_only ........................................   Passed    0.42 sec
+        Start 476: external_pool_null_single
+476/567 Test #476: external_pool_null_single ..........................................   Passed    0.42 sec
+        Start 477: external_pool_null_1n
+477/567 Test #477: external_pool_null_1n ..............................................   Passed    0.00 sec
+        Start 478: external_pool_null_nn
+478/567 Test #478: external_pool_null_nn ..............................................   Passed    0.00 sec
+        Start 479: external_pool_lifetime_single
+479/567 Test #479: external_pool_lifetime_single ......................................   Passed    0.00 sec
+        Start 480: external_pool_lifetime_1n
+480/567 Test #480: external_pool_lifetime_1n ..........................................   Passed    0.00 sec
+        Start 481: external_pool_lifetime_nn
+481/567 Test #481: external_pool_lifetime_nn ..........................................   Passed    0.00 sec
+        Start 482: external_pool_shared_single
+482/567 Test #482: external_pool_shared_single ........................................   Passed    0.00 sec
+        Start 483: external_pool_shared_1n
+483/567 Test #483: external_pool_shared_1n ............................................   Passed    0.00 sec
+        Start 484: external_pool_shared_nn
+484/567 Test #484: external_pool_shared_nn ............................................   Passed    0.00 sec
+        Start 485: external_pool_min_count
+485/567 Test #485: external_pool_min_count ............................................   Passed    0.00 sec
+        Start 486: external_pool_callback
+486/567 Test #486: external_pool_callback .............................................   Passed    0.00 sec
+        Start 487: external_pool_concurrent_1n
+487/567 Test #487: external_pool_concurrent_1n ........................................   Passed    0.01 sec
+        Start 488: external_pool_concurrent_nn
+488/567 Test #488: external_pool_concurrent_nn ........................................   Passed    0.01 sec
+        Start 489: warm_pool_protocol
+489/567 Test #489: warm_pool_protocol .................................................   Passed    0.40 sec
+        Start 490: warm_pool_resource
+490/567 Test #490: warm_pool_resource .................................................   Passed    0.01 sec
+        Start 491: warm_pool_lifecycle
+491/567 Test #491: warm_pool_lifecycle ................................................   Passed    0.00 sec
+        Start 492: warm_pool_independent
+492/567 Test #492: warm_pool_independent ..............................................   Passed    0.00 sec
+        Start 493: warm_pool_failures
+493/567 Test #493: warm_pool_failures .................................................   Passed    0.00 sec
+        Start 494: warm_pool_factory_dispose
+494/567 Test #494: warm_pool_factory_dispose ..........................................   Passed    0.00 sec
+        Start 495: warm_pool_trim_destroy
+495/567 Test #495: warm_pool_trim_destroy .............................................   Passed    0.00 sec
+        Start 496: warm_pool_trim_recreate
+496/567 Test #496: warm_pool_trim_recreate ............................................   Passed    0.00 sec
+        Start 497: warm_pool_slow_hooks
+497/567 Test #497: warm_pool_slow_hooks ...............................................   Passed    0.00 sec
+        Start 498: warm_pool_trim_overlap
+498/567 Test #498: warm_pool_trim_overlap .............................................   Passed    0.00 sec
+        Start 499: warm_pool_wait
+499/567 Test #499: warm_pool_wait .....................................................   Passed    0.02 sec
+        Start 500: warm_pool_generation_limit
+500/567 Test #500: warm_pool_generation_limit .........................................   Passed    0.00 sec
+        Start 501: warm_pool_concurrent
+501/567 Test #501: warm_pool_concurrent ...............................................   Passed    0.28 sec
+        Start 502: warm_pool_dispose_lifecycle
+502/567 Test #502: warm_pool_dispose_lifecycle ........................................   Passed    0.00 sec
+        Start 503: warm_pool_dispose_raw_memory
+503/567 Test #503: warm_pool_dispose_raw_memory .......................................   Passed    0.00 sec
+        Start 504: warm_pool_dispose_ctor_failure
+504/567 Test #504: warm_pool_dispose_ctor_failure .....................................   Passed    0.00 sec
+        Start 505: warm_pool_duplicate_recycle
+505/567 Test #505: warm_pool_duplicate_recycle ........................................   Passed    0.01 sec
+        Start 506: warm_pool_stale_during_reset
+506/567 Test #506: warm_pool_stale_during_reset .......................................   Passed    0.00 sec
+        Start 507: warm_pool_factory_loan
+507/567 Test #507: warm_pool_factory_loan .............................................   Passed    0.00 sec
+        Start 508: warm_pool_default_finish
+508/567 Test #508: warm_pool_default_finish ...........................................   Passed    0.00 sec
+        Start 509: warm_pool_node_lifetime
+509/567 Test #509: warm_pool_node_lifetime ............................................   Passed    0.00 sec
+        Start 510: warm_pool_node_concurrent
+510/567 Test #510: warm_pool_node_concurrent ..........................................   Passed    0.00 sec
+        Start 511: warm_pool_deferred_two_candidates
+511/567 Test #511: warm_pool_deferred_two_candidates ..................................   Passed    0.00 sec
+        Start 512: warm_pool_retired_record_reuse
+512/567 Test #512: warm_pool_retired_record_reuse .....................................   Passed    0.00 sec
+        Start 513: warm_pool_death_live
+513/567 Test #513: warm_pool_death_live ...............................................   Passed    0.03 sec
+        Start 514: warm_pool_header_only
+514/567 Test #514: warm_pool_header_only ..............................................   Passed    0.42 sec
+        Start 515: spsc_blocks_storage
+515/567 Test #515: spsc_blocks_storage ................................................   Passed    0.42 sec
+        Start 516: spsc_blocks_writer_fields
+516/567 Test #516: spsc_blocks_writer_fields ..........................................   Passed    0.00 sec
+        Start 517: spsc_blocks_streaming
+517/567 Test #517: spsc_blocks_streaming ..............................................   Passed    0.00 sec
+        Start 518: spsc_blocks_handoff
+518/567 Test #518: spsc_blocks_handoff ................................................   Passed    0.00 sec
+        Start 519: spsc_blocks_reuse
+519/567 Test #519: spsc_blocks_reuse ..................................................   Passed    0.00 sec
+        Start 520: spsc_blocks_concurrent_stream
+520/567 Test #520: spsc_blocks_concurrent_stream ......................................   Passed    0.01 sec
+        Start 521: spsc_blocks_concurrent_handoff
+521/567 Test #521: spsc_blocks_concurrent_handoff .....................................   Passed    0.00 sec
+        Start 522: handoff_queue_sync
+522/567 Test #522: handoff_queue_sync .................................................   Passed    0.42 sec
+        Start 523: handoff_queue_limits
+523/567 Test #523: handoff_queue_limits ...............................................   Passed    0.00 sec
+        Start 524: handoff_queue_errors
+524/567 Test #524: handoff_queue_errors ...............................................   Passed    0.00 sec
+        Start 525: handoff_queue_tickets
+525/567 Test #525: handoff_queue_tickets ..............................................   Passed    0.00 sec
+        Start 526: handoff_queue_manual
+526/567 Test #526: handoff_queue_manual ...............................................   Passed    0.00 sec
+        Start 527: handoff_queue_retry
+527/567 Test #527: handoff_queue_retry ................................................   Passed    0.00 sec
+        Start 528: handoff_queue_wake
+528/567 Test #528: handoff_queue_wake .................................................   Passed    0.01 sec
+        Start 529: handoff_queue_config
+529/567 Test #529: handoff_queue_config ...............................................   Passed    0.00 sec
+        Start 530: handoff_queue_reentrant
+530/567 Test #530: handoff_queue_reentrant ............................................   Passed    0.00 sec
+        Start 531: handoff_queue_foreign
+531/567 Test #531: handoff_queue_foreign ..............................................   Passed    0.00 sec
+        Start 532: handoff_queue_stop_callback
+532/567 Test #532: handoff_queue_stop_callback ........................................   Passed    0.00 sec
+        Start 533: handoff_queue_sync_concurrent
+533/567 Test #533: handoff_queue_sync_concurrent ......................................   Passed    0.01 sec
+        Start 534: handoff_queue_sync_stress
+534/567 Test #534: handoff_queue_sync_stress ..........................................   Passed    0.00 sec
+        Start 535: handoff_queue_spsc_poll
+535/567 Test #535: handoff_queue_spsc_poll ............................................   Passed    0.00 sec
+        Start 536: handoff_queue_spsc_wait
+536/567 Test #536: handoff_queue_spsc_wait ............................................   Passed    0.00 sec
+        Start 537: handoff_queue_mpsc_poll
+537/567 Test #537: handoff_queue_mpsc_poll ............................................   Passed    0.03 sec
+        Start 538: handoff_queue_mpsc_wait
+538/567 Test #538: handoff_queue_mpsc_wait ............................................   Passed    0.44 sec
+        Start 539: handoff_queue_spmc_poll
+539/567 Test #539: handoff_queue_spmc_poll ............................................   Passed    0.01 sec
+        Start 540: handoff_queue_spmc_wait
+540/567 Test #540: handoff_queue_spmc_wait ............................................   Passed    0.00 sec
+        Start 541: handoff_queue_mpmc_poll
+541/567 Test #541: handoff_queue_mpmc_poll ............................................   Passed    0.02 sec
+        Start 542: handoff_queue_mpmc_wait
+542/567 Test #542: handoff_queue_mpmc_wait ............................................   Passed    0.02 sec
+        Start 543: handoff_queue_keep_sync_stress
+543/567 Test #543: handoff_queue_keep_sync_stress .....................................   Passed    0.00 sec
+        Start 544: handoff_queue_keep_sync_concurrent
+544/567 Test #544: handoff_queue_keep_sync_concurrent .................................   Passed    0.01 sec
+        Start 545: handoff_queue_keep_retry
+545/567 Test #545: handoff_queue_keep_retry ...........................................   Passed    0.00 sec
+        Start 546: handoff_queue_keep_wake
+546/567 Test #546: handoff_queue_keep_wake ............................................   Passed    0.02 sec
+        Start 547: handoff_queue_keep_spsc_poll
+547/567 Test #547: handoff_queue_keep_spsc_poll .......................................   Passed    0.00 sec
+        Start 548: handoff_queue_keep_spsc_wait
+548/567 Test #548: handoff_queue_keep_spsc_wait .......................................   Passed    0.01 sec
+        Start 549: handoff_queue_keep_mpsc_poll
+549/567 Test #549: handoff_queue_keep_mpsc_poll .......................................   Passed    0.02 sec
+        Start 550: handoff_queue_keep_mpsc_wait
+550/567 Test #550: handoff_queue_keep_mpsc_wait .......................................   Passed    0.05 sec
+        Start 551: handoff_queue_keep_spmc_poll
+551/567 Test #551: handoff_queue_keep_spmc_poll .......................................   Passed    0.01 sec
+        Start 552: handoff_queue_keep_spmc_wait
+552/567 Test #552: handoff_queue_keep_spmc_wait .......................................   Passed    0.00 sec
+        Start 553: handoff_queue_keep_mpmc_poll
+553/567 Test #553: handoff_queue_keep_mpmc_poll .......................................   Passed    0.03 sec
+        Start 554: handoff_queue_keep_mpmc_wait
+554/567 Test #554: handoff_queue_keep_mpmc_wait .......................................   Passed    0.02 sec
+        Start 555: handoff_queue_cancel_order
+555/567 Test #555: handoff_queue_cancel_order .........................................   Passed    0.42 sec
+        Start 556: handoff_queue_cancel_receive
+556/567 Test #556: handoff_queue_cancel_receive .......................................   Passed    0.00 sec
+        Start 557: handoff_queue_cancel_stale
+557/567 Test #557: handoff_queue_cancel_stale .........................................   Passed    0.00 sec
+        Start 558: handoff_queue_cancel_parallel
+558/567 Test #558: handoff_queue_cancel_parallel ......................................   Passed    0.00 sec
+        Start 559: handoff_queue_cancel_first_order
+559/567 Test #559: handoff_queue_cancel_first_order ...................................   Passed    0.00 sec
+        Start 560: handoff_queue_cancel_race
+560/567 Test #560: handoff_queue_cancel_race ..........................................   Passed    0.00 sec
+        Start 561: handoff_queue_cancel_sync
+561/567 Test #561: handoff_queue_cancel_sync ..........................................   Passed    0.00 sec
+        Start 562: handoff_queue_cancel_config
+562/567 Test #562: handoff_queue_cancel_config ........................................   Passed    0.00 sec
+        Start 563: handoff_queue_cancel_two_buf
+563/567 Test #563: handoff_queue_cancel_two_buf .......................................   Passed    0.01 sec
+        Start 564: handoff_queue_lock_free_queue
+564/567 Test #564: handoff_queue_lock_free_queue ......................................   Passed    0.97 sec
+        Start 565: handoff_queue_standalone_queue
+565/567 Test #565: handoff_queue_standalone_queue .....................................   Passed    0.41 sec
+        Start 566: handoff_queue_standalone_reader
+566/567 Test #566: handoff_queue_standalone_reader ....................................   Passed    0.41 sec
+        Start 567: handoff_queue_nonintrusive
+567/567 Test #567: handoff_queue_nonintrusive .........................................   Passed    0.41 sec
+
+100% tests passed out of 567
+
+Label Time Summary:
+block_lifecycle     =   0.86 sec*proc (46 tests)
+block_pool_trim     =   1.28 sec*proc (13 tests)
+block_roles         =   0.44 sec*proc (9 tests)
+block_templates     =   0.92 sec*proc (13 tests)
+catalog             =   0.06 sec*proc (2 tests)
+compile             =   8.70 sec*proc (11 tests)
+concurrent          =   1.61 sec*proc (70 tests)
+data_integrity      =   6.73 sec*proc (189 tests)
+death               =   0.88 sec*proc (36 tests)
+example             =   1.67 sec*proc (2 tests)
+external_pool       =   0.45 sec*proc (13 tests)
+functional          =  28.98 sec*proc (545 tests)
+handoff             =   0.80 sec*proc (4 tests)
+handoff_queue       =   3.80 sec*proc (46 tests)
+integration         =   5.35 sec*proc (7 tests)
+item                =   0.42 sec*proc (5 tests)
+live_handoff        =   0.46 sec*proc (7 tests)
+notification        =   0.42 sec*proc (10 tests)
+read_ctrl           =   5.97 sec*proc (63 tests)
+runtime             =   0.67 sec*proc (171 tests)
+service             =   0.54 sec*proc (14 tests)
+single              =   0.48 sec*proc (18 tests)
+source_lifecycle    =   0.86 sec*proc (17 tests)
+spsc_blocks         =   0.44 sec*proc (7 tests)
+stress              =   0.03 sec*proc (16 tests)
+warm_pool           =   1.60 sec*proc (27 tests)
+worker              =   0.47 sec*proc (9 tests)
+
+Total Test time (real) =  41.82 sec

@@ -1,0 +1,1262 @@
+[
+  {
+    "group": "store",
+    "kind": "scalar",
+    "working_set": "hot",
+    "trial": 0,
+    "packet": {
+      "access": "store",
+      "kind": "scalar",
+      "working_set": "hot",
+      "iterations": 2000000,
+      "pmu": {
+        "scope": "writer_current_thread_formal_rounds_only",
+        "boundary": "two_counter_snapshots_enclosing_round_timers",
+        "group": "store",
+        "rounds": 1,
+        "counters": {
+          "cycles": 2109961,
+          "instructions": 14012435,
+          "INST_INT_ST": 2001088,
+          "INST_SIMD_ST": 92,
+          "L1D_CACHE_MISS_ST_NONSPEC": 33,
+          "ST_UNIT_UOP": 2001514,
+          "L1D_CACHE_MISS_ST": 37,
+          "L1D_CACHE_WRITEBACK": 12
+        }
+      }
+    },
+    "unit_uops": 2001514,
+    "general_misses": 37,
+    "retired_instructions": 2001180,
+    "retired_misses": 33,
+    "hit_estimate_percent": 99.99815139939066,
+    "unit_ratio_valid": true,
+    "hot_check_passed": true
+  },
+  {
+    "group": "store",
+    "kind": "single",
+    "working_set": "hot",
+    "trial": 0,
+    "packet": {
+      "access": "store",
+      "kind": "single",
+      "working_set": "hot",
+      "iterations": 2000000,
+      "pmu": {
+        "scope": "writer_current_thread_formal_rounds_only",
+        "boundary": "two_counter_snapshots_enclosing_round_timers",
+        "group": "store",
+        "rounds": 1,
+        "counters": {
+          "cycles": 2105764,
+          "instructions": 14012463,
+          "INST_INT_ST": 1088,
+          "INST_SIMD_ST": 2000092,
+          "L1D_CACHE_MISS_ST_NONSPEC": 37,
+          "ST_UNIT_UOP": 2001590,
+          "L1D_CACHE_MISS_ST": 37,
+          "L1D_CACHE_WRITEBACK": 20
+        }
+      }
+    },
+    "unit_uops": 2001590,
+    "general_misses": 37,
+    "retired_instructions": 2001180,
+    "retired_misses": 37,
+    "hit_estimate_percent": 99.99815146958169,
+    "unit_ratio_valid": true,
+    "hot_check_passed": true
+  },
+  {
+    "group": "store",
+    "kind": "pair",
+    "working_set": "stream",
+    "trial": 2,
+    "packet": {
+      "access": "store",
+      "kind": "pair",
+      "working_set": "stream",
+      "iterations": 2000000,
+      "pmu": {
+        "scope": "writer_current_thread_formal_rounds_only",
+        "boundary": "two_counter_snapshots_enclosing_round_timers",
+        "group": "store",
+        "rounds": 1,
+        "counters": {
+          "cycles": 3479673,
+          "instructions": 14012432,
+          "INST_INT_ST": 1090,
+          "INST_SIMD_ST": 2000092,
+          "L1D_CACHE_MISS_ST_NONSPEC": 3979157,
+          "ST_UNIT_UOP": 4040344,
+          "L1D_CACHE_MISS_ST": 3979188,
+          "L1D_CACHE_WRITEBACK": 100
+        }
+      }
+    },
+    "unit_uops": 4040344,
+    "general_misses": 3979188,
+    "retired_instructions": 2001182,
+    "retired_misses": 3979157,
+    "hit_estimate_percent": 1.5136334925937023,
+    "unit_ratio_valid": true,
+    "hot_check_passed": true
+  },
+  {
+    "group": "load",
+    "kind": "scalar",
+    "working_set": "hot",
+    "trial": 2,
+    "packet": {
+      "access": "load",
+      "kind": "scalar",
+      "working_set": "hot",
+      "iterations": 2000000,
+      "pmu": {
+        "scope": "writer_current_thread_formal_rounds_only",
+        "boundary": "two_counter_snapshots_enclosing_round_timers",
+        "group": "load",
+        "rounds": 1,
+        "counters": {
+          "cycles": 2181498,
+          "instructions": 14042882,
+          "INST_INT_LD": 4009045,
+          "INST_SIMD_LD": 259,
+          "L1D_CACHE_MISS_LD_NONSPEC": 1153,
+          "LD_UNIT_UOP": 4019726,
+          "L1D_CACHE_MISS_LD": 1822,
+          "L1D_CACHE_WRITEBACK": 555
+        }
+      }
+    },
+    "unit_uops": 4019726,
+    "general_misses": 1822,
+    "retired_instructions": 4009304,
+    "retired_misses": 1153,
+    "hit_estimate_percent": 99.95467352749914,
+    "unit_ratio_valid": true,
+    "hot_check_passed": true
+  },
+  {
+    "group": "store",
+    "kind": "pair",
+    "working_set": "stream",
+    "trial": 1,
+    "packet": {
+      "access": "store",
+      "kind": "pair",
+      "working_set": "stream",
+      "iterations": 2000000,
+      "pmu": {
+        "scope": "writer_current_thread_formal_rounds_only",
+        "boundary": "two_counter_snapshots_enclosing_round_timers",
+        "group": "store",
+        "rounds": 1,
+        "counters": {
+          "cycles": 3246564,
+          "instructions": 14012459,
+          "INST_INT_ST": 1089,
+          "INST_SIMD_ST": 2000092,
+          "L1D_CACHE_MISS_ST_NONSPEC": 3978834,
+          "ST_UNIT_UOP": 4042376,
+          "L1D_CACHE_MISS_ST": 3978869,
+          "L1D_CACHE_WRITEBACK": 81
+        }
+      }
+    },
+    "unit_uops": 4042376,
+    "general_misses": 3978869,
+    "retired_instructions": 2001181,
+    "retired_misses": 3978834,
+    "hit_estimate_percent": 1.5710314923698343,
+    "unit_ratio_valid": true,
+    "hot_check_passed": true
+  },
+  {
+    "group": "store",
+    "kind": "pair",
+    "working_set": "hot",
+    "trial": 1,
+    "packet": {
+      "access": "store",
+      "kind": "pair",
+      "working_set": "hot",
+      "iterations": 2000000,
+      "pmu": {
+        "scope": "writer_current_thread_formal_rounds_only",
+        "boundary": "two_counter_snapshots_enclosing_round_timers",
+        "group": "store",
+        "rounds": 1,
+        "counters": {
+          "cycles": 2965796,
+          "instructions": 14124306,
+          "INST_INT_ST": 11178,
+          "INST_SIMD_ST": 2000468,
+          "L1D_CACHE_MISS_ST_NONSPEC": 224379,
+          "ST_UNIT_UOP": 4018684,
+          "L1D_CACHE_MISS_ST": 224713,
+          "L1D_CACHE_WRITEBACK": 1167
+        }
+      }
+    },
+    "unit_uops": 4018684,
+    "general_misses": 224713,
+    "retired_instructions": 2011646,
+    "retired_misses": 224379,
+    "hit_estimate_percent": 94.40829385938282,
+    "unit_ratio_valid": true,
+    "hot_check_passed": false
+  },
+  {
+    "group": "store",
+    "kind": "single",
+    "working_set": "hot",
+    "trial": 1,
+    "packet": {
+      "access": "store",
+      "kind": "single",
+      "working_set": "hot",
+      "iterations": 2000000,
+      "pmu": {
+        "scope": "writer_current_thread_formal_rounds_only",
+        "boundary": "two_counter_snapshots_enclosing_round_timers",
+        "group": "store",
+        "rounds": 1,
+        "counters": {
+          "cycles": 2126748,
+          "instructions": 14025317,
+          "INST_INT_ST": 2261,
+          "INST_SIMD_ST": 2000158,
+          "L1D_CACHE_MISS_ST_NONSPEC": 436,
+          "ST_UNIT_UOP": 2003801,
+          "L1D_CACHE_MISS_ST": 515,
+          "L1D_CACHE_WRITEBACK": 408
+        }
+      }
+    },
+    "unit_uops": 2003801,
+    "general_misses": 515,
+    "retired_instructions": 2002419,
+    "retired_misses": 436,
+    "hit_estimate_percent": 99.974298845045,
+    "unit_ratio_valid": true,
+    "hot_check_passed": true
+  },
+  {
+    "group": "store",
+    "kind": "single",
+    "working_set": "stream",
+    "trial": 2,
+    "packet": {
+      "access": "store",
+      "kind": "single",
+      "working_set": "stream",
+      "iterations": 2000000,
+      "pmu": {
+        "scope": "writer_current_thread_formal_rounds_only",
+        "boundary": "two_counter_snapshots_enclosing_round_timers",
+        "group": "store",
+        "rounds": 1,
+        "counters": {
+          "cycles": 3001404,
+          "instructions": 14012445,
+          "INST_INT_ST": 1091,
+          "INST_SIMD_ST": 2000092,
+          "L1D_CACHE_MISS_ST_NONSPEC": 314284,
+          "ST_UNIT_UOP": 2895180,
+          "L1D_CACHE_MISS_ST": 1153574,
+          "L1D_CACHE_WRITEBACK": 1000075
+        }
+      }
+    },
+    "unit_uops": 2895180,
+    "general_misses": 1153574,
+    "retired_instructions": 2001183,
+    "retired_misses": 314284,
+    "hit_estimate_percent": 60.15536167008615,
+    "unit_ratio_valid": true,
+    "hot_check_passed": true
+  },
+  {
+    "group": "load",
+    "kind": "scalar",
+    "working_set": "hot",
+    "trial": 0,
+    "packet": {
+      "access": "load",
+      "kind": "scalar",
+      "working_set": "hot",
+      "iterations": 2000000,
+      "pmu": {
+        "scope": "writer_current_thread_formal_rounds_only",
+        "boundary": "two_counter_snapshots_enclosing_round_timers",
+        "group": "load",
+        "rounds": 1,
+        "counters": {
+          "cycles": 2107533,
+          "instructions": 14012475,
+          "INST_INT_LD": 4002386,
+          "INST_SIMD_LD": 132,
+          "L1D_CACHE_MISS_LD_NONSPEC": 147,
+          "LD_UNIT_UOP": 4006469,
+          "L1D_CACHE_MISS_LD": 182,
+          "L1D_CACHE_WRITEBACK": 10
+        }
+      }
+    },
+    "unit_uops": 4006469,
+    "general_misses": 182,
+    "retired_instructions": 4002518,
+    "retired_misses": 147,
+    "hit_estimate_percent": 99.9954573466062,
+    "unit_ratio_valid": true,
+    "hot_check_passed": true
+  },
+  {
+    "group": "load",
+    "kind": "pair",
+    "working_set": "hot",
+    "trial": 1,
+    "packet": {
+      "access": "load",
+      "kind": "pair",
+      "working_set": "hot",
+      "iterations": 2000000,
+      "pmu": {
+        "scope": "writer_current_thread_formal_rounds_only",
+        "boundary": "two_counter_snapshots_enclosing_round_timers",
+        "group": "load",
+        "rounds": 1,
+        "counters": {
+          "cycles": 2138696,
+          "instructions": 14012431,
+          "INST_INT_LD": 2002386,
+          "INST_SIMD_LD": 2000132,
+          "L1D_CACHE_MISS_LD_NONSPEC": 214,
+          "LD_UNIT_UOP": 6227737,
+          "L1D_CACHE_MISS_LD": 255,
+          "L1D_CACHE_WRITEBACK": 42
+        }
+      }
+    },
+    "unit_uops": 6227737,
+    "general_misses": 255,
+    "retired_instructions": 4002518,
+    "retired_misses": 214,
+    "hit_estimate_percent": 99.99590541475982,
+    "unit_ratio_valid": true,
+    "hot_check_passed": true
+  },
+  {
+    "group": "store",
+    "kind": "pair",
+    "working_set": "hot",
+    "trial": 2,
+    "packet": {
+      "access": "store",
+      "kind": "pair",
+      "working_set": "hot",
+      "iterations": 2000000,
+      "pmu": {
+        "scope": "writer_current_thread_formal_rounds_only",
+        "boundary": "two_counter_snapshots_enclosing_round_timers",
+        "group": "store",
+        "rounds": 1,
+        "counters": {
+          "cycles": 3317031,
+          "instructions": 14582583,
+          "INST_INT_ST": 47715,
+          "INST_SIMD_ST": 2002070,
+          "L1D_CACHE_MISS_ST_NONSPEC": 208403,
+          "ST_UNIT_UOP": 4094240,
+          "L1D_CACHE_MISS_ST": 210515,
+          "L1D_CACHE_WRITEBACK": 7506
+        }
+      }
+    },
+    "unit_uops": 4094240,
+    "general_misses": 210515,
+    "retired_instructions": 2049785,
+    "retired_misses": 208403,
+    "hit_estimate_percent": 94.85826429325101,
+    "unit_ratio_valid": true,
+    "hot_check_passed": false
+  },
+  {
+    "group": "load",
+    "kind": "pair",
+    "working_set": "stream",
+    "trial": 1,
+    "packet": {
+      "access": "load",
+      "kind": "pair",
+      "working_set": "stream",
+      "iterations": 2000000,
+      "pmu": {
+        "scope": "writer_current_thread_formal_rounds_only",
+        "boundary": "two_counter_snapshots_enclosing_round_timers",
+        "group": "load",
+        "rounds": 1,
+        "counters": {
+          "cycles": 2752991,
+          "instructions": 14015737,
+          "INST_INT_LD": 2003139,
+          "INST_SIMD_LD": 2000159,
+          "L1D_CACHE_MISS_LD_NONSPEC": 139643,
+          "LD_UNIT_UOP": 6696391,
+          "L1D_CACHE_MISS_LD": 292888,
+          "L1D_CACHE_WRITEBACK": 186
+        }
+      }
+    },
+    "unit_uops": 6696391,
+    "general_misses": 292888,
+    "retired_instructions": 4003298,
+    "retired_misses": 139643,
+    "hit_estimate_percent": 95.62618132662803,
+    "unit_ratio_valid": true,
+    "hot_check_passed": true
+  },
+  {
+    "group": "store",
+    "kind": "scalar",
+    "working_set": "hot",
+    "trial": 2,
+    "packet": {
+      "access": "store",
+      "kind": "scalar",
+      "working_set": "hot",
+      "iterations": 2000000,
+      "pmu": {
+        "scope": "writer_current_thread_formal_rounds_only",
+        "boundary": "two_counter_snapshots_enclosing_round_timers",
+        "group": "store",
+        "rounds": 1,
+        "counters": {
+          "cycles": 2161633,
+          "instructions": 14012478,
+          "INST_INT_ST": 2001090,
+          "INST_SIMD_ST": 92,
+          "L1D_CACHE_MISS_ST_NONSPEC": 36,
+          "ST_UNIT_UOP": 2001535,
+          "L1D_CACHE_MISS_ST": 44,
+          "L1D_CACHE_WRITEBACK": 18
+        }
+      }
+    },
+    "unit_uops": 2001535,
+    "general_misses": 44,
+    "retired_instructions": 2001182,
+    "retired_misses": 36,
+    "hit_estimate_percent": 99.99780168720507,
+    "unit_ratio_valid": true,
+    "hot_check_passed": true
+  },
+  {
+    "group": "load",
+    "kind": "single",
+    "working_set": "hot",
+    "trial": 0,
+    "packet": {
+      "access": "load",
+      "kind": "single",
+      "working_set": "hot",
+      "iterations": 2000000,
+      "pmu": {
+        "scope": "writer_current_thread_formal_rounds_only",
+        "boundary": "two_counter_snapshots_enclosing_round_timers",
+        "group": "load",
+        "rounds": 1,
+        "counters": {
+          "cycles": 2122344,
+          "instructions": 14015702,
+          "INST_INT_LD": 2003136,
+          "INST_SIMD_LD": 2000159,
+          "L1D_CACHE_MISS_LD_NONSPEC": 218,
+          "LD_UNIT_UOP": 4008278,
+          "L1D_CACHE_MISS_LD": 288,
+          "L1D_CACHE_WRITEBACK": 89
+        }
+      }
+    },
+    "unit_uops": 4008278,
+    "general_misses": 288,
+    "retired_instructions": 4003295,
+    "retired_misses": 218,
+    "hit_estimate_percent": 99.99281486962731,
+    "unit_ratio_valid": true,
+    "hot_check_passed": true
+  },
+  {
+    "group": "load",
+    "kind": "single",
+    "working_set": "stream",
+    "trial": 0,
+    "packet": {
+      "access": "load",
+      "kind": "single",
+      "working_set": "stream",
+      "iterations": 2000000,
+      "pmu": {
+        "scope": "writer_current_thread_formal_rounds_only",
+        "boundary": "two_counter_snapshots_enclosing_round_timers",
+        "group": "load",
+        "rounds": 1,
+        "counters": {
+          "cycles": 2202122,
+          "instructions": 14012461,
+          "INST_INT_LD": 2002373,
+          "INST_SIMD_LD": 2000132,
+          "L1D_CACHE_MISS_LD_NONSPEC": 439681,
+          "LD_UNIT_UOP": 4872600,
+          "L1D_CACHE_MISS_LD": 755943,
+          "L1D_CACHE_WRITEBACK": 143
+        }
+      }
+    },
+    "unit_uops": 4872600,
+    "general_misses": 755943,
+    "retired_instructions": 4002505,
+    "retired_misses": 439681,
+    "hit_estimate_percent": 84.4858391823667,
+    "unit_ratio_valid": true,
+    "hot_check_passed": true
+  },
+  {
+    "group": "store",
+    "kind": "scalar",
+    "working_set": "stream",
+    "trial": 0,
+    "packet": {
+      "access": "store",
+      "kind": "scalar",
+      "working_set": "stream",
+      "iterations": 2000000,
+      "pmu": {
+        "scope": "writer_current_thread_formal_rounds_only",
+        "boundary": "two_counter_snapshots_enclosing_round_timers",
+        "group": "store",
+        "rounds": 1,
+        "counters": {
+          "cycles": 2997291,
+          "instructions": 14012444,
+          "INST_INT_ST": 2001091,
+          "INST_SIMD_ST": 92,
+          "L1D_CACHE_MISS_ST_NONSPEC": 293786,
+          "ST_UNIT_UOP": 2897963,
+          "L1D_CACHE_MISS_ST": 1133539,
+          "L1D_CACHE_WRITEBACK": 1000078
+        }
+      }
+    },
+    "unit_uops": 2897963,
+    "general_misses": 1133539,
+    "retired_instructions": 2001183,
+    "retired_misses": 293786,
+    "hit_estimate_percent": 60.88497334161962,
+    "unit_ratio_valid": true,
+    "hot_check_passed": true
+  },
+  {
+    "group": "load",
+    "kind": "single",
+    "working_set": "hot",
+    "trial": 2,
+    "packet": {
+      "access": "load",
+      "kind": "single",
+      "working_set": "hot",
+      "iterations": 2000000,
+      "pmu": {
+        "scope": "writer_current_thread_formal_rounds_only",
+        "boundary": "two_counter_snapshots_enclosing_round_timers",
+        "group": "load",
+        "rounds": 1,
+        "counters": {
+          "cycles": 2140597,
+          "instructions": 14012473,
+          "INST_INT_LD": 2002386,
+          "INST_SIMD_LD": 2000132,
+          "L1D_CACHE_MISS_LD_NONSPEC": 201,
+          "LD_UNIT_UOP": 4007023,
+          "L1D_CACHE_MISS_LD": 235,
+          "L1D_CACHE_WRITEBACK": 28
+        }
+      }
+    },
+    "unit_uops": 4007023,
+    "general_misses": 235,
+    "retired_instructions": 4002518,
+    "retired_misses": 201,
+    "hit_estimate_percent": 99.99413529695238,
+    "unit_ratio_valid": true,
+    "hot_check_passed": true
+  },
+  {
+    "group": "load",
+    "kind": "pair",
+    "working_set": "stream",
+    "trial": 2,
+    "packet": {
+      "access": "load",
+      "kind": "pair",
+      "working_set": "stream",
+      "iterations": 2000000,
+      "pmu": {
+        "scope": "writer_current_thread_formal_rounds_only",
+        "boundary": "two_counter_snapshots_enclosing_round_timers",
+        "group": "load",
+        "rounds": 1,
+        "counters": {
+          "cycles": 2742478,
+          "instructions": 14012470,
+          "INST_INT_LD": 2002380,
+          "INST_SIMD_LD": 2000132,
+          "L1D_CACHE_MISS_LD_NONSPEC": 132505,
+          "LD_UNIT_UOP": 6718701,
+          "L1D_CACHE_MISS_LD": 299126,
+          "L1D_CACHE_WRITEBACK": 94
+        }
+      }
+    },
+    "unit_uops": 6718701,
+    "general_misses": 299126,
+    "retired_instructions": 4002512,
+    "retired_misses": 132505,
+    "hit_estimate_percent": 95.54785962345996,
+    "unit_ratio_valid": true,
+    "hot_check_passed": true
+  },
+  {
+    "group": "store",
+    "kind": "scalar",
+    "working_set": "stream",
+    "trial": 2,
+    "packet": {
+      "access": "store",
+      "kind": "scalar",
+      "working_set": "stream",
+      "iterations": 2000000,
+      "pmu": {
+        "scope": "writer_current_thread_formal_rounds_only",
+        "boundary": "two_counter_snapshots_enclosing_round_timers",
+        "group": "store",
+        "rounds": 1,
+        "counters": {
+          "cycles": 3030718,
+          "instructions": 14026290,
+          "INST_INT_ST": 2002294,
+          "INST_SIMD_ST": 176,
+          "L1D_CACHE_MISS_ST_NONSPEC": 253073,
+          "ST_UNIT_UOP": 2898713,
+          "L1D_CACHE_MISS_ST": 1094759,
+          "L1D_CACHE_WRITEBACK": 1000388
+        }
+      }
+    },
+    "unit_uops": 2898713,
+    "general_misses": 1094759,
+    "retired_instructions": 2002470,
+    "retired_misses": 253073,
+    "hit_estimate_percent": 62.23292888947613,
+    "unit_ratio_valid": true,
+    "hot_check_passed": true
+  },
+  {
+    "group": "store",
+    "kind": "pair",
+    "working_set": "stream",
+    "trial": 0,
+    "packet": {
+      "access": "store",
+      "kind": "pair",
+      "working_set": "stream",
+      "iterations": 2000000,
+      "pmu": {
+        "scope": "writer_current_thread_formal_rounds_only",
+        "boundary": "two_counter_snapshots_enclosing_round_timers",
+        "group": "store",
+        "rounds": 1,
+        "counters": {
+          "cycles": 3023128,
+          "instructions": 14012462,
+          "INST_INT_ST": 1090,
+          "INST_SIMD_ST": 2000092,
+          "L1D_CACHE_MISS_ST_NONSPEC": 3979490,
+          "ST_UNIT_UOP": 4040180,
+          "L1D_CACHE_MISS_ST": 3979524,
+          "L1D_CACHE_WRITEBACK": 112
+        }
+      }
+    },
+    "unit_uops": 4040180,
+    "general_misses": 3979524,
+    "retired_instructions": 2001182,
+    "retired_misses": 3979490,
+    "hit_estimate_percent": 1.5013192481523108,
+    "unit_ratio_valid": true,
+    "hot_check_passed": true
+  },
+  {
+    "group": "load",
+    "kind": "single",
+    "working_set": "stream",
+    "trial": 1,
+    "packet": {
+      "access": "load",
+      "kind": "single",
+      "working_set": "stream",
+      "iterations": 2000000,
+      "pmu": {
+        "scope": "writer_current_thread_formal_rounds_only",
+        "boundary": "two_counter_snapshots_enclosing_round_timers",
+        "group": "load",
+        "rounds": 1,
+        "counters": {
+          "cycles": 2303042,
+          "instructions": 14016420,
+          "INST_INT_LD": 2003183,
+          "INST_SIMD_LD": 2000164,
+          "L1D_CACHE_MISS_LD_NONSPEC": 672083,
+          "LD_UNIT_UOP": 5021103,
+          "L1D_CACHE_MISS_LD": 1025132,
+          "L1D_CACHE_WRITEBACK": 160
+        }
+      }
+    },
+    "unit_uops": 5021103,
+    "general_misses": 1025132,
+    "retired_instructions": 4003347,
+    "retired_misses": 672083,
+    "hit_estimate_percent": 79.58352975431893,
+    "unit_ratio_valid": true,
+    "hot_check_passed": true
+  },
+  {
+    "group": "store",
+    "kind": "single",
+    "working_set": "stream",
+    "trial": 1,
+    "packet": {
+      "access": "store",
+      "kind": "single",
+      "working_set": "stream",
+      "iterations": 2000000,
+      "pmu": {
+        "scope": "writer_current_thread_formal_rounds_only",
+        "boundary": "two_counter_snapshots_enclosing_round_timers",
+        "group": "store",
+        "rounds": 1,
+        "counters": {
+          "cycles": 3024268,
+          "instructions": 14012462,
+          "INST_INT_ST": 1088,
+          "INST_SIMD_ST": 2000092,
+          "L1D_CACHE_MISS_ST_NONSPEC": 498138,
+          "ST_UNIT_UOP": 2882066,
+          "L1D_CACHE_MISS_ST": 1314844,
+          "L1D_CACHE_WRITEBACK": 1000107
+        }
+      }
+    },
+    "unit_uops": 2882066,
+    "general_misses": 1314844,
+    "retired_instructions": 2001180,
+    "retired_misses": 498138,
+    "hit_estimate_percent": 54.378421590622835,
+    "unit_ratio_valid": true,
+    "hot_check_passed": true
+  },
+  {
+    "group": "load",
+    "kind": "pair",
+    "working_set": "hot",
+    "trial": 2,
+    "packet": {
+      "access": "load",
+      "kind": "pair",
+      "working_set": "hot",
+      "iterations": 2000000,
+      "pmu": {
+        "scope": "writer_current_thread_formal_rounds_only",
+        "boundary": "two_counter_snapshots_enclosing_round_timers",
+        "group": "load",
+        "rounds": 1,
+        "counters": {
+          "cycles": 2140804,
+          "instructions": 14012474,
+          "INST_INT_LD": 2002386,
+          "INST_SIMD_LD": 2000132,
+          "L1D_CACHE_MISS_LD_NONSPEC": 130,
+          "LD_UNIT_UOP": 6244655,
+          "L1D_CACHE_MISS_LD": 161,
+          "L1D_CACHE_WRITEBACK": 55
+        }
+      }
+    },
+    "unit_uops": 6244655,
+    "general_misses": 161,
+    "retired_instructions": 4002518,
+    "retired_misses": 130,
+    "hit_estimate_percent": 99.9974217951192,
+    "unit_ratio_valid": true,
+    "hot_check_passed": true
+  },
+  {
+    "group": "store",
+    "kind": "scalar",
+    "working_set": "hot",
+    "trial": 1,
+    "packet": {
+      "access": "store",
+      "kind": "scalar",
+      "working_set": "hot",
+      "iterations": 2000000,
+      "pmu": {
+        "scope": "writer_current_thread_formal_rounds_only",
+        "boundary": "two_counter_snapshots_enclosing_round_timers",
+        "group": "store",
+        "rounds": 1,
+        "counters": {
+          "cycles": 2142522,
+          "instructions": 14012479,
+          "INST_INT_ST": 2001092,
+          "INST_SIMD_ST": 92,
+          "L1D_CACHE_MISS_ST_NONSPEC": 40,
+          "ST_UNIT_UOP": 2001682,
+          "L1D_CACHE_MISS_ST": 45,
+          "L1D_CACHE_WRITEBACK": 243
+        }
+      }
+    },
+    "unit_uops": 2001682,
+    "general_misses": 45,
+    "retired_instructions": 2001184,
+    "retired_misses": 40,
+    "hit_estimate_percent": 99.99775189065996,
+    "unit_ratio_valid": true,
+    "hot_check_passed": true
+  },
+  {
+    "group": "load",
+    "kind": "scalar",
+    "working_set": "stream",
+    "trial": 1,
+    "packet": {
+      "access": "load",
+      "kind": "scalar",
+      "working_set": "stream",
+      "iterations": 2000000,
+      "pmu": {
+        "scope": "writer_current_thread_formal_rounds_only",
+        "boundary": "two_counter_snapshots_enclosing_round_timers",
+        "group": "load",
+        "rounds": 1,
+        "counters": {
+          "cycles": 3319073,
+          "instructions": 14976975,
+          "INST_INT_LD": 4207596,
+          "INST_SIMD_LD": 4297,
+          "L1D_CACHE_MISS_LD_NONSPEC": 716816,
+          "LD_UNIT_UOP": 5330425,
+          "L1D_CACHE_MISS_LD": 1129185,
+          "L1D_CACHE_WRITEBACK": 18987
+        }
+      }
+    },
+    "unit_uops": 5330425,
+    "general_misses": 1129185,
+    "retired_instructions": 4211893,
+    "retired_misses": 716816,
+    "hit_estimate_percent": 78.81622947513566,
+    "unit_ratio_valid": true,
+    "hot_check_passed": true
+  },
+  {
+    "group": "load",
+    "kind": "single",
+    "working_set": "stream",
+    "trial": 2,
+    "packet": {
+      "access": "load",
+      "kind": "single",
+      "working_set": "stream",
+      "iterations": 2000000,
+      "pmu": {
+        "scope": "writer_current_thread_formal_rounds_only",
+        "boundary": "two_counter_snapshots_enclosing_round_timers",
+        "group": "load",
+        "rounds": 1,
+        "counters": {
+          "cycles": 2217221,
+          "instructions": 14012460,
+          "INST_INT_LD": 2002361,
+          "INST_SIMD_LD": 2000132,
+          "L1D_CACHE_MISS_LD_NONSPEC": 595662,
+          "LD_UNIT_UOP": 4975775,
+          "L1D_CACHE_MISS_LD": 920404,
+          "L1D_CACHE_WRITEBACK": 99
+        }
+      }
+    },
+    "unit_uops": 4975775,
+    "general_misses": 920404,
+    "retired_instructions": 4002493,
+    "retired_misses": 595662,
+    "hit_estimate_percent": 81.50229863689576,
+    "unit_ratio_valid": true,
+    "hot_check_passed": true
+  },
+  {
+    "group": "load",
+    "kind": "scalar",
+    "working_set": "stream",
+    "trial": 0,
+    "packet": {
+      "access": "load",
+      "kind": "scalar",
+      "working_set": "stream",
+      "iterations": 2000000,
+      "pmu": {
+        "scope": "writer_current_thread_formal_rounds_only",
+        "boundary": "two_counter_snapshots_enclosing_round_timers",
+        "group": "load",
+        "rounds": 1,
+        "counters": {
+          "cycles": 2263629,
+          "instructions": 14012475,
+          "INST_INT_LD": 4002374,
+          "INST_SIMD_LD": 132,
+          "L1D_CACHE_MISS_LD_NONSPEC": 607296,
+          "LD_UNIT_UOP": 5008414,
+          "L1D_CACHE_MISS_LD": 938975,
+          "L1D_CACHE_WRITEBACK": 94
+        }
+      }
+    },
+    "unit_uops": 5008414,
+    "general_misses": 938975,
+    "retired_instructions": 4002506,
+    "retired_misses": 607296,
+    "hit_estimate_percent": 81.25204905185554,
+    "unit_ratio_valid": true,
+    "hot_check_passed": true
+  },
+  {
+    "group": "load",
+    "kind": "single",
+    "working_set": "hot",
+    "trial": 1,
+    "packet": {
+      "access": "load",
+      "kind": "single",
+      "working_set": "hot",
+      "iterations": 2000000,
+      "pmu": {
+        "scope": "writer_current_thread_formal_rounds_only",
+        "boundary": "two_counter_snapshots_enclosing_round_timers",
+        "group": "load",
+        "rounds": 1,
+        "counters": {
+          "cycles": 2141492,
+          "instructions": 14012447,
+          "INST_INT_LD": 2002384,
+          "INST_SIMD_LD": 2000132,
+          "L1D_CACHE_MISS_LD_NONSPEC": 186,
+          "LD_UNIT_UOP": 4007138,
+          "L1D_CACHE_MISS_LD": 223,
+          "L1D_CACHE_WRITEBACK": 28
+        }
+      }
+    },
+    "unit_uops": 4007138,
+    "general_misses": 223,
+    "retired_instructions": 4002516,
+    "retired_misses": 186,
+    "hit_estimate_percent": 99.99443493086588,
+    "unit_ratio_valid": true,
+    "hot_check_passed": true
+  },
+  {
+    "group": "store",
+    "kind": "single",
+    "working_set": "stream",
+    "trial": 0,
+    "packet": {
+      "access": "store",
+      "kind": "single",
+      "working_set": "stream",
+      "iterations": 2000000,
+      "pmu": {
+        "scope": "writer_current_thread_formal_rounds_only",
+        "boundary": "two_counter_snapshots_enclosing_round_timers",
+        "group": "store",
+        "rounds": 1,
+        "counters": {
+          "cycles": 3036772,
+          "instructions": 14012459,
+          "INST_INT_ST": 1088,
+          "INST_SIMD_ST": 2000092,
+          "L1D_CACHE_MISS_ST_NONSPEC": 487770,
+          "ST_UNIT_UOP": 2884497,
+          "L1D_CACHE_MISS_ST": 1305287,
+          "L1D_CACHE_WRITEBACK": 1000097
+        }
+      }
+    },
+    "unit_uops": 2884497,
+    "general_misses": 1305287,
+    "retired_instructions": 2001180,
+    "retired_misses": 487770,
+    "hit_estimate_percent": 54.74819353252924,
+    "unit_ratio_valid": true,
+    "hot_check_passed": true
+  },
+  {
+    "group": "store",
+    "kind": "pair",
+    "working_set": "hot",
+    "trial": 0,
+    "packet": {
+      "access": "store",
+      "kind": "pair",
+      "working_set": "hot",
+      "iterations": 2000000,
+      "pmu": {
+        "scope": "writer_current_thread_formal_rounds_only",
+        "boundary": "two_counter_snapshots_enclosing_round_timers",
+        "group": "store",
+        "rounds": 1,
+        "counters": {
+          "cycles": 2909829,
+          "instructions": 14012463,
+          "INST_INT_ST": 1088,
+          "INST_SIMD_ST": 2000092,
+          "L1D_CACHE_MISS_ST_NONSPEC": 375049,
+          "ST_UNIT_UOP": 4001502,
+          "L1D_CACHE_MISS_ST": 375058,
+          "L1D_CACHE_WRITEBACK": 24
+        }
+      }
+    },
+    "unit_uops": 4001502,
+    "general_misses": 375058,
+    "retired_instructions": 2001180,
+    "retired_misses": 375049,
+    "hit_estimate_percent": 90.62706953538947,
+    "unit_ratio_valid": true,
+    "hot_check_passed": false
+  },
+  {
+    "group": "store",
+    "kind": "single",
+    "working_set": "hot",
+    "trial": 2,
+    "packet": {
+      "access": "store",
+      "kind": "single",
+      "working_set": "hot",
+      "iterations": 2000000,
+      "pmu": {
+        "scope": "writer_current_thread_formal_rounds_only",
+        "boundary": "two_counter_snapshots_enclosing_round_timers",
+        "group": "store",
+        "rounds": 1,
+        "counters": {
+          "cycles": 2110613,
+          "instructions": 14012462,
+          "INST_INT_ST": 1087,
+          "INST_SIMD_ST": 2000092,
+          "L1D_CACHE_MISS_ST_NONSPEC": 46,
+          "ST_UNIT_UOP": 2001557,
+          "L1D_CACHE_MISS_ST": 51,
+          "L1D_CACHE_WRITEBACK": 14
+        }
+      }
+    },
+    "unit_uops": 2001557,
+    "general_misses": 51,
+    "retired_instructions": 2001179,
+    "retired_misses": 46,
+    "hit_estimate_percent": 99.99745198363075,
+    "unit_ratio_valid": true,
+    "hot_check_passed": true
+  },
+  {
+    "group": "load",
+    "kind": "scalar",
+    "working_set": "hot",
+    "trial": 1,
+    "packet": {
+      "access": "load",
+      "kind": "scalar",
+      "working_set": "hot",
+      "iterations": 2000000,
+      "pmu": {
+        "scope": "writer_current_thread_formal_rounds_only",
+        "boundary": "two_counter_snapshots_enclosing_round_timers",
+        "group": "load",
+        "rounds": 1,
+        "counters": {
+          "cycles": 2109664,
+          "instructions": 14012469,
+          "INST_INT_LD": 4002384,
+          "INST_SIMD_LD": 132,
+          "L1D_CACHE_MISS_LD_NONSPEC": 200,
+          "LD_UNIT_UOP": 4006915,
+          "L1D_CACHE_MISS_LD": 251,
+          "L1D_CACHE_WRITEBACK": 45
+        }
+      }
+    },
+    "unit_uops": 4006915,
+    "general_misses": 251,
+    "retired_instructions": 4002516,
+    "retired_misses": 200,
+    "hit_estimate_percent": 99.9937358291853,
+    "unit_ratio_valid": true,
+    "hot_check_passed": true
+  },
+  {
+    "group": "load",
+    "kind": "pair",
+    "working_set": "stream",
+    "trial": 0,
+    "packet": {
+      "access": "load",
+      "kind": "pair",
+      "working_set": "stream",
+      "iterations": 2000000,
+      "pmu": {
+        "scope": "writer_current_thread_formal_rounds_only",
+        "boundary": "two_counter_snapshots_enclosing_round_timers",
+        "group": "load",
+        "rounds": 1,
+        "counters": {
+          "cycles": 3010302,
+          "instructions": 14022587,
+          "INST_INT_LD": 2004630,
+          "INST_SIMD_LD": 2000188,
+          "L1D_CACHE_MISS_LD_NONSPEC": 182632,
+          "LD_UNIT_UOP": 6734757,
+          "L1D_CACHE_MISS_LD": 362509,
+          "L1D_CACHE_WRITEBACK": 327
+        }
+      }
+    },
+    "unit_uops": 6734757,
+    "general_misses": 362509,
+    "retired_instructions": 4004818,
+    "retired_misses": 182632,
+    "hit_estimate_percent": 94.61734105625489,
+    "unit_ratio_valid": true,
+    "hot_check_passed": true
+  },
+  {
+    "group": "load",
+    "kind": "scalar",
+    "working_set": "stream",
+    "trial": 2,
+    "packet": {
+      "access": "load",
+      "kind": "scalar",
+      "working_set": "stream",
+      "iterations": 2000000,
+      "pmu": {
+        "scope": "writer_current_thread_formal_rounds_only",
+        "boundary": "two_counter_snapshots_enclosing_round_timers",
+        "group": "load",
+        "rounds": 1,
+        "counters": {
+          "cycles": 2262028,
+          "instructions": 14012461,
+          "INST_INT_LD": 4002384,
+          "INST_SIMD_LD": 132,
+          "L1D_CACHE_MISS_LD_NONSPEC": 621413,
+          "LD_UNIT_UOP": 5011265,
+          "L1D_CACHE_MISS_LD": 951044,
+          "L1D_CACHE_WRITEBACK": 97
+        }
+      }
+    },
+    "unit_uops": 5011265,
+    "general_misses": 951044,
+    "retired_instructions": 4002516,
+    "retired_misses": 621413,
+    "hit_estimate_percent": 81.02187770952045,
+    "unit_ratio_valid": true,
+    "hot_check_passed": true
+  },
+  {
+    "group": "store",
+    "kind": "scalar",
+    "working_set": "stream",
+    "trial": 1,
+    "packet": {
+      "access": "store",
+      "kind": "scalar",
+      "working_set": "stream",
+      "iterations": 2000000,
+      "pmu": {
+        "scope": "writer_current_thread_formal_rounds_only",
+        "boundary": "two_counter_snapshots_enclosing_round_timers",
+        "group": "store",
+        "rounds": 1,
+        "counters": {
+          "cycles": 3069735,
+          "instructions": 14012466,
+          "INST_INT_ST": 2001089,
+          "INST_SIMD_ST": 92,
+          "L1D_CACHE_MISS_ST_NONSPEC": 433479,
+          "ST_UNIT_UOP": 2887700,
+          "L1D_CACHE_MISS_ST": 1255600,
+          "L1D_CACHE_WRITEBACK": 1000115
+        }
+      }
+    },
+    "unit_uops": 2887700,
+    "general_misses": 1255600,
+    "retired_instructions": 2001181,
+    "retired_misses": 433479,
+    "hit_estimate_percent": 56.51902898500536,
+    "unit_ratio_valid": true,
+    "hot_check_passed": true
+  },
+  {
+    "group": "load",
+    "kind": "pair",
+    "working_set": "hot",
+    "trial": 0,
+    "packet": {
+      "access": "load",
+      "kind": "pair",
+      "working_set": "hot",
+      "iterations": 2000000,
+      "pmu": {
+        "scope": "writer_current_thread_formal_rounds_only",
+        "boundary": "two_counter_snapshots_enclosing_round_timers",
+        "group": "load",
+        "rounds": 1,
+        "counters": {
+          "cycles": 2142735,
+          "instructions": 14012462,
+          "INST_INT_LD": 2002373,
+          "INST_SIMD_LD": 2000132,
+          "L1D_CACHE_MISS_LD_NONSPEC": 215,
+          "LD_UNIT_UOP": 6245074,
+          "L1D_CACHE_MISS_LD": 262,
+          "L1D_CACHE_WRITEBACK": 22
+        }
+      }
+    },
+    "unit_uops": 6245074,
+    "general_misses": 262,
+    "retired_instructions": 4002505,
+    "retired_misses": 215,
+    "hit_estimate_percent": 99.99580469342717,
+    "unit_ratio_valid": true,
+    "hot_check_passed": true
+  }
+]

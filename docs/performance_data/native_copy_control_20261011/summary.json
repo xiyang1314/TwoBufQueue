@@ -1,0 +1,248 @@
+{
+  "groups": [
+    {
+      "cache_mib": 8,
+      "payload_bytes": 8,
+      "copy_after_zero": false,
+      "throughput_mps": 729.5704398386,
+      "throughput_runs_mps": [
+        751.491183956,
+        752.837274298,
+        725.134713714,
+        751.57601733,
+        666.813009895
+      ],
+      "p50_ns": 1.258333333334,
+      "failed_write_calls": 0
+    },
+    {
+      "cache_mib": 8,
+      "payload_bytes": 8,
+      "copy_after_zero": true,
+      "throughput_mps": 407.9652557932,
+      "throughput_runs_mps": [
+        407.749258345,
+        406.268709944,
+        411.978947052,
+        409.994972232,
+        403.834391393
+      ],
+      "p50_ns": 2.158333333336,
+      "failed_write_calls": 0
+    },
+    {
+      "cache_mib": 8,
+      "payload_bytes": 16,
+      "copy_after_zero": false,
+      "throughput_mps": 92.76179231516,
+      "throughput_runs_mps": [
+        97.9742981085,
+        96.0711298348,
+        94.4725312329,
+        82.8781382812,
+        92.4128641184
+      ],
+      "p50_ns": 9.866666666674,
+      "failed_write_calls": 0
+    },
+    {
+      "cache_mib": 8,
+      "payload_bytes": 16,
+      "copy_after_zero": true,
+      "throughput_mps": 481.85223377840003,
+      "throughput_runs_mps": [
+        453.243245497,
+        537.812783175,
+        518.826905388,
+        428.021121815,
+        471.357113017
+      ],
+      "p50_ns": 1.300000000002,
+      "failed_write_calls": 0
+    },
+    {
+      "cache_mib": 8,
+      "payload_bytes": 32,
+      "copy_after_zero": false,
+      "throughput_mps": 50.49082760398,
+      "throughput_runs_mps": [
+        51.0538674614,
+        49.611110166,
+        50.1990190308,
+        50.2222023588,
+        51.3679390029
+      ],
+      "p50_ns": 19.91666666666,
+      "failed_write_calls": 0
+    },
+    {
+      "cache_mib": 8,
+      "payload_bytes": 32,
+      "copy_after_zero": true,
+      "throughput_mps": 368.89582966020004,
+      "throughput_runs_mps": [
+        422.781585748,
+        294.31312291,
+        406.261101085,
+        476.369999627,
+        244.753338931
+      ],
+      "p50_ns": 1.6416666666680002,
+      "failed_write_calls": 0
+    },
+    {
+      "cache_mib": 8,
+      "payload_bytes": 64,
+      "copy_after_zero": false,
+      "throughput_mps": 281.2620553078,
+      "throughput_runs_mps": [
+        314.245515999,
+        278.590332915,
+        256.342903955,
+        284.827236046,
+        272.304287624
+      ],
+      "p50_ns": 3.391666666668,
+      "failed_write_calls": 0
+    },
+    {
+      "cache_mib": 8,
+      "payload_bytes": 64,
+      "copy_after_zero": true,
+      "throughput_mps": 258.482494319,
+      "throughput_runs_mps": [
+        217.939721229,
+        286.214162838,
+        277.648262576,
+        282.056313502,
+        228.55401145
+      ],
+      "p50_ns": 3.858333333334,
+      "failed_write_calls": 0
+    },
+    {
+      "cache_mib": 256,
+      "payload_bytes": 8,
+      "copy_after_zero": false,
+      "throughput_mps": 673.1106956124,
+      "throughput_runs_mps": [
+        686.426176341,
+        606.727086572,
+        669.103317916,
+        700.533540355,
+        702.763356878
+      ],
+      "p50_ns": 1.258333333334,
+      "failed_write_calls": 0
+    },
+    {
+      "cache_mib": 256,
+      "payload_bytes": 8,
+      "copy_after_zero": true,
+      "throughput_mps": 394.2762159542,
+      "throughput_runs_mps": [
+        397.793566381,
+        394.192876682,
+        393.690449152,
+        396.843113036,
+        388.86107452
+      ],
+      "p50_ns": 2.208333333332,
+      "failed_write_calls": 0
+    },
+    {
+      "cache_mib": 256,
+      "payload_bytes": 16,
+      "copy_after_zero": false,
+      "throughput_mps": 66.48414575251999,
+      "throughput_runs_mps": [
+        73.274745924,
+        44.2986198849,
+        73.9683491949,
+        70.6624721235,
+        70.2165416353
+      ],
+      "p50_ns": 13.700000000020001,
+      "failed_write_calls": 0
+    },
+    {
+      "cache_mib": 256,
+      "payload_bytes": 16,
+      "copy_after_zero": true,
+      "throughput_mps": 360.1804871248,
+      "throughput_runs_mps": [
+        418.769237212,
+        305.723916018,
+        293.127625746,
+        378.862029549,
+        404.419627099
+      ],
+      "p50_ns": 1.366666666668,
+      "failed_write_calls": 0
+    },
+    {
+      "cache_mib": 256,
+      "payload_bytes": 32,
+      "copy_after_zero": false,
+      "throughput_mps": 51.260814498360006,
+      "throughput_runs_mps": [
+        51.2292895799,
+        51.67986486,
+        51.1503718632,
+        51.3260184655,
+        50.9185277232
+      ],
+      "p50_ns": 19.966666666640002,
+      "failed_write_calls": 0
+    },
+    {
+      "cache_mib": 256,
+      "payload_bytes": 32,
+      "copy_after_zero": true,
+      "throughput_mps": 349.0674793366,
+      "throughput_runs_mps": [
+        356.512606517,
+        246.457682218,
+        293.583368502,
+        389.545896999,
+        459.237842447
+      ],
+      "p50_ns": 2.691666666666,
+      "failed_write_calls": 0
+    },
+    {
+      "cache_mib": 256,
+      "payload_bytes": 64,
+      "copy_after_zero": false,
+      "throughput_mps": 134.96089648432002,
+      "throughput_runs_mps": [
+        239.211564425,
+        62.3405612871,
+        68.7479139735,
+        117.932931023,
+        186.571511713
+      ],
+      "p50_ns": 5.624999999998,
+      "failed_write_calls": 0
+    },
+    {
+      "cache_mib": 256,
+      "payload_bytes": 64,
+      "copy_after_zero": true,
+      "throughput_mps": 159.2865308755,
+      "throughput_runs_mps": [
+        49.6395340845,
+        189.484253044,
+        208.068189439,
+        197.470564001,
+        151.770113809
+      ],
+      "p50_ns": 7.35,
+      "failed_write_calls": 0
+    }
+  ],
+  "runs": 176,
+  "full_payload_fifo_validated": true,
+  "elapsed_seconds": 47.420532417000004,
+  "notes": "Same binary and all parameters unchanged except copy_after_zero. Target clearing and memcpy both inside timing; upstream unmodified."
+}

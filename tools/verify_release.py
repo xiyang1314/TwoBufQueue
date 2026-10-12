@@ -1,0 +1,76 @@
+"""Check publication hashes, local document links and lossless evidence packing."""
+import argparse
+import gzip
+import hashlib
+import json
+from pathlib import Path
+import re
+from urllib.parse import unquote, urlsplit
+
+ROOT = Path(__file__).resolve().parents[1]
+LINK = re.compile(r'(?:href|src)=["\']([^"\']+)["\']|!?\[[^\]\n]*\]\(([^)\n]+)\)')
+
+
+def verify(root, check_manifest=True):
+    manifest = root / 'release-manifest.json'
+    records = json.loads(manifest.read_text())['files'] if manifest.exists() else []
+    paths = [root / r['path'] for r in records] if records else [p for p in root.rglob('*') if p.is_file()
+        and '.git' not in p.relative_to(root).parts and 'performance_archive' not in p.parts
+        and not any(x.startswith('build') for x in p.relative_to(root).parts)]
+    errors = []
+    for record in records if check_manifest else []:
+        path = root / record['path']
+        if not path.is_file() or hashlib.sha256(path.read_bytes()).hexdigest() != record['sha256']:
+            errors.append('Manifest mismatch: ' + record['path'])
+    checked = 0
+    for document in paths:
+        if document.suffix not in {'.md', '.html'} or 'performance_data' in document.relative_to(root).parts:
+            continue
+        for match in LINK.finditer(document.read_text(encoding='utf-8')):
+            reference = (match[1] or match[2]).strip('<>')
+            parsed = urlsplit(reference)
+            if parsed.scheme or parsed.netloc or not parsed.path:
+                continue
+            target = (document.parent / unquote(parsed.path)).resolve()
+            checked += 1
+            if not target.exists():
+                errors.append('Missing link in ' + str(document.relative_to(root)) + ': ' + reference)
+            elif root != target and root not in target.parents:
+                errors.append('Link escapes publication tree: ' + reference)
+    compression = root / 'compression-manifest.json'
+    packed = json.loads(compression.read_text())['files'] if compression.exists() else []
+    for record in packed:
+        path = root / record['compressed_path']
+        if not path.is_file():
+            errors.append('Missing compressed evidence: ' + record['compressed_path'])
+            continue
+        data = path.read_bytes()
+        if hashlib.sha256(data).hexdigest() != record['compressed_sha256']:
+            errors.append('Compressed evidence hash mismatch: ' + record['compressed_path'])
+        original = gzip.decompress(data)
+        if hashlib.sha256(original).hexdigest() != record['original_sha256'] or len(original) != record['original_bytes']:
+            errors.append('Lossless evidence check failed: ' + record['original_path'])
+    oversized = [str(p.relative_to(root)) for p in paths if p.stat().st_size > 50 * 1024 * 1024]
+    errors.extend('Publication file exceeds 50 MiB: ' + p for p in oversized)
+    if errors:
+        raise ValueError('\n'.join(errors))
+    return {'manifest_files': len(records), 'local_links_checked': checked,
+            'compressed_files_verified': len(packed), 'files_over_50_mib': len(oversized), 'passed': True}
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--root', type=Path, default=ROOT)
+    parser.add_argument('--output', type=Path)
+    parser.add_argument('--skip-manifest', action='store_true', help='Validate links/data in working changes without enforcing the export snapshot hashes')
+    args = parser.parse_args()
+    result = verify(args.root.resolve(), not args.skip_manifest)
+    text = json.dumps(result, indent=2) + '\n'
+    if args.output:
+        args.output.parent.mkdir(parents=True, exist_ok=True)
+        args.output.write_text(text)
+    print(text, end='')
+
+
+if __name__ == '__main__':
+    main()

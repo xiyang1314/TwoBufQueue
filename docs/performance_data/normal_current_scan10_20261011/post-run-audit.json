@@ -1,0 +1,115 @@
+{
+  "runs": 352,
+  "stage_counts": {
+    "final": 320,
+    "validation": 32
+  },
+  "unchanged_session_reports": {
+    "docs/performance_8m_zero_session.html": "3138d72b750c7b816e96ab4502af05ba204155685b1f1ac894a8c5fae8b10106",
+    "docs/performance_256m_callback_session.html": "9259455fe3c6a900e50611108983112aeaaeb0d821d5d476a531d7ac50675339"
+  },
+  "unchanged_library_file_count": 61,
+  "only_requested_ordinary_parameters_changed": true,
+  "native_configurations_unchanged_but_remeasured": true,
+  "natural_publication_metadata_checked": true,
+  "callback_counts_reused": true,
+  "no_callback_recalibration": true,
+  "html_static_checks": [
+    {
+      "file": "performance_256m_callback.html",
+      "sha256": "ecd7967ba8b3baf33d14927fd590e2dbab64dd659af78e26843bbfc3219ec471",
+      "embedded_data_checked": true,
+      "local_links_checked": true,
+      "highlighted_rows": 24
+    },
+    {
+      "file": "performance_8m_zero.html",
+      "sha256": "3eec538f8a6c221ed08826d8bc9e478fec59f3b5381977208a8c4760f1f49c9e",
+      "embedded_data_checked": true,
+      "local_links_checked": true,
+      "highlighted_rows": 24
+    }
+  ],
+  "results": [
+    {
+      "cache_mib": 256,
+      "payload_bytes": 8,
+      "throughput_mps": 1195.912594356,
+      "p50_ns": 0.8083333333334,
+      "p99_ns": 1.425,
+      "p999_ns": 3.033333333336,
+      "previous_throughput_mps": 1245.9691863940002,
+      "previous_p50_ns": 0.916666666667
+    },
+    {
+      "cache_mib": 256,
+      "payload_bytes": 16,
+      "throughput_mps": 741.8683002704,
+      "p50_ns": 0.9166666666666,
+      "p99_ns": 5.6750000000059995,
+      "p999_ns": 28.383333333332,
+      "previous_throughput_mps": 911.9153225153999,
+      "previous_p50_ns": 0.875
+    },
+    {
+      "cache_mib": 256,
+      "payload_bytes": 32,
+      "throughput_mps": 135.6795510662,
+      "p50_ns": 5.208333333334,
+      "p99_ns": 12.75,
+      "p999_ns": 26.758333333360003,
+      "previous_throughput_mps": 378.2459357154,
+      "previous_p50_ns": 2.191666666666
+    },
+    {
+      "cache_mib": 256,
+      "payload_bytes": 64,
+      "throughput_mps": 93.63608412367999,
+      "p50_ns": 9.933333333334,
+      "p99_ns": 20.68333333334,
+      "p999_ns": 28.43333333332,
+      "previous_throughput_mps": 204.82353787340003,
+      "previous_p50_ns": 2.933333333334
+    },
+    {
+      "cache_mib": 8,
+      "payload_bytes": 8,
+      "throughput_mps": 1235.9441765420002,
+      "p50_ns": 0.7583333333334,
+      "p99_ns": 1.425,
+      "p999_ns": 2.65,
+      "previous_throughput_mps": 1313.574232218,
+      "previous_p50_ns": 0.916666666667
+    },
+    {
+      "cache_mib": 8,
+      "payload_bytes": 16,
+      "throughput_mps": 1041.124832572,
+      "p50_ns": 0.8333333333332,
+      "p99_ns": 1.908333333334,
+      "p999_ns": 4.258333333332,
+      "previous_throughput_mps": 871.7840392091999,
+      "previous_p50_ns": 0.8750000000002001
+    },
+    {
+      "cache_mib": 8,
+      "payload_bytes": 32,
+      "throughput_mps": 143.2632449372,
+      "p50_ns": 6.516666666668,
+      "p99_ns": 16.55,
+      "p999_ns": 25.916666666640005,
+      "previous_throughput_mps": 496.52904209099995,
+      "previous_p50_ns": 2.0999999999980004
+    },
+    {
+      "cache_mib": 8,
+      "payload_bytes": 64,
+      "throughput_mps": 125.26555607079999,
+      "p50_ns": 7.308333333334,
+      "p99_ns": 18.70000000002,
+      "p999_ns": 27.26666666666,
+      "previous_throughput_mps": 379.44855887899996,
+      "previous_p50_ns": 2.425
+    }
+  ]
+}

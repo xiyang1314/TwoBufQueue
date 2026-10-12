@@ -1,0 +1,12 @@
+{
+  "cache_mib": 8,
+  "callback_policy": "zero",
+  "payload_bytes": [
+    16,
+    32
+  ],
+  "messages": 10000000,
+  "repetitions": 5,
+  "publish_count": 4294967295,
+  "is_scan_current": false
+}

@@ -1,0 +1,12 @@
+{
+  "runs": 672,
+  "formal_runs": 576,
+  "validation_runs": 96,
+  "all_consumed": true,
+  "reader_fixed_upper_bound_bytes": 2147483648,
+  "writer_pressure_nonzero_runs": 0,
+  "copy_memory_full_nonzero_runs": 65,
+  "hard_cpu_affinity": false,
+  "producer_qos": "user_interactive",
+  "new_pmu_collected": false
+}

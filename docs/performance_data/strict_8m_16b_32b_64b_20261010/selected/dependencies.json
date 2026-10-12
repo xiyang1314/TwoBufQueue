@@ -1,0 +1,61 @@
+{
+  "rigtorp": {
+    "repository": "rigtorp/SPSCQueue",
+    "commit": "1053918dbd251fbff69b24ef27fa5d51c29ec2af",
+    "files": [
+      {
+        "path": "include/rigtorp/SPSCQueue.h",
+        "url": "https://raw.githubusercontent.com/rigtorp/SPSCQueue/1053918dbd251fbff69b24ef27fa5d51c29ec2af/include/rigtorp/SPSCQueue.h",
+        "sha256": "1e631ec9e8ba4955da5cac116620815055f7da0ea936bfdb3036c4e87bc8a6e8"
+      },
+      {
+        "path": "LICENSE",
+        "url": "https://raw.githubusercontent.com/rigtorp/SPSCQueue/1053918dbd251fbff69b24ef27fa5d51c29ec2af/LICENSE",
+        "sha256": "d0887259b1e1791964efe737886d5742bf025991b3f4db6b05eefbdbaa4d7224"
+      }
+    ]
+  },
+  "atomic_queue": {
+    "repository": "max0x7ba/atomic_queue",
+    "commit": "74fb62f86e6c3b0db824932a5c5e4bfb0125e2cc",
+    "files": [
+      {
+        "path": "include/atomic_queue/atomic_queue.h",
+        "url": "https://raw.githubusercontent.com/max0x7ba/atomic_queue/74fb62f86e6c3b0db824932a5c5e4bfb0125e2cc/include/atomic_queue/atomic_queue.h",
+        "sha256": "76188465b20c706b37e1c80948b0d0c0a08e9e5144eb536c32e33bd035db0161"
+      },
+      {
+        "path": "include/atomic_queue/defs.h",
+        "url": "https://raw.githubusercontent.com/max0x7ba/atomic_queue/74fb62f86e6c3b0db824932a5c5e4bfb0125e2cc/include/atomic_queue/defs.h",
+        "sha256": "df0085237bfd1b5effeeae14a94b28512948d2f647142c9fc6923aa8aabfd746"
+      },
+      {
+        "path": "LICENSE",
+        "url": "https://raw.githubusercontent.com/max0x7ba/atomic_queue/74fb62f86e6c3b0db824932a5c5e4bfb0125e2cc/LICENSE",
+        "sha256": "22e4fce4f072000d810546875f26ad1e8b23fcb942fe0a00c85602eb3626c1bb"
+      }
+    ]
+  },
+  "readerwriterqueue": {
+    "repository": "cameron314/readerwriterqueue",
+    "commit": "8e7627d18c2108aca178888d88514179899a044f",
+    "version": "v1.0.6",
+    "files": [
+      {
+        "path": "readerwriterqueue.h",
+        "url": "https://raw.githubusercontent.com/cameron314/readerwriterqueue/8e7627d18c2108aca178888d88514179899a044f/readerwriterqueue.h",
+        "sha256": "c7abdbe90059b8b8c649d5752694bc41cfc0a8510e655513b7b8a01fce5741d6"
+      },
+      {
+        "path": "atomicops.h",
+        "url": "https://raw.githubusercontent.com/cameron314/readerwriterqueue/8e7627d18c2108aca178888d88514179899a044f/atomicops.h",
+        "sha256": "e0aa232fd22d2e061830e33ff9ae53106eab08d2afda49e0e51d22f9d514804e"
+      },
+      {
+        "path": "LICENSE.md",
+        "url": "https://raw.githubusercontent.com/cameron314/readerwriterqueue/8e7627d18c2108aca178888d88514179899a044f/LICENSE.md",
+        "sha256": "018fb474bdf10bc068f5e3f2c61e18df8326d60b46db3eb017b4411eda189afc"
+      }
+    ]
+  }
+}

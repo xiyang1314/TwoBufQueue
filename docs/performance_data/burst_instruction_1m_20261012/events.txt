@@ -1,0 +1,81 @@
+Architecture:  Apple Silicon (arm64)
+PMC Database:  as1 (Apple silicon)
+Fixed counters: 2, Configurable: 8
+
+Built-in aliases:
+  cycles                   -> FIXED_CYCLES
+  instructions             -> FIXED_INSTRUCTIONS
+  branches                 -> INST_BRANCH
+  branch-misses            -> BRANCH_MISPRED_NONSPEC
+  l1d-tlb-misses           -> L1D_TLB_MISS
+  l1i-tlb-misses           -> L1I_TLB_MISS_DEMAND
+  l2-tlb-misses-data       -> L2_TLB_MISS_DATA
+  l1d-cache-misses         -> L1D_CACHE_MISS_LD
+  l1i-cache-misses         -> L1I_CACHE_MISS_DEMAND
+  map-stalls               -> MAP_STALL
+  dispatch-stalls          -> MAP_STALL_DISPATCH
+
+All available events:
+  FIXED_CYCLES
+  FIXED_INSTRUCTIONS
+  RETIRE_UOP - All retired uops
+  CORE_ACTIVE_CYCLE - Cycles while the core was active
+  FLUSH_RESTART_OTHER_NONSPEC - Pipeline flush and restarts that were not due to branch mispredictions or memory order violations
+  INST_ALL - All retired instructions
+  INST_BRANCH - Retired branch instructions including calls and returns
+  INST_BRANCH_CALL - Retired subroutine call instructions
+  INST_BRANCH_RET - Retired subroutine return instructions
+  INST_BRANCH_TAKEN - Retired taken branch instructions
+  INST_BRANCH_INDIR - Retired indirect branch instructions including indirect calls
+  INST_BRANCH_COND - Retired conditional branch instructions (counts only B.cond)
+  INST_INT_LD - Retired load Integer Unit instructions
+  INST_INT_ST - Retired store Integer Unit instructions
+  INST_INT_ALU - Retired non-branch and non-load/store Integer Unit instructions
+  INST_SIMD_LD - Retired load Advanced SIMD and FP Unit instructions
+  INST_SIMD_ST - Retired store Advanced SIMD and FP Unit instructions
+  INST_SIMD_ALU - Retired non-load/store Advanced SIMD and FP Unit instructions
+  INST_LDST - Retired load and store instructions
+  INST_BARRIER - Retired data barrier instructions
+  L1D_CACHE_MISS_LD_NONSPEC - Retired loads that missed in the L1 Data Cache
+  L1D_CACHE_MISS_ST_NONSPEC - Retired stores that missed in the L1 Data Cache
+  L1D_TLB_MISS_NONSPEC - Retired loads and stores that missed in the L1 Data TLB
+  ST_MEMORY_ORDER_VIOLATION_NONSPEC - Retired stores that triggered memory order violations
+  BRANCH_COND_MISPRED_NONSPEC - Retired conditional branch instructions that mispredicted
+  BRANCH_INDIR_MISPRED_NONSPEC - Retired indirect branch instructions including calls and returns that mispredicted
+  BRANCH_RET_INDIR_MISPRED_NONSPEC - Retired return instructions that mispredicted
+  BRANCH_CALL_INDIR_MISPRED_NONSPEC - Retired indirect call instructions mispredicted
+  BRANCH_MISPRED_NONSPEC - Retired branch instructions including calls and returns that mispredicted
+  MAP_DISPATCH_BUBBLE_IC - Bubble detected due to L1 Instruction Cache in dispatch stage
+  MAP_DISPATCH_BUBBLE_ITLB - Bubble detected due to L1 Instruction TLB in dispatch stage
+  L1I_TLB_MISS_DEMAND - Demand instruction fetches that missed in the L1 Instruction TLB
+  MAP_DISPATCH_BUBBLE - Bubble detected in dispatch stage
+  L1I_CACHE_MISS_DEMAND - Demand fetch misses that require a new cache line fill of the L1 Instruction Cache
+  FETCH_RESTART - Fetch Unit internal restarts for any reason. Does not include branch mispredicts
+  MAP_UOP - Mapped uops
+  INTERRUPT_PENDING - Cycles while an interrupt was pending because it was masked
+  MAP_STALL_DISPATCH - Cycles while the Map Unit was stalled because of Dispatch back pressure
+  MAP_REWIND - Cycles while the Map Unit was blocked while rewinding due to flush and restart
+  MAP_STALL - Cycles while the Map Unit was stalled for any reason
+  MAP_INT_UOP - Mapped Integer Unit uops
+  MAP_LDST_UOP - Mapped Load and Store Unit uops, including GPR to vector register converts
+  MAP_SIMD_UOP - Mapped Advanced SIMD and FP Unit uops
+  L1I_TLB_FILL - Translations filled into the L1 Instruction TLB
+  L1D_TLB_FILL - Translations filled into the L1 Data TLB
+  MMU_TABLE_WALK_INSTRUCTION - Table walk memory requests on behalf of instruction fetches
+  MMU_TABLE_WALK_DATA - Table walk memory requests on behalf of data accesses
+  L2_TLB_MISS_INSTRUCTION - Instruction fetches that missed in the L2 TLB
+  L2_TLB_MISS_DATA - Loads and stores that missed in the L2 TLB
+  MMU_VIRTUAL_MEMORY_FAULT_NONSPEC - Memory accesses that reached retirement that triggered any of the MMU virtual memory faults
+  L1D_TLB_ACCESS - Load and store accesses to the L1 Data TLB
+  L1D_TLB_MISS - Load and store accesses that missed the L1 Data TLB
+  L1D_CACHE_MISS_ST - Stores that missed the L1 Data Cache
+  L1D_CACHE_MISS_LD - Loads that missed the L1 Data Cache
+  LD_UNIT_UOP - Uops that flowed through the Load Unit
+  ST_UNIT_UOP - Uops that flowed through the Store Unit
+  L1D_CACHE_WRITEBACK - Dirty cache lines written back from the L1D Cache toward the Shared L2 Cache
+  LDST_X64_UOP - Load and store uops that crossed a 64B boundary
+  LDST_XPG_UOP - Load and store uops that crossed a 16KiB page boundary
+  ATOMIC_OR_EXCLUSIVE_SUCC - Atomic or exclusive instruction successfully completed
+  ATOMIC_OR_EXCLUSIVE_FAIL - Atomic or exclusive instruction failed (due to contention)
+  ST_NT_UOP - Store uops that executed with non-temporal hint
+  LD_NT_UOP - Load uops that executed with non-temporal hint

@@ -1,0 +1,14 @@
+{
+  "cache_data_bytes_per_layer": 8388608,
+  "minimum_blocks_per_layer": 2,
+  "pool_growth_disabled": true,
+  "all_stages_messages": 10000000,
+  "screen_and_confirmation_repetitions": 5,
+  "callback_iterations": 0,
+  "hard_affinity": false,
+  "full_tbq_grid_count_per_length": 135,
+  "bounded_readerwriterqueue_grid_count_per_length": 9,
+  "failed_runs": 0,
+  "source_commit": "3ba9df1cd1e73c449478b5f899689a7b553b3f8e",
+  "binary_sha256": "d042e98522f916c7a9f38d510d3dde48e9682f448a269f3e107e96e380506714"
+}

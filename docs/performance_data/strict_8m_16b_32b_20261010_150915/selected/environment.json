@@ -1,0 +1,279 @@
+{
+  "platform": "macOS-14.4.1-arm64-arm-64bit",
+  "machine": "arm64",
+  "cpu_model": "arm",
+  "logical_cpus": 8,
+  "cmake_flags": {
+    "CMAKE_BUILD_TYPE": "Release",
+    "CMAKE_CXX_COMPILER": "/opt/homebrew/opt/llvm@18/bin/clang++",
+    "CMAKE_CXX_FLAGS": "-Wno-error=unused-function",
+    "CMAKE_CXX_FLAGS_DEBUG": "-g",
+    "CMAKE_CXX_FLAGS_MINSIZEREL": "-Os -DNDEBUG",
+    "CMAKE_CXX_FLAGS_RELEASE": "-O3 -DNDEBUG",
+    "CMAKE_CXX_FLAGS_RELWITHDEBINFO": "-O2 -g -DNDEBUG",
+    "CMAKE_EXE_LINKER_FLAGS": "",
+    "CMAKE_EXE_LINKER_FLAGS_DEBUG": "",
+    "CMAKE_EXE_LINKER_FLAGS_MINSIZEREL": "",
+    "CMAKE_EXE_LINKER_FLAGS_RELEASE": "",
+    "CMAKE_EXE_LINKER_FLAGS_RELWITHDEBINFO": "",
+    "CMAKE_OSX_DEPLOYMENT_TARGET": "14.4",
+    "CMAKE_CXX_FLAGS-ADVANCED": "1",
+    "CMAKE_CXX_FLAGS_DEBUG-ADVANCED": "1",
+    "CMAKE_CXX_FLAGS_MINSIZEREL-ADVANCED": "1",
+    "CMAKE_CXX_FLAGS_RELEASE-ADVANCED": "1",
+    "CMAKE_CXX_FLAGS_RELWITHDEBINFO-ADVANCED": "1",
+    "CMAKE_EXE_LINKER_FLAGS-ADVANCED": "1",
+    "CMAKE_EXE_LINKER_FLAGS_DEBUG-ADVANCED": "1",
+    "CMAKE_EXE_LINKER_FLAGS_MINSIZEREL-ADVANCED": "1",
+    "CMAKE_EXE_LINKER_FLAGS_RELEASE-ADVANCED": "1",
+    "CMAKE_EXE_LINKER_FLAGS_RELWITHDEBINFO-ADVANCED": "1",
+    "CMAKE_GENERATOR": "Unix Makefiles"
+  },
+  "python": "3.12.13 (main, Mar  3 2026, 12:39:30) [Clang 16.0.0 (clang-1600.0.26.6)]",
+  "build": {
+    "compiler": "Clang 18.1.8 ",
+    "optimized": true,
+    "sanitized": false
+  },
+  "executable": "/Users/lc/Documents/Codex/2026-10-08/twobufqueue/work/build-current-comparison/brq_tunable_benchmark",
+  "executable_sha256": "d042e98522f916c7a9f38d510d3dde48e9682f448a269f3e107e96e380506714",
+  "profile": {
+    "payload_bytes": [
+      16,
+      32
+    ],
+    "callback_iterations": [
+      0
+    ],
+    "base": {
+      "warmup_messages": 50000,
+      "latency_batch_size": 1000,
+      "round_storage_bytes": 6710886,
+      "source_block_size": 65536,
+      "source_pool_min": 128,
+      "source_pool_max": 128,
+      "source_queue_capacity": 512,
+      "output_block_size": 65536,
+      "output_pool_min": 128,
+      "output_pool_max": 128,
+      "output_queue_capacity": 512,
+      "output_frame_capacity": 1024,
+      "output_mode": "spsc",
+      "output_reader_mode": "wait_signal",
+      "buffer_budget_bytes": 16777216,
+      "spsc_buffer_bytes": 8388608,
+      "prefault_producer_buffers": true,
+      "timeout_seconds": 180,
+      "measure_callback_time": true,
+      "producer_qos": "user_interactive",
+      "publish_count": 4294967295,
+      "prepared_input": true,
+      "variable_payload": true,
+      "prepared_input_limit_bytes": 268435456,
+      "is_scan_current": false
+    },
+    "search": {
+      "strategy": "grid",
+      "max_candidates_per_transport": 0,
+      "passes": 2,
+      "screen_messages": 10000000,
+      "final_messages": 10000000,
+      "screen_repetitions": 5,
+      "final_repetitions": 5,
+      "validation_messages": 10000000,
+      "batch_reference": false
+    },
+    "spaces": {
+      "two_buf_queue": {
+        "cache_block_bytes": [
+          65536,
+          262144,
+          1048576,
+          2097152,
+          4194304
+        ],
+        "publish_count": [
+          4294967295
+        ],
+        "output_frame_capacity": [
+          1,
+          64,
+          1024
+        ],
+        "reader_spin_count": [
+          0,
+          1000,
+          10000
+        ],
+        "rescan_interval_ns": [
+          1000000,
+          5000000,
+          30000000
+        ]
+      },
+      "spsc": {
+        "spsc_idle_spins": [
+          0,
+          1000,
+          10000
+        ],
+        "spsc_idle_sleep_ns": [
+          0,
+          1000,
+          10000
+        ]
+      }
+    }
+  },
+  "resolved_search": {
+    "strategy": "grid",
+    "max_candidates_per_transport": 0,
+    "passes": 2,
+    "screen_messages": 10000000,
+    "final_messages": 10000000,
+    "screen_repetitions": 5,
+    "final_repetitions": 5,
+    "screen_min_rounds": 0,
+    "final_min_rounds": 0,
+    "validation_messages": 10000000,
+    "batch_reference": false
+  },
+  "source_sha256": {
+    "src/.DS_Store": "0691be68b575f4c3222d27f71d06be86a4b30e96cb99ef5404fefbbeff222ed2",
+    "src/two_buf_queue.hpp": "ebb164d2a73829ee5e4a79edcbabbc196aa2d84dfc27b777267f64c6082a55fe",
+    "src/write/seq_writer.cpp": "8128732abe1e41c491630a2f65d15858d59bd4ef92dcf45c854f169855003982",
+    "src/write/make_queue.hpp": "808415585792bbeba881b0af7beb6c60e9bf16d21b742a7f163775834ad478f7",
+    "src/write/writer.hpp": "ef11ddaa280a1cd598ba1aac8e28c03f19ee0fb4f3607f43c721913e9fe1fb52",
+    "src/write/sync_context.hpp": "42f007db1badf5a012bf3071c3c9a77577c052029bae1456b12d7d4647eb4d08",
+    "src/write/types.hpp": "67f101a56de2286d9ea7825cd318fb2a0068db3cd66c9b2fe77d0d0032099030",
+    "src/write/seq_writer.hpp": "46965b3b52a6e5895df2bd1fe7de66cf36133c320d313eda3dcad38bf3499535",
+    "src/write/writer.cpp": "d3349d9143deadaf3f9242ad3ea25735f9209ec662c695d782878b2a2620fc93",
+    "src/write/writer_base.hpp": "9682214611276606bafd577a65c0f1c923fbb1a9a7a53d642471ecd76abd80e4",
+    "src/utils/block_diagnostics.hpp": "d81e6b16dba8ac62c240c52ed3b25bf75e5d7edb6be8573be7ef3be7ba5b2589",
+    "src/utils/spsc_queue.hpp": "1cdea11ca6d9168e72aa964fb9f6d9f189d26c150e8ee9a4c2eb541cafe294c8",
+    "src/utils/plain_value.hpp": "fdfc7afe7072c7c452631da0f44dc22657fcc0cbde57a5a8c8f4ff43fb5058cd",
+    "src/utils/spsc_pointer_queue.hpp": "60eb5de77c466a4185e5ed584d993500ba593ee6adb3c7ff754b9e77e932b861",
+    "src/utils/auto_reset_event.cpp": "8d37d360311652a12e3dc5372f5bacc3a0763f27b06270b4a9dd32cc200b6f2d",
+    "src/utils/no_lock.hpp": "c2c5eff008255c2a39d86b95a7af7023252c31d4da23b948d78fb9f213350b35",
+    "src/utils/brqHelp.hpp": "f3b960d533e6bb6d82b79d0e2a90ed3843e1675cfd81a999cc3909ef3432ba94",
+    "src/utils/fast_time.cpp": "5044a749238be97fa2324f9eecc420a53082abdf2607e62783c96060aafddf46",
+    "src/utils/auto_reset_event.hpp": "10ac49eca50d3850cae94420799fc0f6b342822e4e3fef46b1dd16d19b472979",
+    "src/utils/brqHelp.cpp": "041b72c92ac6606727da275dd4b123039e1a0e1d99be2674bafc8ff657cb2c9f",
+    "src/utils/fast_time.hpp": "bc75837066e7e11aed57a2365facad48d3c9dcecea76fe869b62e50711136f90",
+    "src/utils/spin_lock.hpp": "7a0574871f73a84b17dd47f15a2c0c1a447009913695d434d64fd0048d2985d4",
+    "src/utils/wait.hpp": "e855d6e0a86375332ba55b43e11a10257ab647a8f07971530a5aa5ed479074a1",
+    "src/data/spsc_basic_block.hpp": "4f2168a97b40357b23ba9cb1c16a50241e0ecfb0f82be2ccdabf3a428bd3012d",
+    "src/data/data_frame.hpp": "fecb242429f3044c14950ed0f12a22f35de74af73bdd4f839084ac3e5f3c5965",
+    "src/data/spsc_read_block.hpp": "c8def8e59324f5980d84e4aa072bc45cfa152b25ce733a4f30e08c5fe4985f65",
+    "src/data/spsc_write_block.hpp": "2e6139340c502a36f3ffe15ee59fc8bd1203a663d253e53cf96794440fed0e43",
+    "src/data/Untitled": "443d72e4d7be88cb9bcb6e7c3f95b466e89f58ad36dad14b52fbbcf44c3b69ed",
+    "src/data/data_batch.hpp": "8673ec49ed45ff511335cd0e853a72875d649b461376613ca5618ac355378bf9",
+    "src/base_components/block_slice/block_resource_factory.hpp": "ac3122d5267b12119b14ce9c484f6640b6afbd5c713aa3b8fea85bea1bfcfc5f",
+    "src/base_components/block_slice/basic_block.hpp": "c1b82d3ad5860b73d2199b31d513a1ace91c67ebec384b7fc093d776940fb178",
+    "src/base_components/block_slice/reader_block.hpp": "c87fb4ada08dc09ce1328fc05bfc3ccc9ad1254c4e2c60aee2d64f8cbdd7fb32",
+    "src/base_components/block_slice/slice_pool.hpp": "0d68260e3d41b881faf2d57787fd1a992bdd2a34d361b02c69d59104e8e82726",
+    "src/base_components/block_slice/block_slices_allocator.hpp": "ef196108b3bd19878a00f3f22cac2a093752a59984fabb0a49c4309c36866d5b",
+    "src/base_components/block_slice/writer_block.hpp": "fb9d41b36f88301fcdada460fd390be8f1393173a1e94cc5b8377c923914acc9",
+    "src/base_components/block_slice/memory_slice.hpp": "122a2d4180051bef1b1575a76340007e859aea23a4cddce55fcf8c6aaf83b5e5",
+    "src/base_components/LiveHandoffQueue/spsc_live_handoff_queue.hpp": "04322881bf4b2a0176bc6c3ef1889f8e23d4f6ab7eaa44c4053fdfe3b3ed549f",
+    "src/base_components/HandoffQueue/claim_queue.hpp": "e3dd6e79d3aca4cae96f619104d44763b6ae7f87a5636088731cf1805baea3ea",
+    "src/base_components/HandoffQueue/pooled_resource_queue.hpp": "ce12e04b0e5d7870499962e43a377c3dd33385da97bfd460b97a24bbcee2858c",
+    "src/base_components/HandoffQueue/handoff_reader.hpp": "d1191417435a515003bfe029d52ee9e643888ae1bc8d610b9abfa075e509dee5",
+    "src/base_components/HandoffQueue/queue_ticket.hpp": "3716dbd2c38a0c6cf743be62bda01d334fbfb7a7517f003fb09a82c1d16da6ee",
+    "src/base_components/HandoffQueue/ready_index_queue.hpp": "2db96b7e52e6e68f708c61e90f819c69b8b17cc64faab1c82b80bafc8ec0c20b",
+    "src/base_components/HandoffQueue/handoff_queue.hpp": "451fac983f6fb8af9feadbdcaf9e93519bfbdb831b37ae0263181b82a9912747",
+    "src/base_components/HandoffQueue/handoff_types.hpp": "a877583d4dffc236c5d45d97427faa36c83fd7b51d133042e9ba3690cb57cd5f",
+    "src/base_components/HandoffQueue/lock_free_index_queue.hpp": "62b497f6f5d70553a6fdf2b7ea0c9ca645cb4e119c9407a7b1b30ea9e9ca338d",
+    "src/base_components/WarmPool/warm_pool.hpp": "ed8838ee5aeb9fba03efa54ef9b37b45616bf6e790de57344a28821b017b8c8f",
+    "src/base_components/WarmPool/intrusive_stack.hpp": "912dae641f26b79fecb3f0926aac0e8255c0c67ff0addd4c56d73388faf98bea",
+    "src/base_components/WarmPool/intrusive_queue.hpp": "0b87a1615c000ea6aab805a6ec4443240adeb13d34f218b6d7ba0ecb6aea11ec",
+    "src/base_components/WarmPool/resource.hpp": "3c3912d264a7e3718571ae6c8d8474437630370cd6fee14a4cdd2ff822882d2f",
+    "src/read/layer2/to_read_block.hpp": "5afac965742b68f299a703b881f8c53dc2b14170ed2d0b81c01fd0ac2215d7d1",
+    "src/read/layer2/read_callbacks.hpp": "e90b6705ffdeaecab6f85d5452b5ab61a4799ceabd931def2d7fece221b64121",
+    "src/read/layer2/read_block_factory.hpp": "2c7f0a30323b032017ebc5e81bd8cc0efdd2ce3f6fc0e8c2d51174d0771521d2",
+    "src/read/layer2/read_block.hpp": "ba24129aa20c9d2643d9b4a8068287395bb51d870289115644d023a343b70402",
+    "src/read/read_layer1/read_service.hpp": "4bdfa159a804f4c7e77b1e375c9582e76f306c11758cbbd37248e9b5767c8736",
+    "src/read/read_layer1/read_worker.hpp": "4e8a9692b6cd854dec06de332599b4b23ac24651a642cf7b70452694b6fb9608",
+    "src/read/read_layer1/read_writer_data_callback.hpp": "537b0c93fcd1c4a3c4bb5e09170f7e0122705faa4652906f096e7bc4395310d3",
+    "src/read/read_layer1/types.hpp": "d9f3115daf84f53b9d530ce14d94ed949f51dd105dacce8ef098c3f08461a278",
+    "src/read/read_layer1/read_item.hpp": "f62cb6548bee70fd09b67d3a829ede5ce6b8bc178ad4d0c25149bfabae53ff0f",
+    "src/read/read_layer1/muti_writer/read_service.hpp": "92c9e9d45617c629565aa0933f1edabfe3112257cd501edf8df83321ed9127e7",
+    "src/read/read_layer1/muti_writer/read_worker.hpp": "d760a8db4dd3db051c363f4cfbff426ec97c40a031c31938de25e4c3c187ab3a",
+    "src/read/read_layer1/single_writer/read_service.hpp": "55a9fa356b339b9151d3ec5b0e8836c4d75bb6477f1b4e26aa19f4f759b5be85",
+    "src/read/read_layer1/single_writer/read_worker.hpp": "ebd883583ba6f0e8f92c13200b852023f497ab7e8cbb277539d07ab79545c198",
+    "include/TwoBufQueue.hpp": "990e5cb0946b060c286839a431bb0252f067268425add0b258cc8511e6fcb8d4",
+    "benchmarks/tunable/timing.hpp": "ca262b9ef51df9b412f0e35c1f12008b546400393decb6ed3c7734ff55e4b178",
+    "benchmarks/tunable/performance_test.hpp": "35f398ad4ca7d25e4d668ff0b9b22ba4179f54200a2178d8907e5efe9aef63ba",
+    "benchmarks/tunable/adapters.hpp": "e80349edcb83f0f82d72f2f287e341e3f9ff1ba336747f5f4de0c8d0d63d90e3",
+    "benchmarks/tunable/config.hpp": "e9233d8cdac678f6eafede9ccd960f6b065e49df47fd84d1868df90c0bcd99c8",
+    "benchmarks/tunable/publication_plan.hpp": "fe903e7025358c90322c5f890e6c9ebd32cc39d4720806f66e29b18eb39435c6",
+    "benchmarks/tunable/parameters.hpp": "ee7e520b35ee4bc45d849b0da0fc291371619c3e2df13c0253fca2c57aa7ca09",
+    "benchmarks/tunable/main.cpp": "6219a13d7963d053bc833ce5a94656662308ab2bfe22be2c0e78d646668c6f7c",
+    "CMakeLists.txt": "84bfdd94bcdfc6caa75324ed3770bd86af440bdd59a131f88f7786db67e379a5",
+    "benchmarks/tune_spsc.py": "5e656b5e884c21983653186c852a2c42cf09a6cb342d85883d4b0bea3157e6e1",
+    "benchmarks/spsc_dependencies.json": "b7415ecfa5efcc4c06ca060b9ffaaa19cbac2d851151d5aa02d712dfb6d61012",
+    "/Users/lc/Documents/Codex/2026-10-08/twobufqueue/work/strict-8m-search/profile.json": "572c8a32e5dff4ce31a1937d61364541ff93387819f0e9947026a77dd7ae19e4"
+  },
+  "dependencies": {
+    "rigtorp": {
+      "repository": "rigtorp/SPSCQueue",
+      "commit": "1053918dbd251fbff69b24ef27fa5d51c29ec2af",
+      "files": [
+        {
+          "path": "include/rigtorp/SPSCQueue.h",
+          "url": "https://raw.githubusercontent.com/rigtorp/SPSCQueue/1053918dbd251fbff69b24ef27fa5d51c29ec2af/include/rigtorp/SPSCQueue.h",
+          "sha256": "1e631ec9e8ba4955da5cac116620815055f7da0ea936bfdb3036c4e87bc8a6e8"
+        },
+        {
+          "path": "LICENSE",
+          "url": "https://raw.githubusercontent.com/rigtorp/SPSCQueue/1053918dbd251fbff69b24ef27fa5d51c29ec2af/LICENSE",
+          "sha256": "d0887259b1e1791964efe737886d5742bf025991b3f4db6b05eefbdbaa4d7224"
+        }
+      ]
+    },
+    "atomic_queue": {
+      "repository": "max0x7ba/atomic_queue",
+      "commit": "74fb62f86e6c3b0db824932a5c5e4bfb0125e2cc",
+      "files": [
+        {
+          "path": "include/atomic_queue/atomic_queue.h",
+          "url": "https://raw.githubusercontent.com/max0x7ba/atomic_queue/74fb62f86e6c3b0db824932a5c5e4bfb0125e2cc/include/atomic_queue/atomic_queue.h",
+          "sha256": "76188465b20c706b37e1c80948b0d0c0a08e9e5144eb536c32e33bd035db0161"
+        },
+        {
+          "path": "include/atomic_queue/defs.h",
+          "url": "https://raw.githubusercontent.com/max0x7ba/atomic_queue/74fb62f86e6c3b0db824932a5c5e4bfb0125e2cc/include/atomic_queue/defs.h",
+          "sha256": "df0085237bfd1b5effeeae14a94b28512948d2f647142c9fc6923aa8aabfd746"
+        },
+        {
+          "path": "LICENSE",
+          "url": "https://raw.githubusercontent.com/max0x7ba/atomic_queue/74fb62f86e6c3b0db824932a5c5e4bfb0125e2cc/LICENSE",
+          "sha256": "22e4fce4f072000d810546875f26ad1e8b23fcb942fe0a00c85602eb3626c1bb"
+        }
+      ]
+    },
+    "readerwriterqueue": {
+      "repository": "cameron314/readerwriterqueue",
+      "commit": "8e7627d18c2108aca178888d88514179899a044f",
+      "version": "v1.0.6",
+      "files": [
+        {
+          "path": "readerwriterqueue.h",
+          "url": "https://raw.githubusercontent.com/cameron314/readerwriterqueue/8e7627d18c2108aca178888d88514179899a044f/readerwriterqueue.h",
+          "sha256": "c7abdbe90059b8b8c649d5752694bc41cfc0a8510e655513b7b8a01fce5741d6"
+        },
+        {
+          "path": "atomicops.h",
+          "url": "https://raw.githubusercontent.com/cameron314/readerwriterqueue/8e7627d18c2108aca178888d88514179899a044f/atomicops.h",
+          "sha256": "e0aa232fd22d2e061830e33ff9ae53106eab08d2afda49e0e51d22f9d514804e"
+        },
+        {
+          "path": "LICENSE.md",
+          "url": "https://raw.githubusercontent.com/cameron314/readerwriterqueue/8e7627d18c2108aca178888d88514179899a044f/LICENSE.md",
+          "sha256": "018fb474bdf10bc068f5e3f2c61e18df8326d60b46db3eb017b4411eda189afc"
+        }
+      ]
+    }
+  },
+  "note": "Record power policy, CPU model and background load when publishing results; no affinity claimed unless successful."
+}

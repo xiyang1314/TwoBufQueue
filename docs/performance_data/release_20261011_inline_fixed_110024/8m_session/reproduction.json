@@ -1,0 +1,6 @@
+{
+  "source_archive": "../source.tar.gz",
+  "invocation": "../invocation.json",
+  "commands": "../commands.jsonl",
+  "compile_commands": "../compile_commands.json"
+}

@@ -1,0 +1,3501 @@
+{
+  "schema_version": 2,
+  "profile": {
+    "cache_mib": 256,
+    "callback_policy": "fixed",
+    "payload_bytes": [
+      8,
+      16,
+      32,
+      64
+    ],
+    "messages": 10000000,
+    "repetitions": 5,
+    "publish_count": 10,
+    "write_mode": "normal",
+    "report_peers": [
+      {
+        "file": "performance_256m_callback.html",
+        "label": "256M 普通"
+      },
+      {
+        "file": "performance_256m_callback_session.html",
+        "label": "256M Session"
+      },
+      {
+        "file": "performance_8m_zero.html",
+        "label": "8M 普通"
+      },
+      {
+        "file": "performance_8m_zero_session.html",
+        "label": "8M Session"
+      }
+    ],
+    "block_note": "按长度保留冻结的块大小和每层容量。普通 write 与 Session 的读端及发布配置各自独立，完整参数如下。"
+  },
+  "environment": {
+    "copy_sensitivity_sha256": "de2b8464628af0f2678383e1f7abab804af653beeb19056efbf38071a7d7edf3",
+    "hardware_input_sha256": "ea5936b31ca2c2aefccfc08fb2cc4ab3c27936e1c62f2e61a89e9adfc9ee1a4e",
+    "hardware": {
+      "cpu_model": "Apple M3",
+      "memory_bytes": 8589934592,
+      "physical_cpu": 8,
+      "logical_cpu": 8,
+      "collection_command": "/usr/sbin/sysctl -n machdep.cpu.brand_string hw.memsize hw.physicalcpu hw.logicalcpu",
+      "timestamp": "2026-10-11T11:13:10.031753+08:00"
+    },
+    "timestamp": "2026-10-11T11:17:20.030789+08:00",
+    "platform": "macOS-14.4.1-arm64-arm-64bit",
+    "machine": "arm64",
+    "build": {
+      "compiler": "Clang 18.1.8 ",
+      "optimized": true,
+      "sanitized": false,
+      "payload_copy_strategy": "member_copy_rigtorp_prefetch_readerwriterqueue_optional_zero"
+    },
+    "binary_sha256": "d1194d84f55ad72ea9a0445bfba2d1bbedab8953ff494b928b23334856386e23",
+    "source_commit": "f698f2558e51c52f23bcb6a97b6bb4bcf53e387c",
+    "source_worktree_dirty": true,
+    "source_sha256": {
+      ".github/workflows/ci.yml": "90d95f607dcbe16f36a7b3bbb377a411bd2c878cb2075fd8d6777bd751a392bf",
+      "CMakeLists.txt": "10481c9a9703f1d9c232c3eaca293dd7a8062709657ac11559d498dfd2acbe85",
+      "LICENSE": "3a0b32a74c46bdda3499ec9f39ab4f2a98fc2b239a1c1c1592086d26fdf76159",
+      "NOTICE": "59bb24a86e19756d2ef34cecd8846e2f74420e393994a34e8215d726acfb50b6",
+      "benchmarks/bootstrap.py": "d35a05e662df7c3b4395e5673ca87fcaef483ecf143bbcb00b851e6ea47adbce",
+      "benchmarks/bootstrap_spsc.py": "77d2f1fadcc0619d1f1f0dd214bd1b21f66c0943a9c2422d39c397f4a6ef522a",
+      "benchmarks/compare.py": "9db947fde50b9c68a84ed42fc811dec866e78a531b9f35f053d46f64cc81bbac",
+      "benchmarks/comparison.cpp": "0ff174b40621715a78a612a9a6cd38799aa33a5cc874e6fb0fbdbcbcd63fcd28",
+      "benchmarks/export_spsc_report.py": "0c6bbc24508be3f9161d0b89d1b8321b0f17e49ec00f53df2511bde626af752b",
+      "benchmarks/extended_adapters.hpp": "7f4665ae65f558f66f5936442f0e500742be45480e744f7fae617bd8a12d5f98",
+      "benchmarks/extra_dependencies.json": "f0f988efbe017817c6383046061009bf969a3f65142d1bda080d9d2629bc3ccd",
+      "benchmarks/handoff_queue_benchmark.cpp": "dc885fec214eddb8f30bf29d6584c6a49d84aab308d25ca2292a350ac3b21f9b",
+      "benchmarks/handoff_throughput_benchmark.cpp": "0e47d6ed7dd9d10da67031cd8aa44dc59db150aa531c8c79a6e3f8422b6a5d28",
+      "benchmarks/plot.py": "ceed0ce022b07eed152b52b5ad85e2c21772a266e2c455c4fffae1881b7791f3",
+      "benchmarks/plot_release.py": "38927986cc98d4a84b2f861f65ea2227761df922571cb91cfaf8ace2c62fb5bb",
+      "benchmarks/process_metrics.hpp": "c0825d4d408a4c40d641d1d572e8c143988fb0abf2ae70c44d56d247fc0dbd79",
+      "benchmarks/profiles/spsc_release.json": "9ad5626a843c2e35aaaf801b599cf47d1ce2301d6ccb817927e178e18101a060",
+      "benchmarks/queue_benchmark.cpp": "51f70116e08293d690c9a6f658921b7627c90a7c40ed495be8b1ed8acf31bd62",
+      "benchmarks/report_spsc.py": "52890b966da966f5a109a78b17f9de9964b749d8eff250cbc210c2c872410d96",
+      "benchmarks/run.py": "8ef220bb1ccba809b9da1375b61da654848f9ecf28d4dd0c00fe9c3807e6e7cb",
+      "benchmarks/run_release_benchmarks.py": "47080154db0bd2935c1a8af01436fed2d4eaf2cae0ebdffbd2ecb090e6e8fa12",
+      "benchmarks/single_reader.cpp": "9669ddc5453ec1a48d339efe78e732b4a573db831bd8ae9988619ecd7cc68e16",
+      "benchmarks/spsc.cmake": "d11fe55c2385daa04380ddfa8465c54b812c4ae5d2e103fed42af76dc927bf48",
+      "benchmarks/spsc_dependencies.json": "b7415ecfa5efcc4c06ca060b9ffaaa19cbac2d851151d5aa02d712dfb6d61012",
+      "benchmarks/spsc_html_report.py": "7f258358c80306ffe08e4f3da177ba407af3bfcdcda7f5b30edddf5e01424742",
+      "benchmarks/third_party.cmake": "5d9b33dfc540dfcb03582d7a2e666ef8f9756a9ff7e25f10bdfec46a7b9f605c",
+      "benchmarks/tunable/adapters.hpp": "ce3e47ccc880ff5dc3caa22bd463d0f412504d21076fd235386646b4af641ae2",
+      "benchmarks/tunable/config.hpp": "8807552e787b72d0fd9f224b268459e296cd8dbfc6ee51d85cd349be9dc61706",
+      "benchmarks/tunable/main.cpp": "a1e8640254aac11b5e7e1fdc8c3caf61f9c46a2e9310bc60ddcdea965ef8effd",
+      "benchmarks/tunable/parameters.hpp": "b9a788ff2fbc3e2f9e8d76cde22feadc6940b3f8c75c710ada824f2f8b3b952e",
+      "benchmarks/tunable/performance_test.hpp": "04c0ccac2a8705c2d51149f6bd96c975e2a4d8e3c20119d0b5ce10be2fdfe44c",
+      "benchmarks/tunable/publication_plan.hpp": "c8d5ac56692a6d4954661f524cb5f5a81fbc192dee9ad6c565c44ddb33811ca5",
+      "benchmarks/tunable/timing.hpp": "ca262b9ef51df9b412f0e35c1f12008b546400393decb6ed3c7734ff55e4b178",
+      "benchmarks/tune_spsc.py": "30d4fe0d75c37a8fa3a70856397e2b83354b22f4f689085b8c3da575a9aabdb3",
+      "benchmarks/verify_publish.py": "463c0883ae56b648369137212ccd5a616f0c68d324f5d7d25c5efabe52ad6113",
+      "cmake/TwoBufQueueConfig.cmake.in": "ce5caad4ad6372749f39e8fe077d0a1cf746983a43d76f66091c99234542e5c7",
+      "examples/01_basic.cpp": "b372cddf860b8c1d382e3ed40cedc0af70223d44732cb102a7460a43b800c742",
+      "examples/components/11_warm_pool.cpp": "a70cc3acfed661c048ea8d683674886e736b65815c1aabb74dfc16933ebfbddf",
+      "examples/components/12_warm_pool_factory.cpp": "b6fed44574f344c2376bc6799dce52d8dfbeb5a75c10512efb287fe0241e1a2a",
+      "examples/components/13_spsc_live_handoff_queue.cpp": "b84abdec239131fe297543f9c2d02d222f95c16be171bce4429f4452f2b088e7",
+      "examples/components/14_spsc_live_handoff_queue_claim.cpp": "85c4a87e31201c0cec22258d358539792a7355061646410ca90f3a3e7e1816d8",
+      "examples/components/15_handoff_queue.cpp": "5eb6782de0411328907ba7a85e2c5644d1be6d8d364bcd4cf71883b1b89a9621",
+      "examples/components/16_handoff_queue_mpmc.cpp": "55bf689f5ab389d62e8825b0d36d9a7a6c1810820226922c238f6c3bf2f6fc35",
+      "examples/example_support.hpp": "d69c038e581e952c16786e08c4fd1ff1a0de51a329e16c03463d52ea640c5332",
+      "examples/two_buf_queue/02_batch_callback.cpp": "b6ca51970fe572f3c54e4a276a6b87a1300e2d9db0ddd55ffec335be0743bae7",
+      "examples/two_buf_queue/03_multi_thread_writer.cpp": "ed8e6737732b8d5342e2fa156c2428cbcbceb08b565aa7abcd3b1dc4569919c2",
+      "examples/two_buf_queue/04_layer1_callback.cpp": "89066b9f90e85a69b702d7ab24a7ccabca0e7ec1a0398dff6bcc4afd46464411",
+      "examples/two_buf_queue/05_seq_writer.cpp": "8e37b60971670ffef6c50e5d3ad77c9b4e9cb2eb8d1e458275f8789cd743530a",
+      "examples/two_buf_queue/06_sync_writer.cpp": "d75cd0f892937f9b742018a797e8008cfe98062a37cb2ff51e5648bbe06bae0a",
+      "examples/two_buf_queue/07_quick_write_muti_msg.cpp": "9ee581e8758ca8ddf0ccac3fdfb4f63c5b789eff80cdbfeb695932252cb4acc7",
+      "examples/two_buf_queue/08_all_parameters.cpp": "d723faecaa319843f9be9fb59779c51ebebab86e06d81b9d073853f938f0c898",
+      "examples/two_buf_queue/09_async_logger.cpp": "4ebeb34f63fa9b70c104a9c819d77093e33ab99324c95cfc940f2d31310313f5",
+      "include/TwoBufQueue.hpp": "990e5cb0946b060c286839a431bb0252f067268425add0b258cc8511e6fcb8d4",
+      "src/base_components/HandoffQueue/claim_queue.hpp": "e3dd6e79d3aca4cae96f619104d44763b6ae7f87a5636088731cf1805baea3ea",
+      "src/base_components/HandoffQueue/handoff_queue.hpp": "451fac983f6fb8af9feadbdcaf9e93519bfbdb831b37ae0263181b82a9912747",
+      "src/base_components/HandoffQueue/handoff_reader.hpp": "d1191417435a515003bfe029d52ee9e643888ae1bc8d610b9abfa075e509dee5",
+      "src/base_components/HandoffQueue/handoff_types.hpp": "a877583d4dffc236c5d45d97427faa36c83fd7b51d133042e9ba3690cb57cd5f",
+      "src/base_components/HandoffQueue/lock_free_index_queue.hpp": "62b497f6f5d70553a6fdf2b7ea0c9ca645cb4e119c9407a7b1b30ea9e9ca338d",
+      "src/base_components/HandoffQueue/pooled_resource_queue.hpp": "ce12e04b0e5d7870499962e43a377c3dd33385da97bfd460b97a24bbcee2858c",
+      "src/base_components/HandoffQueue/queue_ticket.hpp": "3716dbd2c38a0c6cf743be62bda01d334fbfb7a7517f003fb09a82c1d16da6ee",
+      "src/base_components/HandoffQueue/ready_index_queue.hpp": "2db96b7e52e6e68f708c61e90f819c69b8b17cc64faab1c82b80bafc8ec0c20b",
+      "src/base_components/LiveHandoffQueue/spsc_live_handoff_queue.hpp": "04322881bf4b2a0176bc6c3ef1889f8e23d4f6ab7eaa44c4053fdfe3b3ed549f",
+      "src/base_components/WarmPool/intrusive_queue.hpp": "0b87a1615c000ea6aab805a6ec4443240adeb13d34f218b6d7ba0ecb6aea11ec",
+      "src/base_components/WarmPool/intrusive_stack.hpp": "912dae641f26b79fecb3f0926aac0e8255c0c67ff0addd4c56d73388faf98bea",
+      "src/base_components/WarmPool/resource.hpp": "9adffca45f4e69a6056f83fda03ff0951ff32fd5816fdbf675be92ba309d82a9",
+      "src/base_components/WarmPool/warm_pool.hpp": "ed8838ee5aeb9fba03efa54ef9b37b45616bf6e790de57344a28821b017b8c8f",
+      "src/base_components/block_slice/basic_block.hpp": "c1b82d3ad5860b73d2199b31d513a1ace91c67ebec384b7fc093d776940fb178",
+      "src/base_components/block_slice/block_resource_factory.hpp": "ac3122d5267b12119b14ce9c484f6640b6afbd5c713aa3b8fea85bea1bfcfc5f",
+      "src/base_components/block_slice/block_slices_allocator.hpp": "ef196108b3bd19878a00f3f22cac2a093752a59984fabb0a49c4309c36866d5b",
+      "src/base_components/block_slice/memory_slice.hpp": "122a2d4180051bef1b1575a76340007e859aea23a4cddce55fcf8c6aaf83b5e5",
+      "src/base_components/block_slice/reader_block.hpp": "c87fb4ada08dc09ce1328fc05bfc3ccc9ad1254c4e2c60aee2d64f8cbdd7fb32",
+      "src/base_components/block_slice/slice_pool.hpp": "0d68260e3d41b881faf2d57787fd1a992bdd2a34d361b02c69d59104e8e82726",
+      "src/base_components/block_slice/writer_block.hpp": "fb9d41b36f88301fcdada460fd390be8f1393173a1e94cc5b8377c923914acc9",
+      "src/data/data_batch.hpp": "8673ec49ed45ff511335cd0e853a72875d649b461376613ca5618ac355378bf9",
+      "src/data/data_frame.hpp": "fecb242429f3044c14950ed0f12a22f35de74af73bdd4f839084ac3e5f3c5965",
+      "src/data/spsc_basic_block.hpp": "4f2168a97b40357b23ba9cb1c16a50241e0ecfb0f82be2ccdabf3a428bd3012d",
+      "src/data/spsc_read_block.hpp": "c8def8e59324f5980d84e4aa072bc45cfa152b25ce733a4f30e08c5fe4985f65",
+      "src/data/spsc_write_block.hpp": "2e6139340c502a36f3ffe15ee59fc8bd1203a663d253e53cf96794440fed0e43",
+      "src/read/layer2/read_block.hpp": "ba24129aa20c9d2643d9b4a8068287395bb51d870289115644d023a343b70402",
+      "src/read/layer2/read_block_factory.hpp": "2c7f0a30323b032017ebc5e81bd8cc0efdd2ce3f6fc0e8c2d51174d0771521d2",
+      "src/read/layer2/read_callbacks.hpp": "e90b6705ffdeaecab6f85d5452b5ab61a4799ceabd931def2d7fece221b64121",
+      "src/read/layer2/to_read_block.hpp": "5afac965742b68f299a703b881f8c53dc2b14170ed2d0b81c01fd0ac2215d7d1",
+      "src/read/read_layer1/muti_writer/read_service.hpp": "92c9e9d45617c629565aa0933f1edabfe3112257cd501edf8df83321ed9127e7",
+      "src/read/read_layer1/muti_writer/read_worker.hpp": "d760a8db4dd3db051c363f4cfbff426ec97c40a031c31938de25e4c3c187ab3a",
+      "src/read/read_layer1/read_item.hpp": "f62cb6548bee70fd09b67d3a829ede5ce6b8bc178ad4d0c25149bfabae53ff0f",
+      "src/read/read_layer1/read_service.hpp": "4bdfa159a804f4c7e77b1e375c9582e76f306c11758cbbd37248e9b5767c8736",
+      "src/read/read_layer1/read_worker.hpp": "4e8a9692b6cd854dec06de332599b4b23ac24651a642cf7b70452694b6fb9608",
+      "src/read/read_layer1/read_writer_data_callback.hpp": "537b0c93fcd1c4a3c4bb5e09170f7e0122705faa4652906f096e7bc4395310d3",
+      "src/read/read_layer1/single_writer/read_service.hpp": "55a9fa356b339b9151d3ec5b0e8836c4d75bb6477f1b4e26aa19f4f759b5be85",
+      "src/read/read_layer1/single_writer/read_worker.hpp": "ebd883583ba6f0e8f92c13200b852023f497ab7e8cbb277539d07ab79545c198",
+      "src/read/read_layer1/types.hpp": "d9f3115daf84f53b9d530ce14d94ed949f51dd105dacce8ef098c3f08461a278",
+      "src/two_buf_queue.hpp": "ebb164d2a73829ee5e4a79edcbabbc196aa2d84dfc27b777267f64c6082a55fe",
+      "src/utils/auto_reset_event.cpp": "8d37d360311652a12e3dc5372f5bacc3a0763f27b06270b4a9dd32cc200b6f2d",
+      "src/utils/auto_reset_event.hpp": "10ac49eca50d3850cae94420799fc0f6b342822e4e3fef46b1dd16d19b472979",
+      "src/utils/block_diagnostics.hpp": "d81e6b16dba8ac62c240c52ed3b25bf75e5d7edb6be8573be7ef3be7ba5b2589",
+      "src/utils/brqHelp.cpp": "041b72c92ac6606727da275dd4b123039e1a0e1d99be2674bafc8ff657cb2c9f",
+      "src/utils/brqHelp.hpp": "f3b960d533e6bb6d82b79d0e2a90ed3843e1675cfd81a999cc3909ef3432ba94",
+      "src/utils/fast_time.cpp": "aeb65319574b99434dfa995324613486adfa7f173a518a58187e7b52e24dfe28",
+      "src/utils/fast_time.hpp": "bc75837066e7e11aed57a2365facad48d3c9dcecea76fe869b62e50711136f90",
+      "src/utils/no_lock.hpp": "c2c5eff008255c2a39d86b95a7af7023252c31d4da23b948d78fb9f213350b35",
+      "src/utils/plain_value.hpp": "fdfc7afe7072c7c452631da0f44dc22657fcc0cbde57a5a8c8f4ff43fb5058cd",
+      "src/utils/spin_lock.hpp": "7a0574871f73a84b17dd47f15a2c0c1a447009913695d434d64fd0048d2985d4",
+      "src/utils/spsc_pointer_queue.hpp": "60eb5de77c466a4185e5ed584d993500ba593ee6adb3c7ff754b9e77e932b861",
+      "src/utils/spsc_queue.hpp": "1cdea11ca6d9168e72aa964fb9f6d9f189d26c150e8ee9a4c2eb541cafe294c8",
+      "src/utils/wait.hpp": "e855d6e0a86375332ba55b43e11a10257ab647a8f07971530a5aa5ed479074a1",
+      "src/write/make_queue.hpp": "808415585792bbeba881b0af7beb6c60e9bf16d21b742a7f163775834ad478f7",
+      "src/write/seq_writer.cpp": "8128732abe1e41c491630a2f65d15858d59bd4ef92dcf45c854f169855003982",
+      "src/write/seq_writer.hpp": "6763aff97c70daabf3b9ae2a12db079b1ef52453a19f4dbe662040b59ccfd1b9",
+      "src/write/sync_context.hpp": "42f007db1badf5a012bf3071c3c9a77577c052029bae1456b12d7d4647eb4d08",
+      "src/write/types.hpp": "ee9185d6ae49801c1a28f8010ba209456935e148116aab1895dbb73c0ecfe828",
+      "src/write/writer.cpp": "d3349d9143deadaf3f9242ad3ea25735f9209ec662c695d782878b2a2620fc93",
+      "src/write/writer.hpp": "f850ed8e1d19eb6ef2dc46b22358fe550c843b96cfc7bcee672f908c6187a9cd",
+      "src/write/writer_base.hpp": "04b56920b6708f784a3087c5aab1177f7a460398631d85ac37a722d79ddef27c",
+      "support/joining_thread.hpp": "12fba49b3a068581337419a8215aa9acdca292632e30840cb02e631c11d204ae",
+      "test/bench_slice_pool_modes.cpp": "5deba4e67f2419a2215ce25c38d3a61e981f640799c83e13fc169d5ec07d87ed",
+      "test/block_test_support.hpp": "978051a1915bf32d8255f4d3d0ac88b6debd3206e617b408c6f9d059048c7adf",
+      "test/func/CMakeLists.txt": "850209f7a339536be070c4ba1049d33f6e1f9c8d1340d890a1351f8b5fecc952",
+      "test/func/aba_review_20260928/CMakeLists.txt": "6404cfd9d6b8e332cad73d886439d4ccf476f1b55e83d071e79e6ba86f993ad8",
+      "test/func/aba_review_20260928/cas_schedules.cpp": "ad7755b6c01aa651b57a44c9a79aad93e2963074debdfc6f81bd92cd1b6fa902",
+      "test/func/aba_review_20260928/generate_instrumented.py": "47cec801522f0089adddfa74c8f73184f31ca84db0698bf7ef76b984f83b5de7",
+      "test/func/aba_review_20260928/model.py": "bb6f869c418e775e23099193a61f5518e4d47d85a9f4234b6ffc99b545a6f1e3",
+      "test/func/aba_review_20260928/source-manifest.json": "f93e9706a69ab686beabe764b7ccb7180c5b1fd1d8b5dde49a579314db3e7b8f",
+      "test/func/aba_review_20260928/source_reuse.cpp": "0ece7d0b1345f6636824c85ef3c50551d6004980387f6f5547bf0c97ef043388",
+      "test/func/block_lifecycle/CMakeLists.txt": "3aae7d5613d07bbdda27de5f4c279faa15f4934fdfb606c2f2d38655300167bc",
+      "test/func/block_lifecycle/check_death.py": "24bf3e72013041060112c42744e745d1de03bc6068f9005a73f0bce0f1b75931",
+      "test/func/block_lifecycle/results/2026-09-30/source-sha256.json": "21641596f4338cadcd58c06d8e7eea8c8c71143a1cdd752cb1eb7039c5f6ba59",
+      "test/func/block_lifecycle/results/2026-09-30-adjust/source-sha256.json": "854f18757c1c929955cdbd7769f8f079564a8eb13b0bb086124f3702e1e21f7d",
+      "test/func/block_lifecycle/results/2026-09-30-trim/source-sha256.json": "e90bf9fd636a2729545b01aba4488e65dfb12e8c63cb67f732b6258107be74d1",
+      "test/func/block_lifecycle/tests.cpp": "47b8baedb526bbc6f244b4a3d233154867619aa8456bdc24b599a3a2ed42e090",
+      "test/func/block_lifecycle/trim.cpp": "d85194330fd28415c8601e34992dd4c714ae7628ef49b96bd2d8cc3abb20fdde",
+      "test/func/block_roles/CMakeLists.txt": "f4c60b5f47be372eb89e63086d2396b1339a19f379f68d866dce7826539ad680",
+      "test/func/block_roles/results/2026-09-30/source-sha256.json": "c163a378f9c7ed52408a6e0220490b2b33b2fba5dd08372f0ade710b1cad3e3e",
+      "test/func/block_roles/tests.cpp": "52bac2100021814ab59084a1993cbfbd752d406492ead605069ad4fea748d58e",
+      "test/func/block_templates/CMakeLists.txt": "9886ab6f4db8ea38ce2359f1fefd5a9da92725530522e537feeb874814c2364a",
+      "test/func/block_templates/header_only.cpp": "810889d2d78424b30ec2eaefa0af27521ab53a797ce948c7f0edc139c26b34db",
+      "test/func/block_templates/results/2026-09-30/source-sha256.json": "f4881a0b872f837d31a035bcec883e99658ea3829c61f86649a4e16d09794e2c",
+      "test/func/block_templates/tests.cpp": "b2166982d854b3593ffc161cb4318bd2f67bca144888f19d393fc3f86757bc1a",
+      "test/func/cases.json": "0c20b1c08f2c28d7fb34a24619b97d3eeb0fc655bc34cb17a7536042f76519c0",
+      "test/func/concurrency.cpp": "2bdd34a235f4fa743145100cabdf13135bb8efa95776cc7ad3744080154b6e52",
+      "test/func/concurrent/CMakeLists.txt": "9d33755b5408da0d7847c8194c2fc9a6e1180d1191e8642875a34e2373051627",
+      "test/func/concurrent/block_alloc.cpp": "f43853e3435679f8986cb293cfa8e80abaf91afce9fe4b279282aebd8a6646ec",
+      "test/func/concurrent/block_pool.cpp": "96d2ebb77b1ff8a3e25603c3dc0fec8c86a502193ecea45c273b4d4d5fa74aa5",
+      "test/func/concurrent/cases.json": "13961aeb398b0b08b0aaf2914e1f8afb787b9daef6ee411a7b9f9cfad3970eda",
+      "test/func/concurrent/common.hpp": "ab5e9abe718185b5055c58e88d8bb0d3a9a8e5d499a3431848fd5ad965050b8f",
+      "test/func/concurrent/main.cpp": "848a9fc7fb29c6036ff5c8be4c620e4d6f853fa31e8e9cc37347876f89f29c2c",
+      "test/func/concurrent/pipeline.cpp": "3f8a04709ca97dfb402f8682bf78e59d0906374033c5e6e2848e9a65ed73562e",
+      "test/func/concurrent/pool.cpp": "457815bb11bfe611aaa46c7ab2971cd6f53f526e513a60cfe77926cb16219289",
+      "test/func/concurrent/queue.cpp": "cddbeed6a429421564a0bfc7cda22950d3d7b45ec199db2c996f5addc4eda424",
+      "test/func/concurrent/results/2026-09-25/source-sha256.json": "c202d37f92625590bac5eb0ef5f39756a87ca553f30e0371947ceabd66f6a5ad",
+      "test/func/concurrent/results/2026-09-25/summary.json": "f8f8630ff14210a7adcca20b65e662795228ec329c7a769ef37a7ce4e0b89b8b",
+      "test/func/concurrent/results/2026-09-29/source-sha256.json": "584b37895a8f1dbb0d5b750a70874ec17278e528683a832d63d3f85eb9e70c6c",
+      "test/func/concurrent/results/2026-09-29/summary.json": "99b5dfe65132a532ed4d843ddb6f3d18771e16542b09387126385532952340ee",
+      "test/func/concurrent/results/2026-09-29-simplify/source-sha256.json": "52c0302f2938993d10ff8d727320302969401a6b3102186bfc84f20a23c8c62f",
+      "test/func/concurrent/verify_catalog.py": "ece4d69bb7ee18d65157a9c4e4714c7b4566efd93a3fdc9ce70ced50a739b048",
+      "test/func/death.cpp": "bf4f0dab129915019bccfa09c3a657c23b82625724b9f0af2a447ffc0c815ee0",
+      "test/func/external_pool/CMakeLists.txt": "7fca7e0d3febb52505acc49e7e98b704f85e43c85b8c319b89ceda9504004331",
+      "test/func/external_pool/results/2026-10-01/source-sha256.json": "70854cdeb18b6eaaf01df3fd2c26e5828ed92400796313aca8e5b9023341a439",
+      "test/func/external_pool/tests.cpp": "00cb930769331d2a69f601bf9274d4fac974d75b23e1c48d521d49035a7fa7e4",
+      "test/func/handoff_queue/CMakeLists.txt": "8954fef727c389226f2d4d6b7998b20de955c4bb308611037f56ddc610778830",
+      "test/func/handoff_queue/cancel_modes.cpp": "b54dad0e149621419f6a7f099abfd23f270be7a52efd47f0ae94aaf76a6559a2",
+      "test/func/handoff_queue/lock_free_queue.cpp": "4d6aa20d7de51cef125359ca545630f1bcf34ecebeca26a117d121992cf3a403",
+      "test/func/handoff_queue/nonintrusive.cpp": "3c9f7b9e574a816d67f6d65b8a8c54d56b42025f380fe62ce71dc8ba15bffadb",
+      "test/func/handoff_queue/standalone_queue.cpp": "6da849fa1a836913a210a09308f6a0cc768f22e42cc5d0b1e60883d811b48bea",
+      "test/func/handoff_queue/standalone_reader.cpp": "9de8745bd2fdfd195eaba20c2e511c3fea27fd57b8bf8b4f1695fc2d70dc04b9",
+      "test/func/handoff_queue/tests.cpp": "98900ce927e2077864c323d5025906e9e85bd53c2a7f88120e7d27a5b98e33f5",
+      "test/func/main.cpp": "557171c4bebef192177fa43d6cbbdb5e6dbe7afed9348b78072ba6c7f9cd9ac4",
+      "test/func/policy.cpp": "327ee2a6c779777b3af140ba07dd366a3f2fad854389102e3e5c3c56a3d2c380",
+      "test/func/pool.cpp": "8859504b8ed53f5b49e661997534c6479f613d8b5cd9749016fe6c30fee644cb",
+      "test/func/results/2026-09-25/source-sha256.json": "3144ffd90a200fbdbb585ee4509bb6d3afe8a3bb2750f8c4376c25ce9bd754dc",
+      "test/func/results/2026-09-25/summary.json": "3bde27cb275e461d9302df9d318891ae6d371e8ed2daf2af71e9e5d03f4e5e5c",
+      "test/func/results/2026-09-29-pool-wait/source-sha256.json": "8b50464f973019892ce511b54ea4162ca3b3644f6acf27f4c1700ac9aa3a62c4",
+      "test/func/results/2026-09-29-write-layout/source-sha256.json": "fba3fd9c41d9f1f0d8e4298b4b440e0b56c417eedf74171f0d26084a5ab58c50",
+      "test/func/review_20260925/CMakeLists.txt": "dfed056d754252f75c7aaa72697657862d11c58c2fb156d6eaa2107f73dfa776",
+      "test/func/review_20260925/linux-results.json": "a08c655f1bfd3d6d6ffb203d8cb52a02085ce32829cc1df7e39e20f71e268fae",
+      "test/func/review_20260925/repro.cpp": "65f403da6a78e8743697ce1169c38a8872463538107bbee63acd396c425d46ea",
+      "test/func/review_20260925/run_repros.py": "0e9fa2ac91467ed3eb91db6528ceb6d58dd9d86a735fa3bf8fcab8b6a35408a1",
+      "test/func/review_20260925/source-manifest.json": "24830b0f91b21748d41379385f1cfe3c15b1cd059d82d326207abac247c5e042",
+      "test/func/review_20260925/windows-results.json": "e6c68e38130b0ad66a240d99d63213d2d50ce482a0b712c2a88f69ead7ace80d",
+      "test/func/review_20260927/CMakeLists.txt": "6cbfc2a6735e31d2beeff29702160a81da4fb8439fae28990b293358d10f1eee",
+      "test/func/review_20260927/review.cpp": "b21841531e75278129f032a79640e3e3bc90d38b081ba5614589b818fe4a242b",
+      "test/func/review_20260927/source-manifest.json": "024750dc384b7392e9f3ef099a6b375c52c42c56765fdd06eb36e72bd97bc760",
+      "test/func/source_lifecycle/CMakeLists.txt": "aa7e838286ff2f834252c6a2513ba5c5443cada3422f53ad97d1841101653c85",
+      "test/func/source_lifecycle/lifecycle.cpp": "275919ebe92728dd867e13a88272afbdeff9d8069c8d6550838ee127109d9ff2",
+      "test/func/spsc_blocks/CMakeLists.txt": "7ed21a4f3e0fd371041f9054cfd90125c1374f65d92cd2b91e88b5881baef3f2",
+      "test/func/spsc_blocks/tests.cpp": "731f5fc73b2bfe4c28d4f85aedd1c4de0a6ee369f9946132d1e5f0f791916be5",
+      "test/func/store.cpp": "fe1ef802e646127f9d280126bfde0d837d27bd3ea4779acb75914a4090e31a5b",
+      "test/func/support.hpp": "6f4a80d777a159d05dcdddbb83fea1c32f9cddd27b7c2b4ab09c8447f69a2a2c",
+      "test/func/verify.py": "f5f5e6005e4c16b20854a6bbefb5a33d87e8b4160bc1f676c86e6f521437e37e",
+      "test/func/verify_compile.py": "c5cd0a4ddbc42f81621c1698aea85a9280bfc7b5ab102d11193841540643beee",
+      "test/func/warm_pool/CMakeLists.txt": "1f977ad6b98a80a15d4791f655c7bf748a1c36ce00479074c34c1d95aae7b2b0",
+      "test/func/warm_pool/example_resource.hpp": "fb41331226b49e531b1ba763ba137ec1e41baf9bc634b74b34ec7cf4e185eab9",
+      "test/func/warm_pool/header_only.cpp": "2099f1c698205f15dbc4a6a1959d595ac21c2cb3d50ac3471460d853639f9087",
+      "test/func/warm_pool/tests.cpp": "0777dae67901ce10e5b3d9529dae04763f24fea9a7e674351ccda32ab017b143",
+      "test/func/write_layout.cpp": "28c073af729671917493451d71c1913268aa807bbd3281b4543ab3a6a7952785",
+      "test/func/write_read.cpp": "7533946ebc4c73b9281d59749d3ace47dd11b0f996244df7e92a7e9e79883c9c",
+      "test/integration/CMakeLists.txt": "a2f8d5d000fab5520e0a77f6d68e2c0d93b8ca572d8a0630e12eaf4c3f37b114",
+      "test/integration/main.cpp": "e8da1030be22675d627cb3748fc090c70cf9d3a6e2b07b9b25377221e9853307",
+      "test/live_handoff_tests.cpp": "23d8d5eb9a0019a44fff7d204f11dd55d129dfda3f25599485da397aee344464",
+      "test/read_test_support.hpp": "c661e819c93fa67c2bafedc434bbe6d1b0ef8a3d632c347cd88b309d8d40de18",
+      "test/test_fixed_slice_bitmap.cpp": "67c429f5f4b1164571028df55f74abc79f69003b7655604199f75b3295cd9025",
+      "test/test_performance_harness.cpp": "33dab51ec88306e3f1106744a0c6108e3ba74a45c99cac0748352a8f292ba93d",
+      "test/test_performance_report.py": "a0f9f37a83a42a1d1a87e8c4b0ee134ba4e7148e5877d048a1537ff77d324f09",
+      "test/test_performance_search.py": "407e2bb4f90b13ebcae6314aff135a09626f6f7fd94d4ba0782bbb0abaacb657",
+      "test/test_read_active_completion.cpp": "a9ccec307a268c0cb516c854ee8edf1f48e2aeec739dd1e921ccc1dc42a40ca5",
+      "test/test_read_item.cpp": "c2da13f4ea442b8e0565484f34669e34c42405b5c40937cd0afb1e6e0357b60f",
+      "test/test_read_notifications.cpp": "72f79877cddfe09c9b804dd21994bcd2f08bd274e811182bbf90c80ed898e17b",
+      "test/test_read_service.cpp": "e39639520ef78fc996722fe4a2e19e89299e7966ec492267679a4426e0b98ed7",
+      "test/test_reader_cohesion.cpp": "06d42522ecd83739edea0a1b04605bc1a22f0626b6882be6e523a81ecc020ad3",
+      "test/test_scan_current.cpp": "c2ada2ab054ac75fefe4df4d14ca6519700a8cef43de0dbeb3744e2b87b17f99",
+      "test/test_single_reader.cpp": "5356b2e52c2425af3c29771bad447a3869a312a63f9e8eed9d7b7aea97b87341",
+      "test/test_slice_pool.cpp": "7eae9163ace54912081a60dbef1526faae9c87ec2570b19db1724961124d5e07",
+      "test/test_slice_release_check.cpp": "2e8fb33255ed68d311d10a72600b3efa076e7e9b95a8a67f1fa205c42d9d7327",
+      "test/test_sync_writer.cpp": "ecd7715e32aee3b32af613250b11a52b2faba3ebd0a380f41e1554d62cc33768",
+      "test/test_two_buf_queue_options.cpp": "d4c0bfe9fd04ddbfbf97663df1765916c64e69e008cf52c3e9771bf33db89d08",
+      "test/test_unified_data.cpp": "9698c88fa57037158e82d964c606a7850e0647dd602ce98b2a1f5302aaf91565",
+      "test/test_write_session.cpp": "01a094aaff125afa79f63bd60893a1c98cc195f72b5d35b549edc243b94739d8",
+      "test/test_writer.cpp": "e9f2298c0e15a28e0fdafc95f705de7abab5cebf48d7984ad2b6ee114233652c",
+      "test/warm_pool_test_support.hpp": "769324b903d510ec1f08f4f36cde2b31d784de0ad7aa7377b09f446c1afff119",
+      "test/writer_fixture.hpp": "60c39caa3bfebacc8eecd2e9c69379a3059d0be38723c9fd013fe469776aadc1",
+      "test/writer_queue_tests.cpp": "f63337c8063cd966a177f53017a5259b227c5db7eb25a9cf5203faadabed553f"
+    },
+    "dependencies": {
+      "rigtorp": {
+        "repository": "rigtorp/SPSCQueue",
+        "commit": "1053918dbd251fbff69b24ef27fa5d51c29ec2af",
+        "files": [
+          {
+            "path": "include/rigtorp/SPSCQueue.h",
+            "url": "https://raw.githubusercontent.com/rigtorp/SPSCQueue/1053918dbd251fbff69b24ef27fa5d51c29ec2af/include/rigtorp/SPSCQueue.h",
+            "sha256": "1e631ec9e8ba4955da5cac116620815055f7da0ea936bfdb3036c4e87bc8a6e8"
+          },
+          {
+            "path": "LICENSE",
+            "url": "https://raw.githubusercontent.com/rigtorp/SPSCQueue/1053918dbd251fbff69b24ef27fa5d51c29ec2af/LICENSE",
+            "sha256": "d0887259b1e1791964efe737886d5742bf025991b3f4db6b05eefbdbaa4d7224"
+          }
+        ]
+      },
+      "atomic_queue": {
+        "repository": "max0x7ba/atomic_queue",
+        "commit": "74fb62f86e6c3b0db824932a5c5e4bfb0125e2cc",
+        "files": [
+          {
+            "path": "include/atomic_queue/atomic_queue.h",
+            "url": "https://raw.githubusercontent.com/max0x7ba/atomic_queue/74fb62f86e6c3b0db824932a5c5e4bfb0125e2cc/include/atomic_queue/atomic_queue.h",
+            "sha256": "76188465b20c706b37e1c80948b0d0c0a08e9e5144eb536c32e33bd035db0161"
+          },
+          {
+            "path": "include/atomic_queue/defs.h",
+            "url": "https://raw.githubusercontent.com/max0x7ba/atomic_queue/74fb62f86e6c3b0db824932a5c5e4bfb0125e2cc/include/atomic_queue/defs.h",
+            "sha256": "df0085237bfd1b5effeeae14a94b28512948d2f647142c9fc6923aa8aabfd746"
+          },
+          {
+            "path": "LICENSE",
+            "url": "https://raw.githubusercontent.com/max0x7ba/atomic_queue/74fb62f86e6c3b0db824932a5c5e4bfb0125e2cc/LICENSE",
+            "sha256": "22e4fce4f072000d810546875f26ad1e8b23fcb942fe0a00c85602eb3626c1bb"
+          }
+        ]
+      },
+      "readerwriterqueue": {
+        "repository": "cameron314/readerwriterqueue",
+        "commit": "8e7627d18c2108aca178888d88514179899a044f",
+        "version": "v1.0.6",
+        "files": [
+          {
+            "path": "readerwriterqueue.h",
+            "url": "https://raw.githubusercontent.com/cameron314/readerwriterqueue/8e7627d18c2108aca178888d88514179899a044f/readerwriterqueue.h",
+            "sha256": "c7abdbe90059b8b8c649d5752694bc41cfc0a8510e655513b7b8a01fce5741d6"
+          },
+          {
+            "path": "atomicops.h",
+            "url": "https://raw.githubusercontent.com/cameron314/readerwriterqueue/8e7627d18c2108aca178888d88514179899a044f/atomicops.h",
+            "sha256": "e0aa232fd22d2e061830e33ff9ae53106eab08d2afda49e0e51d22f9d514804e"
+          },
+          {
+            "path": "LICENSE.md",
+            "url": "https://raw.githubusercontent.com/cameron314/readerwriterqueue/8e7627d18c2108aca178888d88514179899a044f/LICENSE.md",
+            "sha256": "018fb474bdf10bc068f5e3f2c61e18df8326d60b46db3eb017b4411eda189afc"
+          }
+        ]
+      }
+    },
+    "settings": {
+      "timer": "auto",
+      "write_mode": "normal",
+      "callback_iterations": [
+        1,
+        1,
+        2,
+        4
+      ],
+      "messages": 10000000,
+      "repetitions": 5,
+      "cache": [
+        256,
+        8
+      ],
+      "payload": [
+        8,
+        16,
+        32,
+        64
+      ],
+      "producer_cpu": -1,
+      "producer_qos": "user_interactive"
+    },
+    "profile_sha256": "9ad5626a843c2e35aaaf801b599cf47d1ce2301d6ccb817927e178e18101a060",
+    "measurement_kind": "fixed_matched_parameters_normal_vs_single_block_session"
+  },
+  "groups": [
+    {
+      "payload_bytes": 8,
+      "transport": "two_buf_queue",
+      "callback_iterations": 1,
+      "parameters": {
+        "transport": "two_buf_queue",
+        "mode": "throughput",
+        "payload_bytes": 8,
+        "messages": 10000000,
+        "warmup_messages": 50000,
+        "callback_iterations": 1,
+        "verify_payload": false,
+        "prepared_input": true,
+        "variable_payload": true,
+        "prepared_input_limit_bytes": 268435456,
+        "measure_callback_time": true,
+        "producer_interval_ns": 0,
+        "source_block_size": 1048576,
+        "source_pool_min": 256,
+        "source_pool_max": 256,
+        "source_queue_capacity": 1024,
+        "writer_backpressure": "drop",
+        "writer_spin_count": 1000,
+        "writer_wait_timeout_ms": 5000,
+        "output_block_size": 1048576,
+        "output_frame_capacity": 1,
+        "output_pool_min": 256,
+        "output_pool_max": 256,
+        "output_queue_capacity": 1024,
+        "cancel_claim_mode": "tail",
+        "output_mode": "spsc",
+        "output_reader_mode": "wait_signal",
+        "output_reader_count": 1,
+        "output_retry_wait_us": 1000,
+        "output_enable_stats": false,
+        "is_scan_current": true,
+        "reader_spin_count": 10000,
+        "rescan_interval_ns": 1000000,
+        "rescan_max_interval_ns": 1000000,
+        "consumer_cpu": -1,
+        "producer_cpu": -1,
+        "producer_qos": "user_interactive",
+        "round_storage_bytes": 214748364,
+        "spsc_buffer_bytes": 268435456,
+        "prefault_producer_buffers": true,
+        "finish_timeout_ms": 5000,
+        "work_wait_min_ms": 1,
+        "finish_retry_ms": 1,
+        "publish_count": 10,
+        "spsc_capacity": 0,
+        "retry_yield_every": 1024,
+        "spsc_idle_spins": 1000,
+        "spsc_idle_sleep_ns": 0,
+        "timer": "auto",
+        "sample_every": 32,
+        "max_samples": 1000000,
+        "latency_batch_size": 1000,
+        "timer_calibration_samples": 16384,
+        "call_batch_size": 256,
+        "random_seed": 42,
+        "timeout_seconds": 180,
+        "buffer_budget_bytes": 536870912,
+        "use_write_session": false,
+        "rigtorp_write_prefetch": false,
+        "readerwriterqueue_copy_after_zero": false
+      },
+      "throughput_mps": 1195.912594356,
+      "throughput_runs_mps": [
+        1212.70919234,
+        1243.059687,
+        1132.83434246,
+        1235.85853424,
+        1155.10121574
+      ],
+      "payload_gb_per_second": 9.567300754856,
+      "p50_ns": 0.8083333333334,
+      "p50_runs_ns": [
+        0.791666666667,
+        0.875,
+        0.875,
+        0.75,
+        0.75
+      ],
+      "p99_ns": 1.425,
+      "p99_runs_ns": [
+        1.45833333333,
+        1.5,
+        1.625,
+        1.54166666667,
+        1
+      ],
+      "p999_ns": 3.033333333336,
+      "p999_runs_ns": [
+        2.125,
+        3.04166666667,
+        3.54166666667,
+        4.66666666667,
+        1.79166666667
+      ],
+      "latency_runs": [
+        {
+          "p50": 0.791666666667,
+          "p99": 1.45833333333,
+          "p999": 2.125,
+          "max": 10
+        },
+        {
+          "p50": 0.875,
+          "p99": 1.5,
+          "p999": 3.04166666667,
+          "max": 21.7083333333
+        },
+        {
+          "p50": 0.875,
+          "p99": 1.625,
+          "p999": 3.54166666667,
+          "max": 20.2083333333
+        },
+        {
+          "p50": 0.75,
+          "p99": 1.54166666667,
+          "p999": 4.66666666667,
+          "max": 12.625
+        },
+        {
+          "p50": 0.75,
+          "p99": 1,
+          "p999": 1.79166666667,
+          "max": 4.83333333333
+        }
+      ],
+      "callback_to_producer_ratio": 3.380140970542,
+      "producer_seconds": 0.0083733746,
+      "callback_processing_seconds": 0.02826995,
+      "wall_seconds": 0.028380750399999998,
+      "drain_seconds": 0.0200068918,
+      "failed_write_calls": 0.0,
+      "backpressured_messages": 0.0,
+      "producer_retry_seconds": 0.0,
+      "cpu_cores": 2.1865656794220003,
+      "input_preparation_seconds": 0.0098639664,
+      "session_block_exhaustions": 0.0,
+      "actual_spsc_capacity": [
+        0
+      ],
+      "completed_rounds": [
+        1
+      ],
+      "effective_warmup_messages": [
+        51000
+      ],
+      "prepared_input_bytes": [
+        80000000
+      ],
+      "latency_samples": [
+        10000
+      ],
+      "latency_tail_writes": [
+        0
+      ],
+      "timer": [
+        "mach_absolute_time"
+      ],
+      "writer_pressure_events": 0.0,
+      "copy_memory_full_events": 0.0,
+      "internal_backpressure": {
+        "writer_pressure_events": 0.0,
+        "copy_memory_full_events": 0.0
+      },
+      "nominal_buffer_mib": [
+        512.0
+      ],
+      "peak_rss_mib": 394.921875,
+      "latency_quantum_ns": 0.0416666666667,
+      "resolution_limited": false,
+      "p999_sample_count_warning": true,
+      "library_pressure_stats_available": true
+    },
+    {
+      "payload_bytes": 8,
+      "transport": "readerwriterqueue",
+      "callback_iterations": 1,
+      "parameters": {
+        "transport": "readerwriterqueue",
+        "mode": "throughput",
+        "payload_bytes": 8,
+        "messages": 10000000,
+        "warmup_messages": 50000,
+        "callback_iterations": 1,
+        "verify_payload": false,
+        "prepared_input": true,
+        "variable_payload": true,
+        "prepared_input_limit_bytes": 268435456,
+        "measure_callback_time": true,
+        "producer_interval_ns": 0,
+        "source_block_size": 1048576,
+        "source_pool_min": 256,
+        "source_pool_max": 256,
+        "source_queue_capacity": 1024,
+        "writer_backpressure": "drop",
+        "writer_spin_count": 1000,
+        "writer_wait_timeout_ms": 5000,
+        "output_block_size": 1048576,
+        "output_frame_capacity": 1024,
+        "output_pool_min": 256,
+        "output_pool_max": 256,
+        "output_queue_capacity": 1024,
+        "cancel_claim_mode": "tail",
+        "output_mode": "spsc",
+        "output_reader_mode": "wait_signal",
+        "output_reader_count": 1,
+        "output_retry_wait_us": 1000,
+        "output_enable_stats": false,
+        "is_scan_current": false,
+        "reader_spin_count": 1000,
+        "rescan_interval_ns": 1000000,
+        "rescan_max_interval_ns": 30000000,
+        "consumer_cpu": -1,
+        "producer_cpu": -1,
+        "producer_qos": "user_interactive",
+        "round_storage_bytes": 214748364,
+        "spsc_buffer_bytes": 268435456,
+        "prefault_producer_buffers": true,
+        "finish_timeout_ms": 5000,
+        "work_wait_min_ms": 1,
+        "finish_retry_ms": 1,
+        "publish_count": 4294967295,
+        "spsc_capacity": 33488385,
+        "retry_yield_every": 1024,
+        "spsc_idle_spins": 0,
+        "spsc_idle_sleep_ns": 10000,
+        "timer": "auto",
+        "sample_every": 32,
+        "max_samples": 1000000,
+        "latency_batch_size": 1000,
+        "timer_calibration_samples": 16384,
+        "call_batch_size": 256,
+        "random_seed": 42,
+        "timeout_seconds": 180,
+        "buffer_budget_bytes": 536870912,
+        "use_write_session": false,
+        "rigtorp_write_prefetch": false,
+        "readerwriterqueue_copy_after_zero": false
+      },
+      "throughput_mps": 833.8502428813999,
+      "throughput_runs_mps": [
+        872.908151993,
+        857.918047379,
+        876.008296499,
+        746.287258205,
+        816.129460331
+      ],
+      "payload_gb_per_second": 6.670801943052,
+      "p50_ns": 1.25,
+      "p50_runs_ns": [
+        1.25,
+        1.25,
+        1.25,
+        1.25,
+        1.25
+      ],
+      "p99_ns": 2.2166666666659998,
+      "p99_runs_ns": [
+        1.95833333333,
+        1.91666666667,
+        2.33333333333,
+        2.625,
+        2.25
+      ],
+      "p999_ns": 4.575000000002,
+      "p999_runs_ns": [
+        4.04166666667,
+        4.79166666667,
+        3.16666666667,
+        7,
+        3.875
+      ],
+      "latency_runs": [
+        {
+          "p50": 1.25,
+          "p99": 1.95833333333,
+          "p999": 4.04166666667,
+          "max": 34.2916666667
+        },
+        {
+          "p50": 1.25,
+          "p99": 1.91666666667,
+          "p999": 4.79166666667,
+          "max": 28.0833333333
+        },
+        {
+          "p50": 1.25,
+          "p99": 2.33333333333,
+          "p999": 3.16666666667,
+          "max": 5.91666666667
+        },
+        {
+          "p50": 1.25,
+          "p99": 2.625,
+          "p999": 7,
+          "max": 38.9166666667
+        },
+        {
+          "p50": 1.25,
+          "p99": 2.25,
+          "p999": 3.875,
+          "max": 30.0833333333
+        }
+      ],
+      "callback_to_producer_ratio": 3.363106080774,
+      "producer_seconds": 0.012036025,
+      "callback_processing_seconds": 0.0403345752,
+      "wall_seconds": 0.0403421668,
+      "drain_seconds": 0.0283059752,
+      "failed_write_calls": 0.0,
+      "backpressured_messages": 0.0,
+      "producer_retry_seconds": 0.0,
+      "cpu_cores": 1.9866876796860002,
+      "input_preparation_seconds": 0.0098345252,
+      "session_block_exhaustions": 0.0,
+      "actual_spsc_capacity": [
+        33488896
+      ],
+      "completed_rounds": [
+        1
+      ],
+      "effective_warmup_messages": [
+        50000
+      ],
+      "prepared_input_bytes": [
+        80000000
+      ],
+      "latency_samples": [
+        10000
+      ],
+      "latency_tail_writes": [
+        0
+      ],
+      "timer": [
+        "mach_absolute_time"
+      ],
+      "writer_pressure_events": 0.0,
+      "copy_memory_full_events": 0.0,
+      "internal_backpressure": null,
+      "nominal_buffer_mib": [
+        255.5
+      ],
+      "peak_rss_mib": 367.28125,
+      "latency_quantum_ns": 0.0416666666667,
+      "resolution_limited": false,
+      "p999_sample_count_warning": true,
+      "library_pressure_stats_available": false
+    },
+    {
+      "payload_bytes": 8,
+      "transport": "rigtorp",
+      "callback_iterations": 1,
+      "parameters": {
+        "transport": "rigtorp",
+        "mode": "throughput",
+        "payload_bytes": 8,
+        "messages": 10000000,
+        "warmup_messages": 50000,
+        "callback_iterations": 1,
+        "verify_payload": false,
+        "prepared_input": true,
+        "variable_payload": true,
+        "prepared_input_limit_bytes": 268435456,
+        "measure_callback_time": true,
+        "producer_interval_ns": 0,
+        "source_block_size": 1048576,
+        "source_pool_min": 256,
+        "source_pool_max": 256,
+        "source_queue_capacity": 1024,
+        "writer_backpressure": "drop",
+        "writer_spin_count": 1000,
+        "writer_wait_timeout_ms": 5000,
+        "output_block_size": 1048576,
+        "output_frame_capacity": 1024,
+        "output_pool_min": 256,
+        "output_pool_max": 256,
+        "output_queue_capacity": 1024,
+        "cancel_claim_mode": "tail",
+        "output_mode": "spsc",
+        "output_reader_mode": "wait_signal",
+        "output_reader_count": 1,
+        "output_retry_wait_us": 1000,
+        "output_enable_stats": false,
+        "is_scan_current": false,
+        "reader_spin_count": 1000,
+        "rescan_interval_ns": 1000000,
+        "rescan_max_interval_ns": 30000000,
+        "consumer_cpu": -1,
+        "producer_cpu": -1,
+        "producer_qos": "user_interactive",
+        "round_storage_bytes": 214748364,
+        "spsc_buffer_bytes": 268435456,
+        "prefault_producer_buffers": true,
+        "finish_timeout_ms": 5000,
+        "work_wait_min_ms": 1,
+        "finish_retry_ms": 1,
+        "publish_count": 4294967295,
+        "spsc_capacity": 33554415,
+        "retry_yield_every": 1024,
+        "spsc_idle_spins": 0,
+        "spsc_idle_sleep_ns": 1000,
+        "timer": "auto",
+        "sample_every": 32,
+        "max_samples": 1000000,
+        "latency_batch_size": 1000,
+        "timer_calibration_samples": 16384,
+        "call_batch_size": 256,
+        "random_seed": 42,
+        "timeout_seconds": 180,
+        "buffer_budget_bytes": 536870912,
+        "use_write_session": false,
+        "rigtorp_write_prefetch": true,
+        "readerwriterqueue_copy_after_zero": false
+      },
+      "throughput_mps": 311.2850748518,
+      "throughput_runs_mps": [
+        333.855918002,
+        296.52326179,
+        304.405505636,
+        312.54476227,
+        309.095926561
+      ],
+      "payload_gb_per_second": 2.490280598814,
+      "p50_ns": 3.1,
+      "p50_runs_ns": [
+        3,
+        2.95833333333,
+        3.375,
+        3.04166666667,
+        3.125
+      ],
+      "p99_ns": 5.466666666668,
+      "p99_runs_ns": [
+        4.66666666667,
+        4.25,
+        6.66666666667,
+        5.54166666667,
+        6.20833333333
+      ],
+      "p999_ns": 9.966666666668,
+      "p999_runs_ns": [
+        9.29166666667,
+        7.625,
+        12.9583333333,
+        8.79166666667,
+        11.1666666667
+      ],
+      "latency_runs": [
+        {
+          "p50": 3,
+          "p99": 4.66666666667,
+          "p999": 9.29166666667,
+          "max": 31.25
+        },
+        {
+          "p50": 2.95833333333,
+          "p99": 4.25,
+          "p999": 7.625,
+          "max": 33.4583333333
+        },
+        {
+          "p50": 3.375,
+          "p99": 6.66666666667,
+          "p999": 12.9583333333,
+          "max": 35.8333333333
+        },
+        {
+          "p50": 3.04166666667,
+          "p99": 5.54166666667,
+          "p999": 8.79166666667,
+          "max": 11.7083333333
+        },
+        {
+          "p50": 3.125,
+          "p99": 6.20833333333,
+          "p999": 11.1666666667,
+          "max": 30.9166666667
+        }
+      ],
+      "callback_to_producer_ratio": 1.0000033312154,
+      "producer_seconds": 0.0321751916,
+      "callback_processing_seconds": 0.0321752168,
+      "wall_seconds": 0.0321780584,
+      "drain_seconds": 2.7168e-06,
+      "failed_write_calls": 0.0,
+      "backpressured_messages": 0.0,
+      "producer_retry_seconds": 0.0,
+      "cpu_cores": 1.954316512304,
+      "input_preparation_seconds": 0.0108455582,
+      "session_block_exhaustions": 0.0,
+      "actual_spsc_capacity": [
+        33554415
+      ],
+      "completed_rounds": [
+        1
+      ],
+      "effective_warmup_messages": [
+        50000
+      ],
+      "prepared_input_bytes": [
+        80000000
+      ],
+      "latency_samples": [
+        10000
+      ],
+      "latency_tail_writes": [
+        0
+      ],
+      "timer": [
+        "mach_absolute_time"
+      ],
+      "writer_pressure_events": 0.0,
+      "copy_memory_full_events": 0.0,
+      "internal_backpressure": null,
+      "nominal_buffer_mib": [
+        255.99987030029297
+      ],
+      "peak_rss_mib": 333.984375,
+      "latency_quantum_ns": 0.0416666666667,
+      "resolution_limited": false,
+      "p999_sample_count_warning": true,
+      "library_pressure_stats_available": false
+    },
+    {
+      "payload_bytes": 8,
+      "transport": "atomic_queue",
+      "callback_iterations": 1,
+      "parameters": {
+        "transport": "atomic_queue",
+        "mode": "throughput",
+        "payload_bytes": 8,
+        "messages": 10000000,
+        "warmup_messages": 50000,
+        "callback_iterations": 1,
+        "verify_payload": false,
+        "prepared_input": true,
+        "variable_payload": true,
+        "prepared_input_limit_bytes": 268435456,
+        "measure_callback_time": true,
+        "producer_interval_ns": 0,
+        "source_block_size": 1048576,
+        "source_pool_min": 256,
+        "source_pool_max": 256,
+        "source_queue_capacity": 1024,
+        "writer_backpressure": "drop",
+        "writer_spin_count": 1000,
+        "writer_wait_timeout_ms": 5000,
+        "output_block_size": 1048576,
+        "output_frame_capacity": 1024,
+        "output_pool_min": 256,
+        "output_pool_max": 256,
+        "output_queue_capacity": 1024,
+        "cancel_claim_mode": "tail",
+        "output_mode": "spsc",
+        "output_reader_mode": "wait_signal",
+        "output_reader_count": 1,
+        "output_retry_wait_us": 1000,
+        "output_enable_stats": false,
+        "is_scan_current": false,
+        "reader_spin_count": 1000,
+        "rescan_interval_ns": 1000000,
+        "rescan_max_interval_ns": 30000000,
+        "consumer_cpu": -1,
+        "producer_cpu": -1,
+        "producer_qos": "user_interactive",
+        "round_storage_bytes": 214748364,
+        "spsc_buffer_bytes": 268435456,
+        "prefault_producer_buffers": true,
+        "finish_timeout_ms": 5000,
+        "work_wait_min_ms": 1,
+        "finish_retry_ms": 1,
+        "publish_count": 4294967295,
+        "spsc_capacity": 33554432,
+        "retry_yield_every": 1024,
+        "spsc_idle_spins": 1000,
+        "spsc_idle_sleep_ns": 10000,
+        "timer": "auto",
+        "sample_every": 32,
+        "max_samples": 1000000,
+        "latency_batch_size": 1000,
+        "timer_calibration_samples": 16384,
+        "call_batch_size": 256,
+        "random_seed": 42,
+        "timeout_seconds": 180,
+        "buffer_budget_bytes": 536870912,
+        "use_write_session": false,
+        "rigtorp_write_prefetch": false,
+        "readerwriterqueue_copy_after_zero": false
+      },
+      "throughput_mps": 184.54099276760002,
+      "throughput_runs_mps": [
+        184.710724903,
+        187.305230656,
+        191.214032617,
+        178.100337278,
+        181.374638384
+      ],
+      "payload_gb_per_second": 1.47632794214,
+      "p50_ns": 5.083333333334,
+      "p50_runs_ns": [
+        4.875,
+        5.33333333333,
+        5,
+        5.16666666667,
+        5.04166666667
+      ],
+      "p99_ns": 14.258333333325998,
+      "p99_runs_ns": [
+        7.20833333333,
+        7.625,
+        39.7083333333,
+        8.58333333333,
+        8.16666666667
+      ],
+      "p999_ns": 37.99999999998,
+      "p999_runs_ns": [
+        36.5833333333,
+        36.5833333333,
+        43.9583333333,
+        37.625,
+        35.25
+      ],
+      "latency_runs": [
+        {
+          "p50": 4.875,
+          "p99": 7.20833333333,
+          "p999": 36.5833333333,
+          "max": 51.125
+        },
+        {
+          "p50": 5.33333333333,
+          "p99": 7.625,
+          "p999": 36.5833333333,
+          "max": 50.8333333333
+        },
+        {
+          "p50": 5,
+          "p99": 39.7083333333,
+          "p999": 43.9583333333,
+          "max": 119.458333333
+        },
+        {
+          "p50": 5.16666666667,
+          "p99": 8.58333333333,
+          "p999": 37.625,
+          "max": 74.875
+        },
+        {
+          "p50": 5.04166666667,
+          "p99": 8.16666666667,
+          "p999": 35.25,
+          "max": 157.333333333
+        }
+      ],
+      "callback_to_producer_ratio": 1.1794855755040001,
+      "producer_seconds": 0.05422150839999999,
+      "callback_processing_seconds": 0.0639148084,
+      "wall_seconds": 0.06392484179999999,
+      "drain_seconds": 0.009703149999999999,
+      "failed_write_calls": 0.0,
+      "backpressured_messages": 0.0,
+      "producer_retry_seconds": 0.0,
+      "cpu_cores": 1.9877863625340002,
+      "input_preparation_seconds": 0.010236708,
+      "session_block_exhaustions": 0.0,
+      "actual_spsc_capacity": [
+        33554432
+      ],
+      "completed_rounds": [
+        1
+      ],
+      "effective_warmup_messages": [
+        50000
+      ],
+      "prepared_input_bytes": [
+        80000000
+      ],
+      "latency_samples": [
+        10000
+      ],
+      "latency_tail_writes": [
+        0
+      ],
+      "timer": [
+        "mach_absolute_time"
+      ],
+      "writer_pressure_events": 0.0,
+      "copy_memory_full_events": 0.0,
+      "internal_backpressure": null,
+      "nominal_buffer_mib": [
+        256.0
+      ],
+      "peak_rss_mib": 366,
+      "latency_quantum_ns": 0.0416666666667,
+      "resolution_limited": false,
+      "p999_sample_count_warning": true,
+      "library_pressure_stats_available": false
+    },
+    {
+      "payload_bytes": 16,
+      "transport": "two_buf_queue",
+      "callback_iterations": 1,
+      "parameters": {
+        "transport": "two_buf_queue",
+        "mode": "throughput",
+        "payload_bytes": 16,
+        "messages": 10000000,
+        "warmup_messages": 50000,
+        "callback_iterations": 1,
+        "verify_payload": false,
+        "prepared_input": true,
+        "variable_payload": true,
+        "prepared_input_limit_bytes": 268435456,
+        "measure_callback_time": true,
+        "producer_interval_ns": 0,
+        "source_block_size": 262144,
+        "source_pool_min": 1024,
+        "source_pool_max": 1024,
+        "source_queue_capacity": 4096,
+        "writer_backpressure": "drop",
+        "writer_spin_count": 1000,
+        "writer_wait_timeout_ms": 5000,
+        "output_block_size": 262144,
+        "output_frame_capacity": 1024,
+        "output_pool_min": 1024,
+        "output_pool_max": 1024,
+        "output_queue_capacity": 4096,
+        "cancel_claim_mode": "tail",
+        "output_mode": "spsc",
+        "output_reader_mode": "wait_signal",
+        "output_reader_count": 1,
+        "output_retry_wait_us": 1000,
+        "output_enable_stats": false,
+        "is_scan_current": true,
+        "reader_spin_count": 1000,
+        "rescan_interval_ns": 1000000,
+        "rescan_max_interval_ns": 1000000,
+        "consumer_cpu": -1,
+        "producer_cpu": -1,
+        "producer_qos": "user_interactive",
+        "round_storage_bytes": 214748364,
+        "spsc_buffer_bytes": 268435456,
+        "prefault_producer_buffers": true,
+        "finish_timeout_ms": 5000,
+        "work_wait_min_ms": 1,
+        "finish_retry_ms": 1,
+        "publish_count": 10,
+        "spsc_capacity": 0,
+        "retry_yield_every": 1024,
+        "spsc_idle_spins": 1000,
+        "spsc_idle_sleep_ns": 0,
+        "timer": "auto",
+        "sample_every": 32,
+        "max_samples": 1000000,
+        "latency_batch_size": 1000,
+        "timer_calibration_samples": 16384,
+        "call_batch_size": 256,
+        "random_seed": 42,
+        "timeout_seconds": 180,
+        "buffer_budget_bytes": 536870912,
+        "use_write_session": false,
+        "rigtorp_write_prefetch": false,
+        "readerwriterqueue_copy_after_zero": false
+      },
+      "throughput_mps": 741.8683002704,
+      "throughput_runs_mps": [
+        995.780380637,
+        514.208215762,
+        1025.22042239,
+        624.096386444,
+        550.036096119
+      ],
+      "payload_gb_per_second": 11.869892804340001,
+      "p50_ns": 0.9166666666666,
+      "p50_runs_ns": [
+        0.958333333333,
+        0.916666666667,
+        0.958333333333,
+        0.875,
+        0.875
+      ],
+      "p99_ns": 5.6750000000059995,
+      "p99_runs_ns": [
+        3.875,
+        14.1666666667,
+        3.58333333333,
+        2.45833333333,
+        4.29166666667
+      ],
+      "p999_ns": 28.383333333332,
+      "p999_runs_ns": [
+        12.125,
+        105.25,
+        9.70833333333,
+        6.08333333333,
+        8.75
+      ],
+      "latency_runs": [
+        {
+          "p50": 0.958333333333,
+          "p99": 3.875,
+          "p999": 12.125,
+          "max": 32.6666666667
+        },
+        {
+          "p50": 0.916666666667,
+          "p99": 14.1666666667,
+          "p999": 105.25,
+          "max": 784.125
+        },
+        {
+          "p50": 0.958333333333,
+          "p99": 3.58333333333,
+          "p999": 9.70833333333,
+          "max": 31.1666666667
+        },
+        {
+          "p50": 0.875,
+          "p99": 2.45833333333,
+          "p999": 6.08333333333,
+          "max": 14.5833333333
+        },
+        {
+          "p50": 0.875,
+          "p99": 4.29166666667,
+          "p999": 8.75,
+          "max": 142.833333333
+        }
+      ],
+      "callback_to_producer_ratio": 2.66038472824,
+      "producer_seconds": 0.014689508199999998,
+      "callback_processing_seconds": 0.0364559918,
+      "wall_seconds": 0.0365416166,
+      "drain_seconds": 0.02185165,
+      "failed_write_calls": 0.0,
+      "backpressured_messages": 0.0,
+      "producer_retry_seconds": 0.0,
+      "cpu_cores": 2.167821439862,
+      "input_preparation_seconds": 0.0218532668,
+      "session_block_exhaustions": 0.0,
+      "actual_spsc_capacity": [
+        0
+      ],
+      "completed_rounds": [
+        1
+      ],
+      "effective_warmup_messages": [
+        50172
+      ],
+      "prepared_input_bytes": [
+        160000000
+      ],
+      "latency_samples": [
+        10000
+      ],
+      "latency_tail_writes": [
+        0
+      ],
+      "timer": [
+        "mach_absolute_time"
+      ],
+      "writer_pressure_events": 0.0,
+      "copy_memory_full_events": 0.0,
+      "internal_backpressure": {
+        "writer_pressure_events": 0.0,
+        "copy_memory_full_events": 0.0
+      },
+      "nominal_buffer_mib": [
+        512.0
+      ],
+      "peak_rss_mib": 544.90625,
+      "latency_quantum_ns": 0.0416666666667,
+      "resolution_limited": false,
+      "p999_sample_count_warning": true,
+      "library_pressure_stats_available": true
+    },
+    {
+      "payload_bytes": 16,
+      "transport": "readerwriterqueue",
+      "callback_iterations": 1,
+      "parameters": {
+        "transport": "readerwriterqueue",
+        "mode": "throughput",
+        "payload_bytes": 16,
+        "messages": 10000000,
+        "warmup_messages": 50000,
+        "callback_iterations": 1,
+        "verify_payload": false,
+        "prepared_input": true,
+        "variable_payload": true,
+        "prepared_input_limit_bytes": 268435456,
+        "measure_callback_time": true,
+        "producer_interval_ns": 0,
+        "source_block_size": 1048576,
+        "source_pool_min": 256,
+        "source_pool_max": 256,
+        "source_queue_capacity": 1024,
+        "writer_backpressure": "drop",
+        "writer_spin_count": 1000,
+        "writer_wait_timeout_ms": 5000,
+        "output_block_size": 1048576,
+        "output_frame_capacity": 1024,
+        "output_pool_min": 256,
+        "output_pool_max": 256,
+        "output_queue_capacity": 1024,
+        "cancel_claim_mode": "tail",
+        "output_mode": "spsc",
+        "output_reader_mode": "wait_signal",
+        "output_reader_count": 1,
+        "output_retry_wait_us": 1000,
+        "output_enable_stats": false,
+        "is_scan_current": false,
+        "reader_spin_count": 1000,
+        "rescan_interval_ns": 5000000,
+        "rescan_max_interval_ns": 30000000,
+        "consumer_cpu": -1,
+        "producer_cpu": -1,
+        "producer_qos": "user_interactive",
+        "round_storage_bytes": 214748364,
+        "spsc_buffer_bytes": 268435456,
+        "prefault_producer_buffers": true,
+        "finish_timeout_ms": 5000,
+        "work_wait_min_ms": 1,
+        "finish_retry_ms": 1,
+        "publish_count": 4294967295,
+        "spsc_capacity": 16743937,
+        "retry_yield_every": 1024,
+        "spsc_idle_spins": 0,
+        "spsc_idle_sleep_ns": 10000,
+        "timer": "auto",
+        "sample_every": 32,
+        "max_samples": 1000000,
+        "latency_batch_size": 1000,
+        "timer_calibration_samples": 16384,
+        "call_batch_size": 256,
+        "random_seed": 42,
+        "timeout_seconds": 180,
+        "buffer_budget_bytes": 536870912,
+        "use_write_session": false,
+        "rigtorp_write_prefetch": false,
+        "readerwriterqueue_copy_after_zero": true
+      },
+      "throughput_mps": 717.4527034588,
+      "throughput_runs_mps": [
+        725.421820094,
+        731.814447569,
+        609.022670869,
+        752.596420019,
+        768.408158743
+      ],
+      "payload_gb_per_second": 11.47924325534,
+      "p50_ns": 1.3083333333340001,
+      "p50_runs_ns": [
+        1.25,
+        1.29166666667,
+        1.25,
+        1.29166666667,
+        1.45833333333
+      ],
+      "p99_ns": 3.125,
+      "p99_runs_ns": [
+        2.33333333333,
+        5.125,
+        2.04166666667,
+        2.70833333333,
+        3.41666666667
+      ],
+      "p999_ns": 6.3833333333399995,
+      "p999_runs_ns": [
+        3.20833333333,
+        10.1666666667,
+        2.79166666667,
+        8.5,
+        7.25
+      ],
+      "latency_runs": [
+        {
+          "p50": 1.25,
+          "p99": 2.33333333333,
+          "p999": 3.20833333333,
+          "max": 34.5416666667
+        },
+        {
+          "p50": 1.29166666667,
+          "p99": 5.125,
+          "p999": 10.1666666667,
+          "max": 36.7916666667
+        },
+        {
+          "p50": 1.25,
+          "p99": 2.04166666667,
+          "p999": 2.79166666667,
+          "max": 27.7083333333
+        },
+        {
+          "p50": 1.29166666667,
+          "p99": 2.70833333333,
+          "p999": 8.5,
+          "max": 52.0416666667
+        },
+        {
+          "p50": 1.45833333333,
+          "p99": 3.41666666667,
+          "p999": 7.25,
+          "max": 29.75
+        }
+      ],
+      "callback_to_producer_ratio": 3.2359760411339997,
+      "producer_seconds": 0.01403415,
+      "callback_processing_seconds": 0.0450911584,
+      "wall_seconds": 0.045103333,
+      "drain_seconds": 0.0310690334,
+      "failed_write_calls": 0.0,
+      "backpressured_messages": 0.0,
+      "producer_retry_seconds": 0.0,
+      "cpu_cores": 1.971908590488,
+      "input_preparation_seconds": 0.0199231084,
+      "session_block_exhaustions": 0.0,
+      "actual_spsc_capacity": [
+        16744448
+      ],
+      "completed_rounds": [
+        1
+      ],
+      "effective_warmup_messages": [
+        50000
+      ],
+      "prepared_input_bytes": [
+        160000000
+      ],
+      "latency_samples": [
+        10000
+      ],
+      "latency_tail_writes": [
+        0
+      ],
+      "timer": [
+        "mach_absolute_time"
+      ],
+      "writer_pressure_events": 0.0,
+      "copy_memory_full_events": 0.0,
+      "internal_backpressure": null,
+      "nominal_buffer_mib": [
+        255.5
+      ],
+      "peak_rss_mib": 427.6875,
+      "latency_quantum_ns": 0.0416666666667,
+      "resolution_limited": false,
+      "p999_sample_count_warning": true,
+      "library_pressure_stats_available": false
+    },
+    {
+      "payload_bytes": 16,
+      "transport": "rigtorp",
+      "callback_iterations": 1,
+      "parameters": {
+        "transport": "rigtorp",
+        "mode": "throughput",
+        "payload_bytes": 16,
+        "messages": 10000000,
+        "warmup_messages": 50000,
+        "callback_iterations": 1,
+        "verify_payload": false,
+        "prepared_input": true,
+        "variable_payload": true,
+        "prepared_input_limit_bytes": 268435456,
+        "measure_callback_time": true,
+        "producer_interval_ns": 0,
+        "source_block_size": 1048576,
+        "source_pool_min": 256,
+        "source_pool_max": 256,
+        "source_queue_capacity": 1024,
+        "writer_backpressure": "drop",
+        "writer_spin_count": 1000,
+        "writer_wait_timeout_ms": 5000,
+        "output_block_size": 1048576,
+        "output_frame_capacity": 1024,
+        "output_pool_min": 256,
+        "output_pool_max": 256,
+        "output_queue_capacity": 1024,
+        "cancel_claim_mode": "tail",
+        "output_mode": "spsc",
+        "output_reader_mode": "wait_signal",
+        "output_reader_count": 1,
+        "output_retry_wait_us": 1000,
+        "output_enable_stats": false,
+        "is_scan_current": false,
+        "reader_spin_count": 1000,
+        "rescan_interval_ns": 5000000,
+        "rescan_max_interval_ns": 30000000,
+        "consumer_cpu": -1,
+        "producer_cpu": -1,
+        "producer_qos": "user_interactive",
+        "round_storage_bytes": 214748364,
+        "spsc_buffer_bytes": 268435456,
+        "prefault_producer_buffers": true,
+        "finish_timeout_ms": 5000,
+        "work_wait_min_ms": 1,
+        "finish_retry_ms": 1,
+        "publish_count": 4294967295,
+        "spsc_capacity": 16777207,
+        "retry_yield_every": 1024,
+        "spsc_idle_spins": 0,
+        "spsc_idle_sleep_ns": 1000,
+        "timer": "auto",
+        "sample_every": 32,
+        "max_samples": 1000000,
+        "latency_batch_size": 1000,
+        "timer_calibration_samples": 16384,
+        "call_batch_size": 256,
+        "random_seed": 42,
+        "timeout_seconds": 180,
+        "buffer_budget_bytes": 536870912,
+        "use_write_session": false,
+        "rigtorp_write_prefetch": true,
+        "readerwriterqueue_copy_after_zero": false
+      },
+      "throughput_mps": 275.1519214936,
+      "throughput_runs_mps": [
+        273.566001217,
+        290.803344238,
+        231.799175129,
+        312.001528807,
+        267.589558077
+      ],
+      "payload_gb_per_second": 4.4024307439040005,
+      "p50_ns": 3.45,
+      "p50_runs_ns": [
+        3.20833333333,
+        3.20833333333,
+        3.16666666667,
+        3.25,
+        4.41666666667
+      ],
+      "p99_ns": 7.600000000008,
+      "p99_runs_ns": [
+        6.29166666667,
+        6.75,
+        5.375,
+        5.66666666667,
+        13.9166666667
+      ],
+      "p999_ns": 14.24166666666,
+      "p999_runs_ns": [
+        9.41666666667,
+        12.75,
+        8.125,
+        9.33333333333,
+        31.5833333333
+      ],
+      "latency_runs": [
+        {
+          "p50": 3.20833333333,
+          "p99": 6.29166666667,
+          "p999": 9.41666666667,
+          "max": 18.9583333333
+        },
+        {
+          "p50": 3.20833333333,
+          "p99": 6.75,
+          "p999": 12.75,
+          "max": 45.75
+        },
+        {
+          "p50": 3.16666666667,
+          "p99": 5.375,
+          "p999": 8.125,
+          "max": 15.625
+        },
+        {
+          "p50": 3.25,
+          "p99": 5.66666666667,
+          "p999": 9.33333333333,
+          "max": 33.1666666667
+        },
+        {
+          "p50": 4.41666666667,
+          "p99": 13.9166666667,
+          "p999": 31.5833333333,
+          "max": 619.666666667
+        }
+      ],
+      "callback_to_producer_ratio": 0.9999810772444,
+      "producer_seconds": 0.0367008666,
+      "callback_processing_seconds": 0.0367000834,
+      "wall_seconds": 0.0367030914,
+      "drain_seconds": 2.1252e-06,
+      "failed_write_calls": 0.0,
+      "backpressured_messages": 0.0,
+      "producer_retry_seconds": 0.0,
+      "cpu_cores": 1.9119576625819998,
+      "input_preparation_seconds": 0.0232005166,
+      "session_block_exhaustions": 0.0,
+      "actual_spsc_capacity": [
+        16777207
+      ],
+      "completed_rounds": [
+        1
+      ],
+      "effective_warmup_messages": [
+        50000
+      ],
+      "prepared_input_bytes": [
+        160000000
+      ],
+      "latency_samples": [
+        10000
+      ],
+      "latency_tail_writes": [
+        0
+      ],
+      "timer": [
+        "mach_absolute_time"
+      ],
+      "writer_pressure_events": 0.0,
+      "copy_memory_full_events": 0.0,
+      "internal_backpressure": null,
+      "nominal_buffer_mib": [
+        255.99986267089844
+      ],
+      "peak_rss_mib": 410.3125,
+      "latency_quantum_ns": 0.0416666666667,
+      "resolution_limited": false,
+      "p999_sample_count_warning": true,
+      "library_pressure_stats_available": false
+    },
+    {
+      "payload_bytes": 16,
+      "transport": "atomic_queue",
+      "callback_iterations": 1,
+      "parameters": {
+        "transport": "atomic_queue",
+        "mode": "throughput",
+        "payload_bytes": 16,
+        "messages": 10000000,
+        "warmup_messages": 50000,
+        "callback_iterations": 1,
+        "verify_payload": false,
+        "prepared_input": true,
+        "variable_payload": true,
+        "prepared_input_limit_bytes": 268435456,
+        "measure_callback_time": true,
+        "producer_interval_ns": 0,
+        "source_block_size": 1048576,
+        "source_pool_min": 256,
+        "source_pool_max": 256,
+        "source_queue_capacity": 1024,
+        "writer_backpressure": "drop",
+        "writer_spin_count": 1000,
+        "writer_wait_timeout_ms": 5000,
+        "output_block_size": 1048576,
+        "output_frame_capacity": 1024,
+        "output_pool_min": 256,
+        "output_pool_max": 256,
+        "output_queue_capacity": 1024,
+        "cancel_claim_mode": "tail",
+        "output_mode": "spsc",
+        "output_reader_mode": "wait_signal",
+        "output_reader_count": 1,
+        "output_retry_wait_us": 1000,
+        "output_enable_stats": false,
+        "is_scan_current": false,
+        "reader_spin_count": 1000,
+        "rescan_interval_ns": 5000000,
+        "rescan_max_interval_ns": 30000000,
+        "consumer_cpu": -1,
+        "producer_cpu": -1,
+        "producer_qos": "user_interactive",
+        "round_storage_bytes": 214748364,
+        "spsc_buffer_bytes": 268435456,
+        "prefault_producer_buffers": true,
+        "finish_timeout_ms": 5000,
+        "work_wait_min_ms": 1,
+        "finish_retry_ms": 1,
+        "publish_count": 4294967295,
+        "spsc_capacity": 16777216,
+        "retry_yield_every": 1024,
+        "spsc_idle_spins": 0,
+        "spsc_idle_sleep_ns": 10000,
+        "timer": "auto",
+        "sample_every": 32,
+        "max_samples": 1000000,
+        "latency_batch_size": 1000,
+        "timer_calibration_samples": 16384,
+        "call_batch_size": 256,
+        "random_seed": 42,
+        "timeout_seconds": 180,
+        "buffer_budget_bytes": 536870912,
+        "use_write_session": false,
+        "rigtorp_write_prefetch": false,
+        "readerwriterqueue_copy_after_zero": false
+      },
+      "throughput_mps": 127.85421540019999,
+      "throughput_runs_mps": [
+        131.994687214,
+        123.879279642,
+        129.033230392,
+        127.570681589,
+        126.793198164
+      ],
+      "payload_gb_per_second": 2.045667446402,
+      "p50_ns": 6.008333333334,
+      "p50_runs_ns": [
+        6,
+        6,
+        6.29166666667,
+        5.875,
+        5.875
+      ],
+      "p99_ns": 21.96666666666,
+      "p99_runs_ns": [
+        23.5,
+        24.375,
+        22.3333333333,
+        16.2916666667,
+        23.3333333333
+      ],
+      "p999_ns": 31.65833333334,
+      "p999_runs_ns": [
+        33.375,
+        43.4166666667,
+        29,
+        20.7916666667,
+        31.7083333333
+      ],
+      "latency_runs": [
+        {
+          "p50": 6,
+          "p99": 23.5,
+          "p999": 33.375,
+          "max": 50.125
+        },
+        {
+          "p50": 6,
+          "p99": 24.375,
+          "p999": 43.4166666667,
+          "max": 93.5
+        },
+        {
+          "p50": 6.29166666667,
+          "p99": 22.3333333333,
+          "p999": 29,
+          "max": 290.583333333
+        },
+        {
+          "p50": 5.875,
+          "p99": 16.2916666667,
+          "p999": 20.7916666667,
+          "max": 117.083333333
+        },
+        {
+          "p50": 5.875,
+          "p99": 23.3333333333,
+          "p999": 31.7083333333,
+          "max": 54.2916666667
+        }
+      ],
+      "callback_to_producer_ratio": 1.011219153868,
+      "producer_seconds": 0.0782480584,
+      "callback_processing_seconds": 0.07911356659999999,
+      "wall_seconds": 0.0791202168,
+      "drain_seconds": 0.0008719248000000001,
+      "failed_write_calls": 0.0,
+      "backpressured_messages": 0.0,
+      "producer_retry_seconds": 0.0,
+      "cpu_cores": 1.9870041235140001,
+      "input_preparation_seconds": 0.022042483600000003,
+      "session_block_exhaustions": 0.0,
+      "actual_spsc_capacity": [
+        16777216
+      ],
+      "completed_rounds": [
+        1
+      ],
+      "effective_warmup_messages": [
+        50000
+      ],
+      "prepared_input_bytes": [
+        160000000
+      ],
+      "latency_samples": [
+        10000
+      ],
+      "latency_tail_writes": [
+        0
+      ],
+      "timer": [
+        "mach_absolute_time"
+      ],
+      "writer_pressure_events": 0.0,
+      "copy_memory_full_events": 0.0,
+      "internal_backpressure": null,
+      "nominal_buffer_mib": [
+        256.0
+      ],
+      "peak_rss_mib": 426.296875,
+      "latency_quantum_ns": 0.0416666666667,
+      "resolution_limited": false,
+      "p999_sample_count_warning": true,
+      "library_pressure_stats_available": false
+    },
+    {
+      "payload_bytes": 32,
+      "transport": "two_buf_queue",
+      "callback_iterations": 2,
+      "parameters": {
+        "transport": "two_buf_queue",
+        "mode": "throughput",
+        "payload_bytes": 32,
+        "messages": 10000000,
+        "warmup_messages": 50000,
+        "callback_iterations": 2,
+        "verify_payload": false,
+        "prepared_input": true,
+        "variable_payload": true,
+        "prepared_input_limit_bytes": 268435456,
+        "measure_callback_time": true,
+        "producer_interval_ns": 0,
+        "source_block_size": 65536,
+        "source_pool_min": 4096,
+        "source_pool_max": 4096,
+        "source_queue_capacity": 16384,
+        "writer_backpressure": "drop",
+        "writer_spin_count": 1000,
+        "writer_wait_timeout_ms": 5000,
+        "output_block_size": 65536,
+        "output_frame_capacity": 1,
+        "output_pool_min": 4096,
+        "output_pool_max": 4096,
+        "output_queue_capacity": 16384,
+        "cancel_claim_mode": "tail",
+        "output_mode": "spsc",
+        "output_reader_mode": "wait_signal",
+        "output_reader_count": 1,
+        "output_retry_wait_us": 1000,
+        "output_enable_stats": false,
+        "is_scan_current": true,
+        "reader_spin_count": 10000,
+        "rescan_interval_ns": 1000000,
+        "rescan_max_interval_ns": 1000000,
+        "consumer_cpu": -1,
+        "producer_cpu": -1,
+        "producer_qos": "user_interactive",
+        "round_storage_bytes": 214748364,
+        "spsc_buffer_bytes": 268435456,
+        "prefault_producer_buffers": true,
+        "finish_timeout_ms": 5000,
+        "work_wait_min_ms": 1,
+        "finish_retry_ms": 1,
+        "publish_count": 10,
+        "spsc_capacity": 0,
+        "retry_yield_every": 1024,
+        "spsc_idle_spins": 1000,
+        "spsc_idle_sleep_ns": 0,
+        "timer": "auto",
+        "sample_every": 32,
+        "max_samples": 1000000,
+        "latency_batch_size": 1000,
+        "timer_calibration_samples": 16384,
+        "call_batch_size": 256,
+        "random_seed": 42,
+        "timeout_seconds": 180,
+        "buffer_budget_bytes": 536870912,
+        "use_write_session": false,
+        "rigtorp_write_prefetch": false,
+        "readerwriterqueue_copy_after_zero": false
+      },
+      "throughput_mps": 135.6795510662,
+      "throughput_runs_mps": [
+        137.006869292,
+        120.007320447,
+        133.869853362,
+        134.292329181,
+        153.221383049
+      ],
+      "payload_gb_per_second": 4.34174563411,
+      "p50_ns": 5.208333333334,
+      "p50_runs_ns": [
+        6.41666666667,
+        4.45833333333,
+        5.625,
+        4.5,
+        5.04166666667
+      ],
+      "p99_ns": 12.75,
+      "p99_runs_ns": [
+        17.5416666667,
+        11.25,
+        11.9166666667,
+        11.2083333333,
+        11.8333333333
+      ],
+      "p999_ns": 26.758333333360003,
+      "p999_runs_ns": [
+        56.2916666667,
+        15.6666666667,
+        28.25,
+        13.6666666667,
+        19.9166666667
+      ],
+      "latency_runs": [
+        {
+          "p50": 6.41666666667,
+          "p99": 17.5416666667,
+          "p999": 56.2916666667,
+          "max": 245.083333333
+        },
+        {
+          "p50": 4.45833333333,
+          "p99": 11.25,
+          "p999": 15.6666666667,
+          "max": 37.75
+        },
+        {
+          "p50": 5.625,
+          "p99": 11.9166666667,
+          "p999": 28.25,
+          "max": 41.9583333333
+        },
+        {
+          "p50": 4.5,
+          "p99": 11.2083333333,
+          "p999": 13.6666666667,
+          "max": 33.875
+        },
+        {
+          "p50": 5.04166666667,
+          "p99": 11.8333333333,
+          "p999": 19.9166666667,
+          "max": 34.7916666667
+        }
+      ],
+      "callback_to_producer_ratio": 1.015010083218,
+      "producer_seconds": 0.0741492334,
+      "callback_processing_seconds": 0.07525519160000001,
+      "wall_seconds": 0.08096011659999999,
+      "drain_seconds": 0.0011521746,
+      "failed_write_calls": 0.0,
+      "backpressured_messages": 0.0,
+      "producer_retry_seconds": 0.0,
+      "cpu_cores": 2.237468170974,
+      "input_preparation_seconds": 0.038562542,
+      "session_block_exhaustions": 0.0,
+      "actual_spsc_capacity": [
+        0
+      ],
+      "completed_rounds": [
+        2
+      ],
+      "effective_warmup_messages": [
+        50172
+      ],
+      "prepared_input_bytes": [
+        214728576
+      ],
+      "latency_samples": [
+        9999
+      ],
+      "latency_tail_writes": [
+        1000
+      ],
+      "timer": [
+        "mach_absolute_time"
+      ],
+      "writer_pressure_events": 0.0,
+      "copy_memory_full_events": 0.0,
+      "internal_backpressure": {
+        "writer_pressure_events": 0.0,
+        "copy_memory_full_events": 0.0
+      },
+      "nominal_buffer_mib": [
+        512.0
+      ],
+      "peak_rss_mib": 480.4375,
+      "latency_quantum_ns": 0.0416666666667,
+      "resolution_limited": false,
+      "p999_sample_count_warning": true,
+      "library_pressure_stats_available": true
+    },
+    {
+      "payload_bytes": 32,
+      "transport": "readerwriterqueue",
+      "callback_iterations": 2,
+      "parameters": {
+        "transport": "readerwriterqueue",
+        "mode": "throughput",
+        "payload_bytes": 32,
+        "messages": 10000000,
+        "warmup_messages": 50000,
+        "callback_iterations": 2,
+        "verify_payload": false,
+        "prepared_input": true,
+        "variable_payload": true,
+        "prepared_input_limit_bytes": 268435456,
+        "measure_callback_time": true,
+        "producer_interval_ns": 0,
+        "source_block_size": 65536,
+        "source_pool_min": 4096,
+        "source_pool_max": 4096,
+        "source_queue_capacity": 16384,
+        "writer_backpressure": "drop",
+        "writer_spin_count": 1000,
+        "writer_wait_timeout_ms": 5000,
+        "output_block_size": 65536,
+        "output_frame_capacity": 64,
+        "output_pool_min": 4096,
+        "output_pool_max": 4096,
+        "output_queue_capacity": 16384,
+        "cancel_claim_mode": "tail",
+        "output_mode": "spsc",
+        "output_reader_mode": "wait_signal",
+        "output_reader_count": 1,
+        "output_retry_wait_us": 1000,
+        "output_enable_stats": false,
+        "is_scan_current": false,
+        "reader_spin_count": 10000,
+        "rescan_interval_ns": 5000000,
+        "rescan_max_interval_ns": 30000000,
+        "consumer_cpu": -1,
+        "producer_cpu": -1,
+        "producer_qos": "user_interactive",
+        "round_storage_bytes": 214748364,
+        "spsc_buffer_bytes": 268435456,
+        "prefault_producer_buffers": true,
+        "finish_timeout_ms": 5000,
+        "work_wait_min_ms": 1,
+        "finish_retry_ms": 1,
+        "publish_count": 4294967295,
+        "spsc_capacity": 8371713,
+        "retry_yield_every": 1024,
+        "spsc_idle_spins": 0,
+        "spsc_idle_sleep_ns": 1000,
+        "timer": "auto",
+        "sample_every": 32,
+        "max_samples": 1000000,
+        "latency_batch_size": 1000,
+        "timer_calibration_samples": 16384,
+        "call_batch_size": 256,
+        "random_seed": 42,
+        "timeout_seconds": 180,
+        "buffer_budget_bytes": 536870912,
+        "use_write_session": false,
+        "rigtorp_write_prefetch": false,
+        "readerwriterqueue_copy_after_zero": true
+      },
+      "throughput_mps": 437.55308049260003,
+      "throughput_runs_mps": [
+        474.117139363,
+        302.797460959,
+        399.290588397,
+        504.880503115,
+        506.679710629
+      ],
+      "payload_gb_per_second": 14.001698575754,
+      "p50_ns": 2.416666666666,
+      "p50_runs_ns": [
+        3.16666666667,
+        3.20833333333,
+        1.95833333333,
+        1.875,
+        1.875
+      ],
+      "p99_ns": 19.666666666672,
+      "p99_runs_ns": [
+        80.0416666667,
+        6,
+        3.95833333333,
+        4.25,
+        4.08333333333
+      ],
+      "p999_ns": 120.708333333274,
+      "p999_runs_ns": [
+        559.583333333,
+        12.9166666667,
+        8.16666666667,
+        11.4166666667,
+        11.4583333333
+      ],
+      "latency_runs": [
+        {
+          "p50": 3.16666666667,
+          "p99": 80.0416666667,
+          "p999": 559.583333333,
+          "max": 2561.95833333
+        },
+        {
+          "p50": 3.20833333333,
+          "p99": 6,
+          "p999": 12.9166666667,
+          "max": 30.8333333333
+        },
+        {
+          "p50": 1.95833333333,
+          "p99": 3.95833333333,
+          "p999": 8.16666666667,
+          "max": 11.9583333333
+        },
+        {
+          "p50": 1.875,
+          "p99": 4.25,
+          "p999": 11.4166666667,
+          "max": 77.7083333333
+        },
+        {
+          "p50": 1.875,
+          "p99": 4.08333333333,
+          "p999": 11.4583333333,
+          "max": 29.4166666667
+        }
+      ],
+      "callback_to_producer_ratio": 2.297131857274,
+      "producer_seconds": 0.0237409256,
+      "callback_processing_seconds": 0.0527891582,
+      "wall_seconds": 0.0585734,
+      "drain_seconds": 0.029070683200000003,
+      "failed_write_calls": 0.0,
+      "backpressured_messages": 0.0,
+      "producer_retry_seconds": 0.0,
+      "cpu_cores": 1.9016827449040001,
+      "input_preparation_seconds": 0.0445503162,
+      "session_block_exhaustions": 0.0,
+      "actual_spsc_capacity": [
+        8372224
+      ],
+      "completed_rounds": [
+        2
+      ],
+      "effective_warmup_messages": [
+        50000
+      ],
+      "prepared_input_bytes": [
+        214748352
+      ],
+      "latency_samples": [
+        9999
+      ],
+      "latency_tail_writes": [
+        1000
+      ],
+      "timer": [
+        "mach_absolute_time"
+      ],
+      "writer_pressure_events": 0.0,
+      "copy_memory_full_events": 0.0,
+      "internal_backpressure": null,
+      "nominal_buffer_mib": [
+        255.5
+      ],
+      "peak_rss_mib": 471.921875,
+      "latency_quantum_ns": 0.0416666666667,
+      "resolution_limited": false,
+      "p999_sample_count_warning": true,
+      "library_pressure_stats_available": false
+    },
+    {
+      "payload_bytes": 32,
+      "transport": "rigtorp",
+      "callback_iterations": 2,
+      "parameters": {
+        "transport": "rigtorp",
+        "mode": "throughput",
+        "payload_bytes": 32,
+        "messages": 10000000,
+        "warmup_messages": 50000,
+        "callback_iterations": 2,
+        "verify_payload": false,
+        "prepared_input": true,
+        "variable_payload": true,
+        "prepared_input_limit_bytes": 268435456,
+        "measure_callback_time": true,
+        "producer_interval_ns": 0,
+        "source_block_size": 65536,
+        "source_pool_min": 4096,
+        "source_pool_max": 4096,
+        "source_queue_capacity": 16384,
+        "writer_backpressure": "drop",
+        "writer_spin_count": 1000,
+        "writer_wait_timeout_ms": 5000,
+        "output_block_size": 65536,
+        "output_frame_capacity": 64,
+        "output_pool_min": 4096,
+        "output_pool_max": 4096,
+        "output_queue_capacity": 16384,
+        "cancel_claim_mode": "tail",
+        "output_mode": "spsc",
+        "output_reader_mode": "wait_signal",
+        "output_reader_count": 1,
+        "output_retry_wait_us": 1000,
+        "output_enable_stats": false,
+        "is_scan_current": false,
+        "reader_spin_count": 10000,
+        "rescan_interval_ns": 5000000,
+        "rescan_max_interval_ns": 30000000,
+        "consumer_cpu": -1,
+        "producer_cpu": -1,
+        "producer_qos": "user_interactive",
+        "round_storage_bytes": 214748364,
+        "spsc_buffer_bytes": 268435456,
+        "prefault_producer_buffers": true,
+        "finish_timeout_ms": 5000,
+        "work_wait_min_ms": 1,
+        "finish_retry_ms": 1,
+        "publish_count": 4294967295,
+        "spsc_capacity": 8388603,
+        "retry_yield_every": 1024,
+        "spsc_idle_spins": 0,
+        "spsc_idle_sleep_ns": 1000,
+        "timer": "auto",
+        "sample_every": 32,
+        "max_samples": 1000000,
+        "latency_batch_size": 1000,
+        "timer_calibration_samples": 16384,
+        "call_batch_size": 256,
+        "random_seed": 42,
+        "timeout_seconds": 180,
+        "buffer_budget_bytes": 536870912,
+        "use_write_session": false,
+        "rigtorp_write_prefetch": true,
+        "readerwriterqueue_copy_after_zero": false
+      },
+      "throughput_mps": 195.20523447120001,
+      "throughput_runs_mps": [
+        206.908680854,
+        218.43142732,
+        117.595524314,
+        232.949776867,
+        200.140763001
+      ],
+      "payload_gb_per_second": 6.24656750308,
+      "p50_ns": 4.750000000002,
+      "p50_runs_ns": [
+        4.16666666667,
+        4.16666666667,
+        5.54166666667,
+        4.25,
+        5.625
+      ],
+      "p99_ns": 9.733333333337999,
+      "p99_runs_ns": [
+        8.08333333333,
+        12.9166666667,
+        9.33333333333,
+        8.08333333333,
+        10.25
+      ],
+      "p999_ns": 15.441666666660002,
+      "p999_runs_ns": [
+        12.625,
+        20.375,
+        14.8333333333,
+        12,
+        17.375
+      ],
+      "latency_runs": [
+        {
+          "p50": 4.16666666667,
+          "p99": 8.08333333333,
+          "p999": 12.625,
+          "max": 31.8333333333
+        },
+        {
+          "p50": 4.16666666667,
+          "p99": 12.9166666667,
+          "p999": 20.375,
+          "max": 65.4583333333
+        },
+        {
+          "p50": 5.54166666667,
+          "p99": 9.33333333333,
+          "p999": 14.8333333333,
+          "max": 23.4583333333
+        },
+        {
+          "p50": 4.25,
+          "p99": 8.08333333333,
+          "p999": 12,
+          "max": 30.875
+        },
+        {
+          "p50": 5.625,
+          "p99": 10.25,
+          "p999": 17.375,
+          "max": 39.375
+        }
+      ],
+      "callback_to_producer_ratio": 0.9999631532958,
+      "producer_seconds": 0.054408250000000005,
+      "callback_processing_seconds": 0.054406291399999994,
+      "wall_seconds": 0.060579066599999995,
+      "drain_seconds": 4.574800000000001e-06,
+      "failed_write_calls": 0.0,
+      "backpressured_messages": 0.0,
+      "producer_retry_seconds": 0.0,
+      "cpu_cores": 1.77635481532,
+      "input_preparation_seconds": 0.0419843748,
+      "session_block_exhaustions": 0.0,
+      "actual_spsc_capacity": [
+        8388603
+      ],
+      "completed_rounds": [
+        2
+      ],
+      "effective_warmup_messages": [
+        50000
+      ],
+      "prepared_input_bytes": [
+        214748352
+      ],
+      "latency_samples": [
+        9999
+      ],
+      "latency_tail_writes": [
+        1000
+      ],
+      "timer": [
+        "mach_absolute_time"
+      ],
+      "writer_pressure_events": 0.0,
+      "copy_memory_full_events": 0.0,
+      "internal_backpressure": null,
+      "nominal_buffer_mib": [
+        255.99984741210938
+      ],
+      "peak_rss_mib": 462.546875,
+      "latency_quantum_ns": 0.0416666666667,
+      "resolution_limited": false,
+      "p999_sample_count_warning": true,
+      "library_pressure_stats_available": false
+    },
+    {
+      "payload_bytes": 32,
+      "transport": "atomic_queue",
+      "callback_iterations": 2,
+      "parameters": {
+        "transport": "atomic_queue",
+        "mode": "throughput",
+        "payload_bytes": 32,
+        "messages": 10000000,
+        "warmup_messages": 50000,
+        "callback_iterations": 2,
+        "verify_payload": false,
+        "prepared_input": true,
+        "variable_payload": true,
+        "prepared_input_limit_bytes": 268435456,
+        "measure_callback_time": true,
+        "producer_interval_ns": 0,
+        "source_block_size": 65536,
+        "source_pool_min": 4096,
+        "source_pool_max": 4096,
+        "source_queue_capacity": 16384,
+        "writer_backpressure": "drop",
+        "writer_spin_count": 1000,
+        "writer_wait_timeout_ms": 5000,
+        "output_block_size": 65536,
+        "output_frame_capacity": 64,
+        "output_pool_min": 4096,
+        "output_pool_max": 4096,
+        "output_queue_capacity": 16384,
+        "cancel_claim_mode": "tail",
+        "output_mode": "spsc",
+        "output_reader_mode": "wait_signal",
+        "output_reader_count": 1,
+        "output_retry_wait_us": 1000,
+        "output_enable_stats": false,
+        "is_scan_current": false,
+        "reader_spin_count": 10000,
+        "rescan_interval_ns": 5000000,
+        "rescan_max_interval_ns": 30000000,
+        "consumer_cpu": -1,
+        "producer_cpu": -1,
+        "producer_qos": "user_interactive",
+        "round_storage_bytes": 214748364,
+        "spsc_buffer_bytes": 268435456,
+        "prefault_producer_buffers": true,
+        "finish_timeout_ms": 5000,
+        "work_wait_min_ms": 1,
+        "finish_retry_ms": 1,
+        "publish_count": 4294967295,
+        "spsc_capacity": 8388608,
+        "retry_yield_every": 1024,
+        "spsc_idle_spins": 0,
+        "spsc_idle_sleep_ns": 10000,
+        "timer": "auto",
+        "sample_every": 32,
+        "max_samples": 1000000,
+        "latency_batch_size": 1000,
+        "timer_calibration_samples": 16384,
+        "call_batch_size": 256,
+        "random_seed": 42,
+        "timeout_seconds": 180,
+        "buffer_budget_bytes": 536870912,
+        "use_write_session": false,
+        "rigtorp_write_prefetch": false,
+        "readerwriterqueue_copy_after_zero": false
+      },
+      "throughput_mps": 76.90504128508,
+      "throughput_runs_mps": [
+        72.42045124,
+        77.3106213901,
+        82.7874247756,
+        81.0604877737,
+        70.946221246
+      ],
+      "payload_gb_per_second": 2.4609613211220003,
+      "p50_ns": 9.600000000008,
+      "p50_runs_ns": [
+        9.16666666667,
+        10.0416666667,
+        10.0416666667,
+        8.66666666667,
+        10.0833333333
+      ],
+      "p99_ns": 27.833333333320002,
+      "p99_runs_ns": [
+        26.9583333333,
+        30,
+        27.5833333333,
+        26.5416666667,
+        28.0833333333
+      ],
+      "p999_ns": 42.03333333332,
+      "p999_runs_ns": [
+        33.5,
+        47.2916666667,
+        55.7083333333,
+        29.8333333333,
+        43.8333333333
+      ],
+      "latency_runs": [
+        {
+          "p50": 9.16666666667,
+          "p99": 26.9583333333,
+          "p999": 33.5,
+          "max": 80.7916666667
+        },
+        {
+          "p50": 10.0416666667,
+          "p99": 30,
+          "p999": 47.2916666667,
+          "max": 78.4166666667
+        },
+        {
+          "p50": 10.0416666667,
+          "p99": 27.5833333333,
+          "p999": 55.7083333333,
+          "max": 73.6666666667
+        },
+        {
+          "p50": 8.66666666667,
+          "p99": 26.5416666667,
+          "p999": 29.8333333333,
+          "max": 58.9166666667
+        },
+        {
+          "p50": 10.0833333333,
+          "p99": 28.0833333333,
+          "p999": 43.8333333333,
+          "max": 68.3333333333
+        }
+      ],
+      "callback_to_producer_ratio": 1.0004048606456002,
+      "producer_seconds": 0.1305077334,
+      "callback_processing_seconds": 0.1305576502,
+      "wall_seconds": 0.1362839582,
+      "drain_seconds": 6.86586e-05,
+      "failed_write_calls": 0.0,
+      "backpressured_messages": 0.0,
+      "producer_retry_seconds": 0.0,
+      "cpu_cores": 1.9281793468979997,
+      "input_preparation_seconds": 0.0343162832,
+      "session_block_exhaustions": 0.0,
+      "actual_spsc_capacity": [
+        8388608
+      ],
+      "completed_rounds": [
+        2
+      ],
+      "effective_warmup_messages": [
+        50000
+      ],
+      "prepared_input_bytes": [
+        214748352
+      ],
+      "latency_samples": [
+        9999
+      ],
+      "latency_tail_writes": [
+        1000
+      ],
+      "timer": [
+        "mach_absolute_time"
+      ],
+      "writer_pressure_events": 0.0,
+      "copy_memory_full_events": 0.0,
+      "internal_backpressure": null,
+      "nominal_buffer_mib": [
+        256.0
+      ],
+      "peak_rss_mib": 470.546875,
+      "latency_quantum_ns": 0.0416666666667,
+      "resolution_limited": false,
+      "p999_sample_count_warning": true,
+      "library_pressure_stats_available": false
+    },
+    {
+      "payload_bytes": 64,
+      "transport": "two_buf_queue",
+      "callback_iterations": 4,
+      "parameters": {
+        "transport": "two_buf_queue",
+        "mode": "throughput",
+        "payload_bytes": 64,
+        "messages": 10000000,
+        "warmup_messages": 50000,
+        "callback_iterations": 4,
+        "verify_payload": false,
+        "prepared_input": true,
+        "variable_payload": true,
+        "prepared_input_limit_bytes": 268435456,
+        "measure_callback_time": true,
+        "producer_interval_ns": 0,
+        "source_block_size": 1048576,
+        "source_pool_min": 256,
+        "source_pool_max": 256,
+        "source_queue_capacity": 1024,
+        "writer_backpressure": "drop",
+        "writer_spin_count": 1000,
+        "writer_wait_timeout_ms": 5000,
+        "output_block_size": 1048576,
+        "output_frame_capacity": 1,
+        "output_pool_min": 256,
+        "output_pool_max": 256,
+        "output_queue_capacity": 1024,
+        "cancel_claim_mode": "tail",
+        "output_mode": "spsc",
+        "output_reader_mode": "wait_signal",
+        "output_reader_count": 1,
+        "output_retry_wait_us": 1000,
+        "output_enable_stats": false,
+        "is_scan_current": true,
+        "reader_spin_count": 10000,
+        "rescan_interval_ns": 1000000,
+        "rescan_max_interval_ns": 1000000,
+        "consumer_cpu": -1,
+        "producer_cpu": -1,
+        "producer_qos": "user_interactive",
+        "round_storage_bytes": 214748364,
+        "spsc_buffer_bytes": 268435456,
+        "prefault_producer_buffers": true,
+        "finish_timeout_ms": 5000,
+        "work_wait_min_ms": 1,
+        "finish_retry_ms": 1,
+        "publish_count": 10,
+        "spsc_capacity": 0,
+        "retry_yield_every": 1024,
+        "spsc_idle_spins": 1000,
+        "spsc_idle_sleep_ns": 0,
+        "timer": "auto",
+        "sample_every": 32,
+        "max_samples": 1000000,
+        "latency_batch_size": 1000,
+        "timer_calibration_samples": 16384,
+        "call_batch_size": 256,
+        "random_seed": 42,
+        "timeout_seconds": 180,
+        "buffer_budget_bytes": 536870912,
+        "use_write_session": false,
+        "rigtorp_write_prefetch": false,
+        "readerwriterqueue_copy_after_zero": false
+      },
+      "throughput_mps": 93.63608412367999,
+      "throughput_runs_mps": [
+        93.4883416158,
+        93.9875011286,
+        93.5694410963,
+        94.0319854688,
+        93.1031513089
+      ],
+      "payload_gb_per_second": 5.992709383916,
+      "p50_ns": 9.933333333334,
+      "p50_runs_ns": [
+        9.91666666667,
+        10,
+        9.91666666667,
+        9.875,
+        9.95833333333
+      ],
+      "p99_ns": 20.68333333334,
+      "p99_runs_ns": [
+        21.5833333333,
+        19.1666666667,
+        20.2083333333,
+        20.9166666667,
+        21.5416666667
+      ],
+      "p999_ns": 28.43333333332,
+      "p999_runs_ns": [
+        27.125,
+        27.9583333333,
+        24.5,
+        36.75,
+        25.8333333333
+      ],
+      "latency_runs": [
+        {
+          "p50": 9.91666666667,
+          "p99": 21.5833333333,
+          "p999": 27.125,
+          "max": 44.25
+        },
+        {
+          "p50": 10,
+          "p99": 19.1666666667,
+          "p999": 27.9583333333,
+          "max": 44.5416666667
+        },
+        {
+          "p50": 9.91666666667,
+          "p99": 20.2083333333,
+          "p999": 24.5,
+          "max": 48.0833333333
+        },
+        {
+          "p50": 9.875,
+          "p99": 20.9166666667,
+          "p999": 36.75,
+          "max": 107.083333333
+        },
+        {
+          "p50": 9.95833333333,
+          "p99": 21.5416666667,
+          "p999": 25.8333333333,
+          "max": 56.9166666667
+        }
+      ],
+      "callback_to_producer_ratio": 1.018976193844,
+      "producer_seconds": 0.10679787519999999,
+      "callback_processing_seconds": 0.10882439120000001,
+      "wall_seconds": 0.1802855914,
+      "drain_seconds": 0.0024078498,
+      "failed_write_calls": 0.0,
+      "backpressured_messages": 0.0,
+      "producer_retry_seconds": 0.0,
+      "cpu_cores": 1.4870829045579999,
+      "input_preparation_seconds": 0.1004978164,
+      "session_block_exhaustions": 0.0,
+      "actual_spsc_capacity": [
+        0
+      ],
+      "completed_rounds": [
+        3
+      ],
+      "effective_warmup_messages": [
+        50172
+      ],
+      "prepared_input_bytes": [
+        214696960
+      ],
+      "latency_samples": [
+        9998
+      ],
+      "latency_tail_writes": [
+        2000
+      ],
+      "timer": [
+        "mach_absolute_time"
+      ],
+      "writer_pressure_events": 0.0,
+      "copy_memory_full_events": 0.0,
+      "internal_backpressure": {
+        "writer_pressure_events": 0.0,
+        "copy_memory_full_events": 0.0
+      },
+      "nominal_buffer_mib": [
+        512.0
+      ],
+      "peak_rss_mib": 680.875,
+      "latency_quantum_ns": 0.0416666666667,
+      "resolution_limited": false,
+      "p999_sample_count_warning": true,
+      "library_pressure_stats_available": true
+    },
+    {
+      "payload_bytes": 64,
+      "transport": "readerwriterqueue",
+      "callback_iterations": 4,
+      "parameters": {
+        "transport": "readerwriterqueue",
+        "mode": "throughput",
+        "payload_bytes": 64,
+        "messages": 10000000,
+        "warmup_messages": 50000,
+        "callback_iterations": 4,
+        "verify_payload": false,
+        "prepared_input": true,
+        "variable_payload": true,
+        "prepared_input_limit_bytes": 268435456,
+        "measure_callback_time": true,
+        "producer_interval_ns": 0,
+        "source_block_size": 262144,
+        "source_pool_min": 1024,
+        "source_pool_max": 1024,
+        "source_queue_capacity": 4096,
+        "writer_backpressure": "drop",
+        "writer_spin_count": 1000,
+        "writer_wait_timeout_ms": 5000,
+        "output_block_size": 262144,
+        "output_frame_capacity": 64,
+        "output_pool_min": 1024,
+        "output_pool_max": 1024,
+        "output_queue_capacity": 4096,
+        "cancel_claim_mode": "tail",
+        "output_mode": "spsc",
+        "output_reader_mode": "wait_signal",
+        "output_reader_count": 1,
+        "output_retry_wait_us": 1000,
+        "output_enable_stats": false,
+        "is_scan_current": false,
+        "reader_spin_count": 10000,
+        "rescan_interval_ns": 5000000,
+        "rescan_max_interval_ns": 30000000,
+        "consumer_cpu": -1,
+        "producer_cpu": -1,
+        "producer_qos": "user_interactive",
+        "round_storage_bytes": 214748364,
+        "spsc_buffer_bytes": 268435456,
+        "prefault_producer_buffers": true,
+        "finish_timeout_ms": 5000,
+        "work_wait_min_ms": 1,
+        "finish_retry_ms": 1,
+        "publish_count": 4294967295,
+        "spsc_capacity": 4185601,
+        "retry_yield_every": 1024,
+        "spsc_idle_spins": 0,
+        "spsc_idle_sleep_ns": 1000,
+        "timer": "auto",
+        "sample_every": 32,
+        "max_samples": 1000000,
+        "latency_batch_size": 1000,
+        "timer_calibration_samples": 16384,
+        "call_batch_size": 256,
+        "random_seed": 42,
+        "timeout_seconds": 180,
+        "buffer_budget_bytes": 536870912,
+        "use_write_session": false,
+        "rigtorp_write_prefetch": false,
+        "readerwriterqueue_copy_after_zero": false
+      },
+      "throughput_mps": 149.88881567108,
+      "throughput_runs_mps": [
+        88.6903871886,
+        71.9192063088,
+        177.922355111,
+        190.660950016,
+        220.251179731
+      ],
+      "payload_gb_per_second": 9.592884202948,
+      "p50_ns": 4.833333333334,
+      "p50_runs_ns": [
+        4.29166666667,
+        4.375,
+        6.20833333333,
+        4.66666666667,
+        4.625
+      ],
+      "p99_ns": 44.575000000079996,
+      "p99_runs_ns": [
+        9.625,
+        12.6666666667,
+        24.2916666667,
+        163.291666667,
+        13
+      ],
+      "p999_ns": 182.24999999992002,
+      "p999_runs_ns": [
+        15.3333333333,
+        19.875,
+        220.333333333,
+        630.875,
+        24.8333333333
+      ],
+      "latency_runs": [
+        {
+          "p50": 4.29166666667,
+          "p99": 9.625,
+          "p999": 15.3333333333,
+          "max": 42.7916666667
+        },
+        {
+          "p50": 4.375,
+          "p99": 12.6666666667,
+          "p999": 19.875,
+          "max": 36.1666666667
+        },
+        {
+          "p50": 6.20833333333,
+          "p99": 24.2916666667,
+          "p999": 220.333333333,
+          "max": 1567.625
+        },
+        {
+          "p50": 4.66666666667,
+          "p99": 163.291666667,
+          "p999": 630.875,
+          "max": 2278.58333333
+        },
+        {
+          "p50": 4.625,
+          "p99": 13,
+          "p999": 24.8333333333,
+          "max": 71.375
+        }
+      ],
+      "callback_to_producer_ratio": 1.477036153912,
+      "producer_seconds": 0.0811705664,
+      "callback_processing_seconds": 0.1084065832,
+      "wall_seconds": 0.1309956668,
+      "drain_seconds": 0.027247149999999998,
+      "failed_write_calls": 0.0,
+      "backpressured_messages": 0.0,
+      "producer_retry_seconds": 0.0,
+      "cpu_cores": 1.718649473662,
+      "input_preparation_seconds": 0.0687747086,
+      "session_block_exhaustions": 0.0,
+      "actual_spsc_capacity": [
+        4186112
+      ],
+      "completed_rounds": [
+        3
+      ],
+      "effective_warmup_messages": [
+        50000
+      ],
+      "prepared_input_bytes": [
+        214748352
+      ],
+      "latency_samples": [
+        9999
+      ],
+      "latency_tail_writes": [
+        1000
+      ],
+      "timer": [
+        "mach_absolute_time"
+      ],
+      "writer_pressure_events": 0.0,
+      "copy_memory_full_events": 0.0,
+      "internal_backpressure": null,
+      "nominal_buffer_mib": [
+        255.5
+      ],
+      "peak_rss_mib": 590.71875,
+      "latency_quantum_ns": 0.0416666666667,
+      "resolution_limited": false,
+      "p999_sample_count_warning": true,
+      "library_pressure_stats_available": false
+    },
+    {
+      "payload_bytes": 64,
+      "transport": "rigtorp",
+      "callback_iterations": 4,
+      "parameters": {
+        "transport": "rigtorp",
+        "mode": "throughput",
+        "payload_bytes": 64,
+        "messages": 10000000,
+        "warmup_messages": 50000,
+        "callback_iterations": 4,
+        "verify_payload": false,
+        "prepared_input": true,
+        "variable_payload": true,
+        "prepared_input_limit_bytes": 268435456,
+        "measure_callback_time": true,
+        "producer_interval_ns": 0,
+        "source_block_size": 262144,
+        "source_pool_min": 1024,
+        "source_pool_max": 1024,
+        "source_queue_capacity": 4096,
+        "writer_backpressure": "drop",
+        "writer_spin_count": 1000,
+        "writer_wait_timeout_ms": 5000,
+        "output_block_size": 262144,
+        "output_frame_capacity": 64,
+        "output_pool_min": 1024,
+        "output_pool_max": 1024,
+        "output_queue_capacity": 4096,
+        "cancel_claim_mode": "tail",
+        "output_mode": "spsc",
+        "output_reader_mode": "wait_signal",
+        "output_reader_count": 1,
+        "output_retry_wait_us": 1000,
+        "output_enable_stats": false,
+        "is_scan_current": false,
+        "reader_spin_count": 10000,
+        "rescan_interval_ns": 5000000,
+        "rescan_max_interval_ns": 30000000,
+        "consumer_cpu": -1,
+        "producer_cpu": -1,
+        "producer_qos": "user_interactive",
+        "round_storage_bytes": 214748364,
+        "spsc_buffer_bytes": 268435456,
+        "prefault_producer_buffers": true,
+        "finish_timeout_ms": 5000,
+        "work_wait_min_ms": 1,
+        "finish_retry_ms": 1,
+        "publish_count": 4294967295,
+        "spsc_capacity": 4194301,
+        "retry_yield_every": 1024,
+        "spsc_idle_spins": 0,
+        "spsc_idle_sleep_ns": 0,
+        "timer": "auto",
+        "sample_every": 32,
+        "max_samples": 1000000,
+        "latency_batch_size": 1000,
+        "timer_calibration_samples": 16384,
+        "call_batch_size": 256,
+        "random_seed": 42,
+        "timeout_seconds": 180,
+        "buffer_budget_bytes": 536870912,
+        "use_write_session": false,
+        "rigtorp_write_prefetch": true,
+        "readerwriterqueue_copy_after_zero": false
+      },
+      "throughput_mps": 118.20085933440001,
+      "throughput_runs_mps": [
+        124.101942498,
+        122.487852237,
+        107.18348083,
+        117.794820647,
+        119.43620046
+      ],
+      "payload_gb_per_second": 7.564854997404001,
+      "p50_ns": 8.225,
+      "p50_runs_ns": [
+        7.91666666667,
+        8.58333333333,
+        8,
+        7.875,
+        8.75
+      ],
+      "p99_ns": 19.758333333339998,
+      "p99_runs_ns": [
+        12.75,
+        45.0416666667,
+        14.2083333333,
+        12.5,
+        14.2916666667
+      ],
+      "p999_ns": 144.41666666668,
+      "p999_runs_ns": [
+        16.7916666667,
+        633.25,
+        25.7083333333,
+        19.5416666667,
+        26.7916666667
+      ],
+      "latency_runs": [
+        {
+          "p50": 7.91666666667,
+          "p99": 12.75,
+          "p999": 16.7916666667,
+          "max": 41.25
+        },
+        {
+          "p50": 8.58333333333,
+          "p99": 45.0416666667,
+          "p999": 633.25,
+          "max": 1538.33333333
+        },
+        {
+          "p50": 8,
+          "p99": 14.2083333333,
+          "p999": 25.7083333333,
+          "max": 38.2916666667
+        },
+        {
+          "p50": 7.875,
+          "p99": 12.5,
+          "p999": 19.5416666667,
+          "max": 40
+        },
+        {
+          "p50": 8.75,
+          "p99": 14.2916666667,
+          "p999": 26.7916666667,
+          "max": 49.0833333333
+        }
+      ],
+      "callback_to_producer_ratio": 1.0000013800769998,
+      "producer_seconds": 0.0848275418,
+      "callback_processing_seconds": 0.0848275918,
+      "wall_seconds": 0.1081732584,
+      "drain_seconds": 3.8665999999999995e-06,
+      "failed_write_calls": 0.0,
+      "backpressured_messages": 0.0,
+      "producer_retry_seconds": 0.0,
+      "cpu_cores": 1.983731121388,
+      "input_preparation_seconds": 0.050710899600000005,
+      "session_block_exhaustions": 0.0,
+      "actual_spsc_capacity": [
+        4194301
+      ],
+      "completed_rounds": [
+        3
+      ],
+      "effective_warmup_messages": [
+        50000
+      ],
+      "prepared_input_bytes": [
+        214748352
+      ],
+      "latency_samples": [
+        9999
+      ],
+      "latency_tail_writes": [
+        1000
+      ],
+      "timer": [
+        "mach_absolute_time"
+      ],
+      "writer_pressure_events": 0.0,
+      "copy_memory_full_events": 0.0,
+      "internal_backpressure": null,
+      "nominal_buffer_mib": [
+        255.99981689453125
+      ],
+      "peak_rss_mib": 462.578125,
+      "latency_quantum_ns": 0.0416666666667,
+      "resolution_limited": false,
+      "p999_sample_count_warning": true,
+      "library_pressure_stats_available": false
+    },
+    {
+      "payload_bytes": 64,
+      "transport": "atomic_queue",
+      "callback_iterations": 4,
+      "parameters": {
+        "transport": "atomic_queue",
+        "mode": "throughput",
+        "payload_bytes": 64,
+        "messages": 10000000,
+        "warmup_messages": 50000,
+        "callback_iterations": 4,
+        "verify_payload": false,
+        "prepared_input": true,
+        "variable_payload": true,
+        "prepared_input_limit_bytes": 268435456,
+        "measure_callback_time": true,
+        "producer_interval_ns": 0,
+        "source_block_size": 262144,
+        "source_pool_min": 1024,
+        "source_pool_max": 1024,
+        "source_queue_capacity": 4096,
+        "writer_backpressure": "drop",
+        "writer_spin_count": 1000,
+        "writer_wait_timeout_ms": 5000,
+        "output_block_size": 262144,
+        "output_frame_capacity": 64,
+        "output_pool_min": 1024,
+        "output_pool_max": 1024,
+        "output_queue_capacity": 4096,
+        "cancel_claim_mode": "tail",
+        "output_mode": "spsc",
+        "output_reader_mode": "wait_signal",
+        "output_reader_count": 1,
+        "output_retry_wait_us": 1000,
+        "output_enable_stats": false,
+        "is_scan_current": false,
+        "reader_spin_count": 10000,
+        "rescan_interval_ns": 5000000,
+        "rescan_max_interval_ns": 30000000,
+        "consumer_cpu": -1,
+        "producer_cpu": -1,
+        "producer_qos": "user_interactive",
+        "round_storage_bytes": 214748364,
+        "spsc_buffer_bytes": 268435456,
+        "prefault_producer_buffers": true,
+        "finish_timeout_ms": 5000,
+        "work_wait_min_ms": 1,
+        "finish_retry_ms": 1,
+        "publish_count": 4294967295,
+        "spsc_capacity": 4194304,
+        "retry_yield_every": 1024,
+        "spsc_idle_spins": 0,
+        "spsc_idle_sleep_ns": 10000,
+        "timer": "auto",
+        "sample_every": 32,
+        "max_samples": 1000000,
+        "latency_batch_size": 1000,
+        "timer_calibration_samples": 16384,
+        "call_batch_size": 256,
+        "random_seed": 42,
+        "timeout_seconds": 180,
+        "buffer_budget_bytes": 536870912,
+        "use_write_session": false,
+        "rigtorp_write_prefetch": false,
+        "readerwriterqueue_copy_after_zero": false
+      },
+      "throughput_mps": 71.7305140306,
+      "throughput_runs_mps": [
+        70.5002552885,
+        72.3633073948,
+        72.8820700035,
+        68.6142044701,
+        74.2927329961
+      ],
+      "payload_gb_per_second": 4.590752897958,
+      "p50_ns": 10.85833333334,
+      "p50_runs_ns": [
+        10.75,
+        10.7916666667,
+        10.625,
+        11.3333333333,
+        10.7916666667
+      ],
+      "p99_ns": 25.916666666679998,
+      "p99_runs_ns": [
+        25.8333333333,
+        25.125,
+        25.7916666667,
+        28.1666666667,
+        24.6666666667
+      ],
+      "p999_ns": 48.46666666668,
+      "p999_runs_ns": [
+        50.4166666667,
+        41,
+        41.875,
+        70.125,
+        38.9166666667
+      ],
+      "latency_runs": [
+        {
+          "p50": 10.75,
+          "p99": 25.8333333333,
+          "p999": 50.4166666667,
+          "max": 61.9166666667
+        },
+        {
+          "p50": 10.7916666667,
+          "p99": 25.125,
+          "p999": 41,
+          "max": 79.2083333333
+        },
+        {
+          "p50": 10.625,
+          "p99": 25.7916666667,
+          "p999": 41.875,
+          "max": 76.625
+        },
+        {
+          "p50": 11.3333333333,
+          "p99": 28.1666666667,
+          "p999": 70.125,
+          "max": 82.9583333333
+        },
+        {
+          "p50": 10.7916666667,
+          "p99": 24.6666666667,
+          "p999": 38.9166666667,
+          "max": 78.125
+        }
+      ],
+      "callback_to_producer_ratio": 1.001313824236,
+      "producer_seconds": 0.1395176166,
+      "callback_processing_seconds": 0.1396987502,
+      "wall_seconds": 0.1638846588,
+      "drain_seconds": 0.0002465086,
+      "failed_write_calls": 0.0,
+      "backpressured_messages": 0.0,
+      "producer_retry_seconds": 0.0,
+      "cpu_cores": 1.8201314203119998,
+      "input_preparation_seconds": 0.0632905668,
+      "session_block_exhaustions": 0.0,
+      "actual_spsc_capacity": [
+        4194304
+      ],
+      "completed_rounds": [
+        3
+      ],
+      "effective_warmup_messages": [
+        50000
+      ],
+      "prepared_input_bytes": [
+        214748352
+      ],
+      "latency_samples": [
+        9999
+      ],
+      "latency_tail_writes": [
+        1000
+      ],
+      "timer": [
+        "mach_absolute_time"
+      ],
+      "writer_pressure_events": 0.0,
+      "copy_memory_full_events": 0.0,
+      "internal_backpressure": null,
+      "nominal_buffer_mib": [
+        256.0
+      ],
+      "peak_rss_mib": 466.5625,
+      "latency_quantum_ns": 0.0416666666667,
+      "resolution_limited": false,
+      "p999_sample_count_warning": true,
+      "library_pressure_stats_available": false
+    }
+  ],
+  "calibration": [],
+  "search": null,
+  "formal_runs": 160,
+  "validation_runs": 16,
+  "calibration_runs": 0,
+  "measurement_kind": "fixed_parameters_independent_write_mode",
+  "audit_notes": [
+    "本次没有重新寻优，吞吐和各延时指标使用同一构造配置。普通 write 与 Session 的读端/发布配置和测量轮次可能不同，不能当作同参数对照。",
+    "只重新测量 normal 与三个开源对照；另一写模式的报告保持原样，没有把它的历史数据混入本轮主表。",
+    "每层数据池严格为 256 MiB；原生队列的保留槽与 rigtorp 首尾 padding 纳入这个 payload 存储预算，队列元数据和输入另计。",
+    "Session 正常遇到块满返回 insufficient_space，次数记入 session_block_exhaustions；这不是背压或丢消息。池/队列受压通过 Writer 内部压力统计报告。",
+    "rigtorp_write_prefetch 在完整参数中记录；开关在测试开始前选择模板，普通复制和带提示构造都只复制一次完整负载，不额外写零。atomic_queue 保持原有调用。",
+    "ReaderWriterQueue 16/32 B 使用 copy_after_zero：队列槽位默认清零后 memcpy 一次完整负载；8/64 B 保留成员复制。清零和复制均在写入计时内。各实现的调用端优化在行标签和完整参数中公开，不能把所有差异归因于队列算法。",
+    "256 MiB 回调循环按 8/16/32/64 B 固定为 1/1/2/4 次，本次未重新校准。用于控制读端/发布参数变化；实际时间比保留在表格中，不保证仍在 2～3 倍范围。",
+    "TwoBufQueue 8 B：is_scan_current=true, publish_count=10, 初始/最大扫描间隔=1000000/1000000 ns，最小等待=1 ms。",
+    "TwoBufQueue 16 B：is_scan_current=true, publish_count=10, 初始/最大扫描间隔=1000000/1000000 ns，最小等待=1 ms。",
+    "TwoBufQueue 32 B：is_scan_current=true, publish_count=10, 初始/最大扫描间隔=1000000/1000000 ns，最小等待=1 ms。",
+    "TwoBufQueue 64 B：is_scan_current=true, publish_count=10, 初始/最大扫描间隔=1000000/1000000 ns，最小等待=1 ms。",
+    "本轮只改变普通 write 的当前块扫描和发布参数；Session 的配置、报告和原始结果保持上一轮原样。三个开源对照本轮重新测量，未使用历史成绩替换。",
+    "256 MiB 的 1/1/2/4 次回调循环沿用 release_20261011_inline_fixed_110024；8 MiB 仍为 0。本次合计 320 次正式测量、32 次独立完整负载/FIFO 校验，没有重新校准或寻优。",
+    "测试框架增加 publish_count=10 的编译期 Writer 实例，并修正非 2 次幂发布次数的轮末自然发布对齐；未修改库 src/include 或第三方头文件。每轮少于 1000 条的尾部仍发送并记录，延时样本只统计完整的 1000 次写入组。"
+  ],
+  "copy_sensitivity": {
+    "groups": [
+      {
+        "label": "readerwriterqueue_8",
+        "member_init": {
+          "p50_runs_ns": [
+            1.29166666667,
+            1.29166666667,
+            1.29166666667,
+            1.29166666667,
+            1.29166666667
+          ],
+          "p50_ns": 1.29166666667
+        },
+        "body_memcpy": {
+          "p50_runs_ns": [
+            2.125,
+            2.45833333333,
+            2.125,
+            2.125,
+            2.125
+          ],
+          "p50_ns": 2.191666666666
+        }
+      },
+      {
+        "label": "rigtorp_8",
+        "member_init": {
+          "p50_runs_ns": [
+            22.7916666667,
+            22.375,
+            22.5,
+            21.6666666667,
+            21.1666666667
+          ],
+          "p50_ns": 22.10000000002
+        },
+        "body_memcpy": {
+          "p50_runs_ns": [
+            2.625,
+            2.625,
+            2.625,
+            2.625,
+            2.625
+          ],
+          "p50_ns": 2.625
+        }
+      },
+      {
+        "label": "atomic_queue_8",
+        "member_init": {
+          "p50_runs_ns": [
+            4.83333333333,
+            5.29166666667,
+            5.54166666667,
+            5.375,
+            6.125
+          ],
+          "p50_ns": 5.433333333334
+        },
+        "body_memcpy": {
+          "p50_runs_ns": [
+            5.5,
+            5.5,
+            5.20833333333,
+            5.25,
+            5.91666666667
+          ],
+          "p50_ns": 5.475
+        }
+      },
+      {
+        "label": "readerwriterqueue_16",
+        "member_init": {
+          "p50_runs_ns": [
+            9.70833333333,
+            9.16666666667,
+            9.33333333333,
+            9.20833333333,
+            9.58333333333
+          ],
+          "p50_ns": 9.399999999997998
+        },
+        "body_memcpy": {
+          "p50_runs_ns": [
+            1.29166666667,
+            1.29166666667,
+            1.29166666667,
+            1.29166666667,
+            1.29166666667
+          ],
+          "p50_ns": 1.29166666667
+        }
+      },
+      {
+        "label": "rigtorp_16",
+        "member_init": {
+          "p50_runs_ns": [
+            23.0833333333,
+            23.4583333333,
+            23.5833333333,
+            23.625,
+            23.625
+          ],
+          "p50_ns": 23.47499999998
+        },
+        "body_memcpy": {
+          "p50_runs_ns": [
+            2.66666666667,
+            2.66666666667,
+            2.625,
+            2.66666666667,
+            2.66666666667
+          ],
+          "p50_ns": 2.658333333336
+        }
+      },
+      {
+        "label": "atomic_queue_16",
+        "member_init": {
+          "p50_runs_ns": [
+            6.875,
+            6.66666666667,
+            7,
+            6.91666666667,
+            6.83333333333
+          ],
+          "p50_ns": 6.8583333333339995
+        },
+        "body_memcpy": {
+          "p50_runs_ns": [
+            6.83333333333,
+            6.66666666667,
+            6.66666666667,
+            6.91666666667,
+            7.125
+          ],
+          "p50_ns": 6.841666666668
+        }
+      },
+      {
+        "label": "readerwriterqueue_32",
+        "member_init": {
+          "p50_runs_ns": [
+            19.2916666667,
+            19.5833333333,
+            19.4583333333,
+            20.2916666667,
+            19.5416666667
+          ],
+          "p50_ns": 19.633333333339998
+        },
+        "body_memcpy": {
+          "p50_runs_ns": [
+            1.70833333333,
+            1.66666666667,
+            1.66666666667,
+            1.66666666667,
+            1.66666666667
+          ],
+          "p50_ns": 1.6750000000020002
+        }
+      },
+      {
+        "label": "rigtorp_32",
+        "member_init": {
+          "p50_runs_ns": [
+            23.6666666667,
+            23.5,
+            23.8333333333,
+            23.375,
+            23.0833333333
+          ],
+          "p50_ns": 23.491666666660002
+        },
+        "body_memcpy": {
+          "p50_runs_ns": [
+            3.20833333333,
+            3.25,
+            3.25,
+            3.25,
+            3.20833333333
+          ],
+          "p50_ns": 3.233333333332
+        }
+      },
+      {
+        "label": "atomic_queue_32",
+        "member_init": {
+          "p50_runs_ns": [
+            8.04166666667,
+            8.33333333333,
+            8.20833333333,
+            8.375,
+            9.29166666667
+          ],
+          "p50_ns": 8.45
+        },
+        "body_memcpy": {
+          "p50_runs_ns": [
+            8.41666666667,
+            8.375,
+            10.0833333333,
+            8.16666666667,
+            8.29166666667
+          ],
+          "p50_ns": 8.666666666662
+        }
+      },
+      {
+        "label": "readerwriterqueue_64",
+        "member_init": {
+          "p50_runs_ns": [
+            2.875,
+            2.95833333333,
+            2.95833333333,
+            2.83333333333,
+            3.20833333333
+          ],
+          "p50_ns": 2.966666666664
+        },
+        "body_memcpy": {
+          "p50_runs_ns": [
+            3.375,
+            4.125,
+            3.25,
+            3.375,
+            3.375
+          ],
+          "p50_ns": 3.5
+        }
+      },
+      {
+        "label": "rigtorp_64",
+        "member_init": {
+          "p50_runs_ns": [
+            20.4166666667,
+            20.9583333333,
+            21.1666666667,
+            21.2916666667,
+            21.0833333333
+          ],
+          "p50_ns": 20.98333333334
+        },
+        "body_memcpy": {
+          "p50_runs_ns": [
+            4.29166666667,
+            4.29166666667,
+            4.375,
+            4.33333333333,
+            4.29166666667
+          ],
+          "p50_ns": 4.3166666666680005
+        }
+      },
+      {
+        "label": "atomic_queue_64",
+        "member_init": {
+          "p50_runs_ns": [
+            10.5,
+            10.375,
+            11.5833333333,
+            10.5,
+            10.375
+          ],
+          "p50_ns": 10.666666666660001
+        },
+        "body_memcpy": {
+          "p50_runs_ns": [
+            10.3333333333,
+            10.1666666667,
+            10.25,
+            10.7083333333,
+            11.5
+          ],
+          "p50_ns": 10.59166666666
+        }
+      }
+    ],
+    "validation_runs": 24,
+    "formal_runs": 120,
+    "binary_sha256": {
+      "member_init": "3dfbaca5d43d9f4780ff48b0528ec85440308d25d5a81898d0acc2f7d356fbf4",
+      "body_memcpy": "56c3e9572a28a2deff8b57704e57dfc1ac62579492dca00af78fbe237ffe71a8"
+    },
+    "source_data": "/Users/lc/Documents/TwoBufQueue/docs/performance_data/release_20261011",
+    "change": "Only external Payload copy constructor differs. All timing/data/allocation/scheduling/queue code unchanged.",
+    "timestamp": "2026-10-11T00:16:44.565737+08:00",
+    "data_directory": "copy_sensitivity_20261011",
+    "upstream_headers_unchanged": true,
+    "source_baseline": "../release_20261011/source.tar.gz",
+    "interpretation": "Changing only the external copy constructor changes these measured results. The exact processor/compiler mechanism has not been established; these differences are not evidence of a queue algorithm advantage.",
+    "defaulted_copy_constructor_validation": "defaulted-validation.json",
+    "library_sha256": "f3718d0df946c322ee658073f4e9924c0c3a18b4e45b70cefed5a2bd9fdef524",
+    "source_prefix": "performance_data/copy_sensitivity_20261011"
+  }
+}

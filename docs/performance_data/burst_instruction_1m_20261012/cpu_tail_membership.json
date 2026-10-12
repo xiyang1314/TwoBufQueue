@@ -1,0 +1,44 @@
+[
+  {
+    "run": "48k_TwoBufQueue_run1",
+    "tail": "p99",
+    "n": 100,
+    "moved": 90,
+    "cpu_stable": 10
+  },
+  {
+    "run": "48k_TwoBufQueue_run1",
+    "tail": "p999",
+    "n": 10,
+    "moved": 6,
+    "cpu_stable": 4
+  },
+  {
+    "run": "48k_TwoBufQueue_run2",
+    "tail": "p99",
+    "n": 100,
+    "moved": 92,
+    "cpu_stable": 8
+  },
+  {
+    "run": "48k_TwoBufQueue_run2",
+    "tail": "p999",
+    "n": 10,
+    "moved": 9,
+    "cpu_stable": 1
+  },
+  {
+    "run": "48k_TwoBufQueue_run3",
+    "tail": "p99",
+    "n": 100,
+    "moved": 88,
+    "cpu_stable": 12
+  },
+  {
+    "run": "48k_TwoBufQueue_run3",
+    "tail": "p999",
+    "n": 10,
+    "moved": 9,
+    "cpu_stable": 1
+  }
+]

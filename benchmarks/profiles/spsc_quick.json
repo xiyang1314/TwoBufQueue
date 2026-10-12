@@ -1,0 +1,76 @@
+{
+  "payload_bytes": [
+    8,
+    16,
+    32,
+    64
+  ],
+  "callback_iterations": [
+    0
+  ],
+  "base": {
+    "warmup_messages": 50000,
+    "sample_every": 16,
+    "latency_batch_size": 1000,
+    "round_storage_bytes": 8388608,
+    "prepared_input": true,
+    "variable_payload": true
+  },
+  "search": {
+    "strategy": "coordinate",
+    "max_candidates_per_transport": 24,
+    "passes": 2,
+    "screen_messages": 1000000,
+    "final_messages": 5000000,
+    "screen_repetitions": 3,
+    "final_repetitions": 3,
+    "validation_messages": 10000,
+    "batch_reference": true
+  },
+  "spaces": {
+    "two_buf_queue": {
+      "block_bytes": [
+        4096,
+        65536
+      ],
+      "source_pool_blocks": [
+        2,
+        8
+      ],
+      "publish_count": [
+        1,
+        4,
+        32
+      ],
+      "reader_spin_count": [
+        0,
+        1000,
+        10000
+      ],
+      "rescan_interval_ns": [
+        1000000,
+        5000000
+      ],
+      "retry_yield_every": [
+        0,
+        1024
+      ]
+    },
+    "spsc": {
+      "spsc_capacity": [
+        1024,
+        8192,
+        65536
+      ],
+      "spsc_idle_spins": [
+        0,
+        1000,
+        10000
+      ],
+      "retry_yield_every": [
+        0,
+        1024
+      ]
+    }
+  }
+}

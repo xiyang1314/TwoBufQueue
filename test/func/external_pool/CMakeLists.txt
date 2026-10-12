@@ -1,0 +1,7 @@
+add_executable(brq_external_pool tests.cpp)
+target_link_libraries(brq_external_pool PRIVATE TwoBufQueue)
+brq_warnings(brq_external_pool)
+foreach(case null_single null_1n null_nn lifetime_single lifetime_1n lifetime_nn shared_single shared_1n shared_nn min_count callback concurrent_1n concurrent_nn)
+  add_test(NAME external_pool_${case} COMMAND brq_external_pool ${case})
+  set_tests_properties(external_pool_${case} PROPERTIES TIMEOUT 90 LABELS "functional;data_integrity;external_pool")
+endforeach()

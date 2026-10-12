@@ -1,0 +1,356 @@
+{
+  "metadata": {
+    "timestamp": "2026-10-11T01:30:53.717250+08:00",
+    "change": "Same executable and input/callback/buffer/timing settings. Only rigtorp_write_prefetch flag differs; dispatch selects template before measurement. One full member copy in both paths; no extra zeroing or changed upstream queue code.",
+    "binary_sha256": "bf84230c7eda05446d259334b157341674d13bd280d6751455af637d18eabbf5",
+    "build": {
+      "compiler": "Clang 18.1.8 ",
+      "optimized": true,
+      "sanitized": false,
+      "payload_copy_strategy": "member_copy_optional_rigtorp_destination_prefetch"
+    },
+    "formal_messages": 10000000,
+    "repetitions": 5,
+    "library_sha256": "96c602fd9de8453dc5432f6eca06d17ad65d879f9883ee6dae62b534e6422633"
+  },
+  "formal_runs": 160,
+  "validation_runs": 16,
+  "groups": [
+    {
+      "cache_mib": 8,
+      "payload_bytes": 8,
+      "write_prefetch": false,
+      "throughput_mps": 44.50618091244,
+      "throughput_runs_mps": [
+        44.0710160352,
+        44.5478697487,
+        47.7194671022,
+        42.3871225311,
+        43.805429145
+      ],
+      "p50_ns": 22.08333333334,
+      "p50_runs_ns": [
+        20.75,
+        23,
+        21.0833333333,
+        23.6666666667,
+        21.9166666667
+      ]
+    },
+    {
+      "cache_mib": 8,
+      "payload_bytes": 8,
+      "write_prefetch": true,
+      "throughput_mps": 345.239243516,
+      "throughput_runs_mps": [
+        332.996174706,
+        349.073146218,
+        332.008089842,
+        350.898246877,
+        361.220559937
+      ],
+      "p50_ns": 2.758333333332,
+      "p50_runs_ns": [
+        2.83333333333,
+        2.58333333333,
+        2.70833333333,
+        2.875,
+        2.79166666667
+      ]
+    },
+    {
+      "cache_mib": 8,
+      "payload_bytes": 16,
+      "write_prefetch": false,
+      "throughput_mps": 43.47799793386,
+      "throughput_runs_mps": [
+        45.4086808293,
+        44.5281908889,
+        43.2656794682,
+        42.4538314583,
+        41.7336070246
+      ],
+      "p50_ns": 23.19166666668,
+      "p50_runs_ns": [
+        23.0416666667,
+        23,
+        23.2916666667,
+        23.1666666667,
+        23.4583333333
+      ]
+    },
+    {
+      "cache_mib": 8,
+      "payload_bytes": 16,
+      "write_prefetch": true,
+      "throughput_mps": 349.7428390432,
+      "throughput_runs_mps": [
+        334.31632362,
+        366.694919288,
+        350.400746326,
+        347.334744207,
+        349.967461775
+      ],
+      "p50_ns": 2.8,
+      "p50_runs_ns": [
+        2.70833333333,
+        3,
+        2.75,
+        2.91666666667,
+        2.625
+      ]
+    },
+    {
+      "cache_mib": 8,
+      "payload_bytes": 32,
+      "write_prefetch": false,
+      "throughput_mps": 43.90133984526,
+      "throughput_runs_mps": [
+        44.6824781335,
+        43.9282230056,
+        44.4670160994,
+        43.61660858,
+        42.8123734078
+      ],
+      "p50_ns": 22.625,
+      "p50_runs_ns": [
+        22.375,
+        22.7083333333,
+        22,
+        23.25,
+        22.7916666667
+      ]
+    },
+    {
+      "cache_mib": 8,
+      "payload_bytes": 32,
+      "write_prefetch": true,
+      "throughput_mps": 303.2453697676,
+      "throughput_runs_mps": [
+        314.272704294,
+        313.459990813,
+        321.94151855,
+        269.917990817,
+        296.634644364
+      ],
+      "p50_ns": 3.141666666666,
+      "p50_runs_ns": [
+        3.25,
+        2.95833333333,
+        2.95833333333,
+        3.25,
+        3.29166666667
+      ]
+    },
+    {
+      "cache_mib": 8,
+      "payload_bytes": 64,
+      "write_prefetch": false,
+      "throughput_mps": 50.898865593640004,
+      "throughput_runs_mps": [
+        52.8816288946,
+        50.0146800588,
+        51.4198070547,
+        49.6221910279,
+        50.5560209322
+      ],
+      "p50_ns": 19.24166666668,
+      "p50_runs_ns": [
+        18.7083333333,
+        18.5,
+        19.5416666667,
+        19.6666666667,
+        19.7916666667
+      ]
+    },
+    {
+      "cache_mib": 8,
+      "payload_bytes": 64,
+      "write_prefetch": true,
+      "throughput_mps": 221.58339023599999,
+      "throughput_runs_mps": [
+        229.459565588,
+        223.311500987,
+        211.125231401,
+        225.609706849,
+        218.410946355
+      ],
+      "p50_ns": 4.283333333334,
+      "p50_runs_ns": [
+        4.25,
+        4.125,
+        4.04166666667,
+        4.66666666667,
+        4.33333333333
+      ]
+    },
+    {
+      "cache_mib": 256,
+      "payload_bytes": 8,
+      "write_prefetch": false,
+      "throughput_mps": 47.97412138698,
+      "throughput_runs_mps": [
+        48.6421147506,
+        47.3449447378,
+        45.7957410025,
+        46.2402176161,
+        51.8475888279
+      ],
+      "p50_ns": 19.475,
+      "p50_runs_ns": [
+        19.2083333333,
+        17.6666666667,
+        20.2916666667,
+        20.25,
+        19.9583333333
+      ]
+    },
+    {
+      "cache_mib": 256,
+      "payload_bytes": 8,
+      "write_prefetch": true,
+      "throughput_mps": 313.6612098114,
+      "throughput_runs_mps": [
+        305.84586445,
+        318.030753574,
+        320.995950283,
+        305.926958531,
+        317.506522219
+      ],
+      "p50_ns": 3.066666666666,
+      "p50_runs_ns": [
+        3.08333333333,
+        3.08333333333,
+        3.04166666667,
+        3.08333333333,
+        3.04166666667
+      ]
+    },
+    {
+      "cache_mib": 256,
+      "payload_bytes": 16,
+      "write_prefetch": false,
+      "throughput_mps": 44.69816562502,
+      "throughput_runs_mps": [
+        45.5273028442,
+        43.3801056476,
+        44.4475640708,
+        43.2898324629,
+        46.8460230996
+      ],
+      "p50_ns": 21.49166666668,
+      "p50_runs_ns": [
+        21.7916666667,
+        21.9166666667,
+        21.0833333333,
+        21.125,
+        21.5416666667
+      ]
+    },
+    {
+      "cache_mib": 256,
+      "payload_bytes": 16,
+      "write_prefetch": true,
+      "throughput_mps": 266.815811176,
+      "throughput_runs_mps": [
+        322.093608455,
+        250.632062733,
+        285.572861874,
+        245.836657864,
+        229.943864954
+      ],
+      "p50_ns": 3.783333333334,
+      "p50_runs_ns": [
+        4.33333333333,
+        4.20833333333,
+        4.04166666667,
+        3.16666666667,
+        3.16666666667
+      ]
+    },
+    {
+      "cache_mib": 256,
+      "payload_bytes": 32,
+      "write_prefetch": false,
+      "throughput_mps": 39.36099702656,
+      "throughput_runs_mps": [
+        41.9437722174,
+        39.1391030219,
+        39.485419537,
+        38.4023350586,
+        37.8343552979
+      ],
+      "p50_ns": 25.68333333332,
+      "p50_runs_ns": [
+        25.625,
+        25.8333333333,
+        25.0833333333,
+        25.4166666667,
+        26.4583333333
+      ]
+    },
+    {
+      "cache_mib": 256,
+      "payload_bytes": 32,
+      "write_prefetch": true,
+      "throughput_mps": 162.593329341,
+      "throughput_runs_mps": [
+        160.887778763,
+        164.916941891,
+        167.885819914,
+        160.14327314,
+        159.132832997
+      ],
+      "p50_ns": 5.999999999998,
+      "p50_runs_ns": [
+        6,
+        6.08333333333,
+        5.875,
+        6.08333333333,
+        5.95833333333
+      ]
+    },
+    {
+      "cache_mib": 256,
+      "payload_bytes": 64,
+      "write_prefetch": false,
+      "throughput_mps": 39.841378609319996,
+      "throughput_runs_mps": [
+        40.9168999366,
+        40.3335856965,
+        39.8473581596,
+        36.9752862548,
+        41.1337629991
+      ],
+      "p50_ns": 24.71666666668,
+      "p50_runs_ns": [
+        24.9166666667,
+        25.0416666667,
+        24.25,
+        25,
+        24.375
+      ]
+    },
+    {
+      "cache_mib": 256,
+      "payload_bytes": 64,
+      "write_prefetch": true,
+      "throughput_mps": 98.23411583912,
+      "throughput_runs_mps": [
+        99.8389687289,
+        97.9730992126,
+        93.9060089873,
+        99.3378299198,
+        100.114672347
+      ],
+      "p50_ns": 9.883333333326,
+      "p50_runs_ns": [
+        9.875,
+        9.83333333333,
+        10.0833333333,
+        9.79166666667,
+        9.83333333333
+      ]
+    }
+  ]
+}

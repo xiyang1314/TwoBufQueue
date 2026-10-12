@@ -1,0 +1,26 @@
+[
+  {
+    "kind": "pipeline",
+    "runs": 147,
+    "formal": 126,
+    "validation": 21,
+    "repetitions": 3,
+    "one_round": true,
+    "reader_80_percent": true,
+    "zero_writer_backpressure": true,
+    "zero_copy_backpressure": false,
+    "copy_memory_full_events_total": 434
+  },
+  {
+    "kind": "single",
+    "runs": 294,
+    "formal": 252,
+    "validation": 42,
+    "repetitions": 3,
+    "one_round": true,
+    "reader_80_percent": true,
+    "zero_writer_backpressure": true,
+    "zero_copy_backpressure": null,
+    "copy_memory_full_events_total": null
+  }
+]

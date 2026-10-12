@@ -1,0 +1,369 @@
+{
+  "patches": [
+    {
+      "address": "0x10000de30",
+      "file_offset": 56880,
+      "original": "10000de30:\tldrb\twzr, [x8], #0x20",
+      "replacement": "add x8, x8, #32",
+      "old_encoding": "0x3842051f",
+      "new_encoding": "0x91008108"
+    },
+    {
+      "address": "0x10000e2e4",
+      "file_offset": 58084,
+      "original": "10000e2e4:\tldrb\twzr, [x8], #0x20",
+      "replacement": "add x8, x8, #32",
+      "old_encoding": "0x3842051f",
+      "new_encoding": "0x91008108"
+    },
+    {
+      "address": "0x10000e3ec",
+      "file_offset": 58348,
+      "original": "10000e3ec:\tldrb\twzr, [x8], #0x20",
+      "replacement": "add x8, x8, #32",
+      "old_encoding": "0x3842051f",
+      "new_encoding": "0x91008108"
+    },
+    {
+      "address": "0x10000fbcc",
+      "file_offset": 64460,
+      "original": "10000fbcc:\tldrb\twzr, [x9]",
+      "replacement": "nop",
+      "old_encoding": "0x3940013f",
+      "new_encoding": "0xd503201f"
+    },
+    {
+      "address": "0x10000ff64",
+      "file_offset": 65380,
+      "original": "10000ff64:\tldrb\twzr, [x10]",
+      "replacement": "nop",
+      "old_encoding": "0x3940015f",
+      "new_encoding": "0xd503201f"
+    },
+    {
+      "address": "0x100010060",
+      "file_offset": 65632,
+      "original": "100010060:\tldrb\twzr, [x9]",
+      "replacement": "nop",
+      "old_encoding": "0x3940013f",
+      "new_encoding": "0xd503201f"
+    },
+    {
+      "address": "0x100010390",
+      "file_offset": 66448,
+      "original": "100010390:\tldrb\twzr, [x19], #0x20",
+      "replacement": "add x19, x19, #32",
+      "old_encoding": "0x3842067f",
+      "new_encoding": "0x91008273"
+    },
+    {
+      "address": "0x100011a74",
+      "file_offset": 72308,
+      "original": "100011a74:\tldrb\twzr, [x8], #0x20",
+      "replacement": "add x8, x8, #32",
+      "old_encoding": "0x3842051f",
+      "new_encoding": "0x91008108"
+    },
+    {
+      "address": "0x100011bc4",
+      "file_offset": 72644,
+      "original": "100011bc4:\tldrb\twzr, [x8], #0x20",
+      "replacement": "add x8, x8, #32",
+      "old_encoding": "0x3842051f",
+      "new_encoding": "0x91008108"
+    },
+    {
+      "address": "0x100011f74",
+      "file_offset": 73588,
+      "original": "100011f74:\tldrb\twzr, [x8], #0x20",
+      "replacement": "add x8, x8, #32",
+      "old_encoding": "0x3842051f",
+      "new_encoding": "0x91008108"
+    },
+    {
+      "address": "0x10001b978",
+      "file_offset": 113016,
+      "original": "10001b978:\tldrb\twzr, [x8], #0x20",
+      "replacement": "add x8, x8, #32",
+      "old_encoding": "0x3842051f",
+      "new_encoding": "0x91008108"
+    },
+    {
+      "address": "0x10001bb7c",
+      "file_offset": 113532,
+      "original": "10001bb7c:\tldrb\twzr, [x8], #0x20",
+      "replacement": "add x8, x8, #32",
+      "old_encoding": "0x3842051f",
+      "new_encoding": "0x91008108"
+    },
+    {
+      "address": "0x10001bc90",
+      "file_offset": 113808,
+      "original": "10001bc90:\tldrb\twzr, [x8], #0x20",
+      "replacement": "add x8, x8, #32",
+      "old_encoding": "0x3842051f",
+      "new_encoding": "0x91008108"
+    },
+    {
+      "address": "0x10001bce8",
+      "file_offset": 113896,
+      "original": "10001bce8:\tldrb\twzr, [x8], #0x20",
+      "replacement": "add x8, x8, #32",
+      "old_encoding": "0x3842051f",
+      "new_encoding": "0x91008108"
+    },
+    {
+      "address": "0x10001c144",
+      "file_offset": 115012,
+      "original": "10001c144:\tldrb\twzr, [x8], #0x20",
+      "replacement": "add x8, x8, #32",
+      "old_encoding": "0x3842051f",
+      "new_encoding": "0x91008108"
+    },
+    {
+      "address": "0x10001c19c",
+      "file_offset": 115100,
+      "original": "10001c19c:\tldrb\twzr, [x8], #0x20",
+      "replacement": "add x8, x8, #32",
+      "old_encoding": "0x3842051f",
+      "new_encoding": "0x91008108"
+    },
+    {
+      "address": "0x10001c668",
+      "file_offset": 116328,
+      "original": "10001c668:\tldrb\twzr, [x8], #0x20",
+      "replacement": "add x8, x8, #32",
+      "old_encoding": "0x3842051f",
+      "new_encoding": "0x91008108"
+    },
+    {
+      "address": "0x10001c7b4",
+      "file_offset": 116660,
+      "original": "10001c7b4:\tldrb\twzr, [x8], #0x20",
+      "replacement": "add x8, x8, #32",
+      "old_encoding": "0x3842051f",
+      "new_encoding": "0x91008108"
+    },
+    {
+      "address": "0x10001cdd4",
+      "file_offset": 118228,
+      "original": "10001cdd4:\tldrb\twzr, [x8], #0x20",
+      "replacement": "add x8, x8, #32",
+      "old_encoding": "0x3842051f",
+      "new_encoding": "0x91008108"
+    },
+    {
+      "address": "0x10001cf0c",
+      "file_offset": 118540,
+      "original": "10001cf0c:\tldrb\twzr, [x8], #0x20",
+      "replacement": "add x8, x8, #32",
+      "old_encoding": "0x3842051f",
+      "new_encoding": "0x91008108"
+    },
+    {
+      "address": "0x10001cf64",
+      "file_offset": 118628,
+      "original": "10001cf64:\tldrb\twzr, [x8], #0x20",
+      "replacement": "add x8, x8, #32",
+      "old_encoding": "0x3842051f",
+      "new_encoding": "0x91008108"
+    },
+    {
+      "address": "0x10001d3c0",
+      "file_offset": 119744,
+      "original": "10001d3c0:\tldrb\twzr, [x8], #0x20",
+      "replacement": "add x8, x8, #32",
+      "old_encoding": "0x3842051f",
+      "new_encoding": "0x91008108"
+    },
+    {
+      "address": "0x10001d418",
+      "file_offset": 119832,
+      "original": "10001d418:\tldrb\twzr, [x8], #0x20",
+      "replacement": "add x8, x8, #32",
+      "old_encoding": "0x3842051f",
+      "new_encoding": "0x91008108"
+    },
+    {
+      "address": "0x10001d8dc",
+      "file_offset": 121052,
+      "original": "10001d8dc:\tldrb\twzr, [x8], #0x20",
+      "replacement": "add x8, x8, #32",
+      "old_encoding": "0x3842051f",
+      "new_encoding": "0x91008108"
+    },
+    {
+      "address": "0x10001da24",
+      "file_offset": 121380,
+      "original": "10001da24:\tldrb\twzr, [x8], #0x20",
+      "replacement": "add x8, x8, #32",
+      "old_encoding": "0x3842051f",
+      "new_encoding": "0x91008108"
+    },
+    {
+      "address": "0x10001e0f0",
+      "file_offset": 123120,
+      "original": "10001e0f0:\tldrb\twzr, [x9]",
+      "replacement": "nop",
+      "old_encoding": "0x3940013f",
+      "new_encoding": "0xd503201f"
+    },
+    {
+      "address": "0x10001e1cc",
+      "file_offset": 123340,
+      "original": "10001e1cc:\tldrb\twzr, [x9]",
+      "replacement": "nop",
+      "old_encoding": "0x3940013f",
+      "new_encoding": "0xd503201f"
+    },
+    {
+      "address": "0x1000204f4",
+      "file_offset": 132340,
+      "original": "1000204f4:\tldrb\twzr, [x9]",
+      "replacement": "nop",
+      "old_encoding": "0x3940013f",
+      "new_encoding": "0xd503201f"
+    },
+    {
+      "address": "0x1000206c0",
+      "file_offset": 132800,
+      "original": "1000206c0:\tldrb\twzr, [x9]",
+      "replacement": "nop",
+      "old_encoding": "0x3940013f",
+      "new_encoding": "0xd503201f"
+    },
+    {
+      "address": "0x100020798",
+      "file_offset": 133016,
+      "original": "100020798:\tldrb\twzr, [x9]",
+      "replacement": "nop",
+      "old_encoding": "0x3940013f",
+      "new_encoding": "0xd503201f"
+    },
+    {
+      "address": "0x1000207dc",
+      "file_offset": 133084,
+      "original": "1000207dc:\tldrb\twzr, [x9]",
+      "replacement": "nop",
+      "old_encoding": "0x3940013f",
+      "new_encoding": "0xd503201f"
+    },
+    {
+      "address": "0x100020bd4",
+      "file_offset": 134100,
+      "original": "100020bd4:\tldrb\twzr, [x9]",
+      "replacement": "nop",
+      "old_encoding": "0x3940013f",
+      "new_encoding": "0xd503201f"
+    },
+    {
+      "address": "0x100020c18",
+      "file_offset": 134168,
+      "original": "100020c18:\tldrb\twzr, [x9]",
+      "replacement": "nop",
+      "old_encoding": "0x3940013f",
+      "new_encoding": "0xd503201f"
+    },
+    {
+      "address": "0x100021054",
+      "file_offset": 135252,
+      "original": "100021054:\tldrb\twzr, [x9]",
+      "replacement": "nop",
+      "old_encoding": "0x3940013f",
+      "new_encoding": "0xd503201f"
+    },
+    {
+      "address": "0x100021160",
+      "file_offset": 135520,
+      "original": "100021160:\tldrb\twzr, [x9]",
+      "replacement": "nop",
+      "old_encoding": "0x3940013f",
+      "new_encoding": "0xd503201f"
+    },
+    {
+      "address": "0x10002170c",
+      "file_offset": 136972,
+      "original": "10002170c:\tldrb\twzr, [x23], #0x20",
+      "replacement": "add x23, x23, #32",
+      "old_encoding": "0x384206ff",
+      "new_encoding": "0x910082f7"
+    },
+    {
+      "address": "0x1000217a0",
+      "file_offset": 137120,
+      "original": "1000217a0:\tldrb\twzr, [x9]",
+      "replacement": "nop",
+      "old_encoding": "0x3940013f",
+      "new_encoding": "0xd503201f"
+    },
+    {
+      "address": "0x1000219e0",
+      "file_offset": 137696,
+      "original": "1000219e0:\tldrb\twzr, [x9]",
+      "replacement": "nop",
+      "old_encoding": "0x3940013f",
+      "new_encoding": "0xd503201f"
+    },
+    {
+      "address": "0x100021a78",
+      "file_offset": 137848,
+      "original": "100021a78:\tldrb\twzr, [x9]",
+      "replacement": "nop",
+      "old_encoding": "0x3940013f",
+      "new_encoding": "0xd503201f"
+    },
+    {
+      "address": "0x100021b5c",
+      "file_offset": 138076,
+      "original": "100021b5c:\tldrb\twzr, [x9]",
+      "replacement": "nop",
+      "old_encoding": "0x3940013f",
+      "new_encoding": "0xd503201f"
+    },
+    {
+      "address": "0x100021ba0",
+      "file_offset": 138144,
+      "original": "100021ba0:\tldrb\twzr, [x9]",
+      "replacement": "nop",
+      "old_encoding": "0x3940013f",
+      "new_encoding": "0xd503201f"
+    },
+    {
+      "address": "0x100021f98",
+      "file_offset": 139160,
+      "original": "100021f98:\tldrb\twzr, [x9]",
+      "replacement": "nop",
+      "old_encoding": "0x3940013f",
+      "new_encoding": "0xd503201f"
+    },
+    {
+      "address": "0x100021fdc",
+      "file_offset": 139228,
+      "original": "100021fdc:\tldrb\twzr, [x9]",
+      "replacement": "nop",
+      "old_encoding": "0x3940013f",
+      "new_encoding": "0xd503201f"
+    },
+    {
+      "address": "0x100022410",
+      "file_offset": 140304,
+      "original": "100022410:\tldrb\twzr, [x9]",
+      "replacement": "nop",
+      "old_encoding": "0x3940013f",
+      "new_encoding": "0xd503201f"
+    },
+    {
+      "address": "0x100022518",
+      "file_offset": 140568,
+      "original": "100022518:\tldrb\twzr, [x9]",
+      "replacement": "nop",
+      "old_encoding": "0x3940013f",
+      "new_encoding": "0xd503201f"
+    }
+  ],
+  "changed_instruction_count": 45,
+  "total_instruction_count": 31680,
+  "statement": "Only the diagnostic byte-load instructions changed. Post-index loads were replaced by equivalent ADD cursor advancement; other loads by NOP. All code addresses, payload stores and release instructions unchanged.",
+  "readback_sha256": "17bbb8498865ff2bb56676cfb326d556c48e8544c9e94c693de5f0f610852e39",
+  "matched_noread_sha256": "0ffb83eaf40254ca49283f0a11897526daa8c7fedf4c3e58697f94791e9edcf8"
+}

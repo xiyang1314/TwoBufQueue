@@ -1,0 +1,64 @@
+{
+  "payload_bytes": [
+    8,
+    16,
+    32,
+    64
+  ],
+  "base": {
+    "warmup_messages": 50000,
+    "latency_batch_size": 1000,
+    "round_storage_bytes": 214748364,
+    "source_block_size": 1048576,
+    "source_pool_min": 256,
+    "source_pool_max": 256,
+    "source_queue_capacity": 512,
+    "output_block_size": 1048576,
+    "output_pool_min": 256,
+    "output_pool_max": 256,
+    "output_queue_capacity": 512,
+    "output_frame_capacity": 1024,
+    "output_mode": "spsc",
+    "output_reader_mode": "wait_signal",
+    "buffer_budget_bytes": 1073741824,
+    "spsc_buffer_bytes": 268435456,
+    "prefault_producer_buffers": true,
+    "timeout_seconds": 180,
+    "measure_callback_time": true
+  },
+  "search": {
+    "strategy": "grid",
+    "max_candidates_per_transport": 4,
+    "passes": 1,
+    "screen_messages": 1000000,
+    "final_messages": 100100000,
+    "screen_min_rounds": 2,
+    "final_min_rounds": 2,
+    "screen_repetitions": 3,
+    "final_repetitions": 3,
+    "validation_messages": 10000,
+    "batch_reference": false
+  },
+  "spaces": {
+    "two_buf_queue": {
+      "publish_count": [
+        1,
+        4,
+        16,
+        32
+      ]
+    },
+    "spsc": {}
+  },
+  "callback_calibration": {
+    "target_ratio": 2.5,
+    "min_ratio": 2.0,
+    "max_ratio": 3.0,
+    "repetitions": 3,
+    "messages": 1000000,
+    "min_rounds": 2,
+    "max_iterations": 1024,
+    "max_candidates": 10,
+    "reference_publish_count": 16
+  }
+}

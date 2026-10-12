@@ -1,0 +1,12 @@
+@PACKAGE_INIT@
+
+include(CMakeFindDependencyMacro)
+find_dependency(Threads)
+if(APPLE AND CMAKE_OSX_DEPLOYMENT_TARGET AND
+   CMAKE_OSX_DEPLOYMENT_TARGET VERSION_LESS "14.4")
+  set(TwoBufQueue_FOUND FALSE)
+  set(TwoBufQueue_NOT_FOUND_MESSAGE "TwoBufQueue requires macOS 14.4 or newer")
+  return()
+endif()
+include("${CMAKE_CURRENT_LIST_DIR}/TwoBufQueueTargets.cmake")
+check_required_components(TwoBufQueue)

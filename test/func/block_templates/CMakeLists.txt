@@ -1,0 +1,20 @@
+add_executable(brq_block_templates tests.cpp)
+target_link_libraries(brq_block_templates PRIVATE TwoBufQueue)
+brq_warnings(brq_block_templates)
+foreach(case interfaces writer_00 writer_01 writer_10 writer_11 reader_10 writer_parallel_10 writer_parallel_11
+    force_writer force_reader)
+  add_test(NAME block_templates_${case} COMMAND brq_block_templates ${case})
+  set_tests_properties(block_templates_${case} PROPERTIES TIMEOUT 90 LABELS "functional;data_integrity;block_templates")
+endforeach()
+foreach(case writer_state reader_state)
+  add_test(NAME block_templates_death_${case} COMMAND "${Python3_EXECUTABLE}"
+    "${CMAKE_CURRENT_SOURCE_DIR}/../block_lifecycle/check_death.py" "$<TARGET_FILE:brq_block_templates>"
+    death_${case} "EXPECTED_STATE")
+  set_tests_properties(block_templates_death_${case} PROPERTIES TIMEOUT 15 LABELS "functional;death;block_templates")
+endforeach()
+add_executable(brq_block_header_only header_only.cpp)
+target_compile_features(brq_block_header_only PRIVATE cxx_std_20)
+target_include_directories(brq_block_header_only PRIVATE "${CMAKE_BINARY_DIR}/include")
+brq_warnings(brq_block_header_only)
+add_test(NAME block_templates_header_only COMMAND brq_block_header_only)
+set_tests_properties(block_templates_header_only PROPERTIES TIMEOUT 15 LABELS "functional;block_templates")

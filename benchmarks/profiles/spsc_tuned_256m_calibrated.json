@@ -1,0 +1,125 @@
+{
+  "payload_bytes": [
+    8,
+    16,
+    32,
+    64
+  ],
+  "base": {
+    "warmup_messages": 50000,
+    "latency_batch_size": 1000,
+    "round_storage_bytes": 214748364,
+    "source_block_size": 65536,
+    "source_pool_min": 4096,
+    "source_pool_max": 4096,
+    "source_queue_capacity": 16384,
+    "output_block_size": 65536,
+    "output_pool_min": 4096,
+    "output_pool_max": 4096,
+    "output_queue_capacity": 16384,
+    "output_frame_capacity": 1024,
+    "output_mode": "spsc",
+    "output_reader_mode": "wait_signal",
+    "buffer_budget_bytes": 1073741824,
+    "spsc_buffer_bytes": 268435456,
+    "prefault_producer_buffers": true,
+    "timeout_seconds": 180,
+    "measure_callback_time": true,
+    "producer_qos": "user_interactive",
+    "prepared_input": true,
+    "variable_payload": true,
+    "publish_count": 4294967295,
+    "is_scan_current": false
+  },
+  "search": {
+    "strategy": "coordinate",
+    "max_candidates_per_transport": 64,
+    "passes": 2,
+    "screen_messages": 1000000,
+    "final_messages": 10000000,
+    "screen_repetitions": 3,
+    "final_repetitions": 3,
+    "validation_messages": 20000,
+    "batch_reference": false
+  },
+  "spaces": {
+    "two_buf_queue": {
+      "cache_block_bytes": [
+        65536,
+        262144,
+        1048576
+      ],
+      "publish_count": [
+        4294967295
+      ],
+      "output_frame_capacity": [
+        1,
+        64,
+        1024
+      ],
+      "reader_spin_count": [
+        0,
+        1000,
+        10000
+      ],
+      "rescan_interval_ns": [
+        1000000,
+        5000000,
+        30000000
+      ]
+    },
+    "spsc": {
+      "spsc_idle_spins": [
+        0,
+        1000,
+        10000
+      ],
+      "spsc_idle_sleep_ns": [
+        0,
+        1000,
+        10000
+      ]
+    }
+  },
+  "base_by_payload": {
+    "8": {
+      "cache_block_bytes": 1048576,
+      "publish_count": 4294967295,
+      "reader_spin_count": 1000,
+      "rescan_interval_ns": 1000000,
+      "output_frame_capacity": 1024
+    },
+    "16": {
+      "cache_block_bytes": 1048576,
+      "publish_count": 4294967295,
+      "reader_spin_count": 1000,
+      "rescan_interval_ns": 5000000,
+      "output_frame_capacity": 1024
+    },
+    "32": {
+      "cache_block_bytes": 65536,
+      "publish_count": 4294967295,
+      "reader_spin_count": 10000,
+      "rescan_interval_ns": 5000000,
+      "output_frame_capacity": 64
+    },
+    "64": {
+      "cache_block_bytes": 262144,
+      "publish_count": 4294967295,
+      "reader_spin_count": 10000,
+      "rescan_interval_ns": 5000000,
+      "output_frame_capacity": 64
+    }
+  },
+  "callback_calibration": {
+    "target_ratio": 2.5,
+    "min_ratio": 2,
+    "max_ratio": 3,
+    "repetitions": 3,
+    "messages": 10000000,
+    "min_rounds": 0,
+    "max_iterations": 1024,
+    "max_candidates": 10,
+    "reference_publish_count": 4294967295
+  }
+}

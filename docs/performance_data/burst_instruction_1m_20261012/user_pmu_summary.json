@@ -1,0 +1,1442 @@
+[
+  {
+    "file": "cache_ReaderWriterQueue_run1.json",
+    "events": [
+      "cycles",
+      "instructions",
+      "L1D_CACHE_MISS_LD_NONSPEC",
+      "L1D_CACHE_MISS_ST_NONSPEC",
+      "L1D_CACHE_WRITEBACK",
+      "L1D_TLB_MISS_NONSPEC"
+    ],
+    "empty": [
+      2693,
+      12480,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0
+    ],
+    "counter_read_ns": [
+      833.333333333,
+      1416.66666667,
+      2125
+    ],
+    "populations": {
+      "middle50pct": {
+        "windows": 1250,
+        "window_ns_median": 1583.33333333,
+        "events_median": [
+          10938.0,
+          21789.0,
+          279.0,
+          140.0,
+          113.0,
+          11.0
+        ],
+        "instruction_counter_median": 7827.0,
+        "kernel_ns_median": 83.3333333333,
+        "changed_during_write": 0,
+        "changed_during_business": 0
+      },
+      "slowest1pct": {
+        "windows": 25,
+        "window_ns_median": 6333.33333333,
+        "events_median": [
+          31669,
+          21793,
+          997,
+          500,
+          258,
+          11
+        ],
+        "instruction_counter_median": 7827,
+        "kernel_ns_median": 83.3333333333,
+        "changed_during_write": 22,
+        "changed_during_business": 4
+      },
+      "slowest3windows": {
+        "windows": 3,
+        "window_ns_median": 43833.3333333,
+        "events_median": [
+          130429,
+          51827,
+          1048,
+          532,
+          318,
+          38
+        ],
+        "instruction_counter_median": 17058,
+        "kernel_ns_median": 4000,
+        "changed_during_write": 3,
+        "changed_during_business": 3
+      }
+    }
+  },
+  {
+    "file": "cache_ReaderWriterQueue_run2.json",
+    "events": [
+      "cycles",
+      "instructions",
+      "L1D_CACHE_MISS_LD_NONSPEC",
+      "L1D_CACHE_MISS_ST_NONSPEC",
+      "L1D_CACHE_WRITEBACK",
+      "L1D_TLB_MISS_NONSPEC"
+    ],
+    "empty": [
+      2664,
+      12485,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0
+    ],
+    "counter_read_ns": [
+      708.333333333,
+      833.333333333,
+      958.333333333
+    ],
+    "populations": {
+      "middle50pct": {
+        "windows": 1250,
+        "window_ns_median": 1583.33333333,
+        "events_median": [
+          11014.0,
+          21788.0,
+          279.0,
+          140.0,
+          113.0,
+          10.0
+        ],
+        "instruction_counter_median": 7827.0,
+        "kernel_ns_median": 83.3333333333,
+        "changed_during_write": 0,
+        "changed_during_business": 0
+      },
+      "slowest1pct": {
+        "windows": 25,
+        "window_ns_median": 20416.6666667,
+        "events_median": [
+          70284,
+          30719,
+          980,
+          492,
+          334,
+          12
+        ],
+        "instruction_counter_median": 9448,
+        "kernel_ns_median": 1875,
+        "changed_during_write": 21,
+        "changed_during_business": 10
+      },
+      "slowest3windows": {
+        "windows": 3,
+        "window_ns_median": 44625,
+        "events_median": [
+          109860,
+          65208,
+          1053,
+          530,
+          376,
+          43
+        ],
+        "instruction_counter_median": 38673,
+        "kernel_ns_median": 5041.66666667,
+        "changed_during_write": 2,
+        "changed_during_business": 3
+      }
+    }
+  },
+  {
+    "file": "cache_ReaderWriterQueue_run3.json",
+    "events": [
+      "cycles",
+      "instructions",
+      "L1D_CACHE_MISS_LD_NONSPEC",
+      "L1D_CACHE_MISS_ST_NONSPEC",
+      "L1D_CACHE_WRITEBACK",
+      "L1D_TLB_MISS_NONSPEC"
+    ],
+    "empty": [
+      2747,
+      12489,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "counter_read_ns": [
+      708.333333333,
+      791.666666667,
+      875
+    ],
+    "populations": {
+      "middle50pct": {
+        "windows": 1250,
+        "window_ns_median": 1625.0,
+        "events_median": [
+          11067.0,
+          21789.0,
+          273.0,
+          138.0,
+          112.0,
+          10.0
+        ],
+        "instruction_counter_median": 7827.0,
+        "kernel_ns_median": 83.3333333333,
+        "changed_during_write": 0,
+        "changed_during_business": 0
+      },
+      "slowest1pct": {
+        "windows": 25,
+        "window_ns_median": 5333.33333333,
+        "events_median": [
+          26667,
+          21788,
+          992,
+          500,
+          303,
+          13
+        ],
+        "instruction_counter_median": 7827,
+        "kernel_ns_median": 125,
+        "changed_during_write": 23,
+        "changed_during_business": 3
+      },
+      "slowest3windows": {
+        "windows": 3,
+        "window_ns_median": 64125,
+        "events_median": [
+          107797,
+          40619,
+          1043,
+          529,
+          250,
+          34
+        ],
+        "instruction_counter_median": 20706,
+        "kernel_ns_median": 7000,
+        "changed_during_write": 3,
+        "changed_during_business": 2
+      }
+    }
+  },
+  {
+    "file": "cache_TwoBufQueue_run1.json",
+    "events": [
+      "cycles",
+      "instructions",
+      "L1D_CACHE_MISS_LD_NONSPEC",
+      "L1D_CACHE_MISS_ST_NONSPEC",
+      "L1D_CACHE_WRITEBACK",
+      "L1D_TLB_MISS_NONSPEC"
+    ],
+    "empty": [
+      2623,
+      12480,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "counter_read_ns": [
+      666.666666667,
+      833.333333333,
+      916.666666667
+    ],
+    "populations": {
+      "middle50pct": {
+        "windows": 1250,
+        "window_ns_median": 1041.66666667,
+        "events_median": [
+          8053.0,
+          21798.5,
+          27.0,
+          15.0,
+          8.0,
+          2.0
+        ],
+        "instruction_counter_median": 7834.0,
+        "kernel_ns_median": 83.3333333333,
+        "changed_during_write": 0,
+        "changed_during_business": 0
+      },
+      "slowest1pct": {
+        "windows": 25,
+        "window_ns_median": 4583.33333333,
+        "events_median": [
+          24327,
+          21799,
+          974,
+          489,
+          181,
+          11
+        ],
+        "instruction_counter_median": 7834,
+        "kernel_ns_median": 83.3333333333,
+        "changed_during_write": 22,
+        "changed_during_business": 2
+      },
+      "slowest3windows": {
+        "windows": 3,
+        "window_ns_median": 9291.66666667,
+        "events_median": [
+          35652,
+          21799,
+          994,
+          498,
+          142,
+          15
+        ],
+        "instruction_counter_median": 7834,
+        "kernel_ns_median": 41.6666666667,
+        "changed_during_write": 3,
+        "changed_during_business": 1
+      }
+    }
+  },
+  {
+    "file": "cache_TwoBufQueue_run2.json",
+    "events": [
+      "cycles",
+      "instructions",
+      "L1D_CACHE_MISS_LD_NONSPEC",
+      "L1D_CACHE_MISS_ST_NONSPEC",
+      "L1D_CACHE_WRITEBACK",
+      "L1D_TLB_MISS_NONSPEC"
+    ],
+    "empty": [
+      2658,
+      12480,
+      0,
+      0,
+      0,
+      3,
+      0,
+      0
+    ],
+    "counter_read_ns": [
+      708.333333333,
+      833.333333333,
+      916.666666667
+    ],
+    "populations": {
+      "middle50pct": {
+        "windows": 1250,
+        "window_ns_median": 1125.0,
+        "events_median": [
+          8373.5,
+          21794.0,
+          26.0,
+          14.0,
+          7.0,
+          8.0
+        ],
+        "instruction_counter_median": 7834.0,
+        "kernel_ns_median": 83.3333333333,
+        "changed_during_write": 0,
+        "changed_during_business": 0
+      },
+      "slowest1pct": {
+        "windows": 25,
+        "window_ns_median": 5458.33333333,
+        "events_median": [
+          26188,
+          21795,
+          983,
+          493,
+          215,
+          13
+        ],
+        "instruction_counter_median": 7834,
+        "kernel_ns_median": 125,
+        "changed_during_write": 23,
+        "changed_during_business": 2
+      },
+      "slowest3windows": {
+        "windows": 3,
+        "window_ns_median": 23625,
+        "events_median": [
+          90002,
+          39288,
+          1037,
+          525,
+          239,
+          22
+        ],
+        "instruction_counter_median": 16284,
+        "kernel_ns_median": 2666.66666667,
+        "changed_during_write": 2,
+        "changed_during_business": 2
+      }
+    }
+  },
+  {
+    "file": "cache_TwoBufQueue_run3.json",
+    "events": [
+      "cycles",
+      "instructions",
+      "L1D_CACHE_MISS_LD_NONSPEC",
+      "L1D_CACHE_MISS_ST_NONSPEC",
+      "L1D_CACHE_WRITEBACK",
+      "L1D_TLB_MISS_NONSPEC"
+    ],
+    "empty": [
+      2715,
+      12485,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "counter_read_ns": [
+      708.333333333,
+      875,
+      958.333333333
+    ],
+    "populations": {
+      "middle50pct": {
+        "windows": 1250,
+        "window_ns_median": 1125.0,
+        "events_median": [
+          8440.5,
+          21790.0,
+          24.0,
+          14.0,
+          8.0,
+          4.0
+        ],
+        "instruction_counter_median": 7834.0,
+        "kernel_ns_median": 83.3333333333,
+        "changed_during_write": 0,
+        "changed_during_business": 0
+      },
+      "slowest1pct": {
+        "windows": 25,
+        "window_ns_median": 8916.66666667,
+        "events_median": [
+          37221,
+          21799,
+          991,
+          495,
+          231,
+          11
+        ],
+        "instruction_counter_median": 7834,
+        "kernel_ns_median": 125,
+        "changed_during_write": 23,
+        "changed_during_business": 3
+      },
+      "slowest3windows": {
+        "windows": 3,
+        "window_ns_median": 29291.6666667,
+        "events_median": [
+          117973,
+          51868,
+          1033,
+          524,
+          295,
+          37
+        ],
+        "instruction_counter_median": 16788,
+        "kernel_ns_median": 2833.33333333,
+        "changed_during_write": 3,
+        "changed_during_business": 2
+      }
+    }
+  },
+  {
+    "file": "cache_baseline_run1.json",
+    "events": [
+      "cycles",
+      "instructions",
+      "L1D_CACHE_MISS_LD_NONSPEC",
+      "L1D_CACHE_MISS_ST_NONSPEC",
+      "L1D_CACHE_WRITEBACK",
+      "L1D_TLB_MISS_NONSPEC"
+    ],
+    "empty": [
+      2737,
+      12489,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "counter_read_ns": [
+      708.333333333,
+      833.333333333,
+      1333.33333333
+    ],
+    "populations": {
+      "middle50pct": {
+        "windows": 1250,
+        "window_ns_median": 875.0,
+        "events_median": [
+          7407.0,
+          21797.0,
+          0.0,
+          0.0,
+          0.0,
+          3.0
+        ],
+        "instruction_counter_median": 7829.0,
+        "kernel_ns_median": 41.6666666667,
+        "changed_during_write": 0,
+        "changed_during_business": 0
+      },
+      "slowest1pct": {
+        "windows": 25,
+        "window_ns_median": 1166.66666667,
+        "events_median": [
+          7419,
+          21797,
+          0,
+          0,
+          0,
+          3
+        ],
+        "instruction_counter_median": 7829,
+        "kernel_ns_median": 83.3333333333,
+        "changed_during_write": 0,
+        "changed_during_business": 0
+      },
+      "slowest3windows": {
+        "windows": 3,
+        "window_ns_median": 1250,
+        "events_median": [
+          7559,
+          21798,
+          0,
+          0,
+          0,
+          3
+        ],
+        "instruction_counter_median": 7829,
+        "kernel_ns_median": 41.6666666667,
+        "changed_during_write": 0,
+        "changed_during_business": 0
+      }
+    }
+  },
+  {
+    "file": "cache_baseline_run2.json",
+    "events": [
+      "cycles",
+      "instructions",
+      "L1D_CACHE_MISS_LD_NONSPEC",
+      "L1D_CACHE_MISS_ST_NONSPEC",
+      "L1D_CACHE_WRITEBACK",
+      "L1D_TLB_MISS_NONSPEC"
+    ],
+    "empty": [
+      2661,
+      12480,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0
+    ],
+    "counter_read_ns": [
+      708.333333333,
+      791.666666667,
+      958.333333333
+    ],
+    "populations": {
+      "middle50pct": {
+        "windows": 1250,
+        "window_ns_median": 875.0,
+        "events_median": [
+          7320.0,
+          21788.0,
+          0.0,
+          0.0,
+          0.0,
+          4.0
+        ],
+        "instruction_counter_median": 7829.0,
+        "kernel_ns_median": 41.6666666667,
+        "changed_during_write": 0,
+        "changed_during_business": 0
+      },
+      "slowest1pct": {
+        "windows": 25,
+        "window_ns_median": 1125,
+        "events_median": [
+          7332,
+          21788,
+          0,
+          0,
+          0,
+          4
+        ],
+        "instruction_counter_median": 7829,
+        "kernel_ns_median": 83.3333333333,
+        "changed_during_write": 0,
+        "changed_during_business": 0
+      },
+      "slowest3windows": {
+        "windows": 3,
+        "window_ns_median": 1166.66666667,
+        "events_median": [
+          7356,
+          21784,
+          2,
+          1,
+          1,
+          3
+        ],
+        "instruction_counter_median": 7829,
+        "kernel_ns_median": 83.3333333333,
+        "changed_during_write": 0,
+        "changed_during_business": 0
+      }
+    }
+  },
+  {
+    "file": "cache_baseline_run3.json",
+    "events": [
+      "cycles",
+      "instructions",
+      "L1D_CACHE_MISS_LD_NONSPEC",
+      "L1D_CACHE_MISS_ST_NONSPEC",
+      "L1D_CACHE_WRITEBACK",
+      "L1D_TLB_MISS_NONSPEC"
+    ],
+    "empty": [
+      2682,
+      12488,
+      0,
+      0,
+      0,
+      2,
+      0,
+      0
+    ],
+    "counter_read_ns": [
+      708.333333333,
+      791.666666667,
+      1000
+    ],
+    "populations": {
+      "middle50pct": {
+        "windows": 1250,
+        "window_ns_median": 875.0,
+        "events_median": [
+          7308.0,
+          21793.0,
+          0.0,
+          0.0,
+          0.0,
+          3.0
+        ],
+        "instruction_counter_median": 7829.0,
+        "kernel_ns_median": 41.6666666667,
+        "changed_during_write": 0,
+        "changed_during_business": 0
+      },
+      "slowest1pct": {
+        "windows": 25,
+        "window_ns_median": 1083.33333333,
+        "events_median": [
+          7346,
+          21793,
+          0,
+          0,
+          0,
+          3
+        ],
+        "instruction_counter_median": 7829,
+        "kernel_ns_median": 83.3333333333,
+        "changed_during_write": 0,
+        "changed_during_business": 0
+      },
+      "slowest3windows": {
+        "windows": 3,
+        "window_ns_median": 1291.66666667,
+        "events_median": [
+          7776,
+          21801,
+          6,
+          2,
+          3,
+          4
+        ],
+        "instruction_counter_median": 7829,
+        "kernel_ns_median": 83.3333333333,
+        "changed_during_write": 0,
+        "changed_during_business": 0
+      }
+    }
+  },
+  {
+    "file": "pipeline_ReaderWriterQueue_run1.json",
+    "events": [
+      "cycles",
+      "instructions",
+      "MAP_STALL",
+      "MAP_STALL_DISPATCH",
+      "MAP_REWIND",
+      "ST_MEMORY_ORDER_VIOLATION_NONSPEC",
+      "LD_UNIT_UOP",
+      "ST_UNIT_UOP"
+    ],
+    "empty": [
+      2651,
+      12481,
+      73,
+      57,
+      6,
+      0,
+      53,
+      129
+    ],
+    "counter_read_ns": [
+      708.333333333,
+      833.333333333,
+      916.666666667
+    ],
+    "populations": {
+      "middle50pct": {
+        "windows": 1250,
+        "window_ns_median": 1708.33333333,
+        "events_median": [
+          11318.5,
+          21786.0,
+          6007.0,
+          5959.0,
+          32.0,
+          0.0,
+          1717.5,
+          966.0
+        ],
+        "instruction_counter_median": 7827.0,
+        "kernel_ns_median": 83.3333333333,
+        "changed_during_write": 0,
+        "changed_during_business": 0
+      },
+      "slowest1pct": {
+        "windows": 25,
+        "window_ns_median": 28625,
+        "events_median": [
+          83503,
+          30707,
+          55694,
+          54833,
+          180,
+          0,
+          1749,
+          1016
+        ],
+        "instruction_counter_median": 15344,
+        "kernel_ns_median": 2166.66666667,
+        "changed_during_write": 23,
+        "changed_during_business": 12
+      },
+      "slowest3windows": {
+        "windows": 3,
+        "window_ns_median": 331041.666667,
+        "events_median": [
+          90392,
+          35043,
+          41372,
+          39951,
+          136,
+          0,
+          1752,
+          900
+        ],
+        "instruction_counter_median": 19982,
+        "kernel_ns_median": 4666.66666667,
+        "changed_during_write": 3,
+        "changed_during_business": 3
+      }
+    }
+  },
+  {
+    "file": "pipeline_ReaderWriterQueue_run2.json",
+    "events": [
+      "cycles",
+      "instructions",
+      "MAP_STALL",
+      "MAP_STALL_DISPATCH",
+      "MAP_REWIND",
+      "ST_MEMORY_ORDER_VIOLATION_NONSPEC",
+      "LD_UNIT_UOP",
+      "ST_UNIT_UOP"
+    ],
+    "empty": [
+      2720,
+      12482,
+      79,
+      63,
+      6,
+      0,
+      60,
+      129
+    ],
+    "counter_read_ns": [
+      708.333333333,
+      875,
+      958.333333333
+    ],
+    "populations": {
+      "middle50pct": {
+        "windows": 1250,
+        "window_ns_median": 1625.0,
+        "events_median": [
+          10839.5,
+          21786.0,
+          5754.0,
+          5706.5,
+          31.0,
+          0.0,
+          1698.0,
+          958.0
+        ],
+        "instruction_counter_median": 7827.0,
+        "kernel_ns_median": 41.6666666667,
+        "changed_during_write": 0,
+        "changed_during_business": 0
+      },
+      "slowest1pct": {
+        "windows": 25,
+        "window_ns_median": 3958.33333333,
+        "events_median": [
+          21261,
+          21786,
+          13331,
+          13289,
+          36,
+          0,
+          1706,
+          954
+        ],
+        "instruction_counter_median": 7827,
+        "kernel_ns_median": 83.3333333333,
+        "changed_during_write": 18,
+        "changed_during_business": 0
+      },
+      "slowest3windows": {
+        "windows": 3,
+        "window_ns_median": 7333.33333333,
+        "events_median": [
+          37759,
+          21782,
+          25587,
+          25555,
+          156,
+          0,
+          1699,
+          1011
+        ],
+        "instruction_counter_median": 7828,
+        "kernel_ns_median": 125,
+        "changed_during_write": 1,
+        "changed_during_business": 0
+      }
+    }
+  },
+  {
+    "file": "pipeline_ReaderWriterQueue_run3.json",
+    "events": [
+      "cycles",
+      "instructions",
+      "MAP_STALL",
+      "MAP_STALL_DISPATCH",
+      "MAP_REWIND",
+      "ST_MEMORY_ORDER_VIOLATION_NONSPEC",
+      "LD_UNIT_UOP",
+      "ST_UNIT_UOP"
+    ],
+    "empty": [
+      2655,
+      12482,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "counter_read_ns": [
+      708.333333333,
+      791.666666667,
+      875
+    ],
+    "populations": {
+      "middle50pct": {
+        "windows": 1250,
+        "window_ns_median": 1583.33333333,
+        "events_median": [
+          10862.0,
+          21781.0,
+          5622.0,
+          5575.5,
+          33.0,
+          0.0,
+          1708.5,
+          960.0
+        ],
+        "instruction_counter_median": 7827.0,
+        "kernel_ns_median": 41.6666666667,
+        "changed_during_write": 0,
+        "changed_during_business": 0
+      },
+      "slowest1pct": {
+        "windows": 25,
+        "window_ns_median": 10416.6666667,
+        "events_median": [
+          50964,
+          21786,
+          24073,
+          24010,
+          84,
+          0,
+          1767,
+          974
+        ],
+        "instruction_counter_median": 7827,
+        "kernel_ns_median": 250,
+        "changed_during_write": 20,
+        "changed_during_business": 5
+      },
+      "slowest3windows": {
+        "windows": 3,
+        "window_ns_median": 27708.3333333,
+        "events_median": [
+          89125,
+          30600,
+          64423,
+          62486,
+          184,
+          0,
+          1826,
+          1041
+        ],
+        "instruction_counter_median": 15629,
+        "kernel_ns_median": 2458.33333333,
+        "changed_during_write": 3,
+        "changed_during_business": 2
+      }
+    }
+  },
+  {
+    "file": "pipeline_TwoBufQueue_run1.json",
+    "events": [
+      "cycles",
+      "instructions",
+      "MAP_STALL",
+      "MAP_STALL_DISPATCH",
+      "MAP_REWIND",
+      "ST_MEMORY_ORDER_VIOLATION_NONSPEC",
+      "LD_UNIT_UOP",
+      "ST_UNIT_UOP"
+    ],
+    "empty": [
+      2688,
+      12478,
+      82,
+      66,
+      6,
+      0,
+      66,
+      129
+    ],
+    "counter_read_ns": [
+      708.333333333,
+      833.333333333,
+      3833.33333333
+    ],
+    "populations": {
+      "middle50pct": {
+        "windows": 1250,
+        "window_ns_median": 1125.0,
+        "events_median": [
+          8427.0,
+          21787.0,
+          3367.0,
+          3322.0,
+          33.0,
+          0.0,
+          1639.0,
+          961.0
+        ],
+        "instruction_counter_median": 7834.0,
+        "kernel_ns_median": 83.3333333333,
+        "changed_during_write": 0,
+        "changed_during_business": 0
+      },
+      "slowest1pct": {
+        "windows": 25,
+        "window_ns_median": 18833.3333333,
+        "events_median": [
+          64327,
+          21792,
+          44029,
+          43856,
+          139,
+          0,
+          1778,
+          1020
+        ],
+        "instruction_counter_median": 7834,
+        "kernel_ns_median": 375,
+        "changed_during_write": 23,
+        "changed_during_business": 8
+      },
+      "slowest3windows": {
+        "windows": 3,
+        "window_ns_median": 93541.6666667,
+        "events_median": [
+          114800,
+          64346,
+          39535,
+          38276,
+          290,
+          0,
+          1840,
+          927
+        ],
+        "instruction_counter_median": 27614,
+        "kernel_ns_median": 7916.66666667,
+        "changed_during_write": 3,
+        "changed_during_business": 3
+      }
+    }
+  },
+  {
+    "file": "pipeline_TwoBufQueue_run2.json",
+    "events": [
+      "cycles",
+      "instructions",
+      "MAP_STALL",
+      "MAP_STALL_DISPATCH",
+      "MAP_REWIND",
+      "ST_MEMORY_ORDER_VIOLATION_NONSPEC",
+      "LD_UNIT_UOP",
+      "ST_UNIT_UOP"
+    ],
+    "empty": [
+      2720,
+      12477,
+      79,
+      63,
+      6,
+      0,
+      59,
+      129
+    ],
+    "counter_read_ns": [
+      708.333333333,
+      875,
+      958.333333333
+    ],
+    "populations": {
+      "middle50pct": {
+        "windows": 1250,
+        "window_ns_median": 1041.66666667,
+        "events_median": [
+          8171.5,
+          21792.0,
+          3157.0,
+          3112.0,
+          33.0,
+          0.0,
+          1647.0,
+          977.0
+        ],
+        "instruction_counter_median": 7834.0,
+        "kernel_ns_median": 83.3333333333,
+        "changed_during_write": 0,
+        "changed_during_business": 0
+      },
+      "slowest1pct": {
+        "windows": 25,
+        "window_ns_median": 18666.6666667,
+        "events_median": [
+          65297,
+          21791,
+          46131,
+          44810,
+          126,
+          0,
+          1753,
+          1017
+        ],
+        "instruction_counter_median": 7834,
+        "kernel_ns_median": 375,
+        "changed_during_write": 23,
+        "changed_during_business": 5
+      },
+      "slowest3windows": {
+        "windows": 3,
+        "window_ns_median": 91791.6666667,
+        "events_median": [
+          68281,
+          32104,
+          36307,
+          36145,
+          126,
+          0,
+          1784,
+          943
+        ],
+        "instruction_counter_median": 17050,
+        "kernel_ns_median": 3291.66666667,
+        "changed_during_write": 3,
+        "changed_during_business": 2
+      }
+    }
+  },
+  {
+    "file": "pipeline_TwoBufQueue_run3.json",
+    "events": [
+      "cycles",
+      "instructions",
+      "MAP_STALL",
+      "MAP_STALL_DISPATCH",
+      "MAP_REWIND",
+      "ST_MEMORY_ORDER_VIOLATION_NONSPEC",
+      "LD_UNIT_UOP",
+      "ST_UNIT_UOP"
+    ],
+    "empty": [
+      2740,
+      12482,
+      73,
+      57,
+      6,
+      0,
+      53,
+      129
+    ],
+    "counter_read_ns": [
+      708.333333333,
+      875,
+      958.333333333
+    ],
+    "populations": {
+      "middle50pct": {
+        "windows": 1250,
+        "window_ns_median": 1041.66666667,
+        "events_median": [
+          8086.0,
+          21787.0,
+          3125.0,
+          3081.0,
+          33.0,
+          0.0,
+          1640.0,
+          961.0
+        ],
+        "instruction_counter_median": 7834.0,
+        "kernel_ns_median": 83.3333333333,
+        "changed_during_write": 0,
+        "changed_during_business": 0
+      },
+      "slowest1pct": {
+        "windows": 25,
+        "window_ns_median": 3833.33333333,
+        "events_median": [
+          21023,
+          21783,
+          13088,
+          13045,
+          38,
+          0,
+          1727,
+          973
+        ],
+        "instruction_counter_median": 7834,
+        "kernel_ns_median": 83.3333333333,
+        "changed_during_write": 15,
+        "changed_during_business": 0
+      },
+      "slowest3windows": {
+        "windows": 3,
+        "window_ns_median": 7541.66666667,
+        "events_median": [
+          34808,
+          21779,
+          26159,
+          26111,
+          47,
+          0,
+          1751,
+          981
+        ],
+        "instruction_counter_median": 7834,
+        "kernel_ns_median": 83.3333333333,
+        "changed_during_write": 2,
+        "changed_during_business": 0
+      }
+    }
+  },
+  {
+    "file": "pipeline_baseline_run1.json",
+    "events": [
+      "cycles",
+      "instructions",
+      "MAP_STALL",
+      "MAP_STALL_DISPATCH",
+      "MAP_REWIND",
+      "ST_MEMORY_ORDER_VIOLATION_NONSPEC",
+      "LD_UNIT_UOP",
+      "ST_UNIT_UOP"
+    ],
+    "empty": [
+      2714,
+      12477,
+      79,
+      63,
+      6,
+      0,
+      56,
+      129
+    ],
+    "counter_read_ns": [
+      708.333333333,
+      791.666666667,
+      875
+    ],
+    "populations": {
+      "middle50pct": {
+        "windows": 1250,
+        "window_ns_median": 875.0,
+        "events_median": [
+          7328.0,
+          21781.0,
+          2933.0,
+          2889.0,
+          34.0,
+          0.0,
+          1607.0,
+          1014.0
+        ],
+        "instruction_counter_median": 7829.0,
+        "kernel_ns_median": 41.6666666667,
+        "changed_during_write": 0,
+        "changed_during_business": 0
+      },
+      "slowest1pct": {
+        "windows": 25,
+        "window_ns_median": 1125,
+        "events_median": [
+          7339,
+          21781,
+          2937,
+          2894,
+          34,
+          0,
+          1605,
+          1014
+        ],
+        "instruction_counter_median": 7829,
+        "kernel_ns_median": 41.6666666667,
+        "changed_during_write": 0,
+        "changed_during_business": 0
+      },
+      "slowest3windows": {
+        "windows": 3,
+        "window_ns_median": 1208.33333333,
+        "events_median": [
+          7386,
+          21785,
+          2977,
+          2934,
+          37,
+          0,
+          1624,
+          1011
+        ],
+        "instruction_counter_median": 7829,
+        "kernel_ns_median": 83.3333333333,
+        "changed_during_write": 0,
+        "changed_during_business": 0
+      }
+    }
+  },
+  {
+    "file": "pipeline_baseline_run2.json",
+    "events": [
+      "cycles",
+      "instructions",
+      "MAP_STALL",
+      "MAP_STALL_DISPATCH",
+      "MAP_REWIND",
+      "ST_MEMORY_ORDER_VIOLATION_NONSPEC",
+      "LD_UNIT_UOP",
+      "ST_UNIT_UOP"
+    ],
+    "empty": [
+      2671,
+      12473,
+      75,
+      59,
+      6,
+      0,
+      55,
+      129
+    ],
+    "counter_read_ns": [
+      708.333333333,
+      791.666666667,
+      833.333333333
+    ],
+    "populations": {
+      "middle50pct": {
+        "windows": 1250,
+        "window_ns_median": 875.0,
+        "events_median": [
+          7308.0,
+          21781.0,
+          2948.0,
+          2904.0,
+          34.0,
+          0.0,
+          1611.0,
+          1012.0
+        ],
+        "instruction_counter_median": 7829.0,
+        "kernel_ns_median": 41.6666666667,
+        "changed_during_write": 0,
+        "changed_during_business": 0
+      },
+      "slowest1pct": {
+        "windows": 25,
+        "window_ns_median": 1125,
+        "events_median": [
+          7316,
+          21785,
+          2957,
+          2914,
+          34,
+          0,
+          1608,
+          1011
+        ],
+        "instruction_counter_median": 7829,
+        "kernel_ns_median": 83.3333333333,
+        "changed_during_write": 0,
+        "changed_during_business": 0
+      },
+      "slowest3windows": {
+        "windows": 3,
+        "window_ns_median": 1208.33333333,
+        "events_median": [
+          7340,
+          21781,
+          3000,
+          2957,
+          33,
+          0,
+          1607,
+          1012
+        ],
+        "instruction_counter_median": 7829,
+        "kernel_ns_median": 83.3333333333,
+        "changed_during_write": 0,
+        "changed_during_business": 0
+      }
+    }
+  },
+  {
+    "file": "pipeline_baseline_run3.json",
+    "events": [
+      "cycles",
+      "instructions",
+      "MAP_STALL",
+      "MAP_STALL_DISPATCH",
+      "MAP_REWIND",
+      "ST_MEMORY_ORDER_VIOLATION_NONSPEC",
+      "LD_UNIT_UOP",
+      "ST_UNIT_UOP"
+    ],
+    "empty": [
+      2682,
+      12482,
+      79,
+      63,
+      6,
+      0,
+      54,
+      129
+    ],
+    "counter_read_ns": [
+      708.333333333,
+      791.666666667,
+      916.666666667
+    ],
+    "populations": {
+      "middle50pct": {
+        "windows": 1250,
+        "window_ns_median": 958.333333333,
+        "events_median": [
+          7385.0,
+          21790.0,
+          2976.0,
+          2928.0,
+          34.0,
+          0.0,
+          1612.0,
+          1015.0
+        ],
+        "instruction_counter_median": 7829.0,
+        "kernel_ns_median": 83.3333333333,
+        "changed_during_write": 0,
+        "changed_during_business": 0
+      },
+      "slowest1pct": {
+        "windows": 25,
+        "window_ns_median": 1125,
+        "events_median": [
+          7457,
+          21790,
+          2974,
+          2929,
+          35,
+          0,
+          1616,
+          1016
+        ],
+        "instruction_counter_median": 7829,
+        "kernel_ns_median": 83.3333333333,
+        "changed_during_write": 0,
+        "changed_during_business": 0
+      },
+      "slowest3windows": {
+        "windows": 3,
+        "window_ns_median": 1166.66666667,
+        "events_median": [
+          7495,
+          21790,
+          3078,
+          3034,
+          35,
+          0,
+          1616,
+          1012
+        ],
+        "instruction_counter_median": 7829,
+        "kernel_ns_median": 83.3333333333,
+        "changed_during_write": 0,
+        "changed_during_business": 0
+      }
+    }
+  }
+]

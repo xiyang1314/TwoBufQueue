@@ -1,0 +1,14 @@
+{
+  "previous_files_deleted": 0,
+  "existing_files_changed_since_snapshot": [
+    "CMakeLists.txt",
+    ".gitignore",
+    "CONTRIBUTING.md",
+    "README.zh-CN.md",
+    "examples/README.md",
+    "benchmarks/README.zh-CN.md",
+    ".github/workflows/ci.yml"
+  ],
+  "original_temporary_files_unchanged": true,
+  "production_cpp_and_payload_copy_match_formal_measurement": true
+}

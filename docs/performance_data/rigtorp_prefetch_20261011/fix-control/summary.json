@@ -1,0 +1,732 @@
+{
+  "metadata": {
+    "timestamp": "2026-10-11T01:23:37.527999+08:00",
+    "change": "Payload retains one member-initialization copy and default bytes{} initialization; only destination write-prefetch hint added. All transports use the same Payload type. Upstream headers unchanged.",
+    "binaries": {
+      "baseline": {
+        "path": "/Users/lc/Documents/Codex/2026-10-08/twobufqueue/work/performance-rerun-20261011/build/brq_tunable_benchmark",
+        "sha256": "3dfbaca5d43d9f4780ff48b0528ec85440308d25d5a81898d0acc2f7d356fbf4"
+      },
+      "destination_prefetch": {
+        "path": "/Users/lc/Documents/Codex/2026-10-08/twobufqueue/work/rigtorp-fix-20261011/member_prefetch/benchmark",
+        "sha256": "e6c0e2b5592b9ce0d5c17d55e20b8dd6b330e9a6d6eb3d269bbedc58ddc96032"
+      }
+    },
+    "source_commit": "6059b6dab93bb3a8ee9bbf58b330c7e39ec9832b",
+    "hardware_cacheline_bytes": 128,
+    "formal_messages": 10000000,
+    "repetitions": 5,
+    "cache_mib": [
+      8,
+      256
+    ]
+  },
+  "formal_runs": 320,
+  "validation_runs": 32,
+  "groups": [
+    {
+      "cache_mib": 8,
+      "payload_bytes": 8,
+      "transport": "rigtorp",
+      "variant": "baseline",
+      "throughput_mps": 42.67524026096,
+      "throughput_runs_mps": [
+        43.2805893854,
+        42.3389595968,
+        43.1470293792,
+        42.0168067227,
+        42.5928162207
+      ],
+      "p50_ns": 23.59166666668,
+      "p50_runs_ns": [
+        23.75,
+        24.6666666667,
+        24.4166666667,
+        22.25,
+        22.875
+      ]
+    },
+    {
+      "cache_mib": 8,
+      "payload_bytes": 8,
+      "transport": "rigtorp",
+      "variant": "destination_prefetch",
+      "throughput_mps": 342.4301962216,
+      "throughput_runs_mps": [
+        354.149948576,
+        343.35941686,
+        345.883640524,
+        332.365341434,
+        336.392633714
+      ],
+      "p50_ns": 2.7500000000019997,
+      "p50_runs_ns": [
+        2.625,
+        2.79166666667,
+        2.79166666667,
+        2.79166666667,
+        2.75
+      ]
+    },
+    {
+      "cache_mib": 8,
+      "payload_bytes": 8,
+      "transport": "readerwriterqueue",
+      "variant": "baseline",
+      "throughput_mps": 765.6687754932,
+      "throughput_runs_mps": [
+        735.59387215,
+        786.297538763,
+        786.444218298,
+        740.215242749,
+        779.793005506
+      ],
+      "p50_ns": 1.300000000002,
+      "p50_runs_ns": [
+        1.29166666667,
+        1.29166666667,
+        1.29166666667,
+        1.33333333333,
+        1.29166666667
+      ]
+    },
+    {
+      "cache_mib": 8,
+      "payload_bytes": 8,
+      "transport": "readerwriterqueue",
+      "variant": "destination_prefetch",
+      "throughput_mps": 480.9428475836,
+      "throughput_runs_mps": [
+        513.906515882,
+        511.251782607,
+        497.632141861,
+        443.058655428,
+        438.86514214
+      ],
+      "p50_ns": 1.900000000002,
+      "p50_runs_ns": [
+        1.875,
+        1.91666666667,
+        1.91666666667,
+        1.875,
+        1.91666666667
+      ]
+    },
+    {
+      "cache_mib": 8,
+      "payload_bytes": 8,
+      "transport": "atomic_queue",
+      "variant": "baseline",
+      "throughput_mps": 173.6659428724,
+      "throughput_runs_mps": [
+        176.955915857,
+        178.60837499,
+        167.189596714,
+        156.21745307,
+        189.358373731
+      ],
+      "p50_ns": 5.4333333333319995,
+      "p50_runs_ns": [
+        5.375,
+        5.79166666667,
+        5.45833333333,
+        5.33333333333,
+        5.20833333333
+      ]
+    },
+    {
+      "cache_mib": 8,
+      "payload_bytes": 8,
+      "transport": "atomic_queue",
+      "variant": "destination_prefetch",
+      "throughput_mps": 161.3701399248,
+      "throughput_runs_mps": [
+        172.36884347,
+        162.614629898,
+        147.173530146,
+        163.002732007,
+        161.690964103
+      ],
+      "p50_ns": 5.716666666666,
+      "p50_runs_ns": [
+        5.58333333333,
+        5.75,
+        6.125,
+        5.5,
+        5.625
+      ]
+    },
+    {
+      "cache_mib": 8,
+      "payload_bytes": 16,
+      "transport": "rigtorp",
+      "variant": "baseline",
+      "throughput_mps": 42.16769015674,
+      "throughput_runs_mps": [
+        45.2672099867,
+        40.4766597838,
+        41.5842278409,
+        41.8333975072,
+        41.6769556651
+      ],
+      "p50_ns": 23.95833333332,
+      "p50_runs_ns": [
+        23.75,
+        23.2083333333,
+        24.25,
+        23.875,
+        24.7083333333
+      ]
+    },
+    {
+      "cache_mib": 8,
+      "payload_bytes": 16,
+      "transport": "rigtorp",
+      "variant": "destination_prefetch",
+      "throughput_mps": 315.7802053098,
+      "throughput_runs_mps": [
+        305.910178531,
+        328.393334298,
+        306.0080769,
+        292.495313201,
+        346.094123619
+      ],
+      "p50_ns": 2.983333333334,
+      "p50_runs_ns": [
+        3,
+        3,
+        3,
+        3.04166666667,
+        2.875
+      ]
+    },
+    {
+      "cache_mib": 8,
+      "payload_bytes": 16,
+      "transport": "readerwriterqueue",
+      "variant": "baseline",
+      "throughput_mps": 91.66427205966001,
+      "throughput_runs_mps": [
+        91.5088230977,
+        94.4929490401,
+        87.6778935141,
+        91.7177723444,
+        92.923922302
+      ],
+      "p50_ns": 10.33333333332,
+      "p50_runs_ns": [
+        10.7083333333,
+        9.75,
+        10.375,
+        10.3333333333,
+        10.5
+      ]
+    },
+    {
+      "cache_mib": 8,
+      "payload_bytes": 16,
+      "transport": "readerwriterqueue",
+      "variant": "destination_prefetch",
+      "throughput_mps": 359.1682160636,
+      "throughput_runs_mps": [
+        382.93881955,
+        388.495996413,
+        385.259315927,
+        320.767717757,
+        318.379230671
+      ],
+      "p50_ns": 1.791666666666,
+      "p50_runs_ns": [
+        1.75,
+        1.625,
+        1.66666666667,
+        1.70833333333,
+        2.20833333333
+      ]
+    },
+    {
+      "cache_mib": 8,
+      "payload_bytes": 16,
+      "transport": "atomic_queue",
+      "variant": "baseline",
+      "throughput_mps": 113.1132834572,
+      "throughput_runs_mps": [
+        118.399186171,
+        107.199039394,
+        111.575699928,
+        112.294882589,
+        116.097609204
+      ],
+      "p50_ns": 7.025,
+      "p50_runs_ns": [
+        6.95833333333,
+        6.95833333333,
+        7.41666666667,
+        6.875,
+        6.91666666667
+      ]
+    },
+    {
+      "cache_mib": 8,
+      "payload_bytes": 16,
+      "transport": "atomic_queue",
+      "variant": "destination_prefetch",
+      "throughput_mps": 114.374994712,
+      "throughput_runs_mps": [
+        116.846095336,
+        108.481832124,
+        108.232085915,
+        124.451895186,
+        113.863064999
+      ],
+      "p50_ns": 7.050000000002,
+      "p50_runs_ns": [
+        7.04166666667,
+        7.04166666667,
+        7.04166666667,
+        7.08333333333,
+        7.04166666667
+      ]
+    },
+    {
+      "cache_mib": 8,
+      "payload_bytes": 32,
+      "transport": "rigtorp",
+      "variant": "baseline",
+      "throughput_mps": 41.3723149058,
+      "throughput_runs_mps": [
+        40.7736390269,
+        42.3500387141,
+        39.8246852045,
+        42.4637159225,
+        41.449495661
+      ],
+      "p50_ns": 24.23333333334,
+      "p50_runs_ns": [
+        24.2083333333,
+        24.5,
+        24,
+        23.5416666667,
+        24.9166666667
+      ]
+    },
+    {
+      "cache_mib": 8,
+      "payload_bytes": 32,
+      "transport": "rigtorp",
+      "variant": "destination_prefetch",
+      "throughput_mps": 276.450360165,
+      "throughput_runs_mps": [
+        304.011837491,
+        234.481014729,
+        256.024283391,
+        287.354290542,
+        300.380374672
+      ],
+      "p50_ns": 3.15,
+      "p50_runs_ns": [
+        3.04166666667,
+        3.125,
+        3.29166666667,
+        3.08333333333,
+        3.20833333333
+      ]
+    },
+    {
+      "cache_mib": 8,
+      "payload_bytes": 32,
+      "transport": "readerwriterqueue",
+      "variant": "baseline",
+      "throughput_mps": 49.21368476748,
+      "throughput_runs_mps": [
+        49.3901048091,
+        49.5108633667,
+        49.1850245549,
+        49.3512372713,
+        48.6311938354
+      ],
+      "p50_ns": 20.5,
+      "p50_runs_ns": [
+        20.2916666667,
+        20.5416666667,
+        20.75,
+        20.4583333333,
+        20.4583333333
+      ]
+    },
+    {
+      "cache_mib": 8,
+      "payload_bytes": 32,
+      "transport": "readerwriterqueue",
+      "variant": "destination_prefetch",
+      "throughput_mps": 88.23295600698,
+      "throughput_runs_mps": [
+        85.5111958911,
+        86.1811127972,
+        86.2744509343,
+        96.7185794292,
+        86.4794409831
+      ],
+      "p50_ns": 11.98333333334,
+      "p50_runs_ns": [
+        11.9583333333,
+        11.9166666667,
+        12.125,
+        11.875,
+        12.0416666667
+      ]
+    },
+    {
+      "cache_mib": 8,
+      "payload_bytes": 32,
+      "transport": "atomic_queue",
+      "variant": "baseline",
+      "throughput_mps": 84.9370368379,
+      "throughput_runs_mps": [
+        89.9690169198,
+        89.5650709407,
+        79.3285882145,
+        88.8806881641,
+        76.9418199504
+      ],
+      "p50_ns": 9.183333333328001,
+      "p50_runs_ns": [
+        9.5,
+        8.41666666667,
+        8.54166666667,
+        8.625,
+        10.8333333333
+      ]
+    },
+    {
+      "cache_mib": 8,
+      "payload_bytes": 32,
+      "transport": "atomic_queue",
+      "variant": "destination_prefetch",
+      "throughput_mps": 85.12666032839999,
+      "throughput_runs_mps": [
+        82.9048788468,
+        81.474967407,
+        80.7369390057,
+        86.1839010524,
+        94.3326153301
+      ],
+      "p50_ns": 8.991666666668,
+      "p50_runs_ns": [
+        9.41666666667,
+        8.41666666667,
+        8.58333333333,
+        9.54166666667,
+        9
+      ]
+    },
+    {
+      "cache_mib": 8,
+      "payload_bytes": 64,
+      "transport": "rigtorp",
+      "variant": "baseline",
+      "throughput_mps": 43.34672841928,
+      "throughput_runs_mps": [
+        43.0288135006,
+        43.5128191289,
+        42.7750769166,
+        43.4830895721,
+        43.9338429782
+      ],
+      "p50_ns": 21.58333333332,
+      "p50_runs_ns": [
+        21.2916666667,
+        21.9583333333,
+        23.0833333333,
+        20.25,
+        21.3333333333
+      ]
+    },
+    {
+      "cache_mib": 8,
+      "payload_bytes": 64,
+      "transport": "rigtorp",
+      "variant": "destination_prefetch",
+      "throughput_mps": 182.193489301,
+      "throughput_runs_mps": [
+        163.150434898,
+        183.918335257,
+        196.557635033,
+        160.087838276,
+        207.253203041
+      ],
+      "p50_ns": 6.091666666668,
+      "p50_runs_ns": [
+        7.70833333333,
+        5.66666666667,
+        6.125,
+        6.29166666667,
+        4.66666666667
+      ]
+    },
+    {
+      "cache_mib": 8,
+      "payload_bytes": 64,
+      "transport": "readerwriterqueue",
+      "variant": "baseline",
+      "throughput_mps": 282.2824081924,
+      "throughput_runs_mps": [
+        214.528961013,
+        293.446620945,
+        324.187233429,
+        265.002465318,
+        314.246760257
+      ],
+      "p50_ns": 3.0166666666679998,
+      "p50_runs_ns": [
+        2.79166666667,
+        2.79166666667,
+        3.66666666667,
+        2.83333333333,
+        3
+      ]
+    },
+    {
+      "cache_mib": 8,
+      "payload_bytes": 64,
+      "transport": "readerwriterqueue",
+      "variant": "destination_prefetch",
+      "throughput_mps": 272.5613217866,
+      "throughput_runs_mps": [
+        331.944742088,
+        339.405858505,
+        219.162643535,
+        212.614982714,
+        259.678382091
+      ],
+      "p50_ns": 3.599999999998,
+      "p50_runs_ns": [
+        3.08333333333,
+        3.70833333333,
+        3.875,
+        3.25,
+        4.08333333333
+      ]
+    },
+    {
+      "cache_mib": 8,
+      "payload_bytes": 64,
+      "transport": "atomic_queue",
+      "variant": "baseline",
+      "throughput_mps": 86.5223412012,
+      "throughput_runs_mps": [
+        87.5038346368,
+        88.8797417809,
+        86.0987201899,
+        83.8527522192,
+        86.2766571792
+      ],
+      "p50_ns": 11.00000000002,
+      "p50_runs_ns": [
+        10.875,
+        11.125,
+        10.6666666667,
+        11.4166666667,
+        10.9166666667
+      ]
+    },
+    {
+      "cache_mib": 8,
+      "payload_bytes": 64,
+      "transport": "atomic_queue",
+      "variant": "destination_prefetch",
+      "throughput_mps": 83.8832338713,
+      "throughput_runs_mps": [
+        67.8348805396,
+        88.4601168054,
+        91.9424665602,
+        84.544552409,
+        86.6341530423
+      ],
+      "p50_ns": 10.9,
+      "p50_runs_ns": [
+        11.0416666667,
+        10.75,
+        11.1666666667,
+        10.7083333333,
+        10.8333333333
+      ]
+    },
+    {
+      "cache_mib": 256,
+      "payload_bytes": 8,
+      "transport": "rigtorp",
+      "variant": "baseline",
+      "throughput_mps": 46.96090580416,
+      "throughput_runs_mps": [
+        50.3766176083,
+        43.5627030025,
+        48.232276922,
+        45.2771499925,
+        47.3557814955
+      ],
+      "p50_ns": 20.95833333334,
+      "p50_runs_ns": [
+        19.5416666667,
+        22.0833333333,
+        21.1666666667,
+        20.625,
+        21.375
+      ]
+    },
+    {
+      "cache_mib": 256,
+      "payload_bytes": 8,
+      "transport": "rigtorp",
+      "variant": "destination_prefetch",
+      "throughput_mps": 312.2535177318,
+      "throughput_runs_mps": [
+        323.178786544,
+        318.591824137,
+        331.024898104,
+        292.645451081,
+        295.826628793
+      ],
+      "p50_ns": 3.416666666668,
+      "p50_runs_ns": [
+        3.95833333333,
+        3,
+        3.91666666667,
+        3.04166666667,
+        3.16666666667
+      ]
+    },
+    {
+      "cache_mib": 256,
+      "payload_bytes": 16,
+      "transport": "rigtorp",
+      "variant": "baseline",
+      "throughput_mps": 44.03365772554,
+      "throughput_runs_mps": [
+        45.8648095112,
+        43.2741901371,
+        43.1259252479,
+        47.0356467975,
+        40.867716934
+      ],
+      "p50_ns": 22.17500000002,
+      "p50_runs_ns": [
+        22.75,
+        21.4166666667,
+        23.1666666667,
+        21.2916666667,
+        22.25
+      ]
+    },
+    {
+      "cache_mib": 256,
+      "payload_bytes": 16,
+      "transport": "rigtorp",
+      "variant": "destination_prefetch",
+      "throughput_mps": 226.2910747904,
+      "throughput_runs_mps": [
+        158.690800893,
+        313.924106901,
+        295.08317657,
+        177.609769987,
+        186.147519601
+      ],
+      "p50_ns": 4.058333333334,
+      "p50_runs_ns": [
+        3.875,
+        4.5,
+        4.29166666667,
+        3.25,
+        4.375
+      ]
+    },
+    {
+      "cache_mib": 256,
+      "payload_bytes": 32,
+      "transport": "rigtorp",
+      "variant": "baseline",
+      "throughput_mps": 36.5478892314,
+      "throughput_runs_mps": [
+        39.8624148751,
+        37.9711085885,
+        38.8638415532,
+        30.7335129424,
+        35.3085681978
+      ],
+      "p50_ns": 25.71666666668,
+      "p50_runs_ns": [
+        26,
+        25,
+        25.875,
+        25.9166666667,
+        25.7916666667
+      ]
+    },
+    {
+      "cache_mib": 256,
+      "payload_bytes": 32,
+      "transport": "rigtorp",
+      "variant": "destination_prefetch",
+      "throughput_mps": 155.1487686904,
+      "throughput_runs_mps": [
+        163.91763139,
+        157.133875595,
+        146.057186968,
+        151.636442289,
+        156.99870721
+      ],
+      "p50_ns": 6.2,
+      "p50_runs_ns": [
+        5.875,
+        7.08333333333,
+        5.91666666667,
+        5.95833333333,
+        6.16666666667
+      ]
+    },
+    {
+      "cache_mib": 256,
+      "payload_bytes": 64,
+      "transport": "rigtorp",
+      "variant": "baseline",
+      "throughput_mps": 37.14552416544,
+      "throughput_runs_mps": [
+        31.7872457771,
+        38.2347097226,
+        39.0805329181,
+        39.4426879147,
+        37.1824444947
+      ],
+      "p50_ns": 25.2,
+      "p50_runs_ns": [
+        24.125,
+        25.7083333333,
+        24.875,
+        25.5,
+        25.7916666667
+      ]
+    },
+    {
+      "cache_mib": 256,
+      "payload_bytes": 64,
+      "transport": "rigtorp",
+      "variant": "destination_prefetch",
+      "throughput_mps": 86.15019320664,
+      "throughput_runs_mps": [
+        97.347287392,
+        99.3238528716,
+        99.4683822788,
+        77.5541992757,
+        57.0572442151
+      ],
+      "p50_ns": 10.166666666666,
+      "p50_runs_ns": [
+        10.25,
+        9.83333333333,
+        9.91666666667,
+        9.83333333333,
+        11
+      ]
+    }
+  ]
+}

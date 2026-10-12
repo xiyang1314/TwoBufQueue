@@ -1,0 +1,224 @@
+{
+  "budget_bytes_per_pool": 268435456,
+  "round_storage_bytes": 214748364,
+  "messages": 10000000,
+  "repetitions": 3,
+  "lengths": [
+    8,
+    16,
+    32,
+    64
+  ],
+  "stages": [
+    {
+      "stage": "writer_reader_grid",
+      "candidates": 528
+    },
+    {
+      "stage": "native_grid",
+      "candidates": 108
+    },
+    {
+      "stage": "neighborhood_refinement",
+      "candidates": 564
+    }
+  ],
+  "screen_candidates": 1284,
+  "final_candidates": 334,
+  "validation_runs": 1284,
+  "measurement_runs": 9708,
+  "failed_runs": 0,
+  "missing_plateaus": [
+    {
+      "payload_bytes": 8,
+      "transport": "atomic_queue",
+      "writer_mode": null,
+      "objective": "p99",
+      "axis": "spsc_spin_or_sleep"
+    },
+    {
+      "payload_bytes": 16,
+      "transport": "readerwriterqueue",
+      "writer_mode": null,
+      "objective": "p99",
+      "axis": "spsc_spin_or_sleep"
+    },
+    {
+      "payload_bytes": 32,
+      "transport": "readerwriterqueue",
+      "writer_mode": null,
+      "objective": "p99",
+      "axis": "spsc_spin_or_sleep"
+    },
+    {
+      "payload_bytes": 64,
+      "transport": "two_buf_queue",
+      "writer_mode": "session",
+      "objective": "p999",
+      "axis": "writer_block"
+    }
+  ],
+  "extra_readback": true,
+  "session_readback": false,
+  "spsc_reference": "same freshly measured native candidates reused for all three mode reports",
+  "source_harness": "unmodified PerformanceTest",
+  "no_outlier_discard": true,
+  "executable_sha256": "1a898890a865e21c4842f8f40f56c3cf9bbfdde912ff2de86782a5c9a3eb0493",
+  "untouched_alternatives_confirmed": 26,
+  "native_fine_spin_grid": [
+    0,
+    1000,
+    2000,
+    4000,
+    10000
+  ],
+  "final_native_complete_grid": true,
+  "native_plateau_axes": [
+    "spsc_idle_spins",
+    "spsc_idle_sleep_ns"
+  ],
+  "atomic16_fine_spins": [
+    0,
+    500,
+    1000,
+    1500,
+    2000,
+    3000,
+    4000,
+    6000,
+    10000
+  ],
+  "raw_rows": 10992,
+  "selected_targets": 92,
+  "missing_targets": [
+    {
+      "payload_bytes": 8,
+      "transport": "atomic_queue",
+      "writer_mode": null,
+      "objective": "p99",
+      "axis": "spsc_spin_or_sleep"
+    },
+    {
+      "payload_bytes": 16,
+      "transport": "readerwriterqueue",
+      "writer_mode": null,
+      "objective": "p99",
+      "axis": "spsc_spin_or_sleep"
+    },
+    {
+      "payload_bytes": 32,
+      "transport": "readerwriterqueue",
+      "writer_mode": null,
+      "objective": "p99",
+      "axis": "spsc_spin_or_sleep"
+    },
+    {
+      "payload_bytes": 64,
+      "transport": "two_buf_queue",
+      "writer_mode": "session",
+      "objective": "p999",
+      "axis": "writer_block"
+    }
+  ],
+  "production_cpp_unchanged": true,
+  "upstream_headers_sha256_verified": true,
+  "selected_metrics_recomputed": true,
+  "all_confirmed_neighborhoods_verified": true,
+  "complete_initializer_fields": [
+    "transport",
+    "mode",
+    "payload_bytes",
+    "messages",
+    "warmup_messages",
+    "callback_iterations",
+    "verify_payload",
+    "prepared_input",
+    "variable_payload",
+    "prepared_input_limit_bytes",
+    "measure_callback_time",
+    "producer_interval_ns",
+    "source_block_size",
+    "source_pool_min",
+    "source_pool_max",
+    "source_queue_capacity",
+    "writer_backpressure",
+    "writer_spin_count",
+    "writer_wait_timeout_ms",
+    "output_block_size",
+    "output_frame_capacity",
+    "output_pool_min",
+    "output_pool_max",
+    "output_queue_capacity",
+    "cancel_claim_mode",
+    "output_mode",
+    "output_reader_mode",
+    "output_reader_count",
+    "output_retry_wait_us",
+    "output_enable_stats",
+    "is_scan_current",
+    "reader_spin_count",
+    "rescan_interval_ns",
+    "rescan_max_interval_ns",
+    "consumer_cpu",
+    "producer_cpu",
+    "producer_qos",
+    "round_storage_bytes",
+    "fixed_round_boundaries",
+    "spsc_buffer_bytes",
+    "prefault_producer_buffers",
+    "finish_timeout_ms",
+    "work_wait_min_ms",
+    "finish_retry_ms",
+    "publish_count",
+    "use_write_session",
+    "rigtorp_write_prefetch",
+    "readerwriterqueue_copy_after_zero",
+    "spsc_capacity",
+    "retry_yield_every",
+    "spsc_idle_spins",
+    "spsc_idle_sleep_ns",
+    "timer",
+    "sample_every",
+    "max_samples",
+    "latency_batch_size",
+    "timer_calibration_samples",
+    "call_batch_size",
+    "random_seed",
+    "timeout_seconds",
+    "buffer_budget_bytes"
+  ],
+  "client_date": "2026-10-12",
+  "schema": "one configuration per candidate_id per stage; three throughput and three latency trials retained",
+  "workflow_archive_sha256": "e4161dea9922a29170e6d360678f4eb7edf2dedb8a60681b2f6427bc11289499",
+  "html_checks": "all tables have seven columns; complete parameter dictionaries; local links valid; native metrics identical across the three reports",
+  "unconfirmed_tail_targets": [
+    {
+      "payload_bytes": 8,
+      "transport": "atomic_queue",
+      "writer_mode": null,
+      "objective": "p99",
+      "axis": "spsc_spin_or_sleep"
+    },
+    {
+      "payload_bytes": 16,
+      "transport": "readerwriterqueue",
+      "writer_mode": null,
+      "objective": "p99",
+      "axis": "spsc_spin_or_sleep"
+    },
+    {
+      "payload_bytes": 32,
+      "transport": "readerwriterqueue",
+      "writer_mode": null,
+      "objective": "p99",
+      "axis": "spsc_spin_or_sleep"
+    },
+    {
+      "payload_bytes": 64,
+      "transport": "two_buf_queue",
+      "writer_mode": "session",
+      "objective": "p999",
+      "axis": "writer_block"
+    }
+  ]
+}

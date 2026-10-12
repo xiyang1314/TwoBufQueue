@@ -1,0 +1,18 @@
+{
+  "original": {
+    "code_sha256": "7b353d417d1e28c1ae48479b4fa5f839129b9dc9b52723fe0e49c87ac0061954",
+    "instruction_count": 39
+  },
+  "consecutive": {
+    "code_sha256": "7b353d417d1e28c1ae48479b4fa5f839129b9dc9b52723fe0e49c87ac0061954",
+    "instruction_count": 39
+  },
+  "handoff": {
+    "code_sha256": "7b353d417d1e28c1ae48479b4fa5f839129b9dc9b52723fe0e49c87ac0061954",
+    "instruction_count": 39
+  },
+  "same_worker": {
+    "code_sha256": "7b353d417d1e28c1ae48479b4fa5f839129b9dc9b52723fe0e49c87ac0061954",
+    "instruction_count": 39
+  }
+}

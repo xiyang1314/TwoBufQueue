@@ -1,0 +1,1698 @@
+[
+  {
+    "id": "W_len_0",
+    "point": "W1 消息协议及边界",
+    "setup": "块恰好容纳0+2字节",
+    "steps": "写确定性字节序列；修改输入；Finish；排空",
+    "expected": "只收到1条；两字节小端前缀和每字节与原副本相同；池归零",
+    "kind": "runtime"
+  },
+  {
+    "id": "W_len_1",
+    "point": "W1 消息协议及边界",
+    "setup": "块恰好容纳1+2字节",
+    "steps": "写确定性字节序列；修改输入；Finish；排空",
+    "expected": "只收到1条；两字节小端前缀和每字节与原副本相同；池归零",
+    "kind": "runtime"
+  },
+  {
+    "id": "W_len_2",
+    "point": "W1 消息协议及边界",
+    "setup": "块恰好容纳2+2字节",
+    "steps": "写确定性字节序列；修改输入；Finish；排空",
+    "expected": "只收到1条；两字节小端前缀和每字节与原副本相同；池归零",
+    "kind": "runtime"
+  },
+  {
+    "id": "W_len_3",
+    "point": "W1 消息协议及边界",
+    "setup": "块恰好容纳3+2字节",
+    "steps": "写确定性字节序列；修改输入；Finish；排空",
+    "expected": "只收到1条；两字节小端前缀和每字节与原副本相同；池归零",
+    "kind": "runtime"
+  },
+  {
+    "id": "W_len_4",
+    "point": "W1 消息协议及边界",
+    "setup": "块恰好容纳4+2字节",
+    "steps": "写确定性字节序列；修改输入；Finish；排空",
+    "expected": "只收到1条；两字节小端前缀和每字节与原副本相同；池归零",
+    "kind": "runtime"
+  },
+  {
+    "id": "W_len_31",
+    "point": "W1 消息协议及边界",
+    "setup": "块恰好容纳31+2字节",
+    "steps": "写确定性字节序列；修改输入；Finish；排空",
+    "expected": "只收到1条；两字节小端前缀和每字节与原副本相同；池归零",
+    "kind": "runtime"
+  },
+  {
+    "id": "W_len_32",
+    "point": "W1 消息协议及边界",
+    "setup": "块恰好容纳32+2字节",
+    "steps": "写确定性字节序列；修改输入；Finish；排空",
+    "expected": "只收到1条；两字节小端前缀和每字节与原副本相同；池归零",
+    "kind": "runtime"
+  },
+  {
+    "id": "W_len_255",
+    "point": "W1 消息协议及边界",
+    "setup": "块恰好容纳255+2字节",
+    "steps": "写确定性字节序列；修改输入；Finish；排空",
+    "expected": "只收到1条；两字节小端前缀和每字节与原副本相同；池归零",
+    "kind": "runtime"
+  },
+  {
+    "id": "W_len_256",
+    "point": "W1 消息协议及边界",
+    "setup": "块恰好容纳256+2字节",
+    "steps": "写确定性字节序列；修改输入；Finish；排空",
+    "expected": "只收到1条；两字节小端前缀和每字节与原副本相同；池归零",
+    "kind": "runtime"
+  },
+  {
+    "id": "W_len_1023",
+    "point": "W1 消息协议及边界",
+    "setup": "块恰好容纳1023+2字节",
+    "steps": "写确定性字节序列；修改输入；Finish；排空",
+    "expected": "只收到1条；两字节小端前缀和每字节与原副本相同；池归零",
+    "kind": "runtime"
+  },
+  {
+    "id": "W_len_1024",
+    "point": "W1 消息协议及边界",
+    "setup": "块恰好容纳1024+2字节",
+    "steps": "写确定性字节序列；修改输入；Finish；排空",
+    "expected": "只收到1条；两字节小端前缀和每字节与原副本相同；池归零",
+    "kind": "runtime"
+  },
+  {
+    "id": "W_len_65534",
+    "point": "W1 消息协议及边界",
+    "setup": "块恰好容纳65534+2字节",
+    "steps": "写确定性字节序列；修改输入；Finish；排空",
+    "expected": "只收到1条；两字节小端前缀和每字节与原副本相同；池归零",
+    "kind": "runtime"
+  },
+  {
+    "id": "W_len_65535",
+    "point": "W1 消息协议及边界",
+    "setup": "块恰好容纳65535+2字节",
+    "steps": "写确定性字节序列；修改输入；Finish；排空",
+    "expected": "只收到1条；两字节小端前缀和每字节与原副本相同；池归零",
+    "kind": "runtime"
+  },
+  {
+    "id": "W_reject_null",
+    "point": "W2 非法长度无副作用",
+    "setup": "null",
+    "steps": "先写合法值；提交非法请求；核对游标；再写合法值并排空",
+    "expected": "非法请求false；原游标不变；只收到两条合法记录",
+    "kind": "runtime"
+  },
+  {
+    "id": "W_reject_oversize",
+    "point": "W2 非法长度无副作用",
+    "setup": "oversize",
+    "steps": "先写合法值；提交非法请求；核对游标；再写合法值并排空",
+    "expected": "非法请求false；原游标不变；只收到两条合法记录",
+    "kind": "runtime"
+  },
+  {
+    "id": "W_short_payload",
+    "point": "W2 短消息无需最小长度配置",
+    "setup": "3字节负载",
+    "steps": "写入3字节消息并排空",
+    "expected": "成功且完整收到3字节负载",
+    "kind": "runtime"
+  },
+  {
+    "id": "W_reject_block",
+    "point": "W2 非法长度无副作用",
+    "setup": "block",
+    "steps": "先写合法值；提交非法请求；核对游标；再写合法值并排空",
+    "expected": "非法请求false；原游标不变；只收到两条合法记录",
+    "kind": "runtime"
+  },
+  {
+    "id": "W_publish_1",
+    "point": "W3 发布可见性",
+    "setup": "发布次数1",
+    "steps": "写满一批再写尾部；检查发布游标；Flush；Finish",
+    "expected": "未发布尾部不可见；Flush发布全部；字节顺序正确",
+    "kind": "runtime"
+  },
+  {
+    "id": "W_publish_2",
+    "point": "W3 发布可见性",
+    "setup": "发布次数2",
+    "steps": "写满一批再写尾部；检查发布游标；Flush；Finish",
+    "expected": "未发布尾部不可见；Flush发布全部；字节顺序正确",
+    "kind": "runtime"
+  },
+  {
+    "id": "W_publish_32",
+    "point": "W3 发布可见性",
+    "setup": "发布次数32",
+    "steps": "写满一批再写尾部；检查发布游标；Flush；Finish",
+    "expected": "未发布尾部不可见；Flush发布全部；字节顺序正确",
+    "kind": "runtime"
+  },
+  {
+    "id": "W_pack",
+    "point": "W4 模板及幂等结束",
+    "setup": "pack",
+    "steps": "多参数紧密布局/Finish两次及结束后写入",
+    "expected": "布局与各字段对象表示拼接一致；结束后拒写；无重复交付",
+    "kind": "runtime"
+  },
+  {
+    "id": "W_finish",
+    "point": "W4 模板及幂等结束",
+    "setup": "finish",
+    "steps": "多参数紧密布局/Finish两次及结束后写入",
+    "expected": "布局与各字段对象表示拼接一致；结束后拒写；无重复交付",
+    "kind": "runtime"
+  },
+  {
+    "id": "R_active",
+    "point": "R1 活动/完成交接与所有权",
+    "setup": "active",
+    "steps": "手动ReadService推进；拒收/持有/取消/过期后重试",
+    "expected": "未接受不推进；重试不重复；持有期间字节稳定；最后释放归零",
+    "kind": "runtime"
+  },
+  {
+    "id": "R_reject",
+    "point": "R1 活动/完成交接与所有权",
+    "setup": "reject",
+    "steps": "手动ReadService推进；拒收/持有/取消/过期后重试",
+    "expected": "未接受不推进；重试不重复；持有期间字节稳定；最后释放归零",
+    "kind": "runtime"
+  },
+  {
+    "id": "R_retain",
+    "point": "R1 活动/完成交接与所有权",
+    "setup": "retain",
+    "steps": "手动ReadService推进；拒收/持有/取消/过期后重试",
+    "expected": "未接受不推进；重试不重复；持有期间字节稳定；最后释放归零",
+    "kind": "runtime"
+  },
+  {
+    "id": "R_cancel",
+    "point": "R1 活动/完成交接与所有权",
+    "setup": "cancel",
+    "steps": "手动ReadService推进；拒收/持有/取消/过期后重试",
+    "expected": "未接受不推进；重试不重复；持有期间字节稳定；最后释放归零",
+    "kind": "runtime"
+  },
+  {
+    "id": "R_deadline",
+    "point": "R1 活动/完成交接与所有权",
+    "setup": "deadline",
+    "steps": "手动ReadService推进；拒收/持有/取消/过期后重试",
+    "expected": "未接受不推进；重试不重复；持有期间字节稳定；最后释放归零",
+    "kind": "runtime"
+  },
+  {
+    "id": "R_reg_nullwriter",
+    "point": "R2 注册校验",
+    "setup": "nullwriter",
+    "steps": "尝试无效注册后查询错误类别和writer_count",
+    "expected": "返回false；精确错误枚举；注册数量不增加",
+    "kind": "runtime"
+  },
+  {
+    "id": "R_reg_nullqueue",
+    "point": "R2 注册校验",
+    "setup": "空队列指针",
+    "steps": "调用 add_queue(nullptr, id)",
+    "expected": "返回 false 并记录 null_dependency",
+    "kind": "runtime"
+  },
+  {
+    "id": "R_reg_queue_negative",
+    "point": "R2 注册校验",
+    "setup": "有效队列与负数来源编号",
+    "steps": "调用 add_queue(&queue, -1)",
+    "expected": "返回 false 并记录 invalid_registration",
+    "kind": "runtime"
+  },
+  {
+    "id": "R_reg_duplicate",
+    "point": "R2 注册校验",
+    "setup": "duplicate",
+    "steps": "尝试无效注册后查询错误类别和writer_count",
+    "expected": "返回false；精确错误枚举；注册数量不增加",
+    "kind": "runtime"
+  },
+  {
+    "id": "R_reg_duplicateid",
+    "point": "R2 注册校验",
+    "setup": "duplicateid",
+    "steps": "尝试无效注册后查询错误类别和writer_count",
+    "expected": "返回false；精确错误枚举；注册数量不增加",
+    "kind": "runtime"
+  },
+  {
+    "id": "R_reg_negative",
+    "point": "R2 注册校验",
+    "setup": "negative",
+    "steps": "尝试无效注册后查询错误类别和writer_count",
+    "expected": "返回false；精确错误枚举；注册数量不增加",
+    "kind": "runtime"
+  },
+  {
+    "id": "R_reg_running",
+    "point": "R2 注册校验",
+    "setup": "running",
+    "steps": "尝试无效注册后查询错误类别和writer_count",
+    "expected": "返回false；精确错误枚举；注册数量不增加",
+    "kind": "runtime"
+  },
+  {
+    "id": "R_config_scan0",
+    "point": "R3 启动校验",
+    "setup": "scan0",
+    "steps": "无效配置Start",
+    "expected": "false；invalid_start_state；未启动线程",
+    "kind": "runtime"
+  },
+  {
+    "id": "R_config_max0",
+    "point": "R3 启动校验",
+    "setup": "max0",
+    "steps": "无效配置Start",
+    "expected": "false；invalid_start_state；未启动线程",
+    "kind": "runtime"
+  },
+  {
+    "id": "R_config_finish0",
+    "point": "R3 启动校验",
+    "setup": "finish0",
+    "steps": "无效配置Start",
+    "expected": "false；invalid_start_state；未启动线程",
+    "kind": "runtime"
+  },
+  {
+    "id": "R_config_wait0",
+    "point": "R3 启动校验",
+    "setup": "wait0",
+    "steps": "无效配置Start",
+    "expected": "false；invalid_start_state；未启动线程",
+    "kind": "runtime"
+  },
+  {
+    "id": "R_config_retry0",
+    "point": "R3 启动校验",
+    "setup": "retry0",
+    "steps": "无效配置Start",
+    "expected": "false；invalid_start_state；未启动线程",
+    "kind": "runtime"
+  },
+  {
+    "id": "R_config_callback",
+    "point": "R3 启动校验",
+    "setup": "callback",
+    "steps": "无效配置Start",
+    "expected": "false；invalid_start_state；未启动线程",
+    "kind": "runtime"
+  },
+  {
+    "id": "R_config_writers",
+    "point": "R3 启动校验",
+    "setup": "writers",
+    "steps": "无效配置Start",
+    "expected": "false；invalid_start_state；未启动线程",
+    "kind": "runtime"
+  },
+  {
+    "id": "S_copy",
+    "point": "S1 存储及消费",
+    "setup": "copy",
+    "steps": "保存多帧；检查processed连续前缀；读取/拒收/释放/重启",
+    "expected": "数据/来源/时间/统计一致；背压无丢失；保留句柄阻止回收",
+    "kind": "runtime"
+  },
+  {
+    "id": "S_split",
+    "point": "S1 存储及消费",
+    "setup": "split",
+    "steps": "保存多帧；检查processed连续前缀；读取/拒收/释放/重启",
+    "expected": "数据/来源/时间/统计一致；背压无丢失；保留句柄阻止回收",
+    "kind": "runtime"
+  },
+  {
+    "id": "S_zero",
+    "point": "S1 存储及消费",
+    "setup": "zero",
+    "steps": "保存多帧；检查processed连续前缀；读取/拒收/释放/重启",
+    "expected": "数据/来源/时间/统计一致；背压无丢失；保留句柄阻止回收",
+    "kind": "runtime"
+  },
+  {
+    "id": "S_queuefull",
+    "point": "S1 存储及消费",
+    "setup": "queuefull",
+    "steps": "保存多帧；检查processed连续前缀；读取/拒收/释放/重启",
+    "expected": "数据/来源/时间/统计一致；背压无丢失；保留句柄阻止回收",
+    "kind": "runtime"
+  },
+  {
+    "id": "S_poolfull",
+    "point": "S1 存储及消费",
+    "setup": "poolfull",
+    "steps": "保存多帧；检查processed连续前缀；读取/拒收/释放/重启",
+    "expected": "数据/来源/时间/统计一致；背压无丢失；保留句柄阻止回收",
+    "kind": "runtime"
+  },
+  {
+    "id": "S_slots",
+    "point": "S1 存储及消费",
+    "setup": "slots",
+    "steps": "保存多帧；检查processed连续前缀；读取/拒收/释放/重启",
+    "expected": "数据/来源/时间/统计一致；背压无丢失；保留句柄阻止回收",
+    "kind": "runtime"
+  },
+  {
+    "id": "S_closed",
+    "point": "S1 存储及消费",
+    "setup": "closed",
+    "steps": "保存多帧；检查processed连续前缀；读取/拒收/释放/重启",
+    "expected": "数据/来源/时间/统计一致；背压无丢失；保留句柄阻止回收",
+    "kind": "runtime"
+  },
+  {
+    "id": "S_retry",
+    "point": "S1 存储及消费",
+    "setup": "retry",
+    "steps": "保存多帧；检查processed连续前缀；读取/拒收/释放/重启",
+    "expected": "数据/来源/时间/统计一致；背压无丢失；保留句柄阻止回收",
+    "kind": "runtime"
+  },
+  {
+    "id": "S_notify",
+    "point": "S1 存储及消费",
+    "setup": "notify",
+    "steps": "保存多帧；检查processed连续前缀；读取/拒收/释放/重启",
+    "expected": "批次发布与出队各通知一次；帧释放不通知；finish 后 all_released 正确且查询无回收副作用",
+    "kind": "runtime"
+  },
+  {
+    "id": "S_timeout",
+    "point": "S1 存储及消费",
+    "setup": "timeout",
+    "steps": "保存多帧；检查processed连续前缀；读取/拒收/释放/重启",
+    "expected": "数据/来源/时间/统计一致；背压无丢失；保留句柄阻止回收",
+    "kind": "runtime"
+  },
+  {
+    "id": "S_invalid_null",
+    "point": "S2 输入全量预校验",
+    "setup": "null",
+    "steps": "混入无效DataView；调用Save",
+    "expected": "精确错误；processed=0；无部分数据入队",
+    "kind": "runtime"
+  },
+  {
+    "id": "S_invalid_id",
+    "point": "S2 输入全量预校验",
+    "setup": "id",
+    "steps": "混入无效DataView；调用Save",
+    "expected": "精确错误；processed=0；无部分数据入队",
+    "kind": "runtime"
+  },
+  {
+    "id": "S_invalid_block",
+    "point": "S2 输入全量预校验",
+    "setup": "block",
+    "steps": "混入无效DataView；调用Save",
+    "expected": "精确错误；processed=0；无部分数据入队",
+    "kind": "runtime"
+  },
+  {
+    "id": "S_invalid_batch",
+    "point": "S2 输入全量预校验",
+    "setup": "batch",
+    "steps": "混入无效DataView；调用Save",
+    "expected": "精确错误；processed=0；无部分数据入队",
+    "kind": "runtime"
+  },
+  {
+    "id": "S_invalid_prevalidate",
+    "point": "S2 输入全量预校验",
+    "setup": "prevalidate",
+    "steps": "混入无效DataView；调用Save",
+    "expected": "精确错误；processed=0；无部分数据入队",
+    "kind": "runtime"
+  },
+  {
+    "id": "P_align_11_1",
+    "point": "P1 三策略通用分配",
+    "setup": "模式11 对齐1",
+    "steps": "先分配1字节；再分配对齐切片；超大请求；Close",
+    "expected": "地址对齐、不重叠；超大请求不破坏当前块；Close后拒绝分配",
+    "kind": "runtime"
+  },
+  {
+    "id": "P_align_11_2",
+    "point": "P1 三策略通用分配",
+    "setup": "模式11 对齐2",
+    "steps": "先分配1字节；再分配对齐切片；超大请求；Close",
+    "expected": "地址对齐、不重叠；超大请求不破坏当前块；Close后拒绝分配",
+    "kind": "runtime"
+  },
+  {
+    "id": "P_align_11_4",
+    "point": "P1 三策略通用分配",
+    "setup": "模式11 对齐4",
+    "steps": "先分配1字节；再分配对齐切片；超大请求；Close",
+    "expected": "地址对齐、不重叠；超大请求不破坏当前块；Close后拒绝分配",
+    "kind": "runtime"
+  },
+  {
+    "id": "P_align_11_8",
+    "point": "P1 三策略通用分配",
+    "setup": "模式11 对齐8",
+    "steps": "先分配1字节；再分配对齐切片；超大请求；Close",
+    "expected": "地址对齐、不重叠；超大请求不破坏当前块；Close后拒绝分配",
+    "kind": "runtime"
+  },
+  {
+    "id": "P_align_11_16",
+    "point": "P1 三策略通用分配",
+    "setup": "模式11 对齐16",
+    "steps": "先分配1字节；再分配对齐切片；超大请求；Close",
+    "expected": "地址对齐、不重叠；超大请求不破坏当前块；Close后拒绝分配",
+    "kind": "runtime"
+  },
+  {
+    "id": "P_align_11_32",
+    "point": "P1 三策略通用分配",
+    "setup": "模式11 对齐32",
+    "steps": "先分配1字节；再分配对齐切片；超大请求；Close",
+    "expected": "地址对齐、不重叠；超大请求不破坏当前块；Close后拒绝分配",
+    "kind": "runtime"
+  },
+  {
+    "id": "P_align_11_64",
+    "point": "P1 三策略通用分配",
+    "setup": "模式11 对齐64",
+    "steps": "先分配1字节；再分配对齐切片；超大请求；Close",
+    "expected": "地址对齐、不重叠；超大请求不破坏当前块；Close后拒绝分配",
+    "kind": "runtime"
+  },
+  {
+    "id": "P_slots_11_1",
+    "point": "P2 位图边界",
+    "setup": "模式11 槽位1",
+    "steps": "分配至槽位上限；再申请失败；逆序释放；多代复用",
+    "expected": "失败不扩容；数据完整；归零；复用成功",
+    "kind": "runtime"
+  },
+  {
+    "id": "P_slots_11_63",
+    "point": "P2 位图边界",
+    "setup": "模式11 槽位63",
+    "steps": "分配至槽位上限；再申请失败；逆序释放；多代复用",
+    "expected": "失败不扩容；数据完整；归零；复用成功",
+    "kind": "runtime"
+  },
+  {
+    "id": "P_slots_11_64",
+    "point": "P2 位图边界",
+    "setup": "模式11 槽位64",
+    "steps": "分配至槽位上限；再申请失败；逆序释放；多代复用",
+    "expected": "失败不扩容；数据完整；归零；复用成功",
+    "kind": "runtime"
+  },
+  {
+    "id": "P_slots_11_65",
+    "point": "P2 位图边界",
+    "setup": "模式11 槽位65",
+    "steps": "分配至槽位上限；再申请失败；逆序释放；多代复用",
+    "expected": "失败不扩容；数据完整；归零；复用成功",
+    "kind": "runtime"
+  },
+  {
+    "id": "P_slots_11_129",
+    "point": "P2 位图边界",
+    "setup": "模式11 槽位129",
+    "steps": "分配至槽位上限；再申请失败；逆序释放；多代复用",
+    "expected": "失败不扩容；数据完整；归零；复用成功",
+    "kind": "runtime"
+  },
+  {
+    "id": "P_move_11",
+    "point": "P3 唯一所有权",
+    "setup": "11",
+    "steps": "移动构造、覆盖移动赋值、自移动、析构和显式释放",
+    "expected": "源清空；旧目标释放；自移动保留；只回收一次",
+    "kind": "runtime"
+  },
+  {
+    "id": "P_align_1N_1",
+    "point": "P1 三策略通用分配",
+    "setup": "模式1N 对齐1",
+    "steps": "先分配1字节；再分配对齐切片；超大请求；Close",
+    "expected": "地址对齐、不重叠；超大请求不破坏当前块；Close后拒绝分配",
+    "kind": "runtime"
+  },
+  {
+    "id": "P_align_1N_2",
+    "point": "P1 三策略通用分配",
+    "setup": "模式1N 对齐2",
+    "steps": "先分配1字节；再分配对齐切片；超大请求；Close",
+    "expected": "地址对齐、不重叠；超大请求不破坏当前块；Close后拒绝分配",
+    "kind": "runtime"
+  },
+  {
+    "id": "P_align_1N_4",
+    "point": "P1 三策略通用分配",
+    "setup": "模式1N 对齐4",
+    "steps": "先分配1字节；再分配对齐切片；超大请求；Close",
+    "expected": "地址对齐、不重叠；超大请求不破坏当前块；Close后拒绝分配",
+    "kind": "runtime"
+  },
+  {
+    "id": "P_align_1N_8",
+    "point": "P1 三策略通用分配",
+    "setup": "模式1N 对齐8",
+    "steps": "先分配1字节；再分配对齐切片；超大请求；Close",
+    "expected": "地址对齐、不重叠；超大请求不破坏当前块；Close后拒绝分配",
+    "kind": "runtime"
+  },
+  {
+    "id": "P_align_1N_16",
+    "point": "P1 三策略通用分配",
+    "setup": "模式1N 对齐16",
+    "steps": "先分配1字节；再分配对齐切片；超大请求；Close",
+    "expected": "地址对齐、不重叠；超大请求不破坏当前块；Close后拒绝分配",
+    "kind": "runtime"
+  },
+  {
+    "id": "P_align_1N_32",
+    "point": "P1 三策略通用分配",
+    "setup": "模式1N 对齐32",
+    "steps": "先分配1字节；再分配对齐切片；超大请求；Close",
+    "expected": "地址对齐、不重叠；超大请求不破坏当前块；Close后拒绝分配",
+    "kind": "runtime"
+  },
+  {
+    "id": "P_align_1N_64",
+    "point": "P1 三策略通用分配",
+    "setup": "模式1N 对齐64",
+    "steps": "先分配1字节；再分配对齐切片；超大请求；Close",
+    "expected": "地址对齐、不重叠；超大请求不破坏当前块；Close后拒绝分配",
+    "kind": "runtime"
+  },
+  {
+    "id": "P_slots_1N_1",
+    "point": "P2 位图边界",
+    "setup": "模式1N 槽位1",
+    "steps": "分配至槽位上限；再申请失败；逆序释放；多代复用",
+    "expected": "失败不扩容；数据完整；归零；复用成功",
+    "kind": "runtime"
+  },
+  {
+    "id": "P_slots_1N_63",
+    "point": "P2 位图边界",
+    "setup": "模式1N 槽位63",
+    "steps": "分配至槽位上限；再申请失败；逆序释放；多代复用",
+    "expected": "失败不扩容；数据完整；归零；复用成功",
+    "kind": "runtime"
+  },
+  {
+    "id": "P_slots_1N_64",
+    "point": "P2 位图边界",
+    "setup": "模式1N 槽位64",
+    "steps": "分配至槽位上限；再申请失败；逆序释放；多代复用",
+    "expected": "失败不扩容；数据完整；归零；复用成功",
+    "kind": "runtime"
+  },
+  {
+    "id": "P_slots_1N_65",
+    "point": "P2 位图边界",
+    "setup": "模式1N 槽位65",
+    "steps": "分配至槽位上限；再申请失败；逆序释放；多代复用",
+    "expected": "失败不扩容；数据完整；归零；复用成功",
+    "kind": "runtime"
+  },
+  {
+    "id": "P_slots_1N_129",
+    "point": "P2 位图边界",
+    "setup": "模式1N 槽位129",
+    "steps": "分配至槽位上限；再申请失败；逆序释放；多代复用",
+    "expected": "失败不扩容；数据完整；归零；复用成功",
+    "kind": "runtime"
+  },
+  {
+    "id": "P_move_1N",
+    "point": "P3 唯一所有权",
+    "setup": "1N",
+    "steps": "移动构造、覆盖移动赋值、自移动、析构和显式释放",
+    "expected": "源清空；旧目标释放；自移动保留；只回收一次",
+    "kind": "runtime"
+  },
+  {
+    "id": "P_align_NN_1",
+    "point": "P1 三策略通用分配",
+    "setup": "模式NN 对齐1",
+    "steps": "先分配1字节；再分配对齐切片；超大请求；Close",
+    "expected": "地址对齐、不重叠；超大请求不破坏当前块；Close后拒绝分配",
+    "kind": "runtime"
+  },
+  {
+    "id": "P_align_NN_2",
+    "point": "P1 三策略通用分配",
+    "setup": "模式NN 对齐2",
+    "steps": "先分配1字节；再分配对齐切片；超大请求；Close",
+    "expected": "地址对齐、不重叠；超大请求不破坏当前块；Close后拒绝分配",
+    "kind": "runtime"
+  },
+  {
+    "id": "P_align_NN_4",
+    "point": "P1 三策略通用分配",
+    "setup": "模式NN 对齐4",
+    "steps": "先分配1字节；再分配对齐切片；超大请求；Close",
+    "expected": "地址对齐、不重叠；超大请求不破坏当前块；Close后拒绝分配",
+    "kind": "runtime"
+  },
+  {
+    "id": "P_align_NN_8",
+    "point": "P1 三策略通用分配",
+    "setup": "模式NN 对齐8",
+    "steps": "先分配1字节；再分配对齐切片；超大请求；Close",
+    "expected": "地址对齐、不重叠；超大请求不破坏当前块；Close后拒绝分配",
+    "kind": "runtime"
+  },
+  {
+    "id": "P_align_NN_16",
+    "point": "P1 三策略通用分配",
+    "setup": "模式NN 对齐16",
+    "steps": "先分配1字节；再分配对齐切片；超大请求；Close",
+    "expected": "地址对齐、不重叠；超大请求不破坏当前块；Close后拒绝分配",
+    "kind": "runtime"
+  },
+  {
+    "id": "P_align_NN_32",
+    "point": "P1 三策略通用分配",
+    "setup": "模式NN 对齐32",
+    "steps": "先分配1字节；再分配对齐切片；超大请求；Close",
+    "expected": "地址对齐、不重叠；超大请求不破坏当前块；Close后拒绝分配",
+    "kind": "runtime"
+  },
+  {
+    "id": "P_align_NN_64",
+    "point": "P1 三策略通用分配",
+    "setup": "模式NN 对齐64",
+    "steps": "先分配1字节；再分配对齐切片；超大请求；Close",
+    "expected": "地址对齐、不重叠；超大请求不破坏当前块；Close后拒绝分配",
+    "kind": "runtime"
+  },
+  {
+    "id": "P_slots_NN_1",
+    "point": "P2 位图边界",
+    "setup": "模式NN 槽位1",
+    "steps": "分配至槽位上限；再申请失败；逆序释放；多代复用",
+    "expected": "失败不扩容；数据完整；归零；复用成功",
+    "kind": "runtime"
+  },
+  {
+    "id": "P_slots_NN_63",
+    "point": "P2 位图边界",
+    "setup": "模式NN 槽位63",
+    "steps": "分配至槽位上限；再申请失败；逆序释放；多代复用",
+    "expected": "失败不扩容；数据完整；归零；复用成功",
+    "kind": "runtime"
+  },
+  {
+    "id": "P_slots_NN_64",
+    "point": "P2 位图边界",
+    "setup": "模式NN 槽位64",
+    "steps": "分配至槽位上限；再申请失败；逆序释放；多代复用",
+    "expected": "失败不扩容；数据完整；归零；复用成功",
+    "kind": "runtime"
+  },
+  {
+    "id": "P_slots_NN_65",
+    "point": "P2 位图边界",
+    "setup": "模式NN 槽位65",
+    "steps": "分配至槽位上限；再申请失败；逆序释放；多代复用",
+    "expected": "失败不扩容；数据完整；归零；复用成功",
+    "kind": "runtime"
+  },
+  {
+    "id": "P_slots_NN_129",
+    "point": "P2 位图边界",
+    "setup": "模式NN 槽位129",
+    "steps": "分配至槽位上限；再申请失败；逆序释放；多代复用",
+    "expected": "失败不扩容；数据完整；归零；复用成功",
+    "kind": "runtime"
+  },
+  {
+    "id": "P_move_NN",
+    "point": "P3 唯一所有权",
+    "setup": "NN",
+    "steps": "移动构造、覆盖移动赋值、自移动、析构和显式释放",
+    "expected": "源清空；旧目标释放；自移动保留；只回收一次",
+    "kind": "runtime"
+  },
+  {
+    "id": "P_config_bytes",
+    "point": "P4 构造参数",
+    "setup": "bytes",
+    "steps": "构造无效配置",
+    "expected": "抛出invalid_argument，不启动工作",
+    "kind": "runtime"
+  },
+  {
+    "id": "P_config_max",
+    "point": "P4 构造参数",
+    "setup": "max",
+    "steps": "构造无效配置",
+    "expected": "抛出invalid_argument，不启动工作",
+    "kind": "runtime"
+  },
+  {
+    "id": "P_config_initial",
+    "point": "P4 构造参数",
+    "setup": "initial",
+    "steps": "构造无效配置",
+    "expected": "抛出invalid_argument，不启动工作",
+    "kind": "runtime"
+  },
+  {
+    "id": "P_config_slots",
+    "point": "P4 构造参数",
+    "setup": "slots",
+    "steps": "构造无效配置",
+    "expected": "抛出invalid_argument，不启动工作",
+    "kind": "runtime"
+  },
+  {
+    "id": "P_config_storequeue",
+    "point": "P4 构造参数",
+    "setup": "storequeue",
+    "steps": "构造无效配置",
+    "expected": "抛出invalid_argument，不启动工作",
+    "kind": "runtime"
+  },
+  {
+    "id": "C_direct_1_1",
+    "point": "C1 并发端到端",
+    "setup": "direct；1写线程；发布1",
+    "steps": "同步起跑；每线程2001条混合长度与序号；重试背压；Finish后Stop",
+    "expected": "来源/逐生产者顺序/全部字节/总数一致；无残留；有界结束",
+    "kind": "stress"
+  },
+  {
+    "id": "C_direct_1_32",
+    "point": "C1 并发端到端",
+    "setup": "direct；1写线程；发布32",
+    "steps": "同步起跑；每线程2001条混合长度与序号；重试背压；Finish后Stop",
+    "expected": "来源/逐生产者顺序/全部字节/总数一致；无残留；有界结束",
+    "kind": "stress"
+  },
+  {
+    "id": "C_direct_4_1",
+    "point": "C1 并发端到端",
+    "setup": "direct；4写线程；发布1",
+    "steps": "同步起跑；每线程2001条混合长度与序号；重试背压；Finish后Stop",
+    "expected": "来源/逐生产者顺序/全部字节/总数一致；无残留；有界结束",
+    "kind": "stress"
+  },
+  {
+    "id": "C_direct_4_32",
+    "point": "C1 并发端到端",
+    "setup": "direct；4写线程；发布32",
+    "steps": "同步起跑；每线程2001条混合长度与序号；重试背压；Finish后Stop",
+    "expected": "来源/逐生产者顺序/全部字节/总数一致；无残留；有界结束",
+    "kind": "stress"
+  },
+  {
+    "id": "C_buffered_1_1",
+    "point": "C1 并发端到端",
+    "setup": "buffered；1写线程；发布1",
+    "steps": "同步起跑；每线程2001条混合长度与序号；重试背压；Finish后Stop",
+    "expected": "来源/逐生产者顺序/全部字节/总数一致；无残留；有界结束",
+    "kind": "stress"
+  },
+  {
+    "id": "C_buffered_1_32",
+    "point": "C1 并发端到端",
+    "setup": "buffered；1写线程；发布32",
+    "steps": "同步起跑；每线程2001条混合长度与序号；重试背压；Finish后Stop",
+    "expected": "来源/逐生产者顺序/全部字节/总数一致；无残留；有界结束",
+    "kind": "stress"
+  },
+  {
+    "id": "C_buffered_4_1",
+    "point": "C1 并发端到端",
+    "setup": "buffered；4写线程；发布1",
+    "steps": "同步起跑；每线程2001条混合长度与序号；重试背压；Finish后Stop",
+    "expected": "来源/逐生产者顺序/全部字节/总数一致；无残留；有界结束",
+    "kind": "stress"
+  },
+  {
+    "id": "C_buffered_4_32",
+    "point": "C1 并发端到端",
+    "setup": "buffered；4写线程；发布32",
+    "steps": "同步起跑；每线程2001条混合长度与序号；重试背压；Finish后Stop",
+    "expected": "来源/逐生产者顺序/全部字节/总数一致；无残留；有界结束",
+    "kind": "stress"
+  },
+  {
+    "id": "C_seal1N",
+    "point": "C2 并发释放与回收",
+    "setup": "seal1N",
+    "steps": "barrier控制Seal/Release竞争或多线程分配；重复多轮",
+    "expected": "活跃地址不重叠；数据不串写；每块恰回收一次",
+    "kind": "stress"
+  },
+  {
+    "id": "C_sealNN",
+    "point": "C2 并发释放与回收",
+    "setup": "sealNN",
+    "steps": "barrier控制Seal/Release竞争或多线程分配；重复多轮",
+    "expected": "活跃地址不重叠；数据不串写；每块恰回收一次",
+    "kind": "stress"
+  },
+  {
+    "id": "C_allocNN",
+    "point": "C2 并发释放与回收",
+    "setup": "allocNN",
+    "steps": "barrier控制Seal/Release竞争或多线程分配；重复多轮",
+    "expected": "活跃地址不重叠；数据不串写；每块恰回收一次",
+    "kind": "stress"
+  },
+  {
+    "id": "C_release1N",
+    "point": "C2 并发释放与回收",
+    "setup": "release1N",
+    "steps": "barrier控制Seal/Release竞争或多线程分配；重复多轮",
+    "expected": "活跃地址不重叠；数据不串写；每块恰回收一次",
+    "kind": "stress"
+  },
+  {
+    "id": "M_seed_1",
+    "point": "M1 模型状态机",
+    "setup": "固定种子1；2块小池",
+    "steps": "1000步随机写/Flush/拒收/持有/释放/扫描；末尾排空",
+    "expected": "收到的完整消息序列等于成功写入的参考模型；池最终归零",
+    "kind": "stress"
+  },
+  {
+    "id": "M_seed_7",
+    "point": "M1 模型状态机",
+    "setup": "固定种子7；2块小池",
+    "steps": "1000步随机写/Flush/拒收/持有/释放/扫描；末尾排空",
+    "expected": "收到的完整消息序列等于成功写入的参考模型；池最终归零",
+    "kind": "stress"
+  },
+  {
+    "id": "M_seed_42",
+    "point": "M1 模型状态机",
+    "setup": "固定种子42；2块小池",
+    "steps": "1000步随机写/Flush/拒收/持有/释放/扫描；末尾排空",
+    "expected": "收到的完整消息序列等于成功写入的参考模型；池最终归零",
+    "kind": "stress"
+  },
+  {
+    "id": "M_seed_20260925",
+    "point": "M1 模型状态机",
+    "setup": "固定种子20260925；2块小池",
+    "steps": "1000步随机写/Flush/拒收/持有/释放/扫描；末尾排空",
+    "expected": "收到的完整消息序列等于成功写入的参考模型；池最终归零",
+    "kind": "stress"
+  },
+  {
+    "id": "D_empty",
+    "point": "D1 契约违规进程隔离",
+    "setup": "empty",
+    "steps": "子进程安装错误回调后触发指定违规",
+    "expected": "仅指定诊断原因触发哨兵退出码86；普通崩溃/其他异常不算通过",
+    "kind": "death"
+  },
+  {
+    "id": "D_double",
+    "point": "D1 契约违规进程隔离",
+    "setup": "double",
+    "steps": "子进程安装错误回调后触发指定违规",
+    "expected": "仅指定诊断原因触发哨兵退出码86；普通崩溃/其他异常不算通过",
+    "kind": "death"
+  },
+  {
+    "id": "D_zero",
+    "point": "D1 契约违规进程隔离",
+    "setup": "zero",
+    "steps": "子进程安装错误回调后触发指定违规",
+    "expected": "仅指定诊断原因触发哨兵退出码86；普通崩溃/其他异常不算通过",
+    "kind": "death"
+  },
+  {
+    "id": "D_align3",
+    "point": "D1 契约违规进程隔离",
+    "setup": "align3",
+    "steps": "子进程安装错误回调后触发指定违规",
+    "expected": "仅指定诊断原因触发哨兵退出码86；普通崩溃/其他异常不算通过",
+    "kind": "death"
+  },
+  {
+    "id": "D_align128",
+    "point": "D1 契约违规进程隔离",
+    "setup": "align128",
+    "steps": "子进程安装错误回调后触发指定违规",
+    "expected": "仅指定诊断原因触发哨兵退出码86；普通崩溃/其他异常不算通过",
+    "kind": "death"
+  },
+  {
+    "id": "D_seal",
+    "point": "D1 契约违规进程隔离",
+    "setup": "to_write_finished",
+    "steps": "子进程安装错误回调后触发指定违规",
+    "expected": "仅指定诊断原因触发哨兵退出码86；普通崩溃/其他异常不算通过",
+    "kind": "death"
+  },
+  {
+    "id": "D_range",
+    "point": "D1 契约违规进程隔离",
+    "setup": "range",
+    "steps": "子进程安装错误回调后触发指定违规",
+    "expected": "仅指定诊断原因触发哨兵退出码86；普通崩溃/其他异常不算通过",
+    "kind": "death"
+  },
+  {
+    "id": "D_foreign",
+    "point": "D1 契约违规进程隔离",
+    "setup": "foreign",
+    "steps": "子进程安装错误回调后触发指定违规",
+    "expected": "仅指定诊断原因触发哨兵退出码86；普通崩溃/其他异常不算通过",
+    "kind": "death"
+  },
+  {
+    "id": "D_livepool",
+    "point": "D1 契约违规进程隔离",
+    "setup": "livepool",
+    "steps": "子进程安装错误回调后触发指定违规",
+    "expected": "仅指定诊断原因触发哨兵退出码86；普通崩溃/其他异常不算通过",
+    "kind": "death"
+  },
+  {
+    "id": "T_pointer",
+    "point": "T1 编译期契约",
+    "setup": "void f(WriterQueue* p){Writer<> w(p,0);unsigned n=0;auto v=&n;(void)w.write(v);}",
+    "steps": "先编译合法对照，再编译违规模板实例",
+    "expected": "合法对照成功；违规实例失败且匹配预期static_assert诊断",
+    "kind": "compile"
+  },
+  {
+    "id": "T_array",
+    "point": "T1 编译期契约",
+    "setup": "void f(WriterQueue* p){Writer<> w(p,0);char v[4]{};(void)w.write(v);}",
+    "steps": "先编译合法对照，再编译违规模板实例",
+    "expected": "合法对照成功；违规实例失败且匹配预期static_assert诊断",
+    "kind": "compile"
+  },
+  {
+    "id": "T_nontrivial",
+    "point": "T1 编译期契约",
+    "setup": "void f(WriterQueue* p){Writer<> w(p,0);std::string v;(void)w.write(v);}",
+    "steps": "先编译合法对照，再编译违规模板实例",
+    "expected": "合法对照成功；违规实例失败且匹配预期static_assert诊断",
+    "kind": "compile"
+  },
+  {
+    "id": "T_maximum",
+    "point": "T1 编译期契约",
+    "setup": "struct Large {char data[65536];};void f(WriterQueue* p){Writer<> w(p,0);Large v{};(void)w.write(v);}",
+    "steps": "先编译合法对照，再编译违规模板实例",
+    "expected": "合法对照成功；违规实例失败且匹配预期static_assert诊断",
+    "kind": "compile"
+  },
+  {
+    "id": "T_publish0",
+    "point": "T1 编译期契约",
+    "setup": "void f(WriterQueue* p){Writer<0> w(p,0);}",
+    "steps": "先编译合法对照，再编译违规模板实例",
+    "expected": "合法对照成功；违规实例失败且匹配预期static_assert诊断",
+    "kind": "compile"
+  },
+  {
+    "id": "U_signal",
+    "point": "U1 事件语义",
+    "setup": "signal",
+    "steps": "Set/TryWait/Reset/取消/无信号等待",
+    "expected": "信号保留一次；正确自动清除；取消退出；超时返回false",
+    "kind": "runtime"
+  },
+  {
+    "id": "U_cancel",
+    "point": "U1 事件语义",
+    "setup": "cancel",
+    "steps": "Set/TryWait/Reset/取消/无信号等待",
+    "expected": "信号保留一次；正确自动清除；取消退出；超时返回false",
+    "kind": "runtime"
+  },
+  {
+    "id": "U_timeout",
+    "point": "U1 事件语义",
+    "setup": "timeout",
+    "steps": "Set/TryWait/Reset/取消/无信号等待",
+    "expected": "信号保留一次；正确自动清除；取消退出；超时返回false",
+    "kind": "runtime"
+  },
+  {
+    "id": "P_tolerant_11_old",
+    "point": "P5 宽松释放契约",
+    "setup": "11；is_check_slice_release=false；old",
+    "steps": "仅测试访问器注入失效代号/越界/重复释放；随后正常释放并复用",
+    "expected": "无错误；outstanding和池占用不变；合法释放仍恰回收一次",
+    "kind": "runtime"
+  },
+  {
+    "id": "P_tolerant_11_zero",
+    "point": "P5 宽松释放契约",
+    "setup": "11；is_check_slice_release=false；zero",
+    "steps": "仅测试访问器注入失效代号/越界/重复释放；随后正常释放并复用",
+    "expected": "无错误；outstanding和池占用不变；合法释放仍恰回收一次",
+    "kind": "runtime"
+  },
+  {
+    "id": "P_tolerant_11_free",
+    "point": "P5 宽松释放契约",
+    "setup": "11；is_check_slice_release=false；free",
+    "steps": "仅测试访问器注入失效代号/越界/重复释放；随后正常释放并复用",
+    "expected": "无错误；outstanding和池占用不变；合法释放仍恰回收一次",
+    "kind": "runtime"
+  },
+  {
+    "id": "P_tolerant_11_index",
+    "point": "P5 宽松释放契约",
+    "setup": "11；is_check_slice_release=false；index",
+    "steps": "仅测试访问器注入失效代号/越界/重复释放；随后正常释放并复用",
+    "expected": "无错误；outstanding和池占用不变；合法释放仍恰回收一次",
+    "kind": "runtime"
+  },
+  {
+    "id": "P_tolerant_11_duplicate",
+    "point": "P5 宽松释放契约",
+    "setup": "11；is_check_slice_release=false；duplicate",
+    "steps": "仅测试访问器注入失效代号/越界/重复释放；随后正常释放并复用",
+    "expected": "无错误；outstanding和池占用不变；合法释放仍恰回收一次",
+    "kind": "runtime"
+  },
+  {
+    "id": "P_tolerant_1N_old",
+    "point": "P5 宽松释放契约",
+    "setup": "1N；is_check_slice_release=false；old",
+    "steps": "仅测试访问器注入失效代号/越界/重复释放；随后正常释放并复用",
+    "expected": "无错误；outstanding和池占用不变；合法释放仍恰回收一次",
+    "kind": "runtime"
+  },
+  {
+    "id": "P_tolerant_1N_zero",
+    "point": "P5 宽松释放契约",
+    "setup": "1N；is_check_slice_release=false；zero",
+    "steps": "仅测试访问器注入失效代号/越界/重复释放；随后正常释放并复用",
+    "expected": "无错误；outstanding和池占用不变；合法释放仍恰回收一次",
+    "kind": "runtime"
+  },
+  {
+    "id": "P_tolerant_1N_free",
+    "point": "P5 宽松释放契约",
+    "setup": "1N；is_check_slice_release=false；free",
+    "steps": "仅测试访问器注入失效代号/越界/重复释放；随后正常释放并复用",
+    "expected": "无错误；outstanding和池占用不变；合法释放仍恰回收一次",
+    "kind": "runtime"
+  },
+  {
+    "id": "P_tolerant_1N_index",
+    "point": "P5 宽松释放契约",
+    "setup": "1N；is_check_slice_release=false；index",
+    "steps": "仅测试访问器注入失效代号/越界/重复释放；随后正常释放并复用",
+    "expected": "无错误；outstanding和池占用不变；合法释放仍恰回收一次",
+    "kind": "runtime"
+  },
+  {
+    "id": "P_tolerant_1N_duplicate",
+    "point": "P5 宽松释放契约",
+    "setup": "1N；is_check_slice_release=false；duplicate",
+    "steps": "仅测试访问器注入失效代号/越界/重复释放；随后正常释放并复用",
+    "expected": "无错误；outstanding和池占用不变；合法释放仍恰回收一次",
+    "kind": "runtime"
+  },
+  {
+    "id": "P_tolerant_NN_old",
+    "point": "P5 宽松释放契约",
+    "setup": "NN；is_check_slice_release=false；old",
+    "steps": "仅测试访问器注入失效代号/越界/重复释放；随后正常释放并复用",
+    "expected": "无错误；outstanding和池占用不变；合法释放仍恰回收一次",
+    "kind": "runtime"
+  },
+  {
+    "id": "P_tolerant_NN_zero",
+    "point": "P5 宽松释放契约",
+    "setup": "NN；is_check_slice_release=false；zero",
+    "steps": "仅测试访问器注入失效代号/越界/重复释放；随后正常释放并复用",
+    "expected": "无错误；outstanding和池占用不变；合法释放仍恰回收一次",
+    "kind": "runtime"
+  },
+  {
+    "id": "P_tolerant_NN_free",
+    "point": "P5 宽松释放契约",
+    "setup": "NN；is_check_slice_release=false；free",
+    "steps": "仅测试访问器注入失效代号/越界/重复释放；随后正常释放并复用",
+    "expected": "无错误；outstanding和池占用不变；合法释放仍恰回收一次",
+    "kind": "runtime"
+  },
+  {
+    "id": "P_tolerant_NN_index",
+    "point": "P5 宽松释放契约",
+    "setup": "NN；is_check_slice_release=false；index",
+    "steps": "仅测试访问器注入失效代号/越界/重复释放；随后正常释放并复用",
+    "expected": "无错误；outstanding和池占用不变；合法释放仍恰回收一次",
+    "kind": "runtime"
+  },
+  {
+    "id": "P_tolerant_NN_duplicate",
+    "point": "P5 宽松释放契约",
+    "setup": "NN；is_check_slice_release=false；duplicate",
+    "steps": "仅测试访问器注入失效代号/越界/重复释放；随后正常释放并复用",
+    "expected": "无错误；outstanding和池占用不变；合法释放仍恰回收一次",
+    "kind": "runtime"
+  },
+  {
+    "id": "D_strict_old",
+    "point": "D2 严格释放契约",
+    "setup": "old",
+    "steps": "注入失效内部释放请求",
+    "expected": "专用退出86且精确错误原因",
+    "kind": "death"
+  },
+  {
+    "id": "D_strict_free",
+    "point": "D2 严格释放契约",
+    "setup": "free",
+    "steps": "注入失效内部释放请求",
+    "expected": "专用退出86且精确错误原因",
+    "kind": "death"
+  },
+  {
+    "id": "D_strict_index",
+    "point": "D2 严格释放契约",
+    "setup": "index",
+    "steps": "注入失效内部释放请求",
+    "expected": "专用退出86且精确错误原因",
+    "kind": "death"
+  },
+  {
+    "id": "D_strict_duplicate",
+    "point": "D2 严格释放契约",
+    "setup": "duplicate",
+    "steps": "注入失效内部释放请求",
+    "expected": "专用退出86且精确错误原因",
+    "kind": "death"
+  },
+  {
+    "id": "W_pressure_drop",
+    "point": "W5 写端背压",
+    "setup": "drop",
+    "steps": "单块池耗尽；丢弃/总超时/解除拒收后释放后重试",
+    "expected": "失败记录未交付；恢复后顺序正确；blocked/dropped统计符合模式",
+    "kind": "runtime"
+  },
+  {
+    "id": "W_pressure_block_timeout",
+    "point": "W5 写端背压",
+    "setup": "block_timeout",
+    "steps": "单块池耗尽；丢弃/总超时/解除拒收后释放后重试",
+    "expected": "失败记录未交付；恢复后顺序正确；blocked/dropped统计符合模式",
+    "kind": "runtime"
+  },
+  {
+    "id": "W_pressure_block_resume",
+    "point": "W5 写端背压",
+    "setup": "block_resume",
+    "steps": "单块池耗尽；丢弃/总超时/解除拒收后释放后重试",
+    "expected": "失败记录未交付；恢复后顺序正确；blocked/dropped统计符合模式",
+    "kind": "runtime"
+  },
+  {
+    "id": "R_stop_fast",
+    "point": "R4 工作线程停止恢复",
+    "setup": "fast",
+    "steps": "拒收时停止；停止后允许接收；重启排空",
+    "expected": "有界退出；数据保留；重启恰好交付一次",
+    "kind": "runtime"
+  },
+  {
+    "id": "R_stop_timeout",
+    "point": "R4 工作线程停止恢复",
+    "setup": "timeout",
+    "steps": "拒收时停止；停止后允许接收；重启排空",
+    "expected": "有界退出；数据保留；重启恰好交付一次",
+    "kind": "runtime"
+  },
+  {
+    "id": "S_config_callback",
+    "point": "S3 QueueReader构造校验",
+    "setup": "callback",
+    "steps": "空回调/零重试间隔构造",
+    "expected": "invalid_argument",
+    "kind": "runtime"
+  },
+  {
+    "id": "S_config_retry",
+    "point": "S3 QueueReader构造校验",
+    "setup": "retry",
+    "steps": "空回调/零重试间隔构造",
+    "expected": "invalid_argument",
+    "kind": "runtime"
+  },
+  {
+    "id": "M_complete_11",
+    "point": "M2 统一物理块完成入口",
+    "setup": "11 策略；单块池；重复 3 代；保留独占切片",
+    "steps": "Writing 下分配、释放并继续分配；WriteFinished 保留切片；交出写入端后释放；显式扫描；覆盖空块和多代复用",
+    "expected": "Writing/WriteFinished 不提前回收；LeaveWriter 且全释放后可回收；扫描才减少占用并每块通知一次；每代内容正确",
+    "kind": "runtime"
+  },
+  {
+    "id": "M_complete_1N",
+    "point": "M2 统一物理块完成入口",
+    "setup": "1N 策略；单块池；重复 3 代；保留独占切片",
+    "steps": "Writing 下分配、释放并继续分配；WriteFinished 保留切片；交出写入端后释放；显式扫描；覆盖空块和多代复用",
+    "expected": "Writing/WriteFinished 不提前回收；LeaveWriter 且全释放后可回收；扫描才减少占用并每块通知一次；每代内容正确",
+    "kind": "runtime"
+  },
+  {
+    "id": "M_complete_NN",
+    "point": "M2 统一物理块完成入口",
+    "setup": "NN 策略；单块池；重复 3 代；保留独占切片",
+    "steps": "Writing 下分配、释放并继续分配；WriteFinished 保留切片；交出写入端后释放；显式扫描；覆盖空块和多代复用",
+    "expected": "Writing/WriteFinished 不提前回收；LeaveWriter 且全释放后可回收；扫描才减少占用并每块通知一次；每代内容正确",
+    "kind": "runtime"
+  },
+  {
+    "id": "M_source_complete",
+    "point": "M2 源块共用写入结束状态",
+    "setup": "单源块；写入一条消息后 finish；回调保留帧",
+    "steps": "写入结束后检查源状态与物理状态；读取尾部并移交帧；再检查物理状态；释放帧",
+    "expected": "写入完成时源与基类均为 WriteFinished；完成记录出队后为 LeaveWriter；用户帧阻止回收，释放后 all_released 为 true",
+    "kind": "runtime"
+  },
+  {
+    "id": "D_complete_free",
+    "point": "D1 违规操作",
+    "setup": "未借出的 Free 物理块",
+    "steps": "直接调用公开的 to_write_finished",
+    "expected": "精确完成状态诊断和专用退出86；不能从 Free 转 WriteFinished",
+    "kind": "death"
+  },
+  {
+    "id": "W_layout_u8_prefix_p1",
+    "point": "W6 可选前缀的端到端字节完整性",
+    "setup": "u8；prefix；p1；32字节源块",
+    "steps": "混合参数及动态字节写入；核对发布位置；拒收重试；换块；完成并排空",
+    "expected": "与独立编码逐字节相同；无半消息、漏数据、重复数据；源池满足回收条件",
+    "kind": "runtime"
+  },
+  {
+    "id": "W_layout_u8_prefix_p3",
+    "point": "W6 可选前缀的端到端字节完整性",
+    "setup": "u8；prefix；p3；32字节源块",
+    "steps": "混合参数及动态字节写入；核对发布位置；拒收重试；换块；完成并排空",
+    "expected": "与独立编码逐字节相同；无半消息、漏数据、重复数据；源池满足回收条件",
+    "kind": "runtime"
+  },
+  {
+    "id": "W_layout_u8_prefix_buffered",
+    "point": "W6 可选前缀的端到端字节完整性",
+    "setup": "u8；prefix；buffered；32字节源块",
+    "steps": "混合参数及动态字节写入；核对发布位置；拒收重试；换块；完成并排空",
+    "expected": "与独立编码逐字节相同；无半消息、漏数据、重复数据；源池满足回收条件",
+    "kind": "runtime"
+  },
+  {
+    "id": "W_slots_u8_prefix",
+    "point": "W7 按实际前缀预留切片",
+    "setup": "u8；prefix；min=0；单块1100次写入",
+    "steps": "每次单字节写入后扫描两次；保留全部帧；完成后再逐帧核对及释放",
+    "expected": "1100个切片不耗尽；数据保持不变；全部释放前不复用源块",
+    "kind": "runtime"
+  },
+  {
+    "id": "W_layout_u8_raw_p1",
+    "point": "W6 可选前缀的端到端字节完整性",
+    "setup": "u8；raw；p1；32字节源块",
+    "steps": "混合参数及动态字节写入；核对发布位置；拒收重试；换块；完成并排空",
+    "expected": "与独立编码逐字节相同；无半消息、漏数据、重复数据；源池满足回收条件",
+    "kind": "runtime"
+  },
+  {
+    "id": "W_layout_u8_raw_p3",
+    "point": "W6 可选前缀的端到端字节完整性",
+    "setup": "u8；raw；p3；32字节源块",
+    "steps": "混合参数及动态字节写入；核对发布位置；拒收重试；换块；完成并排空",
+    "expected": "与独立编码逐字节相同；无半消息、漏数据、重复数据；源池满足回收条件",
+    "kind": "runtime"
+  },
+  {
+    "id": "W_layout_u8_raw_buffered",
+    "point": "W6 可选前缀的端到端字节完整性",
+    "setup": "u8；raw；buffered；32字节源块",
+    "steps": "混合参数及动态字节写入；核对发布位置；拒收重试；换块；完成并排空",
+    "expected": "与独立编码逐字节相同；无半消息、漏数据、重复数据；源池满足回收条件",
+    "kind": "runtime"
+  },
+  {
+    "id": "W_slots_u8_raw",
+    "point": "W7 按实际前缀预留切片",
+    "setup": "u8；raw；min=0；单块1100次写入",
+    "steps": "每次单字节写入后扫描两次；保留全部帧；完成后再逐帧核对及释放",
+    "expected": "1100个切片不耗尽；数据保持不变；全部释放前不复用源块",
+    "kind": "runtime"
+  },
+  {
+    "id": "W_limits_u8",
+    "point": "W8 长度类型及溢出",
+    "setup": "u8；块恰好容纳负载及前缀",
+    "steps": "先写负数、空指针、超类型范围或加法溢出长度；再写最大测试负载",
+    "expected": "非法写入无副作用；u8/u16上限和u32/u64的65536字节消息正确",
+    "kind": "runtime"
+  },
+  {
+    "id": "W_layout_u16_prefix_p1",
+    "point": "W6 可选前缀的端到端字节完整性",
+    "setup": "u16；prefix；p1；32字节源块",
+    "steps": "混合参数及动态字节写入；核对发布位置；拒收重试；换块；完成并排空",
+    "expected": "与独立编码逐字节相同；无半消息、漏数据、重复数据；源池满足回收条件",
+    "kind": "runtime"
+  },
+  {
+    "id": "W_layout_u16_prefix_p3",
+    "point": "W6 可选前缀的端到端字节完整性",
+    "setup": "u16；prefix；p3；32字节源块",
+    "steps": "混合参数及动态字节写入；核对发布位置；拒收重试；换块；完成并排空",
+    "expected": "与独立编码逐字节相同；无半消息、漏数据、重复数据；源池满足回收条件",
+    "kind": "runtime"
+  },
+  {
+    "id": "W_layout_u16_prefix_buffered",
+    "point": "W6 可选前缀的端到端字节完整性",
+    "setup": "u16；prefix；buffered；32字节源块",
+    "steps": "混合参数及动态字节写入；核对发布位置；拒收重试；换块；完成并排空",
+    "expected": "与独立编码逐字节相同；无半消息、漏数据、重复数据；源池满足回收条件",
+    "kind": "runtime"
+  },
+  {
+    "id": "W_slots_u16_prefix",
+    "point": "W7 按实际前缀预留切片",
+    "setup": "u16；prefix；min=0；单块1100次写入",
+    "steps": "每次单字节写入后扫描两次；保留全部帧；完成后再逐帧核对及释放",
+    "expected": "1100个切片不耗尽；数据保持不变；全部释放前不复用源块",
+    "kind": "runtime"
+  },
+  {
+    "id": "W_layout_u16_raw_p1",
+    "point": "W6 可选前缀的端到端字节完整性",
+    "setup": "u16；raw；p1；32字节源块",
+    "steps": "混合参数及动态字节写入；核对发布位置；拒收重试；换块；完成并排空",
+    "expected": "与独立编码逐字节相同；无半消息、漏数据、重复数据；源池满足回收条件",
+    "kind": "runtime"
+  },
+  {
+    "id": "W_layout_u16_raw_p3",
+    "point": "W6 可选前缀的端到端字节完整性",
+    "setup": "u16；raw；p3；32字节源块",
+    "steps": "混合参数及动态字节写入；核对发布位置；拒收重试；换块；完成并排空",
+    "expected": "与独立编码逐字节相同；无半消息、漏数据、重复数据；源池满足回收条件",
+    "kind": "runtime"
+  },
+  {
+    "id": "W_layout_u16_raw_buffered",
+    "point": "W6 可选前缀的端到端字节完整性",
+    "setup": "u16；raw；buffered；32字节源块",
+    "steps": "混合参数及动态字节写入；核对发布位置；拒收重试；换块；完成并排空",
+    "expected": "与独立编码逐字节相同；无半消息、漏数据、重复数据；源池满足回收条件",
+    "kind": "runtime"
+  },
+  {
+    "id": "W_slots_u16_raw",
+    "point": "W7 按实际前缀预留切片",
+    "setup": "u16；raw；min=0；单块1100次写入",
+    "steps": "每次单字节写入后扫描两次；保留全部帧；完成后再逐帧核对及释放",
+    "expected": "1100个切片不耗尽；数据保持不变；全部释放前不复用源块",
+    "kind": "runtime"
+  },
+  {
+    "id": "W_limits_u16",
+    "point": "W8 长度类型及溢出",
+    "setup": "u16；块恰好容纳负载及前缀",
+    "steps": "先写负数、空指针、超类型范围或加法溢出长度；再写最大测试负载",
+    "expected": "非法写入无副作用；u8/u16上限和u32/u64的65536字节消息正确",
+    "kind": "runtime"
+  },
+  {
+    "id": "W_layout_u32_prefix_p1",
+    "point": "W6 可选前缀的端到端字节完整性",
+    "setup": "u32；prefix；p1；32字节源块",
+    "steps": "混合参数及动态字节写入；核对发布位置；拒收重试；换块；完成并排空",
+    "expected": "与独立编码逐字节相同；无半消息、漏数据、重复数据；源池满足回收条件",
+    "kind": "runtime"
+  },
+  {
+    "id": "W_layout_u32_prefix_p3",
+    "point": "W6 可选前缀的端到端字节完整性",
+    "setup": "u32；prefix；p3；32字节源块",
+    "steps": "混合参数及动态字节写入；核对发布位置；拒收重试；换块；完成并排空",
+    "expected": "与独立编码逐字节相同；无半消息、漏数据、重复数据；源池满足回收条件",
+    "kind": "runtime"
+  },
+  {
+    "id": "W_layout_u32_prefix_buffered",
+    "point": "W6 可选前缀的端到端字节完整性",
+    "setup": "u32；prefix；buffered；32字节源块",
+    "steps": "混合参数及动态字节写入；核对发布位置；拒收重试；换块；完成并排空",
+    "expected": "与独立编码逐字节相同；无半消息、漏数据、重复数据；源池满足回收条件",
+    "kind": "runtime"
+  },
+  {
+    "id": "W_slots_u32_prefix",
+    "point": "W7 按实际前缀预留切片",
+    "setup": "u32；prefix；min=0；单块1100次写入",
+    "steps": "每次单字节写入后扫描两次；保留全部帧；完成后再逐帧核对及释放",
+    "expected": "1100个切片不耗尽；数据保持不变；全部释放前不复用源块",
+    "kind": "runtime"
+  },
+  {
+    "id": "W_layout_u32_raw_p1",
+    "point": "W6 可选前缀的端到端字节完整性",
+    "setup": "u32；raw；p1；32字节源块",
+    "steps": "混合参数及动态字节写入；核对发布位置；拒收重试；换块；完成并排空",
+    "expected": "与独立编码逐字节相同；无半消息、漏数据、重复数据；源池满足回收条件",
+    "kind": "runtime"
+  },
+  {
+    "id": "W_layout_u32_raw_p3",
+    "point": "W6 可选前缀的端到端字节完整性",
+    "setup": "u32；raw；p3；32字节源块",
+    "steps": "混合参数及动态字节写入；核对发布位置；拒收重试；换块；完成并排空",
+    "expected": "与独立编码逐字节相同；无半消息、漏数据、重复数据；源池满足回收条件",
+    "kind": "runtime"
+  },
+  {
+    "id": "W_layout_u32_raw_buffered",
+    "point": "W6 可选前缀的端到端字节完整性",
+    "setup": "u32；raw；buffered；32字节源块",
+    "steps": "混合参数及动态字节写入；核对发布位置；拒收重试；换块；完成并排空",
+    "expected": "与独立编码逐字节相同；无半消息、漏数据、重复数据；源池满足回收条件",
+    "kind": "runtime"
+  },
+  {
+    "id": "W_slots_u32_raw",
+    "point": "W7 按实际前缀预留切片",
+    "setup": "u32；raw；min=0；单块1100次写入",
+    "steps": "每次单字节写入后扫描两次；保留全部帧；完成后再逐帧核对及释放",
+    "expected": "1100个切片不耗尽；数据保持不变；全部释放前不复用源块",
+    "kind": "runtime"
+  },
+  {
+    "id": "W_limits_u32",
+    "point": "W8 长度类型及溢出",
+    "setup": "u32；块恰好容纳负载及前缀",
+    "steps": "先写负数、空指针、超类型范围或加法溢出长度；再写最大测试负载",
+    "expected": "非法写入无副作用；u8/u16上限和u32/u64的65536字节消息正确",
+    "kind": "runtime"
+  },
+  {
+    "id": "W_layout_u64_prefix_p1",
+    "point": "W6 可选前缀的端到端字节完整性",
+    "setup": "u64；prefix；p1；32字节源块",
+    "steps": "混合参数及动态字节写入；核对发布位置；拒收重试；换块；完成并排空",
+    "expected": "与独立编码逐字节相同；无半消息、漏数据、重复数据；源池满足回收条件",
+    "kind": "runtime"
+  },
+  {
+    "id": "W_layout_u64_prefix_p3",
+    "point": "W6 可选前缀的端到端字节完整性",
+    "setup": "u64；prefix；p3；32字节源块",
+    "steps": "混合参数及动态字节写入；核对发布位置；拒收重试；换块；完成并排空",
+    "expected": "与独立编码逐字节相同；无半消息、漏数据、重复数据；源池满足回收条件",
+    "kind": "runtime"
+  },
+  {
+    "id": "W_layout_u64_prefix_buffered",
+    "point": "W6 可选前缀的端到端字节完整性",
+    "setup": "u64；prefix；buffered；32字节源块",
+    "steps": "混合参数及动态字节写入；核对发布位置；拒收重试；换块；完成并排空",
+    "expected": "与独立编码逐字节相同；无半消息、漏数据、重复数据；源池满足回收条件",
+    "kind": "runtime"
+  },
+  {
+    "id": "W_slots_u64_prefix",
+    "point": "W7 按实际前缀预留切片",
+    "setup": "u64；prefix；min=0；单块1100次写入",
+    "steps": "每次单字节写入后扫描两次；保留全部帧；完成后再逐帧核对及释放",
+    "expected": "1100个切片不耗尽；数据保持不变；全部释放前不复用源块",
+    "kind": "runtime"
+  },
+  {
+    "id": "W_layout_u64_raw_p1",
+    "point": "W6 可选前缀的端到端字节完整性",
+    "setup": "u64；raw；p1；32字节源块",
+    "steps": "混合参数及动态字节写入；核对发布位置；拒收重试；换块；完成并排空",
+    "expected": "与独立编码逐字节相同；无半消息、漏数据、重复数据；源池满足回收条件",
+    "kind": "runtime"
+  },
+  {
+    "id": "W_layout_u64_raw_p3",
+    "point": "W6 可选前缀的端到端字节完整性",
+    "setup": "u64；raw；p3；32字节源块",
+    "steps": "混合参数及动态字节写入；核对发布位置；拒收重试；换块；完成并排空",
+    "expected": "与独立编码逐字节相同；无半消息、漏数据、重复数据；源池满足回收条件",
+    "kind": "runtime"
+  },
+  {
+    "id": "W_layout_u64_raw_buffered",
+    "point": "W6 可选前缀的端到端字节完整性",
+    "setup": "u64；raw；buffered；32字节源块",
+    "steps": "混合参数及动态字节写入；核对发布位置；拒收重试；换块；完成并排空",
+    "expected": "与独立编码逐字节相同；无半消息、漏数据、重复数据；源池满足回收条件",
+    "kind": "runtime"
+  },
+  {
+    "id": "W_slots_u64_raw",
+    "point": "W7 按实际前缀预留切片",
+    "setup": "u64；raw；min=0；单块1100次写入",
+    "steps": "每次单字节写入后扫描两次；保留全部帧；完成后再逐帧核对及释放",
+    "expected": "1100个切片不耗尽；数据保持不变；全部释放前不复用源块",
+    "kind": "runtime"
+  },
+  {
+    "id": "W_limits_u64",
+    "point": "W8 长度类型及溢出",
+    "setup": "u64；块恰好容纳负载及前缀",
+    "steps": "先写负数、空指针、超类型范围或加法溢出长度；再写最大测试负载",
+    "expected": "非法写入无副作用；u8/u16上限和u32/u64的65536字节消息正确",
+    "kind": "runtime"
+  },
+  {
+    "id": "W_layout_empty_config",
+    "point": "W7/W8 空写入和布局校验",
+    "setup": "全部前缀宽度；无前缀单字节块",
+    "steps": "验证槽位公式、除数及加法边界；不匹配配置构造；无前缀空写入后写单字节",
+    "expected": "非法配置抛invalid_argument；无前缀空写入false；有效写入成功",
+    "kind": "runtime"
+  },
+  {
+    "id": "W_layout_registration",
+    "point": "R5 无基类异构注册",
+    "setup": "u8带前缀与u64无前缀共用Service",
+    "steps": "空指针、重复及错误管理器注册；两写入器各写40条后排空",
+    "expected": "精确错误码不变；线程编号和字节数据分别匹配",
+    "kind": "runtime"
+  },
+  {
+    "id": "W_layout_worker",
+    "point": "R5 无基类后台读取",
+    "setup": "u8带前缀与u64无前缀共用Worker",
+    "steps": "启动读取线程；两个类型写入；finish及stop后核对所有字节",
+    "expected": "异步搬运正确；统计准确；源块全归还",
+    "kind": "runtime"
+  },
+  {
+    "id": "T_len_signed",
+    "point": "T2 长度类型及无前缀静态约束",
+    "setup": "Writer<1,true,int> writer(nullptr,0);",
+    "steps": "合法对照编译成功后编译非法调用",
+    "expected": "TDataLen must be an unqualified unsigned integer of at most 64 bits",
+    "kind": "compile"
+  },
+  {
+    "id": "T_len_bool",
+    "point": "T2 长度类型及无前缀静态约束",
+    "setup": "Writer<1,true,bool> writer(nullptr,0);",
+    "steps": "合法对照编译成功后编译非法调用",
+    "expected": "TDataLen must be an unqualified unsigned integer of at most 64 bits",
+    "kind": "compile"
+  },
+  {
+    "id": "T_len_float",
+    "point": "T2 长度类型及无前缀静态约束",
+    "setup": "Writer<1,true,double> writer(nullptr,0);",
+    "steps": "合法对照编译成功后编译非法调用",
+    "expected": "TDataLen must be an unqualified unsigned integer of at most 64 bits",
+    "kind": "compile"
+  },
+  {
+    "id": "T_len_const",
+    "point": "T2 长度类型及无前缀静态约束",
+    "setup": "Writer<1,true,const unsigned> writer(nullptr,0);",
+    "steps": "合法对照编译成功后编译非法调用",
+    "expected": "TDataLen must be an unqualified unsigned integer of at most 64 bits",
+    "kind": "compile"
+  },
+  {
+    "id": "T_len_u8_payload",
+    "point": "T2 长度类型及无前缀静态约束",
+    "setup": "struct Large {char data[256];}; void f(WriterQueue* p){Writer<1,true,std::uint8_t> w(p,0);Large v{};(void)w.write(v);}",
+    "steps": "合法对照编译成功后编译非法调用",
+    "expected": "payload does not fit TDataLen",
+    "kind": "compile"
+  },
+  {
+    "id": "T_raw_empty",
+    "point": "T2 长度类型及无前缀静态约束",
+    "setup": "void f(WriterQueue* p){Writer<1,false> w(p,0);(void)w.write();}",
+    "steps": "合法对照编译成功后编译非法调用",
+    "expected": "unframed payload must not be empty",
+    "kind": "compile"
+  },
+  {
+    "id": "W_pressure_timeout_invalid",
+    "point": "W9 Writer 持有等待策略",
+    "setup": "Writer超时为0、负数、超出时钟范围",
+    "steps": "分别构造 Writer",
+    "expected": "均抛出invalid_argument；拒绝发生在任何等待之前",
+    "kind": "runtime"
+  },
+  {
+    "id": "W_pressure_timeout_limit",
+    "point": "W9 Writer 持有等待策略",
+    "setup": "Writer使用时钟允许的最大毫秒时限",
+    "steps": "构造 Writer 后发送并排空当前块",
+    "expected": "边界合法，不误拒绝",
+    "kind": "runtime"
+  },
+  {
+    "id": "W_pressure_spin_timeout",
+    "point": "W9 Writer 持有等待策略",
+    "setup": "单块写入器；最大自旋次数，30ms总时限",
+    "steps": "写满块，连续两次尝试写入并超时；读取后重试成功",
+    "expected": "自旋受到总期限约束；累计和最大阻塞计数正确；原数据及重试数据完整",
+    "kind": "runtime"
+  }
+]
