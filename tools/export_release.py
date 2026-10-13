@@ -22,7 +22,7 @@ BENCHMARK_FILES = {
     'run_burst_tail_1m.py','test_burst_cache.cpp','test_hot_path_cache.cpp','test_hot_path_cache.py',
     'test_per_write_block_size_only_writer.cpp','test_per_write_block_size_only_writer.py',
     'test_per_writer_block_size.cpp','test_per_writer_block_size.py','tune_burst_business.py',
-    'tune_three_writer_modes.py'}
+    'tune_three_writer_modes.py','run_burst_empty.py','burst_report_style.css'}
 HISTORICAL_TEST_DIRS = {'review_20260925','review_20260927','aba_review_20260928','results'}
 TOOLS = {'export_release.py','verify_release.py','unpack_performance_data.py',
          'plot_burst_release.py','build_release_assets.py','build_pages.py'}

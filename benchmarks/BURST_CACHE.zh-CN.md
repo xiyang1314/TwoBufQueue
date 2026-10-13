@@ -120,3 +120,16 @@ python3 benchmarks/run_burst_tail_1m.py
 `retry_yield_every`现在也控制突发发送循环，0表示只用cpu_relax重试、不主动yield。该参数只影响暂时写入失败后的等待，成功写入逻辑和后业务计时窗口保持一致。默认仍为1,024，未因一次较好的筛选值而修改原参数。程序保留全部三轮数值，不删除慢样本，不承诺p999不受系统调度影响。
 
 `--profile`指定完整初始化参数；`--executable`复用已构建程序；`--output`指定新目录，`--resume`复用参数和可执行文件哈希一致的已完成条件；`--render-only`从完整数据生成报告。固定参数文件为benchmarks/profiles/burst_tail_1m.json，其平台和编译器设置按本次macOS机器保存。
+
+
+## 从空队列开始的独立对照
+
+```sh
+python3 benchmarks/run_burst_empty.py
+```
+
+使用已保存的 48 KiB 业务工作集、32 B 消息、64 次回调循环、16 KiB 第一层和 256 MiB 第二层／原生槽位容量。关闭预填充，且每批发送前等待上一批完全处理完毕；因此每个窗口的起始积压必须为 0。消费者保持运行，不人为暂停。发送后立即测量业务，排空在计时外执行。
+
+分别测量 2、4、8、16 MiB，每种发送量每轮 2,500 个窗口、10,000 组业务样本，三轮独立运行。保留完整数据校验、参数和原始样本，生成独立的 `docs/performance_burst_from_empty.html`；不覆盖原积压报告。运行中断后可以指定相同 `--output` 并使用 `--resume`，但程序、源码和输入参数必须一致。
+
+这与“只在整轮开始时清空，之后持续发送并自然积压”不同。`prefill=false` 单独使用只会禁用准备消息；每批从零开始还需要 `drain_before_burst=true`。

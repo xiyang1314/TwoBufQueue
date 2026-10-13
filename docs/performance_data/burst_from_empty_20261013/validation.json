@@ -1,0 +1,13 @@
+{
+  "passed": true,
+  "complete_processes": 15,
+  "windows": 150000,
+  "business_groups": 600000,
+  "all_start_backlogs_zero": true,
+  "setup_messages": 0,
+  "all_data_and_fifo_verified": true,
+  "same_business_checksum": 639339102378201066,
+  "quantiles_recomputed_from_all_samples": true,
+  "measured_sources_unchanged": true,
+  "executable_sha256": "a413ab0987e15a0efd0c2e1f362f490ad7db7095f603a3f13a35365820b76de5"
+}

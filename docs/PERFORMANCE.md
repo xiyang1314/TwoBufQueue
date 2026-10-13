@@ -10,10 +10,13 @@
 | 256 MiB, ordinary write, maximum publish count | [Block-handoff publication](performance_256m_zero_publish_max_plateau.html) | Producer submission, including block acquisition and switching |
 | 256 MiB, ordinary write, publication every record | [Per-record publication](performance_256m_zero_publish1_plateau.html) | Producer submission, including publication |
 | Message backlog with a 16 KiB producer pool | [Business execution](performance_burst_cache.html) | Business queries immediately following a message burst |
+| Every burst starts with zero backlog | [Empty-start business execution](performance_burst_from_empty.html) | Same business workload, no prepared messages, drain outside timing |
 
 The first three reports use three independent runs, callback loop count 0 and one common block configuration per report across 8/16/32/64 B. Configuration selection uses the stated 35% throughput, 30% p50, 20% p99 and 15% p999 weights. The business experiment uses regular upstream SPSC APIs, fixed callback work and approximately 198–205 MiB of pending messages. Its p50 reflects 16-call business group means; the write reports use 1,000-write group means. These are different metrics.
 
 当前三个写入对比报告分别展示 Session、仅交接发布、每条发布；每份报告四种长度使用同一组参数，并公开所有初始化参数。积压报告展示两层内存池隔离生产者缓冲区的场景表现，不把业务耗时称为队列写入耗时。正式测试记录以各报告保存的配置和全部次数为准。
+
+The empty-start control uses the same 32 B messages, 48 KiB business working set, 64 callback iterations, 16 KiB source pool and 256 MiB output/native capacity. Every 2/4/8/16 MiB burst starts with zero pending messages. It records three independent runs and 10,000 business timing groups per size per run, with draining excluded from timing. [Full invariant and sample verification](performance_data/burst_from_empty_20261013/validation.json).
 
 [Run the backlog experiment in one command](../benchmarks/BURST_CACHE.zh-CN.md) · [Search writer configurations](../benchmarks/TUNABLE_SPSC.zh-CN.md) · [Browse all published reports](index.html).
 

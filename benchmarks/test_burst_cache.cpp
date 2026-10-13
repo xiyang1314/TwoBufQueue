@@ -10,6 +10,15 @@ void self_test(){
         if(business&&business!=r.business_checksum)throw std::runtime_error("different business workload");business=r.business_checksum;
         if(r.config.queue.source.block_size!=512)throw std::runtime_error("2KiB means total pool");
     }
+    c.prefill=false;c.drain_before_burst=true;
+    for(auto t:{Transport::two_buf_queue,Transport::readerwriterqueue,Transport::rigtorp,Transport::atomic_queue}){
+        c.queue.transport=t;auto empty=bc::run(c);
+        if(empty.setup || empty.accepted!=empty.formal || empty.accepted!=empty.completed || empty.business_checksum!=business)
+            throw std::runtime_error("empty-burst counts or workload");
+        for(const auto& point:empty.points)
+            if(point.pending_before || point.pending_after>point.burst_bytes || point.setup_messages)
+                throw std::runtime_error("empty-burst backlog invariant");
+    }
     c.baseline=true;auto r=bc::run(c);if(r.business_checksum!=business)throw std::runtime_error("baseline differs");
     std::cout<<"burst contracts passed: 2KiB total, live slow callbacks, full payloads, FIFO, matching business, all queues\n";
 }
@@ -28,6 +37,7 @@ int main(int argc,char**argv){try{
         else if(k=="target_percent")assign_parameter(c.target_percent,v);
         else if(k=="setup_timeout_ms")assign_parameter(c.setup_timeout_ms,v);
         else if(k=="prefill")assign_parameter(c.prefill,v);
+        else if(k=="drain_before_burst")assign_parameter(c.drain_before_burst,v);
         else if(k=="burst_bytes"){std::size_t b;assign_parameter(b,v);c.bursts={b};}
         else if(k=="burst_sizes"){
             c.bursts.clear();

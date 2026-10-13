@@ -13,6 +13,21 @@ __pycache__/
 # Preserved local files outside the publication manifest.
 /.release-assets/
 /.release-validation/
+/docs/performance_data/burst_from_empty_20261013/formal/raw/48k_ReaderWriterQueue_run1.json
+/docs/performance_data/burst_from_empty_20261013/formal/raw/48k_ReaderWriterQueue_run2.json
+/docs/performance_data/burst_from_empty_20261013/formal/raw/48k_ReaderWriterQueue_run3.json
+/docs/performance_data/burst_from_empty_20261013/formal/raw/48k_TwoBufQueue_run1.json
+/docs/performance_data/burst_from_empty_20261013/formal/raw/48k_TwoBufQueue_run2.json
+/docs/performance_data/burst_from_empty_20261013/formal/raw/48k_TwoBufQueue_run3.json
+/docs/performance_data/burst_from_empty_20261013/formal/raw/48k_atomic_queue_run1.json
+/docs/performance_data/burst_from_empty_20261013/formal/raw/48k_atomic_queue_run2.json
+/docs/performance_data/burst_from_empty_20261013/formal/raw/48k_atomic_queue_run3.json
+/docs/performance_data/burst_from_empty_20261013/formal/raw/48k_baseline_run1.json
+/docs/performance_data/burst_from_empty_20261013/formal/raw/48k_baseline_run2.json
+/docs/performance_data/burst_from_empty_20261013/formal/raw/48k_baseline_run3.json
+/docs/performance_data/burst_from_empty_20261013/formal/raw/48k_rigtorp_run1.json
+/docs/performance_data/burst_from_empty_20261013/formal/raw/48k_rigtorp_run2.json
+/docs/performance_data/burst_from_empty_20261013/formal/raw/48k_rigtorp_run3.json
 /docs/performance_data/burst_showcase_20261012/formal/raw/48k_ReaderWriterQueue_run1.json
 /docs/performance_data/burst_showcase_20261012/formal/raw/48k_ReaderWriterQueue_run2.json
 /docs/performance_data/burst_showcase_20261012/formal/raw/48k_ReaderWriterQueue_run3.json

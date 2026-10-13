@@ -8,6 +8,7 @@ inline constexpr std::uint64_t setup_tag = UINT64_C(1) << 63;
 struct Config {
     PerformanceConfig queue;
     bool baseline = false, prefill = true;
+    bool drain_before_burst = false; // Wait outside timing so each burst starts with zero pending records.
     std::size_t source_pool_bytes = 32*1024;
     std::size_t business_bytes = 48*1024;
     std::uint32_t accesses = 8, warm_queries = 512, query_group = 16, query_groups = 4;
@@ -25,6 +26,7 @@ struct Config {
         for (std::size_t b=16*1024; b<=128*hot_path::MiB; b*=2) bursts.push_back(b);
     }
     void prepare() {
+        if (prefill && drain_before_burst) throw std::invalid_argument("prefill and drain_before_burst cannot both be enabled");
         const auto out_bytes = queue.spsc_buffer_bytes;
         if (source_pool_bytes < 128 || source_pool_bytes % 128 || !queue.source.pool_max)
             throw std::invalid_argument("invalid total writer pool bytes");
@@ -157,10 +159,24 @@ template<class Channel> Result run_with(const Config& c) {
     // Occupancy adjustments and final drain stay outside measured sections.
     for (auto bytes:c.bursts) for (std::uint32_t rep=1;rep<=c.repeats;++rep) {
         Point p;p.burst_bytes=bytes;p.repetition=rep;p.after_business_ns.reserve(c.query_groups);
+        if (c.drain_before_burst && !c.baseline) {
+            const auto drain_start = std::chrono::steady_clock::now();
+            channel.finish_block();
+            const auto deadline = drain_start + std::chrono::milliseconds(c.setup_timeout_ms);
+            while (sink.completed.load(std::memory_order_acquire) < accepted) {
+                channel.check();
+                if (std::chrono::steady_clock::now() >= deadline)
+                    throw std::runtime_error("empty-before-burst drain timeout");
+                std::this_thread::yield();
+            }
+            p.control_seconds += std::chrono::duration<double>(std::chrono::steady_clock::now()-drain_start).count();
+        }
         adjust(peak_target-bytes,p);
         queries(c.warm_queries);
         p.pre_business_ns=timed_queries(c.query_group);
         p.pending_before=pending();
+        if (c.drain_before_burst && p.pending_before != 0)
+            throw std::runtime_error("burst did not start empty");
         const auto a=clock.read();
         for (std::uint64_t i=0;i<bytes/32;++i) {
             const auto value=payload(formal);
@@ -210,7 +226,7 @@ inline Result run(Config c) {
 }
 inline void write_result(std::ostream& o,const Result& r){
     o<<std::setprecision(12)<<"{\"schema\":\"burst_cache_v1\",\"transport\":\""<<(r.config.baseline?"baseline":name(r.config.queue.transport))<<"\",\"queue_config\":";write_config(o,r.config.queue);
-    o<<",\"source_pool_bytes\":"<<r.config.source_pool_bytes<<",\"business_bytes\":"<<r.config.business_bytes<<",\"business_accesses\":"<<r.config.accesses<<",\"query_group\":"<<r.config.query_group<<",\"query_groups\":"<<r.config.query_groups<<",\"warm_queries\":"<<r.config.warm_queries<<",\"prefill\":"<<(r.config.prefill?"true":"false")<<",\"setup_timeout_ms\":"<<r.config.setup_timeout_ms<<",\"target_percent\":"<<r.config.target_percent<<",\"progress_chunk\":"<<r.config.progress_chunk<<",\"repeats\":"<<r.config.repeats<<",\"progress_every\":"<<r.config.progress_every;
+    o<<",\"source_pool_bytes\":"<<r.config.source_pool_bytes<<",\"business_bytes\":"<<r.config.business_bytes<<",\"business_accesses\":"<<r.config.accesses<<",\"query_group\":"<<r.config.query_group<<",\"query_groups\":"<<r.config.query_groups<<",\"warm_queries\":"<<r.config.warm_queries<<",\"prefill\":"<<(r.config.prefill?"true":"false")<<",\"drain_before_burst\":"<<(r.config.drain_before_burst?"true":"false")<<",\"setup_timeout_ms\":"<<r.config.setup_timeout_ms<<",\"target_percent\":"<<r.config.target_percent<<",\"progress_chunk\":"<<r.config.progress_chunk<<",\"repeats\":"<<r.config.repeats<<",\"progress_every\":"<<r.config.progress_every;
 #define FIELD(x) o<<",\"" #x "\":"<<r.x
     FIELD(accepted);FIELD(formal);FIELD(setup);FIELD(completed);FIELD(business_checksum);FIELD(callback_checksum);FIELD(actual_native_capacity);FIELD(elapsed_seconds);FIELD(rss_mib);FIELD(timer_quantum_ns);
 #undef FIELD
