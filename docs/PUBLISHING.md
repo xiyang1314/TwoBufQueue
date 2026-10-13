@@ -39,6 +39,8 @@ Wait for the **TwoBufQueue** workflow to pass on Linux, Windows and macOS. The l
 
 In repository Settings → Pages → Build and deployment, select **GitHub Actions**. Run the **Publish performance reports** workflow. It packages only the manifest files as a static site, with the root redirecting to `docs/index.html`; GitHub supplies the actual website URL. Put that URL in the repository Website field. Reports, evidence and source links keep their relative paths. Markdown files remain downloadable source documents.
 
+README and the report index feature [continuous sending and business performance](performance_burst_from_empty.html), where every batch starts with zero pending messages. The earlier [prepared-backlog report](performance_burst_cache.html) is labelled as a separate historical experiment. Regenerate the current overview chart from saved results with `python3 tools/plot_burst_release.py` before refreshing the publication copy; this command does not run benchmarks.
+
 The workflow uses GitHub's [Pages actions](https://docs.github.com/en/pages/getting-started-with-github-pages/using-custom-workflows-with-github-pages). It is manually dispatched so preparing or pushing source alone does not publish the site.
 
 ## Package the first release

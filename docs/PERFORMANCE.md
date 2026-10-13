@@ -9,16 +9,32 @@
 | 256 MiB, WriteSession, empty callback | [Session](performance_256m_zero_session_plateau.html) | Producer submission, including session acquisition and switching |
 | 256 MiB, ordinary write, maximum publish count | [Block-handoff publication](performance_256m_zero_publish_max_plateau.html) | Producer submission, including block acquisition and switching |
 | 256 MiB, ordinary write, publication every record | [Per-record publication](performance_256m_zero_publish1_plateau.html) | Producer submission, including publication |
-| Message backlog with a 16 KiB producer pool | [Business execution](performance_burst_cache.html) | Business queries immediately following a message burst |
-| Every burst starts with zero backlog | [Empty-start business execution](performance_burst_from_empty.html) | Same business workload, no prepared messages, drain outside timing |
+| Continuous message batches, each starting empty | [Business performance after a batch](performance_burst_from_empty.html) | Business execution immediately after sending; ratio to normal business cost |
+| Earlier experiment: prepared message backlog | [Prepared-backlog business execution](performance_burst_cache.html) | Same business workload with approximately 198–205 MiB pending |
 
-The first three reports use three independent runs, callback loop count 0 and one common block configuration per report across 8/16/32/64 B. Configuration selection uses the stated 35% throughput, 30% p50, 20% p99 and 15% p999 weights. The business experiment uses regular upstream SPSC APIs, fixed callback work and approximately 198–205 MiB of pending messages. Its p50 reflects 16-call business group means; the write reports use 1,000-write group means. These are different metrics.
+The first three reports use three independent runs, callback loop count 0 and one common block configuration per report across 8/16/32/64 B. Configuration selection uses the stated 35% throughput, 30% p50, 20% p99 and 15% p999 weights. The current business experiment starts every batch empty and uses regular upstream SPSC APIs with fixed callback work. Business p50 reflects 16-call group means; the write reports use 1,000-write group means. The two business reports have different initial backlog states.
 
-当前三个写入对比报告分别展示 Session、仅交接发布、每条发布；每份报告四种长度使用同一组参数，并公开所有初始化参数。积压报告展示两层内存池隔离生产者缓冲区的场景表现，不把业务耗时称为队列写入耗时。正式测试记录以各报告保存的配置和全部次数为准。
+当前三个写入对比报告分别展示 Session、仅交接发布、每条发布；每份报告四种长度使用同一组参数，并公开所有初始化参数。业务对比当前入口是“连续发送一批消息，对业务性能产生什么影响”，每批从零积压开始。此前预填充大积压的报告保留为独立历史实验。正式测试记录以各报告保存的配置和全部次数为准。
 
-The empty-start control uses the same 32 B messages, 48 KiB business working set, 64 callback iterations, 16 KiB source pool and 256 MiB output/native capacity. Every 2/4/8/16 MiB burst starts with zero pending messages. It records three independent runs and 10,000 business timing groups per size per run, with draining excluded from timing. [Full invariant and sample verification](performance_data/burst_from_empty_20261013/validation.json).
+## Business performance after continuous sending / 连续发送后的业务性能
 
-[Run the backlog experiment in one command](../benchmarks/BURST_CACHE.zh-CN.md) · [Search writer configurations](../benchmarks/TUNABLE_SPSC.zh-CN.md) · [Browse all published reports](index.html).
+Flow: normal business execution → continuous message batch → immediate business execution. Each batch starts with zero pending messages, consumers stay active, and draining happens outside timing. The setup uses 32 B messages, a 48 KiB business working set, 64 callback iterations, a 16 KiB TwoBufQueue source pool and 256 MiB output/native capacity. Every 2/4/8/16 MiB size has three independent runs, 2,500 windows and 10,000 business timing groups per run. [Full invariant and sample verification](performance_data/burst_from_empty_20261013/validation.json).
+
+当前表格显示发送后的业务 p50：每组计时 16 次业务并除以 16，各轮独立计算 p50，再对三轮取平均。正常业务参考值来自同批无队列对照，本机显示为约 **13 ns/次**；“比值”统一采用发送后业务耗时 ÷ 13 ns。图表、README 和报告均使用[这次完整结果](performance_data/burst_from_empty_20261013/formal/report_results.json)，没有重新挑选测试次数。
+
+第一层与第二层容量分别计算，消费者与复制线程持续运行。每批发送后会自然产生未处理消息，但不准备约 200 MiB 初始积压。旧的 80% 积压准备规则仅属于[历史预填充实验](performance_burst_cache.html)；它的[历史图表](assets/burst_business_cost_prefilled.svg)及原始结果保留。
+
+From the project root, replay the current fixed workload or regenerate its figure:
+
+```sh
+python3 benchmarks/run_burst_empty.py --profile docs/performance_data/burst_from_empty_20261013/selected_config.json
+python3 -m pip install reportlab==4.4.9
+python3 tools/plot_burst_release.py
+```
+
+The plot command reads saved results and updates `docs/assets/burst_business_cost.svg` and its numeric JSON; it does not run performance tests. The original measurements and their hashes remain unchanged.
+
+[Run the batch/business experiment](../benchmarks/BURST_CACHE.zh-CN.md) · [Search writer configurations](../benchmarks/TUNABLE_SPSC.zh-CN.md) · [Browse all published reports](index.html).
 
 ## Compressed evidence / 压缩证据
 
@@ -32,9 +48,9 @@ The original development directory remains unchanged by export. Source/executabl
 
 ## Historical matched measurements / 历史同参数测量
 
-The homepage chart uses the saved 2026-10-11 post-fix matched-parameter experiment, not newly selected best results. Both ordinary write and single-block Session use the same block sizes, pool limits, publication settings and read configuration for each payload length. Throughput and latency use the same configuration; the results are not claimed to be global optima.
+The historical producer-write chart uses the saved 2026-10-11 post-fix matched-parameter experiment, not newly selected best results. Both ordinary write and single-block Session use the same block sizes, pool limits, publication settings and read configuration for each payload length. Throughput and latency use the same configuration; the results are not claimed to be global optima.
 
-首页图来自提交 `f698f25` 后重新测量的同参数实验，没有重新选择更好的次数。每个长度的普通 write 与 Session 块大小、池容量、发布与读端配置一致。主表保留所有正式结果，不挑选最好的一次。
+历史写入图来自提交 `f698f25` 后重新测量的同参数实验，没有重新选择更好的次数。每个长度的普通 write 与 Session 块大小、池容量、发布与读端配置一致。主表保留所有正式结果，不挑选最好的一次。
 
 | Condition | Ordinary write | WriteSession |
 |---|---|---|
@@ -53,7 +69,7 @@ The homepage chart uses the saved 2026-10-11 post-fix matched-parameter experime
 
 - Apple M3, 8 GiB RAM, macOS 14.4.1 arm64, Clang 18.1.8, optimized unsanitized Release, AC power. Producer high QoS; no hard affinity. Other platforms must be measured independently.
 - 8/16/32/64-byte payloads; 10 million successful writes per formal run, five throughput runs and five latency runs per entry. Input is prepared before timing and every message's bytes vary. Full-payload/FIFO validation runs are separate from measured runs.
-- Latency is the distribution of average write cost over groups of 1,000 writes. The table reports the arithmetic mean of five runs' p50/p99/p999 values. It is not individual-call latency or time to callback. The homepage chart shows the mean p50; all five values are retained in the chart data.
+- Latency is the distribution of average write cost over groups of 1,000 writes. The table reports the arithmetic mean of five runs' p50/p99/p999 values. It is not individual-call latency or time to callback. The historical producer-write chart shows the mean p50; all five values are retained in the chart data.
 - Throughput uses accumulated producer send time across rounds. Each round drains before the next; draining time is excluded, but copying/callback threads may contend during sending. Failed attempts, waiting and block switching stay in the send timing.
 - TwoBufQueue includes layer-2 copying and an independent callback thread. Each layer has its own payload budget, so 8 MiB per layer means 16 MiB total. Native SPSC comparisons have one 8 MiB payload budget, including reserved slots/padding. Queue metadata, prepared input and other process memory are reported separately.
 - Current-block scanning is disabled; publish count is `UINT32_MAX`. There is no per-message flush. Tail handoff happens outside round send timing; Session acquisition and switching stay inside write timing.
@@ -90,7 +106,7 @@ The [runner](../benchmarks/run_release_benchmarks.py) records original source sn
 
 The previous four-report matched experiment was measured from commit `f698f25`, which removes forced inlining from six benchmark lambdas while leaving the queue library unchanged. The [8 B regression evidence](performance_data/twobufqueue_8b_regression_20261011/README.txt) records the controls and limits. This run retains 400 independent formal measurements, 40 separate complete-payload/FIFO validations and 45 callback calibration runs; all completed successfully. The 256 MiB callback loop counts for 8/16/32/64 B are 1/1/2/4, shared across all transports and Session. Calibration ratios are 3.09/2.17/1.95/2.38; 8 B and 32 B slightly miss the 2–3 target and remain disclosed. Native controls are shared between ordinary/Session reports of the same cache size, so report counts cannot be added together. Exact measured-source hashes and the source archive are retained; scratch/report files explain the dirty worktree flag. Saved absolute command paths identify the measurement host, not portable instructions.
 
-Regenerate the homepage figure with Python 3.9+ and ReportLab 4.4.9:
+Regenerate the historical producer-write figure with Python 3.9+ and ReportLab 4.4.9:
 
 ```sh
 python -m pip install reportlab==4.4.9

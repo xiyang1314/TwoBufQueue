@@ -1,10 +1,10 @@
 {
   "schema_version": 2,
-  "created_at": "2026-10-13T14:24:12.750772+08:00",
+  "created_at": "2026-10-13T14:44:04.742358+08:00",
   "source_tree_modified_by_export": false,
   "git_history_copied": false,
-  "file_count": 575,
-  "total_bytes": 53039753,
+  "file_count": 577,
+  "total_bytes": 53090877,
   "preserved_unselected_files": [
     ".DS_Store",
     ".github/.DS_Store",
@@ -1074,10 +1074,10 @@
     },
     {
       "path": "CHANGELOG.md",
-      "bytes": 1046,
-      "sha256": "ae4f03b7e1fb2957bce34fbb02e0e92763bfad59aeef4c1a797f9781d57a45e8",
+      "bytes": 1305,
+      "sha256": "6c39644cf820357ed59fee37ffecb97550f9cd71654166525419524785775f1d",
       "source_path": "CHANGELOG.md",
-      "source_sha256": "ae4f03b7e1fb2957bce34fbb02e0e92763bfad59aeef4c1a797f9781d57a45e8"
+      "source_sha256": "6c39644cf820357ed59fee37ffecb97550f9cd71654166525419524785775f1d"
     },
     {
       "path": "CMakeLists.txt",
@@ -1123,24 +1123,24 @@
     },
     {
       "path": "README.md",
-      "bytes": 9683,
-      "sha256": "23f1742ca79cb69dfd18fd95888ee5bbac0c261683812522ec1f4e4d6a29c947",
+      "bytes": 10324,
+      "sha256": "d223e5657dcb7201fb5354c9f72797b64ea5f8de7023ee8f6f06378e0c0804a6",
       "source_path": "README.md",
-      "source_sha256": "23f1742ca79cb69dfd18fd95888ee5bbac0c261683812522ec1f4e4d6a29c947"
+      "source_sha256": "d223e5657dcb7201fb5354c9f72797b64ea5f8de7023ee8f6f06378e0c0804a6"
     },
     {
       "path": "README.zh-CN.md",
-      "bytes": 8990,
-      "sha256": "4a1126a307a217ad50ec25f86dbbde53c1e1f5d53858f0620883920b4553b154",
+      "bytes": 9606,
+      "sha256": "cc9b8d993e653e8f426f8ac6546000714bb98bd0030a41cc0184a32a6048a60c",
       "source_path": "README.zh-CN.md",
-      "source_sha256": "4a1126a307a217ad50ec25f86dbbde53c1e1f5d53858f0620883920b4553b154"
+      "source_sha256": "cc9b8d993e653e8f426f8ac6546000714bb98bd0030a41cc0184a32a6048a60c"
     },
     {
       "path": "benchmarks/BURST_CACHE.zh-CN.md",
-      "bytes": 12162,
-      "sha256": "f2fecc43b37b9015c2388f6b02d297b097c5adaa1e4783c65cf463fd424bb297",
+      "bytes": 14299,
+      "sha256": "4aa1e0b62a1f56ea834b8c22aa0c453045c13a4f9ee7bf561f8d9e749bb78d75",
       "source_path": "benchmarks/BURST_CACHE.zh-CN.md",
-      "source_sha256": "f2fecc43b37b9015c2388f6b02d297b097c5adaa1e4783c65cf463fd424bb297"
+      "source_sha256": "4aa1e0b62a1f56ea834b8c22aa0c453045c13a4f9ee7bf561f8d9e749bb78d75"
     },
     {
       "path": "benchmarks/HOT_PATH_CACHE.zh-CN.md",
@@ -1569,24 +1569,24 @@
     },
     {
       "path": "docs/PERFORMANCE.md",
-      "bytes": 13814,
-      "sha256": "42ba15ae1b6202117b3d90546383cc9ed9f886a6816a0dd27577726a0dca07d1",
+      "bytes": 15486,
+      "sha256": "93a249493b357a26598206af5c84420b24366cb1963bf8a3dd25baf4aa1641b3",
       "source_path": "docs/PERFORMANCE.md",
-      "source_sha256": "e0dbaedf79912b0a4943053a796b30c74efa623291b5ae1976838107ac1d8789"
+      "source_sha256": "b590f56fc99ff830ed5dbd8600e0f47c5df18be3e3dfddd0afebbfecb7433658"
     },
     {
       "path": "docs/PUBLISHING.md",
-      "bytes": 3567,
-      "sha256": "617e8bc25e7c8a29b20aafbd79a6740f05c1073b7f0cbc18deb463931c957e2f",
+      "bytes": 4034,
+      "sha256": "ccb3135c9c02f0fd0b9d842835e679c78000c8424809d426529c2f47be001f35",
       "source_path": "docs/PUBLISHING.md",
-      "source_sha256": "617e8bc25e7c8a29b20aafbd79a6740f05c1073b7f0cbc18deb463931c957e2f"
+      "source_sha256": "ccb3135c9c02f0fd0b9d842835e679c78000c8424809d426529c2f47be001f35"
     },
     {
       "path": "docs/RELEASE_CONTENTS.md",
-      "bytes": 2253,
-      "sha256": "82d866be2c994ac6a399782d5e693504c33afeedea4ca35d943f307305e96a4b",
+      "bytes": 2701,
+      "sha256": "964a41b993dcd3c37438d591d59346f35ea37ea1fb6d2bd5eaee014db008b10b",
       "source_path": "docs/RELEASE_CONTENTS.md",
-      "source_sha256": "82d866be2c994ac6a399782d5e693504c33afeedea4ca35d943f307305e96a4b"
+      "source_sha256": "964a41b993dcd3c37438d591d59346f35ea37ea1fb6d2bd5eaee014db008b10b"
     },
     {
       "path": "docs/RIGTORP_PERFORMANCE.md",
@@ -1597,16 +1597,30 @@
     },
     {
       "path": "docs/assets/burst_business_cost.json",
-      "bytes": 22407,
-      "sha256": "c62c51df6cd2c2996a0d58dfcf4005b19af9f64f8e1104e2718f1008baebe04e",
+      "bytes": 19076,
+      "sha256": "e460818d65cb6b3d28239e335ac2156a64379050b1b6334893763f7fbe63d06c",
       "source_path": "docs/assets/burst_business_cost.json",
-      "source_sha256": "c62c51df6cd2c2996a0d58dfcf4005b19af9f64f8e1104e2718f1008baebe04e"
+      "source_sha256": "e460818d65cb6b3d28239e335ac2156a64379050b1b6334893763f7fbe63d06c"
     },
     {
       "path": "docs/assets/burst_business_cost.svg",
+      "bytes": 24359,
+      "sha256": "75192d97ca27191c0122bb78b443c8329a2e4bdd7061066af480ba5d8d386a16",
+      "source_path": "docs/assets/burst_business_cost.svg",
+      "source_sha256": "75192d97ca27191c0122bb78b443c8329a2e4bdd7061066af480ba5d8d386a16"
+    },
+    {
+      "path": "docs/assets/burst_business_cost_prefilled.json",
+      "bytes": 22407,
+      "sha256": "c62c51df6cd2c2996a0d58dfcf4005b19af9f64f8e1104e2718f1008baebe04e",
+      "source_path": "docs/assets/burst_business_cost_prefilled.json",
+      "source_sha256": "c62c51df6cd2c2996a0d58dfcf4005b19af9f64f8e1104e2718f1008baebe04e"
+    },
+    {
+      "path": "docs/assets/burst_business_cost_prefilled.svg",
       "bytes": 23786,
       "sha256": "0fa033e11bf2706fcb3a31bf058df1b4f6ff7a661d1995a3977aed911ed984c9",
-      "source_path": "docs/assets/burst_business_cost.svg",
+      "source_path": "docs/assets/burst_business_cost_prefilled.svg",
       "source_sha256": "0fa033e11bf2706fcb3a31bf058df1b4f6ff7a661d1995a3977aed911ed984c9"
     },
     {
@@ -1625,10 +1639,10 @@
     },
     {
       "path": "docs/index.html",
-      "bytes": 7058,
-      "sha256": "55a706baed98b99720fdddd299584a2b7679a7cf87b1a19a1234391a83f3515d",
+      "bytes": 7605,
+      "sha256": "685b7f7bb78fca04c4ec8f2b1636b5889b3fe0ab13a773ce5d7fdd60964acda4",
       "source_path": "docs/index.html",
-      "source_sha256": "55a706baed98b99720fdddd299584a2b7679a7cf87b1a19a1234391a83f3515d"
+      "source_sha256": "685b7f7bb78fca04c4ec8f2b1636b5889b3fe0ab13a773ce5d7fdd60964acda4"
     },
     {
       "path": "docs/performance_256m_callback.html",
@@ -5048,10 +5062,10 @@
     },
     {
       "path": "tools/plot_burst_release.py",
-      "bytes": 4510,
-      "sha256": "fea52a1f164388fde1e6e59949cb1a2c137a6f6aae8b85b0d8778cb06e82ab67",
+      "bytes": 5412,
+      "sha256": "a5e0e36e63371ff717c80db25b0145d202eaa894e7af59a5b5991dd32af9855b",
       "source_path": "tools/plot_burst_release.py",
-      "source_sha256": "fea52a1f164388fde1e6e59949cb1a2c137a6f6aae8b85b0d8778cb06e82ab67"
+      "source_sha256": "a5e0e36e63371ff717c80db25b0145d202eaa894e7af59a5b5991dd32af9855b"
     },
     {
       "path": "tools/unpack_performance_data.py",

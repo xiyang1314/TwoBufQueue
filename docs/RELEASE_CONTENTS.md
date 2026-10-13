@@ -4,6 +4,8 @@ The release directory contains current library source and headers, CMake package
 
 发布副本包含现版源码、安装包配置、有效测试、全部可运行示例、中英文入口、当前性能测试程序、正式报告与其引用的复现数据。临时笔记、目录副本、`.DS_Store`、构建产物和依赖下载目录不进入上传清单。筛选不删除原项目或目标目录中的任何文件；目标目录已有的非发布文件由 Git 忽略。
 
+业务性能的当前入口是[连续发送一批消息，对业务性能产生什么影响](performance_burst_from_empty.html)：每批从零积压开始，展示发送后业务耗时与正常耗时的比值。[测试流程与复现命令](../benchmarks/BURST_CACHE.zh-CN.md)和全部参数、原始样本一起发布。此前[预填充大积压的报告](performance_burst_cache.html)与历史图表也保留，两种起始状态分别说明。
+
 ```sh
 python tools/export_release.py ~/Documents/TwoBufQueueRelease/TwoBufQueue --update
 python ~/Documents/TwoBufQueueRelease/TwoBufQueue/tools/verify_release.py

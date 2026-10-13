@@ -1,0 +1,759 @@
+{
+  "source_sha256": "b8f9bf15bdc437fca195451999e19c59a63af404428365ecd421c0c68f6f02e5",
+  "source": "docs/performance_data/burst_showcase_20261012/formal/report_results.json",
+  "metric": "mean of three runs of business 16-call group-average p50 in ns/call",
+  "rows": [
+    {
+      "queue": "TwoBufQueue",
+      "burst_mib": 2,
+      "before_ns": 14.696874999992481,
+      "p50": 15.625,
+      "p99": 100.69444444453333,
+      "p999": 339.409722222,
+      "samples_per_run": 10000,
+      "per_run": [
+        {
+          "run": 1,
+          "before_ns": 14.78854166665752,
+          "p50": 15.625,
+          "p99": 111.979166667,
+          "p999": 520.833333333,
+          "samples": 10000,
+          "occupancy_min": 0.7987848520278931,
+          "occupancy_mean": 0.7998220643520355,
+          "backpressured_messages": 163547,
+          "formal_messages": 163840000
+        },
+        {
+          "run": 2,
+          "before_ns": 14.55729166665952,
+          "p50": 15.625,
+          "p99": 91.1458333333,
+          "p999": 161.458333333,
+          "samples": 10000,
+          "occupancy_min": 0.7990831136703491,
+          "occupancy_mean": 0.7998398804187775,
+          "backpressured_messages": 58946,
+          "formal_messages": 163840000
+        },
+        {
+          "run": 3,
+          "before_ns": 14.7447916666604,
+          "p50": 15.625,
+          "p99": 98.9583333333,
+          "p999": 335.9375,
+          "samples": 10000,
+          "occupancy_min": 0.7979131937026978,
+          "occupancy_mean": 0.7998337967395782,
+          "backpressured_messages": 77368,
+          "formal_messages": 163840000
+        }
+      ]
+    },
+    {
+      "queue": "TwoBufQueue",
+      "burst_mib": 4,
+      "before_ns": 15.092708333321214,
+      "p50": 15.625,
+      "p99": 267.361111111,
+      "p999": 846.3541666666666,
+      "samples_per_run": 10000,
+      "per_run": [
+        {
+          "run": 1,
+          "before_ns": 17.24166666665416,
+          "p50": 15.625,
+          "p99": 593.75,
+          "p999": 1601.5625,
+          "samples": 10000,
+          "occupancy_min": 0.7956440448760986,
+          "occupancy_mean": 0.7994945689678192,
+          "backpressured_messages": 907548,
+          "formal_messages": 327680000
+        },
+        {
+          "run": 2,
+          "before_ns": 14.00312499998796,
+          "p50": 15.625,
+          "p99": 114.583333333,
+          "p999": 684.895833333,
+          "samples": 10000,
+          "occupancy_min": 0.7928932905197144,
+          "occupancy_mean": 0.799594009399414,
+          "backpressured_messages": 600367,
+          "formal_messages": 327680000
+        },
+        {
+          "run": 3,
+          "before_ns": 14.03333333332152,
+          "p50": 15.625,
+          "p99": 93.75,
+          "p999": 252.604166667,
+          "samples": 10000,
+          "occupancy_min": 0.7874329090118408,
+          "occupancy_mean": 0.7996027802467346,
+          "backpressured_messages": 553431,
+          "formal_messages": 327680000
+        }
+      ]
+    },
+    {
+      "queue": "TwoBufQueue",
+      "burst_mib": 8,
+      "before_ns": 13.950694444433774,
+      "p50": 16.493055555566666,
+      "p99": 308.15972222233336,
+      "p999": 815.104166668,
+      "samples_per_run": 10000,
+      "per_run": [
+        {
+          "run": 1,
+          "before_ns": 14.04479166665576,
+          "p50": 18.2291666667,
+          "p99": 393.229166667,
+          "p999": 791.666666667,
+          "samples": 10000,
+          "occupancy_min": 0.789109468460083,
+          "occupancy_mean": 0.799002609205246,
+          "backpressured_messages": 2652616,
+          "formal_messages": 655360000
+        },
+        {
+          "run": 2,
+          "before_ns": 13.95624999999028,
+          "p50": 15.625,
+          "p99": 325.520833333,
+          "p999": 1088.54166667,
+          "samples": 10000,
+          "occupancy_min": 0.7923638820648193,
+          "occupancy_mean": 0.799021464061737,
+          "backpressured_messages": 2427817,
+          "formal_messages": 655360000
+        },
+        {
+          "run": 3,
+          "before_ns": 13.85104166665528,
+          "p50": 15.625,
+          "p99": 205.729166667,
+          "p999": 565.104166667,
+          "samples": 10000,
+          "occupancy_min": 0.7889090776443481,
+          "occupancy_mean": 0.7990679100990296,
+          "backpressured_messages": 2284761,
+          "formal_messages": 655360000
+        }
+      ]
+    },
+    {
+      "queue": "TwoBufQueue",
+      "burst_mib": 16,
+      "before_ns": 13.966666666656973,
+      "p50": 19.965277777766666,
+      "p99": 549.4791666666666,
+      "p999": 957.465277779,
+      "samples_per_run": 10000,
+      "per_run": [
+        {
+          "run": 1,
+          "before_ns": 14.21249999999092,
+          "p50": 20.8333333333,
+          "p99": 643.229166667,
+          "p999": 1111.97916667,
+          "samples": 10000,
+          "occupancy_min": 0.7911655902862549,
+          "occupancy_mean": 0.7978434604644775,
+          "backpressured_messages": 6601709,
+          "formal_messages": 1310720000
+        },
+        {
+          "run": 2,
+          "before_ns": 13.8218749999902,
+          "p50": 18.2291666667,
+          "p99": 505.208333333,
+          "p999": 914.0625,
+          "samples": 10000,
+          "occupancy_min": 0.7821044921875,
+          "occupancy_mean": 0.7978945289134979,
+          "backpressured_messages": 6422752,
+          "formal_messages": 1310720000
+        },
+        {
+          "run": 3,
+          "before_ns": 13.8656249999898,
+          "p50": 20.8333333333,
+          "p99": 500,
+          "p999": 846.354166667,
+          "samples": 10000,
+          "occupancy_min": 0.7927695512771606,
+          "occupancy_mean": 0.7979400623321533,
+          "backpressured_messages": 6305948,
+          "formal_messages": 1310720000
+        }
+      ]
+    },
+    {
+      "queue": "ReaderWriterQueue",
+      "burst_mib": 2,
+      "before_ns": 14.259027777765093,
+      "p50": 36.4583333333,
+      "p99": 98.95833333333333,
+      "p999": 449.65277777766664,
+      "samples_per_run": 10000,
+      "per_run": [
+        {
+          "run": 1,
+          "before_ns": 14.99062499998848,
+          "p50": 36.4583333333,
+          "p99": 109.375,
+          "p999": 593.75,
+          "samples": 10000,
+          "occupancy_min": 0.7974539995193481,
+          "occupancy_mean": 0.7980194742202759,
+          "backpressured_messages": 0,
+          "formal_messages": 163840000
+        },
+        {
+          "run": 2,
+          "before_ns": 13.854166666653681,
+          "p50": 36.4583333333,
+          "p99": 78.125,
+          "p999": 265.625,
+          "samples": 10000,
+          "occupancy_min": 0.7937885522842407,
+          "occupancy_mean": 0.7977700641632081,
+          "backpressured_messages": 0,
+          "formal_messages": 163840000
+        },
+        {
+          "run": 3,
+          "before_ns": 13.93229166665312,
+          "p50": 36.4583333333,
+          "p99": 109.375,
+          "p999": 489.583333333,
+          "samples": 10000,
+          "occupancy_min": 0.7973698377609253,
+          "occupancy_mean": 0.7978096716403961,
+          "backpressured_messages": 0,
+          "formal_messages": 163840000
+        }
+      ]
+    },
+    {
+      "queue": "ReaderWriterQueue",
+      "burst_mib": 4,
+      "before_ns": 13.8579861110992,
+      "p50": 42.534722222233334,
+      "p99": 244.79166666666666,
+      "p999": 830.7291666663334,
+      "samples_per_run": 10000,
+      "per_run": [
+        {
+          "run": 1,
+          "before_ns": 14.05208333332256,
+          "p50": 44.2708333333,
+          "p99": 278.645833333,
+          "p999": 794.270833333,
+          "samples": 10000,
+          "occupancy_min": 0.790805459022522,
+          "occupancy_mean": 0.796211036157608,
+          "backpressured_messages": 0,
+          "formal_messages": 327680000
+        },
+        {
+          "run": 2,
+          "before_ns": 13.79687499998816,
+          "p50": 41.6666666667,
+          "p99": 250,
+          "p999": 919.270833333,
+          "samples": 10000,
+          "occupancy_min": 0.7883356809616089,
+          "occupancy_mean": 0.7957560627937317,
+          "backpressured_messages": 0,
+          "formal_messages": 327680000
+        },
+        {
+          "run": 3,
+          "before_ns": 13.72499999998688,
+          "p50": 41.6666666667,
+          "p99": 205.729166667,
+          "p999": 778.645833333,
+          "samples": 10000,
+          "occupancy_min": 0.7950817346572876,
+          "occupancy_mean": 0.7957567640781402,
+          "backpressured_messages": 0,
+          "formal_messages": 327680000
+        }
+      ]
+    },
+    {
+      "queue": "ReaderWriterQueue",
+      "burst_mib": 8,
+      "before_ns": 13.486805555548214,
+      "p50": 50.347222222233334,
+      "p99": 355.90277777800003,
+      "p999": 841.1458333333334,
+      "samples_per_run": 10000,
+      "per_run": [
+        {
+          "run": 1,
+          "before_ns": 13.87187499999308,
+          "p50": 54.6875,
+          "p99": 463.541666667,
+          "p999": 953.125,
+          "samples": 10000,
+          "occupancy_min": 0.7905018329620361,
+          "occupancy_mean": 0.793222227525711,
+          "backpressured_messages": 0,
+          "formal_messages": 655360000
+        },
+        {
+          "run": 2,
+          "before_ns": 13.0510416666624,
+          "p50": 49.4791666667,
+          "p99": 283.854166667,
+          "p999": 669.270833333,
+          "samples": 10000,
+          "occupancy_min": 0.7908675670623779,
+          "occupancy_mean": 0.7923500359535217,
+          "backpressured_messages": 0,
+          "formal_messages": 655360000
+        },
+        {
+          "run": 3,
+          "before_ns": 13.53749999998916,
+          "p50": 46.875,
+          "p99": 320.3125,
+          "p999": 901.041666667,
+          "samples": 10000,
+          "occupancy_min": 0.7900315523147583,
+          "occupancy_mean": 0.7924294507026672,
+          "backpressured_messages": 0,
+          "formal_messages": 655360000
+        }
+      ]
+    },
+    {
+      "queue": "ReaderWriterQueue",
+      "burst_mib": 16,
+      "before_ns": 13.1534722222234,
+      "p50": 72.0486111111,
+      "p99": 502.6041666666667,
+      "p999": 1076.3888888876668,
+      "samples_per_run": 10000,
+      "per_run": [
+        {
+          "run": 1,
+          "before_ns": 14.34791666666292,
+          "p50": 78.125,
+          "p99": 539.0625,
+          "p999": 1203.125,
+          "samples": 10000,
+          "occupancy_min": 0.7736958265304565,
+          "occupancy_mean": 0.7887169707298278,
+          "backpressured_messages": 0,
+          "formal_messages": 1310720000
+        },
+        {
+          "run": 2,
+          "before_ns": 12.20833333334104,
+          "p50": 67.7083333333,
+          "p99": 471.354166667,
+          "p999": 1036.45833333,
+          "samples": 10000,
+          "occupancy_min": 0.7793451547622681,
+          "occupancy_mean": 0.7877981534957885,
+          "backpressured_messages": 0,
+          "formal_messages": 1310720000
+        },
+        {
+          "run": 3,
+          "before_ns": 12.90416666666624,
+          "p50": 70.3125,
+          "p99": 497.395833333,
+          "p999": 989.583333333,
+          "samples": 10000,
+          "occupancy_min": 0.782559871673584,
+          "occupancy_mean": 0.7877271576404572,
+          "backpressured_messages": 0,
+          "formal_messages": 1310720000
+        }
+      ]
+    },
+    {
+      "queue": "rigtorp",
+      "burst_mib": 2,
+      "before_ns": 14.135069444431881,
+      "p50": 14.756944444433334,
+      "p99": 172.74305555556666,
+      "p999": 789.9305555543333,
+      "samples_per_run": 10000,
+      "per_run": [
+        {
+          "run": 1,
+          "before_ns": 14.17916666665412,
+          "p50": 15.625,
+          "p99": 127.604166667,
+          "p999": 445.3125,
+          "samples": 10000,
+          "occupancy_min": 0.7956091165542603,
+          "occupancy_mean": 0.7968215754985809,
+          "backpressured_messages": 0,
+          "formal_messages": 163840000
+        },
+        {
+          "run": 2,
+          "before_ns": 14.02187499998676,
+          "p50": 13.0208333333,
+          "p99": 88.5416666667,
+          "p999": 513.020833333,
+          "samples": 10000,
+          "occupancy_min": 0.795630693435669,
+          "occupancy_mean": 0.7965669287681579,
+          "backpressured_messages": 0,
+          "formal_messages": 163840000
+        },
+        {
+          "run": 3,
+          "before_ns": 14.20416666665476,
+          "p50": 15.625,
+          "p99": 302.083333333,
+          "p999": 1411.45833333,
+          "samples": 10000,
+          "occupancy_min": 0.7956149578094482,
+          "occupancy_mean": 0.7968610914230346,
+          "backpressured_messages": 0,
+          "formal_messages": 163840000
+        }
+      ]
+    },
+    {
+      "queue": "rigtorp",
+      "burst_mib": 4,
+      "before_ns": 13.916666666654747,
+      "p50": 25.1736111111,
+      "p99": 270.833333333,
+      "p999": 822.9166666676667,
+      "samples_per_run": 10000,
+      "per_run": [
+        {
+          "run": 1,
+          "before_ns": 14.12604166665784,
+          "p50": 33.8541666667,
+          "p99": 434.895833333,
+          "p999": 1330.72916667,
+          "samples": 10000,
+          "occupancy_min": 0.7909888029098511,
+          "occupancy_mean": 0.7939015808105468,
+          "backpressured_messages": 0,
+          "formal_messages": 327680000
+        },
+        {
+          "run": 2,
+          "before_ns": 13.857291666653401,
+          "p50": 20.8333333333,
+          "p99": 200.520833333,
+          "p999": 567.708333333,
+          "samples": 10000,
+          "occupancy_min": 0.7912088632583618,
+          "occupancy_mean": 0.7931405537128449,
+          "backpressured_messages": 0,
+          "formal_messages": 327680000
+        },
+        {
+          "run": 3,
+          "before_ns": 13.766666666653,
+          "p50": 20.8333333333,
+          "p99": 177.083333333,
+          "p999": 570.3125,
+          "samples": 10000,
+          "occupancy_min": 0.7906666994094849,
+          "occupancy_mean": 0.7930462308883667,
+          "backpressured_messages": 0,
+          "formal_messages": 327680000
+        }
+      ]
+    },
+    {
+      "queue": "rigtorp",
+      "burst_mib": 8,
+      "before_ns": 13.841319444433974,
+      "p50": 49.479166666666664,
+      "p99": 479.16666666633336,
+      "p999": 1333.3333333333333,
+      "samples_per_run": 10000,
+      "per_run": [
+        {
+          "run": 1,
+          "before_ns": 13.87499999999304,
+          "p50": 54.6875,
+          "p99": 544.270833333,
+          "p999": 1440.10416667,
+          "samples": 10000,
+          "occupancy_min": 0.7824420928955078,
+          "occupancy_mean": 0.7875526976585389,
+          "backpressured_messages": 0,
+          "formal_messages": 655360000
+        },
+        {
+          "run": 2,
+          "before_ns": 13.80729166665432,
+          "p50": 46.875,
+          "p99": 395.833333333,
+          "p999": 1005.20833333,
+          "samples": 10000,
+          "occupancy_min": 0.7824214696884155,
+          "occupancy_mean": 0.78609393324852,
+          "backpressured_messages": 0,
+          "formal_messages": 655360000
+        },
+        {
+          "run": 3,
+          "before_ns": 13.841666666654561,
+          "p50": 46.875,
+          "p99": 497.395833333,
+          "p999": 1554.6875,
+          "samples": 10000,
+          "occupancy_min": 0.7824711799621582,
+          "occupancy_mean": 0.7864133601665497,
+          "backpressured_messages": 0,
+          "formal_messages": 655360000
+        }
+      ]
+    },
+    {
+      "queue": "rigtorp",
+      "burst_mib": 16,
+      "before_ns": 13.757986111104213,
+      "p50": 65.10416666666666,
+      "p99": 632.8125,
+      "p999": 1450.5208333333333,
+      "samples_per_run": 10000,
+      "per_run": [
+        {
+          "run": 1,
+          "before_ns": 13.8072916666626,
+          "p50": 70.3125,
+          "p99": 583.333333333,
+          "p999": 1117.1875,
+          "samples": 10000,
+          "occupancy_min": 0.7651122808456421,
+          "occupancy_mean": 0.7753788231372833,
+          "backpressured_messages": 0,
+          "formal_messages": 1310720000
+        },
+        {
+          "run": 2,
+          "before_ns": 13.9302083333256,
+          "p50": 65.1041666667,
+          "p99": 773.4375,
+          "p999": 2111.97916667,
+          "samples": 10000,
+          "occupancy_min": 0.7057348489761353,
+          "occupancy_mean": 0.7736015839099885,
+          "backpressured_messages": 0,
+          "formal_messages": 1310720000
+        },
+        {
+          "run": 3,
+          "before_ns": 13.53645833332444,
+          "p50": 59.8958333333,
+          "p99": 541.666666667,
+          "p999": 1122.39583333,
+          "samples": 10000,
+          "occupancy_min": 0.7568625211715698,
+          "occupancy_mean": 0.7728605587005615,
+          "backpressured_messages": 0,
+          "formal_messages": 1310720000
+        }
+      ]
+    },
+    {
+      "queue": "atomic_queue",
+      "burst_mib": 2,
+      "before_ns": 14.37951388887916,
+      "p50": 41.6666666667,
+      "p99": 76.3888888889,
+      "p999": 269.96527777766664,
+      "samples_per_run": 10000,
+      "per_run": [
+        {
+          "run": 1,
+          "before_ns": 14.17291666665688,
+          "p50": 41.6666666667,
+          "p99": 72.9166666667,
+          "p999": 309.895833333,
+          "samples": 10000,
+          "occupancy_min": 0.7990971803665161,
+          "occupancy_mean": 0.7996372129440308,
+          "backpressured_messages": 0,
+          "formal_messages": 163840000
+        },
+        {
+          "run": 2,
+          "before_ns": 14.58124999999064,
+          "p50": 41.6666666667,
+          "p99": 67.7083333333,
+          "p999": 106.770833333,
+          "samples": 10000,
+          "occupancy_min": 0.7990158796310425,
+          "occupancy_mean": 0.7996350418567657,
+          "backpressured_messages": 0,
+          "formal_messages": 163840000
+        },
+        {
+          "run": 3,
+          "before_ns": 14.38437499998996,
+          "p50": 41.6666666667,
+          "p99": 88.5416666667,
+          "p999": 393.229166667,
+          "samples": 10000,
+          "occupancy_min": 0.7979937791824341,
+          "occupancy_mean": 0.7996030030250549,
+          "backpressured_messages": 0,
+          "formal_messages": 163840000
+        }
+      ]
+    },
+    {
+      "queue": "atomic_queue",
+      "burst_mib": 4,
+      "before_ns": 13.91562499999088,
+      "p50": 45.13888888886667,
+      "p99": 98.95833333343333,
+      "p999": 364.5833333333333,
+      "samples_per_run": 10000,
+      "per_run": [
+        {
+          "run": 1,
+          "before_ns": 13.91562499999232,
+          "p50": 46.875,
+          "p99": 104.166666667,
+          "p999": 315.104166667,
+          "samples": 10000,
+          "occupancy_min": 0.7975050210952759,
+          "occupancy_mean": 0.799221235704422,
+          "backpressured_messages": 0,
+          "formal_messages": 327680000
+        },
+        {
+          "run": 2,
+          "before_ns": 13.90208333332432,
+          "p50": 44.2708333333,
+          "p99": 98.9583333333,
+          "p999": 466.145833333,
+          "samples": 10000,
+          "occupancy_min": 0.7964962720870972,
+          "occupancy_mean": 0.7991885419368744,
+          "backpressured_messages": 0,
+          "formal_messages": 327680000
+        },
+        {
+          "run": 3,
+          "before_ns": 13.929166666656,
+          "p50": 44.2708333333,
+          "p99": 93.75,
+          "p999": 312.5,
+          "samples": 10000,
+          "occupancy_min": 0.7975451946258545,
+          "occupancy_mean": 0.7991917361259461,
+          "backpressured_messages": 0,
+          "formal_messages": 327680000
+        }
+      ]
+    },
+    {
+      "queue": "atomic_queue",
+      "burst_mib": 8,
+      "before_ns": 13.431944444439052,
+      "p50": 51.215277777800004,
+      "p99": 263.888888889,
+      "p999": 681.4236111113333,
+      "samples_per_run": 10000,
+      "per_run": [
+        {
+          "run": 1,
+          "before_ns": 13.53437499999696,
+          "p50": 54.6875,
+          "p99": 369.791666667,
+          "p999": 721.354166667,
+          "samples": 10000,
+          "occupancy_min": 0.7953692674636841,
+          "occupancy_mean": 0.7983356834411621,
+          "backpressured_messages": 0,
+          "formal_messages": 655360000
+        },
+        {
+          "run": 2,
+          "before_ns": 13.28229166666044,
+          "p50": 49.4791666667,
+          "p99": 208.333333333,
+          "p999": 648.4375,
+          "samples": 10000,
+          "occupancy_min": 0.7963148355484009,
+          "occupancy_mean": 0.7983011340618134,
+          "backpressured_messages": 0,
+          "formal_messages": 655360000
+        },
+        {
+          "run": 3,
+          "before_ns": 13.47916666665976,
+          "p50": 49.4791666667,
+          "p99": 213.541666667,
+          "p999": 674.479166667,
+          "samples": 10000,
+          "occupancy_min": 0.7949848175048828,
+          "occupancy_mean": 0.7983028268814087,
+          "backpressured_messages": 0,
+          "formal_messages": 655360000
+        }
+      ]
+    },
+    {
+      "queue": "atomic_queue",
+      "burst_mib": 16,
+      "before_ns": 13.402430555555133,
+      "p50": 106.77083333333333,
+      "p99": 595.4861111113333,
+      "p999": 940.9722222233333,
+      "samples_per_run": 10000,
+      "per_run": [
+        {
+          "run": 1,
+          "before_ns": 13.893749999997,
+          "p50": 106.770833333,
+          "p99": 625,
+          "p999": 945.3125,
+          "samples": 10000,
+          "occupancy_min": 0.7848109006881714,
+          "occupancy_mean": 0.7965975368499756,
+          "backpressured_messages": 0,
+          "formal_messages": 1310720000
+        },
+        {
+          "run": 2,
+          "before_ns": 13.10208333333376,
+          "p50": 109.375,
+          "p99": 619.791666667,
+          "p999": 1049.47916667,
+          "samples": 10000,
+          "occupancy_min": 0.7914068698883057,
+          "occupancy_mean": 0.7964851659297943,
+          "backpressured_messages": 0,
+          "formal_messages": 1310720000
+        },
+        {
+          "run": 3,
+          "before_ns": 13.21145833333464,
+          "p50": 104.166666667,
+          "p99": 541.666666667,
+          "p999": 828.125,
+          "samples": 10000,
+          "occupancy_min": 0.7928647994995117,
+          "occupancy_mean": 0.7965229862213135,
+          "backpressured_messages": 0,
+          "formal_messages": 1310720000
+        }
+      ]
+    }
+  ]
+}

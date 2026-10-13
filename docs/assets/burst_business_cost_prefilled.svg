@@ -1,0 +1,304 @@
+<?xml version='1.0' encoding='utf-8'?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1040" height="510" preserveAspectRatio="xMinYMin meet" viewBox="0 0 1040 510" version="1.0" fill-rule="evenodd">
+	<title>Business group-average p50 after message bursts</title><desc>Four burst sizes, all queues, identical horizontal scale. Mean of three runs of p50 of 16-call business group averages, not single-call latency.</desc><title>...</title>
+	<desc>...</desc>
+	<clipPath id="clip">
+		<rect x="0" y="0" width="1040" height="510" />
+	</clipPath>
+	<g id="group" transform="scale(1,-1) translate(0,-510)" style="clip-path: url(#clip)">
+		<g transform="">
+			<rect x="0" y="0" width="1040" height="510" style="stroke: none; stroke-linecap: butt; stroke-width: 1; fill: rgb(95%,96%,98%); fill-rule: evenodd;" />
+			<text x="24" y="477" style="font-family: Helvetica-Bold; font-size: 23px;fill: rgb(9%,18%,28%); stroke:none;" transform="translate(0,954) scale(1,-1)">Business execution while messages are backlogged</text>
+			<text x="24" y="452" style="font-family: Helvetica; font-size: 12px;fill: rgb(34%,42%,51%); stroke:none;" transform="translate(0,904) scale(1,-1)">Same scale in all panels. Lower is better. All four queues and displayed burst sizes are included.</text>
+			<rect x="20" y="246" width="495" height="194" rx="12" ry="12" style="stroke: rgb(86%,89%,93%); stroke-linecap: butt; stroke-width: 1; fill: rgb(100%,100%,100%); fill-rule: evenodd;" />
+			<text x="38" y="412" style="font-family: Helvetica-Bold; font-size: 15px;fill: rgb(9%,18%,28%); stroke:none;" transform="translate(0,824) scale(1,-1)">2 MiB per burst</text>
+			<g transform="">
+				<path d="M 175,281 L 175,393 Z" style="stroke: rgb(89%,92%,94%); stroke-linecap: butt; stroke-width: 0.25;" />
+				<path d="M 273,281 L 273,393 Z" style="stroke: rgb(89%,92%,94%); stroke-linecap: butt; stroke-width: 0.25;" />
+				<path d="M 371,281 L 371,393 Z" style="stroke: rgb(89%,92%,94%); stroke-linecap: butt; stroke-width: 0.25;" />
+				<path d="M 469,281 L 469,393 Z" style="stroke: rgb(89%,92%,94%); stroke-linecap: butt; stroke-width: 0.25;" />
+				<g transform="">
+					<rect x="175.0" y="284.6842105263158" width="102.083333333415" height="20.63157894736844" style="stroke: none; stroke-linecap: butt; stroke-width: 1; fill: rgb(39%,52%,64%); fill-rule: evenodd;" />
+					<rect x="175.0" y="312.6842105263158" width="36.154513888861686" height="20.63157894736844" style="stroke: none; stroke-linecap: butt; stroke-width: 1; fill: rgb(39%,52%,64%); fill-rule: evenodd;" />
+					<rect x="175.0" y="340.6842105263158" width="89.322916666585" height="20.63157894736844" style="stroke: none; stroke-linecap: butt; stroke-width: 1; fill: rgb(39%,52%,64%); fill-rule: evenodd;" />
+					<rect x="175.0" y="368.6842105263158" width="38.28125" height="20.63157894736844" style="stroke: none; stroke-linecap: butt; stroke-width: 1; fill: rgb(3%,49%,43%); fill-rule: evenodd;" />
+					<g transform="">
+						<g transform=" matrix(1,0,0,1,283.083333,295)">
+							<text x="-9.73" y="-4.0" style="font-family: Helvetica; font-size: 10px;fill: rgb(0%,0%,0%); stroke:none;" transform="translate(0,-8) scale(1,-1)">41.7</text>
+						</g>
+						<g transform=" matrix(1,0,0,1,217.154514,323)">
+							<text x="-9.73" y="-4.0" style="font-family: Helvetica; font-size: 10px;fill: rgb(0%,0%,0%); stroke:none;" transform="translate(0,-8) scale(1,-1)">14.8</text>
+						</g>
+						<g transform=" matrix(1,0,0,1,270.322917,351)">
+							<text x="-9.73" y="-4.0" style="font-family: Helvetica; font-size: 10px;fill: rgb(0%,0%,0%); stroke:none;" transform="translate(0,-8) scale(1,-1)">36.5</text>
+						</g>
+						<g transform=" matrix(1,0,0,1,219.28125,379)">
+							<text x="-9.73" y="-4.0" style="font-family: Helvetica; font-size: 10px;fill: rgb(0%,0%,0%); stroke:none;" transform="translate(0,-8) scale(1,-1)">15.6</text>
+						</g>
+					</g>
+				</g>
+				<g transform="">
+					<g transform="" />
+					<g transform="" />
+					<g transform="">
+						<g transform=" matrix(1,0,0,1,170,295)">
+							<text x="-62.809999999999995" y="-4.0" style="font-family: Helvetica; font-size: 10px;fill: rgb(9%,18%,28%); stroke:none;" transform="translate(0,-8) scale(1,-1)">atomic_queue</text>
+						</g>
+						<g transform=" matrix(1,0,0,1,170,323)">
+							<text x="-91.15" y="-4.0" style="font-family: Helvetica; font-size: 10px;fill: rgb(9%,18%,28%); stroke:none;" transform="translate(0,-8) scale(1,-1)">rigtorp::SPSCQueue</text>
+						</g>
+						<g transform=" matrix(1,0,0,1,170,351)">
+							<text x="-89.47000000000001" y="-4.0" style="font-family: Helvetica; font-size: 10px;fill: rgb(9%,18%,28%); stroke:none;" transform="translate(0,-8) scale(1,-1)">ReaderWriterQueue</text>
+						</g>
+						<g transform=" matrix(1,0,0,1,170,379)">
+							<text x="-63.92" y="-4.0" style="font-family: Helvetica; font-size: 10px;fill: rgb(9%,18%,28%); stroke:none;" transform="translate(0,-8) scale(1,-1)">TwoBufQueue</text>
+						</g>
+					</g>
+				</g>
+				<g transform="">
+					<g transform="">
+						<path d="M 175,281 L 469,281 Z" style="stroke: rgb(77%,82%,87%); stroke-linecap: butt; stroke-width: 1;" />
+					</g>
+					<g transform="">
+						<path d="M 175,281 L 175,276 Z" style="stroke: rgb(77%,82%,87%); stroke-linecap: butt; stroke-width: 1;" />
+						<path d="M 273,281 L 273,276 Z" style="stroke: rgb(77%,82%,87%); stroke-linecap: butt; stroke-width: 1;" />
+						<path d="M 371,281 L 371,276 Z" style="stroke: rgb(77%,82%,87%); stroke-linecap: butt; stroke-width: 1;" />
+						<path d="M 469,281 L 469,276 Z" style="stroke: rgb(77%,82%,87%); stroke-linecap: butt; stroke-width: 1;" />
+					</g>
+					<g transform="">
+						<g transform=" matrix(1,0,0,1,175,276)">
+							<text x="-2.5020000000000002" y="-9.0" style="font-family: Helvetica; font-size: 9px;fill: rgb(34%,42%,51%); stroke:none;" transform="translate(0,-18) scale(1,-1)">0</text>
+						</g>
+						<g transform=" matrix(1,0,0,1,273,276)">
+							<text x="-5.0040000000000004" y="-9.0" style="font-family: Helvetica; font-size: 9px;fill: rgb(34%,42%,51%); stroke:none;" transform="translate(0,-18) scale(1,-1)">40</text>
+						</g>
+						<g transform=" matrix(1,0,0,1,371,276)">
+							<text x="-5.0040000000000004" y="-9.0" style="font-family: Helvetica; font-size: 9px;fill: rgb(34%,42%,51%); stroke:none;" transform="translate(0,-18) scale(1,-1)">80</text>
+						</g>
+						<g transform=" matrix(1,0,0,1,469,276)">
+							<text x="-7.505999999999999" y="-9.0" style="font-family: Helvetica; font-size: 9px;fill: rgb(34%,42%,51%); stroke:none;" transform="translate(0,-18) scale(1,-1)">120</text>
+						</g>
+					</g>
+				</g>
+			</g>
+			<text x="175" y="259" style="font-family: Helvetica; font-size: 10px;fill: rgb(34%,42%,51%); stroke:none;" transform="translate(0,518) scale(1,-1)">Business cost (ns/call)</text>
+			<rect x="535" y="246" width="495" height="194" rx="12" ry="12" style="stroke: rgb(86%,89%,93%); stroke-linecap: butt; stroke-width: 1; fill: rgb(100%,100%,100%); fill-rule: evenodd;" />
+			<text x="553" y="412" style="font-family: Helvetica-Bold; font-size: 15px;fill: rgb(9%,18%,28%); stroke:none;" transform="translate(0,824) scale(1,-1)">4 MiB per burst</text>
+			<g transform="">
+				<path d="M 690,281 L 690,393 Z" style="stroke: rgb(89%,92%,94%); stroke-linecap: butt; stroke-width: 0.25;" />
+				<path d="M 788,281 L 788,393 Z" style="stroke: rgb(89%,92%,94%); stroke-linecap: butt; stroke-width: 0.25;" />
+				<path d="M 886,281 L 886,393 Z" style="stroke: rgb(89%,92%,94%); stroke-linecap: butt; stroke-width: 0.25;" />
+				<path d="M 984,281 L 984,393 Z" style="stroke: rgb(89%,92%,94%); stroke-linecap: butt; stroke-width: 0.25;" />
+				<g transform="">
+					<rect x="690.0" y="284.6842105263158" width="110.59027777772337" height="20.63157894736844" style="stroke: none; stroke-linecap: butt; stroke-width: 1; fill: rgb(39%,52%,64%); fill-rule: evenodd;" />
+					<rect x="690.0" y="312.6842105263158" width="61.675347222195" height="20.63157894736844" style="stroke: none; stroke-linecap: butt; stroke-width: 1; fill: rgb(39%,52%,64%); fill-rule: evenodd;" />
+					<rect x="690.0" y="340.6842105263158" width="104.21006944447163" height="20.63157894736844" style="stroke: none; stroke-linecap: butt; stroke-width: 1; fill: rgb(39%,52%,64%); fill-rule: evenodd;" />
+					<rect x="690.0" y="368.6842105263158" width="38.28125" height="20.63157894736844" style="stroke: none; stroke-linecap: butt; stroke-width: 1; fill: rgb(3%,49%,43%); fill-rule: evenodd;" />
+					<g transform="">
+						<g transform=" matrix(1,0,0,1,806.590278,295)">
+							<text x="-9.73" y="-4.0" style="font-family: Helvetica; font-size: 10px;fill: rgb(0%,0%,0%); stroke:none;" transform="translate(0,-8) scale(1,-1)">45.1</text>
+						</g>
+						<g transform=" matrix(1,0,0,1,757.675347,323)">
+							<text x="-9.73" y="-4.0" style="font-family: Helvetica; font-size: 10px;fill: rgb(0%,0%,0%); stroke:none;" transform="translate(0,-8) scale(1,-1)">25.2</text>
+						</g>
+						<g transform=" matrix(1,0,0,1,800.210069,351)">
+							<text x="-9.73" y="-4.0" style="font-family: Helvetica; font-size: 10px;fill: rgb(0%,0%,0%); stroke:none;" transform="translate(0,-8) scale(1,-1)">42.5</text>
+						</g>
+						<g transform=" matrix(1,0,0,1,734.28125,379)">
+							<text x="-9.73" y="-4.0" style="font-family: Helvetica; font-size: 10px;fill: rgb(0%,0%,0%); stroke:none;" transform="translate(0,-8) scale(1,-1)">15.6</text>
+						</g>
+					</g>
+				</g>
+				<g transform="">
+					<g transform="" />
+					<g transform="" />
+					<g transform="">
+						<g transform=" matrix(1,0,0,1,685,295)">
+							<text x="-62.809999999999995" y="-4.0" style="font-family: Helvetica; font-size: 10px;fill: rgb(9%,18%,28%); stroke:none;" transform="translate(0,-8) scale(1,-1)">atomic_queue</text>
+						</g>
+						<g transform=" matrix(1,0,0,1,685,323)">
+							<text x="-91.15" y="-4.0" style="font-family: Helvetica; font-size: 10px;fill: rgb(9%,18%,28%); stroke:none;" transform="translate(0,-8) scale(1,-1)">rigtorp::SPSCQueue</text>
+						</g>
+						<g transform=" matrix(1,0,0,1,685,351)">
+							<text x="-89.47000000000001" y="-4.0" style="font-family: Helvetica; font-size: 10px;fill: rgb(9%,18%,28%); stroke:none;" transform="translate(0,-8) scale(1,-1)">ReaderWriterQueue</text>
+						</g>
+						<g transform=" matrix(1,0,0,1,685,379)">
+							<text x="-63.92" y="-4.0" style="font-family: Helvetica; font-size: 10px;fill: rgb(9%,18%,28%); stroke:none;" transform="translate(0,-8) scale(1,-1)">TwoBufQueue</text>
+						</g>
+					</g>
+				</g>
+				<g transform="">
+					<g transform="">
+						<path d="M 690,281 L 984,281 Z" style="stroke: rgb(77%,82%,87%); stroke-linecap: butt; stroke-width: 1;" />
+					</g>
+					<g transform="">
+						<path d="M 690,281 L 690,276 Z" style="stroke: rgb(77%,82%,87%); stroke-linecap: butt; stroke-width: 1;" />
+						<path d="M 788,281 L 788,276 Z" style="stroke: rgb(77%,82%,87%); stroke-linecap: butt; stroke-width: 1;" />
+						<path d="M 886,281 L 886,276 Z" style="stroke: rgb(77%,82%,87%); stroke-linecap: butt; stroke-width: 1;" />
+						<path d="M 984,281 L 984,276 Z" style="stroke: rgb(77%,82%,87%); stroke-linecap: butt; stroke-width: 1;" />
+					</g>
+					<g transform="">
+						<g transform=" matrix(1,0,0,1,690,276)">
+							<text x="-2.5020000000000002" y="-9.0" style="font-family: Helvetica; font-size: 9px;fill: rgb(34%,42%,51%); stroke:none;" transform="translate(0,-18) scale(1,-1)">0</text>
+						</g>
+						<g transform=" matrix(1,0,0,1,788,276)">
+							<text x="-5.0040000000000004" y="-9.0" style="font-family: Helvetica; font-size: 9px;fill: rgb(34%,42%,51%); stroke:none;" transform="translate(0,-18) scale(1,-1)">40</text>
+						</g>
+						<g transform=" matrix(1,0,0,1,886,276)">
+							<text x="-5.0040000000000004" y="-9.0" style="font-family: Helvetica; font-size: 9px;fill: rgb(34%,42%,51%); stroke:none;" transform="translate(0,-18) scale(1,-1)">80</text>
+						</g>
+						<g transform=" matrix(1,0,0,1,984,276)">
+							<text x="-7.505999999999999" y="-9.0" style="font-family: Helvetica; font-size: 9px;fill: rgb(34%,42%,51%); stroke:none;" transform="translate(0,-18) scale(1,-1)">120</text>
+						</g>
+					</g>
+				</g>
+			</g>
+			<text x="690" y="259" style="font-family: Helvetica; font-size: 10px;fill: rgb(34%,42%,51%); stroke:none;" transform="translate(0,518) scale(1,-1)">Business cost (ns/call)</text>
+			<rect x="20" y="34" width="495" height="194" rx="12" ry="12" style="stroke: rgb(86%,89%,93%); stroke-linecap: butt; stroke-width: 1; fill: rgb(100%,100%,100%); fill-rule: evenodd;" />
+			<text x="38" y="200" style="font-family: Helvetica-Bold; font-size: 15px;fill: rgb(9%,18%,28%); stroke:none;" transform="translate(0,400) scale(1,-1)">8 MiB per burst</text>
+			<g transform="">
+				<path d="M 175,69 L 175,181 Z" style="stroke: rgb(89%,92%,94%); stroke-linecap: butt; stroke-width: 0.25;" />
+				<path d="M 273,69 L 273,181 Z" style="stroke: rgb(89%,92%,94%); stroke-linecap: butt; stroke-width: 0.25;" />
+				<path d="M 371,69 L 371,181 Z" style="stroke: rgb(89%,92%,94%); stroke-linecap: butt; stroke-width: 0.25;" />
+				<path d="M 469,69 L 469,181 Z" style="stroke: rgb(89%,92%,94%); stroke-linecap: butt; stroke-width: 0.25;" />
+				<g transform="">
+					<rect x="175.0" y="72.6842105263158" width="125.47743055561" height="20.631578947368425" style="stroke: none; stroke-linecap: butt; stroke-width: 1; fill: rgb(39%,52%,64%); fill-rule: evenodd;" />
+					<rect x="175.0" y="100.6842105263158" width="121.22395833333337" height="20.631578947368425" style="stroke: none; stroke-linecap: butt; stroke-width: 1; fill: rgb(39%,52%,64%); fill-rule: evenodd;" />
+					<rect x="175.0" y="128.68421052631578" width="123.35069444447169" height="20.63157894736841" style="stroke: none; stroke-linecap: butt; stroke-width: 1; fill: rgb(39%,52%,64%); fill-rule: evenodd;" />
+					<rect x="175.0" y="156.68421052631578" width="40.40798611113834" height="20.63157894736841" style="stroke: none; stroke-linecap: butt; stroke-width: 1; fill: rgb(3%,49%,43%); fill-rule: evenodd;" />
+					<g transform="">
+						<g transform=" matrix(1,0,0,1,306.477431,83)">
+							<text x="-9.73" y="-4.0" style="font-family: Helvetica; font-size: 10px;fill: rgb(0%,0%,0%); stroke:none;" transform="translate(0,-8) scale(1,-1)">51.2</text>
+						</g>
+						<g transform=" matrix(1,0,0,1,302.223958,111)">
+							<text x="-9.73" y="-4.0" style="font-family: Helvetica; font-size: 10px;fill: rgb(0%,0%,0%); stroke:none;" transform="translate(0,-8) scale(1,-1)">49.5</text>
+						</g>
+						<g transform=" matrix(1,0,0,1,304.350694,139)">
+							<text x="-9.73" y="-4.0" style="font-family: Helvetica; font-size: 10px;fill: rgb(0%,0%,0%); stroke:none;" transform="translate(0,-8) scale(1,-1)">50.3</text>
+						</g>
+						<g transform=" matrix(1,0,0,1,221.407986,167)">
+							<text x="-9.73" y="-4.0" style="font-family: Helvetica; font-size: 10px;fill: rgb(0%,0%,0%); stroke:none;" transform="translate(0,-8) scale(1,-1)">16.5</text>
+						</g>
+					</g>
+				</g>
+				<g transform="">
+					<g transform="" />
+					<g transform="" />
+					<g transform="">
+						<g transform=" matrix(1,0,0,1,170,83)">
+							<text x="-62.809999999999995" y="-4.0" style="font-family: Helvetica; font-size: 10px;fill: rgb(9%,18%,28%); stroke:none;" transform="translate(0,-8) scale(1,-1)">atomic_queue</text>
+						</g>
+						<g transform=" matrix(1,0,0,1,170,111)">
+							<text x="-91.15" y="-4.0" style="font-family: Helvetica; font-size: 10px;fill: rgb(9%,18%,28%); stroke:none;" transform="translate(0,-8) scale(1,-1)">rigtorp::SPSCQueue</text>
+						</g>
+						<g transform=" matrix(1,0,0,1,170,139)">
+							<text x="-89.47000000000001" y="-4.0" style="font-family: Helvetica; font-size: 10px;fill: rgb(9%,18%,28%); stroke:none;" transform="translate(0,-8) scale(1,-1)">ReaderWriterQueue</text>
+						</g>
+						<g transform=" matrix(1,0,0,1,170,167)">
+							<text x="-63.92" y="-4.0" style="font-family: Helvetica; font-size: 10px;fill: rgb(9%,18%,28%); stroke:none;" transform="translate(0,-8) scale(1,-1)">TwoBufQueue</text>
+						</g>
+					</g>
+				</g>
+				<g transform="">
+					<g transform="">
+						<path d="M 175,69 L 469,69 Z" style="stroke: rgb(77%,82%,87%); stroke-linecap: butt; stroke-width: 1;" />
+					</g>
+					<g transform="">
+						<path d="M 175,69 L 175,64 Z" style="stroke: rgb(77%,82%,87%); stroke-linecap: butt; stroke-width: 1;" />
+						<path d="M 273,69 L 273,64 Z" style="stroke: rgb(77%,82%,87%); stroke-linecap: butt; stroke-width: 1;" />
+						<path d="M 371,69 L 371,64 Z" style="stroke: rgb(77%,82%,87%); stroke-linecap: butt; stroke-width: 1;" />
+						<path d="M 469,69 L 469,64 Z" style="stroke: rgb(77%,82%,87%); stroke-linecap: butt; stroke-width: 1;" />
+					</g>
+					<g transform="">
+						<g transform=" matrix(1,0,0,1,175,64)">
+							<text x="-2.5020000000000002" y="-9.0" style="font-family: Helvetica; font-size: 9px;fill: rgb(34%,42%,51%); stroke:none;" transform="translate(0,-18) scale(1,-1)">0</text>
+						</g>
+						<g transform=" matrix(1,0,0,1,273,64)">
+							<text x="-5.0040000000000004" y="-9.0" style="font-family: Helvetica; font-size: 9px;fill: rgb(34%,42%,51%); stroke:none;" transform="translate(0,-18) scale(1,-1)">40</text>
+						</g>
+						<g transform=" matrix(1,0,0,1,371,64)">
+							<text x="-5.0040000000000004" y="-9.0" style="font-family: Helvetica; font-size: 9px;fill: rgb(34%,42%,51%); stroke:none;" transform="translate(0,-18) scale(1,-1)">80</text>
+						</g>
+						<g transform=" matrix(1,0,0,1,469,64)">
+							<text x="-7.505999999999999" y="-9.0" style="font-family: Helvetica; font-size: 9px;fill: rgb(34%,42%,51%); stroke:none;" transform="translate(0,-18) scale(1,-1)">120</text>
+						</g>
+					</g>
+				</g>
+			</g>
+			<text x="175" y="47" style="font-family: Helvetica; font-size: 10px;fill: rgb(34%,42%,51%); stroke:none;" transform="translate(0,94) scale(1,-1)">Business cost (ns/call)</text>
+			<rect x="535" y="34" width="495" height="194" rx="12" ry="12" style="stroke: rgb(86%,89%,93%); stroke-linecap: butt; stroke-width: 1; fill: rgb(100%,100%,100%); fill-rule: evenodd;" />
+			<text x="553" y="200" style="font-family: Helvetica-Bold; font-size: 15px;fill: rgb(9%,18%,28%); stroke:none;" transform="translate(0,400) scale(1,-1)">16 MiB per burst</text>
+			<g transform="">
+				<path d="M 690,69 L 690,181 Z" style="stroke: rgb(89%,92%,94%); stroke-linecap: butt; stroke-width: 0.25;" />
+				<path d="M 788,69 L 788,181 Z" style="stroke: rgb(89%,92%,94%); stroke-linecap: butt; stroke-width: 0.25;" />
+				<path d="M 886,69 L 886,181 Z" style="stroke: rgb(89%,92%,94%); stroke-linecap: butt; stroke-width: 0.25;" />
+				<path d="M 984,69 L 984,181 Z" style="stroke: rgb(89%,92%,94%); stroke-linecap: butt; stroke-width: 0.25;" />
+				<g transform="">
+					<rect x="690.0" y="72.6842105263158" width="261.58854166666674" height="20.631578947368425" style="stroke: none; stroke-linecap: butt; stroke-width: 1; fill: rgb(39%,52%,64%); fill-rule: evenodd;" />
+					<rect x="690.0" y="100.6842105263158" width="159.50520833333326" height="20.631578947368425" style="stroke: none; stroke-linecap: butt; stroke-width: 1; fill: rgb(39%,52%,64%); fill-rule: evenodd;" />
+					<rect x="690.0" y="128.68421052631578" width="176.519097222195" height="20.63157894736841" style="stroke: none; stroke-linecap: butt; stroke-width: 1; fill: rgb(39%,52%,64%); fill-rule: evenodd;" />
+					<rect x="690.0" y="156.68421052631578" width="48.91493055552837" height="20.63157894736841" style="stroke: none; stroke-linecap: butt; stroke-width: 1; fill: rgb(3%,49%,43%); fill-rule: evenodd;" />
+					<g transform="">
+						<g transform=" matrix(1,0,0,1,957.588542,83)">
+							<text x="-12.510000000000002" y="-4.0" style="font-family: Helvetica; font-size: 10px;fill: rgb(0%,0%,0%); stroke:none;" transform="translate(0,-8) scale(1,-1)">106.8</text>
+						</g>
+						<g transform=" matrix(1,0,0,1,855.505208,111)">
+							<text x="-9.73" y="-4.0" style="font-family: Helvetica; font-size: 10px;fill: rgb(0%,0%,0%); stroke:none;" transform="translate(0,-8) scale(1,-1)">65.1</text>
+						</g>
+						<g transform=" matrix(1,0,0,1,872.519097,139)">
+							<text x="-9.73" y="-4.0" style="font-family: Helvetica; font-size: 10px;fill: rgb(0%,0%,0%); stroke:none;" transform="translate(0,-8) scale(1,-1)">72.0</text>
+						</g>
+						<g transform=" matrix(1,0,0,1,744.914931,167)">
+							<text x="-9.73" y="-4.0" style="font-family: Helvetica; font-size: 10px;fill: rgb(0%,0%,0%); stroke:none;" transform="translate(0,-8) scale(1,-1)">20.0</text>
+						</g>
+					</g>
+				</g>
+				<g transform="">
+					<g transform="" />
+					<g transform="" />
+					<g transform="">
+						<g transform=" matrix(1,0,0,1,685,83)">
+							<text x="-62.809999999999995" y="-4.0" style="font-family: Helvetica; font-size: 10px;fill: rgb(9%,18%,28%); stroke:none;" transform="translate(0,-8) scale(1,-1)">atomic_queue</text>
+						</g>
+						<g transform=" matrix(1,0,0,1,685,111)">
+							<text x="-91.15" y="-4.0" style="font-family: Helvetica; font-size: 10px;fill: rgb(9%,18%,28%); stroke:none;" transform="translate(0,-8) scale(1,-1)">rigtorp::SPSCQueue</text>
+						</g>
+						<g transform=" matrix(1,0,0,1,685,139)">
+							<text x="-89.47000000000001" y="-4.0" style="font-family: Helvetica; font-size: 10px;fill: rgb(9%,18%,28%); stroke:none;" transform="translate(0,-8) scale(1,-1)">ReaderWriterQueue</text>
+						</g>
+						<g transform=" matrix(1,0,0,1,685,167)">
+							<text x="-63.92" y="-4.0" style="font-family: Helvetica; font-size: 10px;fill: rgb(9%,18%,28%); stroke:none;" transform="translate(0,-8) scale(1,-1)">TwoBufQueue</text>
+						</g>
+					</g>
+				</g>
+				<g transform="">
+					<g transform="">
+						<path d="M 690,69 L 984,69 Z" style="stroke: rgb(77%,82%,87%); stroke-linecap: butt; stroke-width: 1;" />
+					</g>
+					<g transform="">
+						<path d="M 690,69 L 690,64 Z" style="stroke: rgb(77%,82%,87%); stroke-linecap: butt; stroke-width: 1;" />
+						<path d="M 788,69 L 788,64 Z" style="stroke: rgb(77%,82%,87%); stroke-linecap: butt; stroke-width: 1;" />
+						<path d="M 886,69 L 886,64 Z" style="stroke: rgb(77%,82%,87%); stroke-linecap: butt; stroke-width: 1;" />
+						<path d="M 984,69 L 984,64 Z" style="stroke: rgb(77%,82%,87%); stroke-linecap: butt; stroke-width: 1;" />
+					</g>
+					<g transform="">
+						<g transform=" matrix(1,0,0,1,690,64)">
+							<text x="-2.5020000000000002" y="-9.0" style="font-family: Helvetica; font-size: 9px;fill: rgb(34%,42%,51%); stroke:none;" transform="translate(0,-18) scale(1,-1)">0</text>
+						</g>
+						<g transform=" matrix(1,0,0,1,788,64)">
+							<text x="-5.0040000000000004" y="-9.0" style="font-family: Helvetica; font-size: 9px;fill: rgb(34%,42%,51%); stroke:none;" transform="translate(0,-18) scale(1,-1)">40</text>
+						</g>
+						<g transform=" matrix(1,0,0,1,886,64)">
+							<text x="-5.0040000000000004" y="-9.0" style="font-family: Helvetica; font-size: 9px;fill: rgb(34%,42%,51%); stroke:none;" transform="translate(0,-18) scale(1,-1)">80</text>
+						</g>
+						<g transform=" matrix(1,0,0,1,984,64)">
+							<text x="-7.505999999999999" y="-9.0" style="font-family: Helvetica; font-size: 9px;fill: rgb(34%,42%,51%); stroke:none;" transform="translate(0,-18) scale(1,-1)">120</text>
+						</g>
+					</g>
+				</g>
+			</g>
+			<text x="690" y="47" style="font-family: Helvetica; font-size: 10px;fill: rgb(34%,42%,51%); stroke:none;" transform="translate(0,94) scale(1,-1)">Business cost (ns/call)</text>
+			<text x="24" y="12" style="font-family: Helvetica; font-size: 11px;fill: rgb(34%,42%,51%); stroke:none;" transform="translate(0,24) scale(1,-1)">Apple M3 | 32 B records | 48 KiB business data | p50 of 16-call group means | 3 independent runs</text>
+		</g>
+	</g>
+</svg>

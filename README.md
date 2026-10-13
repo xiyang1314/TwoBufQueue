@@ -4,7 +4,7 @@
 
 Each producer writes to its own buffer. A background worker copies batches into an output pool, and an independent callback thread processes records. Keep file I/O and expensive processing off the application thread; use `WriteSession` for tight loops that submit many records.
 
-The two pools have separate size limits: keep the producer's buffer small while the consumer has room for pending work. The measured backlog scenario below uses a **16 KiB producer pool and a 256 MiB output pool**.
+The two pools have separate size limits: keep the producer's buffer small while the consumer has room for pending work. The batch/business experiment below uses a **16 KiB producer pool and a 256 MiB output pool**.
 
 [简体中文](README.zh-CN.md) · [Integration](docs/INTEGRATION.md) · [Async logging example](docs/ASYNC_LOGGING.md) · [Benchmarks](docs/PERFORMANCE.md) · [Examples](examples/README.md)
 
@@ -48,13 +48,17 @@ int main() {
 
 The [async logger](examples/two_buf_queue/09_async_logger.cpp) adds bounded buffers, pressure statistics, a slow-sink option and verification of the saved file. It distinguishes queue `flush()` from flushing the file.
 
-## Business execution under message backlog
+## How a continuous message batch affects business performance
 
 ![Business group-average p50 after 2, 4, 8 and 16 MiB message bursts on Apple M3](docs/assets/burst_business_cost.svg)
 
-The producer sends a batch, then immediately queries and updates the same 48 KiB business data set. A slow callback maintains approximately 198–205 MiB of pending messages. TwoBufQueue uses a 16 KiB source pool; each native SPSC queue has 256 MiB of slot storage. All use the same 32-byte messages and callback work. The figure includes every displayed burst size and queue; smaller is better.
+The producer runs its normal business function, sends a continuous batch of 2, 4, 8 or 16 MiB, then immediately runs the same function again. Every batch starts with zero pending messages; the consumer keeps running and the queue drains outside timing before the next batch. No backlog is prepared. All queues use the same 32-byte messages, 48 KiB business data set and 64 callback iterations. TwoBufQueue has a 16 KiB source pool and a 256 MiB output pool; native SPSC queues have 256 MiB of slot storage.
 
-Apple M3 / macOS 14.4.1 / Clang 18.1.8, three independent runs, high producer QoS without hard affinity. Values are p50 of 16-call business group averages, averaged across runs, rather than individual-call latency. The 16 MiB case records approximately **20 ns/call** for TwoBufQueue, **72 ns** for ReaderWriterQueue, **65 ns** for rigtorp and **107 ns** for atomic_queue. At 2 MiB, rigtorp is slightly faster than TwoBufQueue. [Full scenario, parameters, verification and raw samples](docs/performance_burst_cache.html).
+Normal business execution costs approximately **13 ns/call**. After a 16 MiB batch, TwoBufQueue records **18.2 ns/call** (1.40×), ReaderWriterQueue **58.2 ns**, rigtorp **42.5 ns** and atomic_queue **99.8 ns**. At 2 MiB, TwoBufQueue and rigtorp tie at 15.6 ns/call. These results show the effect on producer business performance when batch processing is acceptable.
+
+Apple M3 / macOS 14.4.1 / Clang 18.1.8, three independent runs, high producer QoS without hard affinity. Values are p50 of 16-call business group averages, averaged across runs. The dashed line marks the 13 ns reference; the report's ratio divides post-send business cost by this reference. [Full scenario, parameters, verification and raw samples](docs/performance_burst_from_empty.html) · [Run this experiment](benchmarks/BURST_CACHE.zh-CN.md).
+
+The earlier [prepared-backlog experiment](docs/performance_burst_cache.html) retains its original results and approximately 198–205 MiB of pending messages. It uses a different initial state from the figure above.
 
 ## Current producer-write comparisons
 

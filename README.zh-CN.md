@@ -48,13 +48,17 @@ int main() {
 
 [异步日志示例](examples/two_buf_queue/09_async_logger.cpp) 演示后台写文件、小容量池受压、等待／丢弃、flush 和退出，并逐条校验保存的文件。
 
-## 消息积压对业务执行的影响
+## 连续发送一批消息，对业务性能产生什么影响
 
 ![Apple M3 上每批发送 2、4、8、16 MiB 后的业务组均值 p50](docs/assets/burst_business_cost.svg)
 
-生产者发送一批消息后，立即访问并更新同一张 48 KiB 业务数据表。通过较慢的回调维持约 198–205 MiB 消息积压。TwoBufQueue 的第一层总池为 16 KiB，各开源 SPSC 队列的槽位存储为 256 MiB；消息均为 32 B，回调工作量相同。图中展示全部四种发送量和四个队列，耗时越低越好。
+生产者先正常执行业务函数，再连续发送一批 2、4、8 或 16 MiB 消息，发送完后立刻执行同样的业务函数。每批发送前积压为 0，消费者持续运行；测量完成后在计时外排空，再开始下一批，不预填消息。所有队列使用相同的 32 B 消息、48 KiB 业务数据表和 64 次回调循环。TwoBufQueue 第一层总池为 16 KiB，第二层为 256 MiB；各开源 SPSC 队列的槽位存储为 256 MiB。
 
-环境为 Apple M3、macOS 14.4.1、Clang 18.1.8，三轮独立运行，生产者高 QoS，未硬绑核。指标为每组 16 次业务调用的平均耗时 p50，再对三轮取平均。每批 16 MiB 时，TwoBufQueue 约 **20 ns/次**，ReaderWriterQueue 约 **72 ns**，rigtorp 约 **65 ns**，atomic_queue 约 **107 ns**。每批 2 MiB 时，rigtorp 略快于 TwoBufQueue。[完整场景、参数、校验和原始样本](docs/performance_burst_cache.html)。
+正常执行业务函数约 **13 ns/次**。每批发送 16 MiB 后，TwoBufQueue 为 **18.2 ns/次**（1.40 倍），ReaderWriterQueue 为 **58.2 ns**，rigtorp 为 **42.5 ns**，atomic_queue 为 **99.8 ns**。每批 2 MiB 时，TwoBufQueue 与 rigtorp 均为 15.6 ns/次。这里展示的是允许批量处理时，队列对生产者热路径业务的影响。
+
+环境为 Apple M3、macOS 14.4.1、Clang 18.1.8，三轮独立运行，生产者高 QoS，未硬绑核。指标为每组 16 次业务调用的平均耗时 p50，再对三轮取平均。图中虚线表示正常耗时 13 ns；报告中的比值为发送后业务耗时 ÷ 13 ns。[完整场景、参数、校验和原始样本](docs/performance_burst_from_empty.html) · [一次运行复现](benchmarks/BURST_CACHE.zh-CN.md)。
+
+此前[预填充大积压的实验](docs/performance_burst_cache.html)及其约 198–205 MiB 积压数据仍保留，与上图的起始状态不同。
 
 ## 当前生产者写入性能对比
 
