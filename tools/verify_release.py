@@ -8,7 +8,7 @@ import re
 from urllib.parse import unquote, urlsplit
 
 ROOT = Path(__file__).resolve().parents[1]
-LINK = re.compile(r'(?:href|src)=["\']([^"\']+)["\']|!?\[[^\]\n]*\]\(([^)\n]+)\)')
+from document_links import document_links
 
 
 def verify(root, check_manifest=True):
@@ -24,10 +24,10 @@ def verify(root, check_manifest=True):
             errors.append('Manifest mismatch: ' + record['path'])
     checked = 0
     for document in paths:
-        if document.suffix not in {'.md', '.html'} or 'performance_data' in document.relative_to(root).parts:
+        if document.suffix not in {'.md', '.html'} or document.relative_to(root).parts[:2] == ('docs', 'performance_data'):
             continue
-        for match in LINK.finditer(document.read_text(encoding='utf-8')):
-            reference = (match[1] or match[2]).strip('<>')
+        for match in document_links(document, document.read_text(encoding='utf-8')):
+            reference = (match['url'] or match['mdurl']).strip('<>')
             parsed = urlsplit(reference)
             if parsed.scheme or parsed.netloc or not parsed.path:
                 continue

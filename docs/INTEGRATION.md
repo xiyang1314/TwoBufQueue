@@ -1,6 +1,6 @@
 # CMake integration / CMake 接入
 
-[English README](../README.md) · [中文首页](../README.zh-CN.md)
+[English README](../README.html) · [中文首页](../README.zh-CN.html)
 
 All three methods expose the same `TwoBufQueue::TwoBufQueue` target and `<TwoBufQueue.hpp>` header. The target propagates C++20 and thread linkage; consumers do not need to add internal include paths or link a platform synchronization library by hand. macOS consumers require 14.4+; set their deployment target before `project()` or during configure.
 
@@ -72,7 +72,7 @@ Configure the consumer with `-DCMAKE_PREFIX_PATH=/absolute/path/to/install`. On 
 
 安装完成后，应用无需依赖原源码目录。将整个安装目录搬到另一个路径后，更新 `CMAKE_PREFIX_PATH` 即可。包版本为 0.1.0，当前版本文件只接受相同 minor 版本；这不表示已经创建了 GitHub Release。
 
-The [integration consumer](../test/integration/CMakeLists.txt) is runnable through `BRQ_INTEGRATION_MODE=add_subdirectory`, `fetchcontent`, or `package`. Example source-mode check:
+The [integration consumer](code/test/integration/CMakeLists.txt.html) is runnable through `BRQ_INTEGRATION_MODE=add_subdirectory`, `fetchcontent`, or `package`. Example source-mode check:
 
 ```sh
 cmake -S test/integration -B build-consumer -DBRQ_SOURCE_DIR=../.. -DBRQ_INTEGRATION_MODE=fetchcontent

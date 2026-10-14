@@ -1,6 +1,6 @@
 # Asynchronous logging / 异步日志
 
-[Example source](../examples/two_buf_queue/09_async_logger.cpp) · [Integration](INTEGRATION.md)
+[Example source](code/examples/two_buf_queue/09_async_logger.cpp.html) · [Integration](INTEGRATION.html)
 
 The application submits a trivially copyable record containing sequence, request ID and text. The copy worker moves source ranges into output blocks; an independent callback thread formats records and writes the file. The callback checks the record length and copies its bytes with `memcpy`, because callback addresses may be unaligned.
 

@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>测试用例 · TwoBufQueue</title><link rel="stylesheet" href="../../../docs/assets/readme.css"></head><body><!-- Generated from test/func/block_roles/TEST_CASES.md; SHA256 181f8cfa3527a6324f6014e403cdd1ce17a9256c5f152c581d35c3bef46bb61f. --><a class="skip-link" href="#content">跳到正文</a><header class="site-header"><div class="header-inner"><a class="brand" href="../../../README.zh-CN.html"><span class="brand-symbol" aria-hidden="true"><i></i><i></i></span>TwoBufQueue<span class="brand-version">C++</span></a><nav aria-label="主要导航"><a href="../../../README.zh-CN.html">项目首页</a><a href="../../../docs/API.zh-CN.html">接口指南</a><a href="../../../examples/README.html">使用示例</a><a href="../../../docs/code/index.html">代码阅读</a><a href="../../../docs/index.html">性能报告</a></nav></div></header><div class="page-layout guide-layout" id="top"><aside class="toc"><p class="toc-label">本页目录</p><nav aria-label="目录"></nav><div class="toc-footer"><a href="../../../README.zh-CN.html">回到首页</a></div></aside><main id="content" class="guide-main"><section class="guide-hero"><div class="eyebrow"><span></span>TWOBUFQUEUE · 文档</div><h1>测试用例</h1></section><details class="mobile-toc"><summary>本页目录</summary><nav></nav></details><article class="guide-content"><div class="table-scroll"><table>
+<thead>
+<tr>
+<th>用例</th>
+<th>操作</th>
+<th>期望</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>interfaces</td>
+<td>编译期检查三类块的公开 API 和共同 Slice 类型</td>
+<td>基础类无业务分配，Writer 无普通 allocate，Reader 无读取发布接口；共用 Slice</td>
+</tr>
+<tr>
+<td>mixed_batch</td>
+<td>从两个独立池取得 Writer 和 Reader 切片放入同一批，移交线程后逆序释放</td>
+<td>数据完整，归还各自的池，释放一个池不影响另一个池</td>
+</tr>
+<tr>
+<td>reader_single / reader_1n / reader_nn</td>
+<td>从空块分配、对齐填充、超容量及槽位请求、结束分配和复用</td>
+<td>游标与数据保持正确，当前块不提前回收，复用从零开始</td>
+</tr>
+<tr>
+<td>writer_publish</td>
+<td>写入但不发布、逐段发布、空增量读取、结束和出队后读取尾部</td>
+<td>只暴露已发布数据；未读或未释放时不能回收</td>
+</tr>
+<tr>
+<td>writer_trim_restore</td>
+<td>空闲阈值设零，回收后重新取得描述符并发布新内容</td>
+<td>缓冲区和发布指针重新绑定，无旧数据或旧游标</td>
+</tr>
+<tr>
+<td>writer_scan_release</td>
+<td>单线程写入、多轮读取、异步释放、另一线程扫描池</td>
+<td>不出现未释放数据被覆盖，最终恰好回收一次</td>
+</tr>
+<tr>
+<td>reader_finish_with_held_slice</td>
+<td>结束分配后仍在写入已持有的 slice，再发布给消费者</td>
+<td>持有的 slice 阻止回收，消费者得到完整内容</td>
+</tr>
+</tbody></table></div>
+<p>集成验证：完整 Windows CTest；Linux ThreadSanitizer 并发/生命周期/角色拆分套件；AddressSanitizer 与 UndefinedBehaviorSanitizer 生命周期/角色拆分套件。</p>
+<p>旧的显式 make_slice(offset, size) 已从生产接口移除：重复范围死亡测试由编译期禁止传范围、重复无增量读取不占槽位测试替代；越界范围测试改为拒绝非法发布游标。</p>
+</article><footer class="site-footer"><span>TwoBufQueue · C++ · Apache-2.0</span><span><a href="../../../README.zh-CN.html">项目首页</a><a href="#top">回到顶部 ↑</a></span></footer></main></div></body></html>

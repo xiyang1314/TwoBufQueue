@@ -35,11 +35,24 @@ If this directory has not been initialized as a Git repository, first initialize
 
 Wait for the **TwoBufQueue** workflow to pass on Linux, Windows and macOS. The local validation record identifies macOS results and marks remote execution as pending; it does not imply other platforms have run.
 
-## Show the HTML reports
+## Generate all HTML documentation
 
-In repository Settings → Pages → Build and deployment, select **GitHub Actions**. Run the **Publish performance reports** workflow. It packages only the manifest files as a static site, with the root redirecting to `docs/index.html`; GitHub supplies the actual website URL. Put that URL in the repository Website field. Reports, evidence and source links keep their relative paths. Markdown files remain downloadable source documents.
+`README.md` and `README.zh-CN.md` remain the editable source and GitHub repository README. The HTML versions add navigation, responsive performance charts, readable tables and syntax highlighting. Scenario descriptions remain fully visible. API, integration, examples and supporting documents also have HTML reading pages. The pages use local assets and can be opened offline. Source-reading pages use a small local script only for copying code, line wrapping and filtering files; no network requests or external JavaScript libraries are needed.
 
-README and the report index feature [continuous sending and business performance](performance_burst_from_empty.html), where every batch starts with zero pending messages. The earlier [prepared-backlog report](performance_burst_cache.html) is labelled as a separate historical experiment. Regenerate the current overview chart from saved results with `python3 tools/plot_burst_release.py` before refreshing the publication copy; this command does not run benchmarks.
+After editing the Markdown, regenerate all registered HTML pages before refreshing the publication manifest. Add new source documents to `tools/documentation_pages.json`; one command generates the overview, documentation and source-reading pages, then switches local document and code links. Linked examples, headers, Python scripts, assembly and CMake files are rendered under `docs/code/` with syntax colors and line numbers. Source files themselves stay unchanged; the source manifest records their SHA-256 hashes. Only this optional documentation step needs Node 20+ and Marked 17.0.5; the C++ library and viewing the generated pages do not:
+
+```sh
+npm install --prefix .deps/readme marked@17.0.5
+node tools/build_readme_html.mjs
+```
+
+[English HTML overview](../README.html) · [中文 HTML 首页](../README.zh-CN.html) · [代码阅读](code/index.html). On GitHub the HTML file has a source view; use the actual GitHub Pages website URL to present the styled page and add it to the repository Website field. Keep the relative links for local clones until the real published URL is known.
+
+## Show the HTML overview and reports
+
+In repository Settings → Pages → Build and deployment, select **GitHub Actions**. Run the **Publish performance reports** workflow. It packages only the manifest files as a static site, with the root redirecting to `README.html`; GitHub supplies the actual website URL. Put that URL in the repository Website field. Reports, evidence and source links keep their relative paths. Markdown files remain downloadable source documents.
+
+README and the report index feature [continuous sending and business performance](performance_burst_from_empty.html), where every batch starts with zero pending messages. The earlier [prepared-backlog report](performance_burst_cache.html) is labelled as a separate historical experiment. The HTML generator rebuilds both current overview figures from saved results: Session submission throughput for four message sizes, and post-send business cost divided by the fixed 13 ns reference. It also writes SVG figures for the Markdown overview. The historical absolute-cost figure remains available through `python3 tools/plot_burst_release.py`. These commands do not run benchmarks.
 
 The workflow uses GitHub's [Pages actions](https://docs.github.com/en/pages/getting-started-with-github-pages/using-custom-workflows-with-github-pages). It is manually dispatched so preparing or pushing source alone does not publish the site.
 
@@ -53,4 +66,4 @@ The `.release-assets` directory contains the source archive, complete packaged m
 
 After remote CI passes, tag the intended commit as `v0.1.0`, push the tag and create a GitHub Release. Use `CHANGELOG.md` as release notes and attach the generated files. No tag or public release is created by the exporter.
 
-Suggested repository description: **C++20 two-stage queue with small producer buffers, batched copying and independent callbacks.** Topics: `cpp20`, `spsc`, `logging`, `low-latency`, `message-queue`, `benchmark`. These describe the component; performance conclusions remain specific to the disclosed experiments.
+Suggested repository description: **C++ producer–consumer queue with two-layer buffers, batch publication and transfer, and small producer memory use.** Topics: `cpp20`, `spsc`, `logging`, `low-latency`, `message-queue`, `benchmark`. These describe the component; performance conclusions remain specific to the disclosed experiments.

@@ -85,6 +85,7 @@ int main() try {
     // RecordCallback 是回调类型；WriterT 是传入的 Writer 类型（同一队列必须一致）。
     // 普通 Writer 回调的三个参数：来源编号、负载地址、负载字节数（不含长度前缀）。
     // 回调要求 noexcept；此逐条接口忽略返回值。data 只在本次回调内有效。
+    // 接收消息的回调函数。
     auto on_record = [](std::int32_t thread_id, const std::byte* data, std::size_t size) noexcept {
         std::printf("writer=%d: %.*s\n", static_cast<int>(thread_id),
                     static_cast<int>(size), reinterpret_cast<const char*>(data));

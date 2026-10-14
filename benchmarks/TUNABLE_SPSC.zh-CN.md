@@ -275,7 +275,7 @@ CLI 使用 `--is_scan_current false --publish_count 4294967295`。参数会进�
 
 ## rigtorp 目标写预取
 
-`rigtorp_write_prefetch` 为调用端的可调布尔参数，默认 true。可用 `--rigtorp_write_prefetch false` 复现关闭提示的路径，也可在 `spaces.rigtorp` 中遍历 `[false, true]`。开关在计时前选择模板，写循环不增加动态判断。只使用 rigtorp 原始 `try_emplace` API，数据仍进行一次完整成员复制，其他队列的调用保持现状。提示不是额外写零，不保证所有平台提速。[同一程序对照与汇编](../docs/RIGTORP_PERFORMANCE.md)。
+`rigtorp_write_prefetch` 为调用端的可调布尔参数，默认 true。可用 `--rigtorp_write_prefetch false` 复现关闭提示的路径，也可在 `spaces.rigtorp` 中遍历 `[false, true]`。开关在计时前选择模板，写循环不增加动态判断。只使用 rigtorp 原始 `try_emplace` API，数据仍进行一次完整成员复制，其他队列的调用保持现状。提示不是额外写零，不保证所有平台提速。[同一程序对照与汇编](../docs/RIGTORP_PERFORMANCE.html)。
 
 ## writer 块大小遍历
 

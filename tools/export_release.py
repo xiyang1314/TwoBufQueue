@@ -10,7 +10,7 @@ import re
 from urllib.parse import unquote, urlsplit
 
 ROOT = Path(__file__).resolve().parents[1]
-ROOT_FILES = {'CMakeLists.txt','README.md','README.zh-CN.md','LICENSE','LICENSE.zh-CN.md',
+ROOT_FILES = {'CMakeLists.txt','README.md','README.zh-CN.md','README.html','README.zh-CN.html','LICENSE','LICENSE.zh-CN.md',
               'NOTICE','CONTRIBUTING.md','NAMING.md','CHANGELOG.md','.gitignore','.gitattributes'}
 BENCHMARK_FILES = {
     'spsc.cmake','spsc_dependencies.json','bootstrap_spsc.py','process_metrics.hpp',
@@ -25,13 +25,21 @@ BENCHMARK_FILES = {
     'tune_three_writer_modes.py','run_burst_empty.py','burst_report_style.css'}
 HISTORICAL_TEST_DIRS = {'review_20260925','review_20260927','aba_review_20260928','results'}
 TOOLS = {'export_release.py','verify_release.py','unpack_performance_data.py',
-         'plot_burst_release.py','build_release_assets.py','build_pages.py'}
-LINK = re.compile(r'(?P<html>(?:href|src)=["\'])(?P<url>[^"\']+)(?=["\'])|'
-                  r'(?P<markdown>!?\[[^\]\n]*\]\()(?P<mdurl>[^)\n]+)(?=\))')
+         'plot_burst_release.py','build_release_assets.py','build_pages.py','build_readme_html.mjs',
+         'build_docs_html.mjs','documentation_pages.json','document_links.py',
+         'build_code_html.mjs','code_highlight.mjs'}
+DOC_SOURCES = json.loads((ROOT / 'tools/documentation_pages.json').read_text())['sources']
+DOC_HTML = {str(Path(name).with_suffix('.html')) for name in DOC_SOURCES}
+ROOT_FILES.update(name for name in DOC_HTML if '/' not in name)
+from document_links import document_links, rewrite_document_links
+CODE_MANIFEST = ROOT / 'docs/code/code-manifest.json'
+CODE_FILES = json.loads(CODE_MANIFEST.read_text())['files'] if CODE_MANIFEST.is_file() else []
+CODE_HTML = {'docs/code/index.html', 'docs/code/code-manifest.json'} | {record['html_path'] for record in CODE_FILES}
 
 
 def included(relative):
     parts=relative.parts; name=relative.name
+    if relative.as_posix() in DOC_HTML or relative.as_posix() in CODE_HTML: return True
     if name=='.DS_Store' or '__pycache__' in parts or relative.suffix=='.pyc': return False
     if len(parts)==1: return name in ROOT_FILES
     if parts[0] in {'src','include','support','cmake'}:
@@ -48,7 +56,7 @@ def included(relative):
         if parts[1]=='profiles': return relative.suffix=='.json'
     if parts[0]=='docs':
         if len(parts)==2: return relative.suffix in {'.md','.html'}
-        if parts[1]=='assets': return relative.suffix in {'.svg','.png','.json'}
+        if parts[1]=='assets': return relative.suffix in {'.svg','.png','.json','.css'} or name in {'code_view.js', 'readme_view.js'}
         if parts[1]=='release-checks': return relative.suffix in {'.json','.log'}
     return False
 
@@ -67,10 +75,12 @@ def local_target(document, reference):
 
 def gather():
     selected={p.resolve() for p in ROOT.rglob('*') if p.is_file() and included(p.relative_to(ROOT))}
+    # Keep the original files available for builds and measurement reproduction.
+    selected.update((ROOT / record['source_path']).resolve() for record in CODE_FILES)
     queue=list(selected)
     for document in queue:
-        if document.suffix not in {'.md','.html'} or 'performance_data' in document.parts: continue
-        for match in LINK.finditer(document.read_text(encoding='utf-8')):
+        if document.suffix not in {'.md','.html'} or document.relative_to(ROOT).parts[:2] == ('docs', 'performance_data'): continue
+        for match in document_links(document, document.read_text(encoding='utf-8')):
             reference=match['url'] or match['mdurl']; target=local_target(document,reference)
             if target is None: continue
             if target.is_dir():
@@ -124,7 +134,7 @@ def main():
                 'original_sha256':digest(original),'compressed_sha256':digest(data)})
         entries[output]={'data':data,'source':relative.as_posix(),'source_sha256':digest(original)}
     for relative,entry in entries.items():
-        if relative.suffix not in {'.md','.html'} or 'performance_data' in relative.parts: continue
+        if relative.suffix not in {'.md','.html'} or relative.parts[:2] == ('docs', 'performance_data'): continue
         document=ROOT/entry['source']
         def rewrite(match):
             reference=match['url'] or match['mdurl']; target=local_target(document,reference)
@@ -132,7 +142,7 @@ def main():
                 parsed=urlsplit(reference); replacement=reference.replace(parsed.path,parsed.path+'.gz',1)
                 return match.group(0).replace(reference,replacement,1)
             return match.group(0)
-        entry['data']=LINK.sub(rewrite,entry['data'].decode('utf-8')).encode('utf-8')
+        entry['data']=rewrite_document_links(document, entry['data'].decode('utf-8'), rewrite).encode('utf-8')
     cm={'schema_version':1,'encoding':'gzip','lossless':True,'files':compression}
     entries[Path('compression-manifest.json')]={'data':(json.dumps(cm,indent=2)+'\n').encode()}
     selected_paths=set(entries)|{Path('release-manifest.json')}

@@ -1,0 +1,87 @@
+{
+  "source": "docs/performance_256m_zero_session_plateau.html",
+  "report_data_sha256": "6c4cc4a4fc13794a08bc0d0ba3db50ed2e97575a8d18d664c4c13fd9c76c6e88",
+  "metric": "producer sending throughput in million messages/s",
+  "rows": [
+    {
+      "queue": "TwoBufQueue",
+      "payload_bytes": 8,
+      "value": 2306.5461156233337
+    },
+    {
+      "queue": "ReaderWriterQueue",
+      "payload_bytes": 8,
+      "value": 801.0018240496667
+    },
+    {
+      "queue": "rigtorp",
+      "payload_bytes": 8,
+      "value": 326.1050861273333
+    },
+    {
+      "queue": "atomic_queue",
+      "payload_bytes": 8,
+      "value": 186.298171571
+    },
+    {
+      "queue": "TwoBufQueue",
+      "payload_bytes": 16,
+      "value": 1697.7262222166667
+    },
+    {
+      "queue": "ReaderWriterQueue",
+      "payload_bytes": 16,
+      "value": 767.3750214176666
+    },
+    {
+      "queue": "rigtorp",
+      "payload_bytes": 16,
+      "value": 267.48125442633335
+    },
+    {
+      "queue": "atomic_queue",
+      "payload_bytes": 16,
+      "value": 48.65473857133333
+    },
+    {
+      "queue": "TwoBufQueue",
+      "payload_bytes": 32,
+      "value": 658.6005135516667
+    },
+    {
+      "queue": "ReaderWriterQueue",
+      "payload_bytes": 32,
+      "value": 422.62686573133334
+    },
+    {
+      "queue": "rigtorp",
+      "payload_bytes": 32,
+      "value": 220.68001074766667
+    },
+    {
+      "queue": "atomic_queue",
+      "payload_bytes": 32,
+      "value": 30.202439654333332
+    },
+    {
+      "queue": "TwoBufQueue",
+      "payload_bytes": 64,
+      "value": 383.213456289
+    },
+    {
+      "queue": "ReaderWriterQueue",
+      "payload_bytes": 64,
+      "value": 204.256581635
+    },
+    {
+      "queue": "rigtorp",
+      "payload_bytes": 64,
+      "value": 99.41546582353334
+    },
+    {
+      "queue": "atomic_queue",
+      "payload_bytes": 64,
+      "value": 45.19263777686666
+    }
+  ]
+}

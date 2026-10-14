@@ -60,6 +60,7 @@ __pycache__/
 /.github/.DS_Store
 /benchmarks/.DS_Store
 /docs/.DS_Store
+/docs/code/.DS_Store
 /docs/performance_archive/before_normal_current_scan10_20261011/performance_256m_callback.html
 /docs/performance_archive/before_normal_current_scan10_20261011/performance_8m_zero.html
 /docs/performance_archive/before_release_20261011_inline_fixed_110024/performance_256m_callback.html

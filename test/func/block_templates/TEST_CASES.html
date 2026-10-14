@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>公共 Block 模板测试用例 · TwoBufQueue</title><link rel="stylesheet" href="../../../docs/assets/readme.css"></head><body><!-- Generated from test/func/block_templates/TEST_CASES.md; SHA256 3226114cbdf1ba7a48bf13fd964a6dda2b8dcff533c9d75f024aabfa84a47862. --><a class="skip-link" href="#content">跳到正文</a><header class="site-header"><div class="header-inner"><a class="brand" href="../../../README.zh-CN.html"><span class="brand-symbol" aria-hidden="true"><i></i><i></i></span>TwoBufQueue<span class="brand-version">C++</span></a><nav aria-label="主要导航"><a href="../../../README.zh-CN.html">项目首页</a><a href="../../../docs/API.zh-CN.html">接口指南</a><a href="../../../examples/README.html">使用示例</a><a href="../../../docs/code/index.html">代码阅读</a><a href="../../../docs/index.html">性能报告</a></nav></div></header><div class="page-layout guide-layout" id="top"><aside class="toc"><p class="toc-label">本页目录</p><nav aria-label="目录"></nav><div class="toc-footer"><a href="../../../README.zh-CN.html">回到首页</a></div></aside><main id="content" class="guide-main"><section class="guide-hero"><div class="eyebrow"><span></span>TWOBUFQUEUE · 文档</div><h1>公共 Block 模板测试用例</h1></section><details class="mobile-toc"><summary>本页目录</summary><nav></nav></details><article class="guide-content"><div class="table-scroll"><table>
+<thead>
+<tr>
+<th>用例</th>
+<th>操作</th>
+<th>期望</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>interfaces</td>
+<td>编译期检查基础类与派生类接口、状态类型、返回切片类型</td>
+<td>基础类无业务状态；两个派生状态不同；同一策略 Slice 相同</td>
+</tr>
+<tr>
+<td>writer_00 / writer_01 / writer_10 / writer_11</td>
+<td>分配块、发布、增量登记、乱序释放、结束、复用</td>
+<td>四种组合正确，生命周期不提前回收</td>
+</tr>
+<tr>
+<td>reader_10</td>
+<td>多线程直接从同一 ReaderBlock 分配，单线程消费释放</td>
+<td>地址不重叠，数据不丢失，不因 release=false 产生数据竞争</td>
+</tr>
+<tr>
+<td>writer_parallel_10 / writer_parallel_11</td>
+<td>一个发布者、多个切片分配者、一个/多个释放者和池扫描并行</td>
+<td>字节范围不重叠、完整覆盖；每条记录内容及校验值一致</td>
+</tr>
+<tr>
+<td>force_writer / force_reader</td>
+<td>标记强制回收、释放旧句柄、扫描、同址复用、再次释放旧代</td>
+<td>宽容模式忽略失效释放，不修改新代计数；严格模式由已有生命周期死亡用例覆盖</td>
+</tr>
+<tr>
+<td>death_writer_state / death_reader_state</td>
+<td>触发非法状态转换并检查 ErrorInfo</td>
+<td>实际状态值及名称来自对应块类型</td>
+</tr>
+<tr>
+<td>header_only</td>
+<td>只包含 base_components/block_slice/writer_block.hpp 并实例化全部模板组合</td>
+<td>无旧 cpp 链接依赖</td>
+</tr>
+</tbody></table></div>
+<p>并行分配测试还覆盖空增量、全部槽位耗尽前恰好覆盖总字节数、快照读取与范围分配交错。</p>
+</article><footer class="site-footer"><span>TwoBufQueue · C++ · Apache-2.0</span><span><a href="../../../README.zh-CN.html">项目首页</a><a href="#top">回到顶部 ↑</a></span></footer></main></div></body></html>

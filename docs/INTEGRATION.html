@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>CMake integration / CMake 接入 · TwoBufQueue</title><link rel="stylesheet" href="assets/readme.css"></head><body><!-- Generated from docs/INTEGRATION.md; SHA256 456042e403c0d9f057b1c8b3a450da19feb6237913a43a7fe023bd553125847d. --><a class="skip-link" href="#content">跳到正文</a><header class="site-header"><div class="header-inner"><a class="brand" href="../README.zh-CN.html"><span class="brand-symbol" aria-hidden="true"><i></i><i></i></span>TwoBufQueue<span class="brand-version">C++</span></a><nav aria-label="主要导航"><a href="../README.zh-CN.html">项目首页</a><a href="API.zh-CN.html">接口指南</a><a href="../examples/README.html">使用示例</a><a href="code/index.html">代码阅读</a><a href="index.html">性能报告</a></nav><div class="languages"><a href="INTEGRATION.html">EN</a><a href="INTEGRATION.zh-CN.html" aria-current="page">中文</a></div></div></header><div class="page-layout guide-layout" id="top"><aside class="toc"><p class="toc-label">本页目录</p><nav aria-label="目录"><a class="toc-depth-2" href="#vendored-source-本地源码">Vendored source / 本地源码</a><a class="toc-depth-2" href="#fetchcontent">FetchContent</a><a class="toc-depth-2" href="#installed-package-安装后的-find-package">Installed package / 安装后的 find_package</a></nav><div class="toc-footer"><a href="../README.zh-CN.html">回到首页</a></div></aside><main id="content" class="guide-main"><section class="guide-hero"><div class="eyebrow"><span></span>TWOBUFQUEUE · 文档</div><h1>CMake integration / CMake 接入</h1><p><a href="../README.html">English README</a> · <a href="../README.zh-CN.html">中文首页</a></p>
+<p>All three methods expose the same <code>TwoBufQueue::TwoBufQueue</code> target and <code>&lt;TwoBufQueue.hpp&gt;</code> header. The target propagates C++20 and thread linkage; consumers do not need to add internal include paths or link a platform synchronization library by hand. macOS consumers require 14.4+; set their deployment target before <code>project()</code> or during configure.</p>
+<p>三种方式使用相同 target 和公共头文件。嵌入时默认不构建测试和示例；独立构建时默认构建全部当前测试和示例。不要将自己的 target 命名为 <code>TwoBufQueue</code>。</p>
+</section><details class="mobile-toc"><summary>本页目录</summary><nav><a class="toc-depth-2" href="#vendored-source-本地源码">Vendored source / 本地源码</a><a class="toc-depth-2" href="#fetchcontent">FetchContent</a><a class="toc-depth-2" href="#installed-package-安装后的-find-package">Installed package / 安装后的 find_package</a></nav></details><article class="guide-content"><h2 id="vendored-source-本地源码">Vendored source / 本地源码</h2>
+<p>Place the checkout under <code>external/TwoBufQueue</code>:</p>
+<div class="code-frame"><div class="code-label">CMake</div><pre tabindex="0"><code class="language-cmake">cmake_minimum_required(VERSION 3.20)
+project(my_app LANGUAGES CXX)
+<span class="syntax-keyword">add_subdirectory</span>(external/TwoBufQueue)
+add_executable(my_app main.cpp)
+<span class="syntax-keyword">target_link_libraries</span>(my_app <span class="syntax-keyword">PRIVATE</span> TwoBufQueue::TwoBufQueue)</code></pre></div><p>Use <code>BRQ_INSTALL=OFF</code> before <code>add_subdirectory</code> if your application should not install the dependency. Override <code>BRQ_BUILD_TESTS</code> / <code>BRQ_BUILD_EXAMPLES</code> explicitly if you want its tests and examples in the parent build.</p>
+<h2 id="fetchcontent">FetchContent</h2>
+<p>For a local checkout, this is fully offline and needs no unpublished GitHub address:</p>
+<div class="code-frame"><div class="code-label">CMake</div><pre tabindex="0"><code class="language-cmake">include(FetchContent)
+FetchContent_Declare(TwoBufQueue SOURCE_DIR <span class="syntax-string">&quot;${CMAKE_CURRENT_SOURCE_DIR}/external/TwoBufQueue&quot;</span>)
+FetchContent_MakeAvailable(TwoBufQueue)
+add_executable(my_app main.cpp)
+<span class="syntax-keyword">target_link_libraries</span>(my_app <span class="syntax-keyword">PRIVATE</span> TwoBufQueue::TwoBufQueue)</code></pre></div><p>When a repository is published, replace the declaration above with the actual URL and a pinned commit. No repository URL or release tag is invented here:</p>
+<div class="code-frame"><div class="code-label">CMake</div><pre tabindex="0"><code class="language-cmake">set(TWOBUFQUEUE_REPOSITORY <span class="syntax-string">&quot;&quot;</span> CACHE STRING <span class="syntax-string">&quot;Published repository URL&quot;</span>)
+set(TWOBUFQUEUE_REVISION <span class="syntax-string">&quot;&quot;</span> CACHE STRING <span class="syntax-string">&quot;Pinned full commit hash&quot;</span>)
+if(NOT TWOBUFQUEUE_REPOSITORY OR NOT TWOBUFQUEUE_REVISION)
+  message(FATAL_ERROR <span class="syntax-string">&quot;Set TWOBUFQUEUE_REPOSITORY and TWOBUFQUEUE_REVISION&quot;</span>)
+endif()
+FetchContent_Declare(TwoBufQueue
+  GIT_REPOSITORY <span class="syntax-string">&quot;${TWOBUFQUEUE_REPOSITORY}&quot;</span>
+  GIT_TAG <span class="syntax-string">&quot;${TWOBUFQUEUE_REVISION}&quot;</span>)
+FetchContent_MakeAvailable(TwoBufQueue)</code></pre></div><p>远程接入时填写实际仓库地址和固定提交，不要用会持续变化的分支作为可复现依赖版本。</p>
+<h2 id="installed-package-安装后的-find-package">Installed package / 安装后的 find_package</h2>
+<p>From the library&#39;s root, install to a writable prefix:</p>
+<div class="code-frame"><div class="code-label">Shell</div><pre tabindex="0"><code class="language-sh"><span class="syntax-keyword">cmake</span> -S . -B build-package -DCMAKE_BUILD_TYPE=Release -DBRQ_BUILD_TESTS=OFF -DBRQ_BUILD_EXAMPLES=OFF
+<span class="syntax-keyword">cmake</span> --build build-package --config Release --parallel
+<span class="syntax-keyword">cmake</span> --install build-package --config Release --prefix ./install</code></pre></div><p>Consumer <code>CMakeLists.txt</code>:</p>
+<div class="code-frame"><div class="code-label">CMake</div><pre tabindex="0"><code class="language-cmake">cmake_minimum_required(VERSION 3.20)
+project(my_app LANGUAGES CXX)
+<span class="syntax-keyword">find_package</span>(TwoBufQueue 0.1 <span class="syntax-keyword">CONFIG</span> <span class="syntax-keyword">REQUIRED</span>)
+add_executable(my_app main.cpp)
+<span class="syntax-keyword">target_link_libraries</span>(my_app <span class="syntax-keyword">PRIVATE</span> TwoBufQueue::TwoBufQueue)</code></pre></div><p>Configure the consumer with <code>-DCMAKE_PREFIX_PATH=/absolute/path/to/install</code>. On macOS add <code>-DCMAKE_OSX_DEPLOYMENT_TARGET=14.4</code> when needed. Libraries, real headers, CMake package files, LICENSE and NOTICE are installed. The prefix may be moved as a whole: installed includes contain no source-tree forwarders. A compiled package is specific to its platform, architecture and compatible toolchain; this does not make binaries portable between operating systems.</p>
+<p>安装完成后，应用无需依赖原源码目录。将整个安装目录搬到另一个路径后，更新 <code>CMAKE_PREFIX_PATH</code> 即可。包版本为 0.1.0，当前版本文件只接受相同 minor 版本；这不表示已经创建了 GitHub Release。</p>
+<p>The <a href="code/test/integration/CMakeLists.txt.html">integration consumer</a> is runnable through <code>BRQ_INTEGRATION_MODE=add_subdirectory</code>, <code>fetchcontent</code>, or <code>package</code>. Example source-mode check:</p>
+<div class="code-frame"><div class="code-label">Shell</div><pre tabindex="0"><code class="language-sh"><span class="syntax-keyword">cmake</span> -S test/integration -B build-consumer -DBRQ_SOURCE_DIR=../.. -DBRQ_INTEGRATION_MODE=fetchcontent
+<span class="syntax-keyword">cmake</span> --build build-consumer --config Release --parallel
+<span class="syntax-keyword">ctest</span> --test-dir build-consumer -C Release --output-on-failure</code></pre></div><p>For package mode, omit <code>BRQ_SOURCE_DIR</code>, use <code>-DBRQ_INTEGRATION_MODE=package</code> and set <code>CMAKE_PREFIX_PATH</code> to the installed prefix.</p>
+<p>Package export follows CMake&#39;s <a href="https://cmake.org/cmake/help/latest/guide/importing-exporting/index.html">Importing and Exporting Guide</a>; source population uses its <a href="https://cmake.org/cmake/help/latest/module/FetchContent.html">FetchContent module</a>.</p>
+</article><footer class="site-footer"><span>TwoBufQueue · C++ · Apache-2.0</span><span><a href="../README.zh-CN.html">项目首页</a><a href="#top">回到顶部 ↑</a></span></footer></main></div></body></html>

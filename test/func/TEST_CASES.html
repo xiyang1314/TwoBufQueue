@@ -1,0 +1,1498 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>功能测试用例 · TwoBufQueue</title><link rel="stylesheet" href="../../docs/assets/readme.css"></head><body><!-- Generated from test/func/TEST_CASES.md; SHA256 904ba70ef534dff3c3f11c038bfd6ea17d1bf89f5b1b2dd68285d7c9570c46da. --><a class="skip-link" href="#content">跳到正文</a><header class="site-header"><div class="header-inner"><a class="brand" href="../../README.zh-CN.html"><span class="brand-symbol" aria-hidden="true"><i></i><i></i></span>TwoBufQueue<span class="brand-version">C++</span></a><nav aria-label="主要导航"><a href="../../README.zh-CN.html">项目首页</a><a href="../../docs/API.zh-CN.html">接口指南</a><a href="../../examples/README.html">使用示例</a><a href="../../docs/code/index.html">代码阅读</a><a href="../../docs/index.html">性能报告</a></nav></div></header><div class="page-layout guide-layout" id="top"><aside class="toc"><p class="toc-label">本页目录</p><nav aria-label="目录"></nav><div class="toc-footer"><a href="../../README.zh-CN.html">回到首页</a></div></aside><main id="content" class="guide-main"><section class="guide-hero"><div class="eyebrow"><span></span>TWOBUFQUEUE · 文档</div><h1>功能测试用例</h1></section><details class="mobile-toc"><summary>本页目录</summary><nav></nav></details><article class="guide-content"><p>测试点见 TEST_POINTS.md。cases.json 为机器可读清单。每个ID独立CTest；不得将一组参数通过当成整个矩阵通过。</p>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>ID</th>
+<th>测试点</th>
+<th>前置条件</th>
+<th>操作</th>
+<th>期望</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>W_len_0</td>
+<td>W1 消息协议及边界</td>
+<td>块恰好容纳0+2字节</td>
+<td>写确定性字节序列；修改输入；Finish；排空</td>
+<td>只收到1条；两字节小端前缀和每字节与原副本相同；池归零</td>
+</tr>
+<tr>
+<td>W_len_1</td>
+<td>W1 消息协议及边界</td>
+<td>块恰好容纳1+2字节</td>
+<td>写确定性字节序列；修改输入；Finish；排空</td>
+<td>只收到1条；两字节小端前缀和每字节与原副本相同；池归零</td>
+</tr>
+<tr>
+<td>W_len_2</td>
+<td>W1 消息协议及边界</td>
+<td>块恰好容纳2+2字节</td>
+<td>写确定性字节序列；修改输入；Finish；排空</td>
+<td>只收到1条；两字节小端前缀和每字节与原副本相同；池归零</td>
+</tr>
+<tr>
+<td>W_len_3</td>
+<td>W1 消息协议及边界</td>
+<td>块恰好容纳3+2字节</td>
+<td>写确定性字节序列；修改输入；Finish；排空</td>
+<td>只收到1条；两字节小端前缀和每字节与原副本相同；池归零</td>
+</tr>
+<tr>
+<td>W_len_4</td>
+<td>W1 消息协议及边界</td>
+<td>块恰好容纳4+2字节</td>
+<td>写确定性字节序列；修改输入；Finish；排空</td>
+<td>只收到1条；两字节小端前缀和每字节与原副本相同；池归零</td>
+</tr>
+<tr>
+<td>W_len_31</td>
+<td>W1 消息协议及边界</td>
+<td>块恰好容纳31+2字节</td>
+<td>写确定性字节序列；修改输入；Finish；排空</td>
+<td>只收到1条；两字节小端前缀和每字节与原副本相同；池归零</td>
+</tr>
+<tr>
+<td>W_len_32</td>
+<td>W1 消息协议及边界</td>
+<td>块恰好容纳32+2字节</td>
+<td>写确定性字节序列；修改输入；Finish；排空</td>
+<td>只收到1条；两字节小端前缀和每字节与原副本相同；池归零</td>
+</tr>
+<tr>
+<td>W_len_255</td>
+<td>W1 消息协议及边界</td>
+<td>块恰好容纳255+2字节</td>
+<td>写确定性字节序列；修改输入；Finish；排空</td>
+<td>只收到1条；两字节小端前缀和每字节与原副本相同；池归零</td>
+</tr>
+<tr>
+<td>W_len_256</td>
+<td>W1 消息协议及边界</td>
+<td>块恰好容纳256+2字节</td>
+<td>写确定性字节序列；修改输入；Finish；排空</td>
+<td>只收到1条；两字节小端前缀和每字节与原副本相同；池归零</td>
+</tr>
+<tr>
+<td>W_len_1023</td>
+<td>W1 消息协议及边界</td>
+<td>块恰好容纳1023+2字节</td>
+<td>写确定性字节序列；修改输入；Finish；排空</td>
+<td>只收到1条；两字节小端前缀和每字节与原副本相同；池归零</td>
+</tr>
+<tr>
+<td>W_len_1024</td>
+<td>W1 消息协议及边界</td>
+<td>块恰好容纳1024+2字节</td>
+<td>写确定性字节序列；修改输入；Finish；排空</td>
+<td>只收到1条；两字节小端前缀和每字节与原副本相同；池归零</td>
+</tr>
+<tr>
+<td>W_len_65534</td>
+<td>W1 消息协议及边界</td>
+<td>块恰好容纳65534+2字节</td>
+<td>写确定性字节序列；修改输入；Finish；排空</td>
+<td>只收到1条；两字节小端前缀和每字节与原副本相同；池归零</td>
+</tr>
+<tr>
+<td>W_len_65535</td>
+<td>W1 消息协议及边界</td>
+<td>块恰好容纳65535+2字节</td>
+<td>写确定性字节序列；修改输入；Finish；排空</td>
+<td>只收到1条；两字节小端前缀和每字节与原副本相同；池归零</td>
+</tr>
+<tr>
+<td>W_reject_null</td>
+<td>W2 非法长度无副作用</td>
+<td>null</td>
+<td>先写合法值；提交非法请求；核对游标；再写合法值并排空</td>
+<td>非法请求false；原游标不变；只收到两条合法记录</td>
+</tr>
+<tr>
+<td>W_reject_oversize</td>
+<td>W2 非法长度无副作用</td>
+<td>oversize</td>
+<td>先写合法值；提交非法请求；核对游标；再写合法值并排空</td>
+<td>非法请求false；原游标不变；只收到两条合法记录</td>
+</tr>
+<tr>
+<td>W_short_payload</td>
+<td>W2 短消息无需最小长度配置</td>
+<td>3字节负载</td>
+<td>写入3字节消息并排空</td>
+<td>成功且完整收到3字节负载</td>
+</tr>
+<tr>
+<td>W_reject_block</td>
+<td>W2 非法长度无副作用</td>
+<td>block</td>
+<td>先写合法值；提交非法请求；核对游标；再写合法值并排空</td>
+<td>非法请求false；原游标不变；只收到两条合法记录</td>
+</tr>
+<tr>
+<td>W_publish_1</td>
+<td>W3 发布可见性</td>
+<td>发布次数1</td>
+<td>写满一批再写尾部；检查发布游标；Flush；Finish</td>
+<td>未发布尾部不可见；Flush发布全部；字节顺序正确</td>
+</tr>
+<tr>
+<td>W_publish_2</td>
+<td>W3 发布可见性</td>
+<td>发布次数2</td>
+<td>写满一批再写尾部；检查发布游标；Flush；Finish</td>
+<td>未发布尾部不可见；Flush发布全部；字节顺序正确</td>
+</tr>
+<tr>
+<td>W_publish_32</td>
+<td>W3 发布可见性</td>
+<td>发布次数32</td>
+<td>写满一批再写尾部；检查发布游标；Flush；Finish</td>
+<td>未发布尾部不可见；Flush发布全部；字节顺序正确</td>
+</tr>
+<tr>
+<td>W_pack</td>
+<td>W4 模板及幂等结束</td>
+<td>pack</td>
+<td>多参数紧密布局/Finish两次及结束后写入</td>
+<td>布局与各字段对象表示拼接一致；结束后拒写；无重复交付</td>
+</tr>
+<tr>
+<td>W_finish</td>
+<td>W4 模板及幂等结束</td>
+<td>finish</td>
+<td>多参数紧密布局/Finish两次及结束后写入</td>
+<td>布局与各字段对象表示拼接一致；结束后拒写；无重复交付</td>
+</tr>
+<tr>
+<td>R_active</td>
+<td>R1 活动/完成交接与所有权</td>
+<td>active</td>
+<td>手动ReadService推进；拒收/持有/取消/过期后重试</td>
+<td>未接受不推进；重试不重复；持有期间字节稳定；最后释放归零</td>
+</tr>
+<tr>
+<td>R_reject</td>
+<td>R1 活动/完成交接与所有权</td>
+<td>reject</td>
+<td>手动ReadService推进；拒收/持有/取消/过期后重试</td>
+<td>未接受不推进；重试不重复；持有期间字节稳定；最后释放归零</td>
+</tr>
+<tr>
+<td>R_retain</td>
+<td>R1 活动/完成交接与所有权</td>
+<td>retain</td>
+<td>手动ReadService推进；拒收/持有/取消/过期后重试</td>
+<td>未接受不推进；重试不重复；持有期间字节稳定；最后释放归零</td>
+</tr>
+<tr>
+<td>R_cancel</td>
+<td>R1 活动/完成交接与所有权</td>
+<td>cancel</td>
+<td>手动ReadService推进；拒收/持有/取消/过期后重试</td>
+<td>未接受不推进；重试不重复；持有期间字节稳定；最后释放归零</td>
+</tr>
+<tr>
+<td>R_deadline</td>
+<td>R1 活动/完成交接与所有权</td>
+<td>deadline</td>
+<td>手动ReadService推进；拒收/持有/取消/过期后重试</td>
+<td>未接受不推进；重试不重复；持有期间字节稳定；最后释放归零</td>
+</tr>
+<tr>
+<td>R_reg_nullwriter</td>
+<td>R2 注册校验</td>
+<td>nullwriter</td>
+<td>尝试无效注册后查询错误类别和writer_count</td>
+<td>返回false；精确错误枚举；注册数量不增加</td>
+</tr>
+<tr>
+<td>R_reg_nullqueue</td>
+<td>R2 注册校验</td>
+<td>空队列指针</td>
+<td>调用 add_queue(nullptr, id)</td>
+<td>返回 false 并记录 null_dependency</td>
+</tr>
+<tr>
+<td>R_reg_queue_negative</td>
+<td>R2 注册校验</td>
+<td>有效队列与负数来源编号</td>
+<td>调用 add_queue(&amp;queue, -1)</td>
+<td>返回 false 并记录 invalid_registration</td>
+</tr>
+<tr>
+<td>R_reg_duplicate</td>
+<td>R2 注册校验</td>
+<td>duplicate</td>
+<td>尝试无效注册后查询错误类别和writer_count</td>
+<td>返回false；精确错误枚举；注册数量不增加</td>
+</tr>
+<tr>
+<td>R_reg_duplicateid</td>
+<td>R2 注册校验</td>
+<td>duplicateid</td>
+<td>尝试无效注册后查询错误类别和writer_count</td>
+<td>返回false；精确错误枚举；注册数量不增加</td>
+</tr>
+<tr>
+<td>R_reg_negative</td>
+<td>R2 注册校验</td>
+<td>negative</td>
+<td>尝试无效注册后查询错误类别和writer_count</td>
+<td>返回false；精确错误枚举；注册数量不增加</td>
+</tr>
+<tr>
+<td>R_reg_running</td>
+<td>R2 注册校验</td>
+<td>running</td>
+<td>尝试无效注册后查询错误类别和writer_count</td>
+<td>返回false；精确错误枚举；注册数量不增加</td>
+</tr>
+<tr>
+<td>R_config_scan0</td>
+<td>R3 启动校验</td>
+<td>scan0</td>
+<td>无效配置Start</td>
+<td>false；invalid_start_state；未启动线程</td>
+</tr>
+<tr>
+<td>R_config_max0</td>
+<td>R3 启动校验</td>
+<td>max0</td>
+<td>无效配置Start</td>
+<td>false；invalid_start_state；未启动线程</td>
+</tr>
+<tr>
+<td>R_config_finish0</td>
+<td>R3 启动校验</td>
+<td>finish0</td>
+<td>无效配置Start</td>
+<td>false；invalid_start_state；未启动线程</td>
+</tr>
+<tr>
+<td>R_config_wait0</td>
+<td>R3 启动校验</td>
+<td>wait0</td>
+<td>无效配置Start</td>
+<td>false；invalid_start_state；未启动线程</td>
+</tr>
+<tr>
+<td>R_config_retry0</td>
+<td>R3 启动校验</td>
+<td>retry0</td>
+<td>无效配置Start</td>
+<td>false；invalid_start_state；未启动线程</td>
+</tr>
+<tr>
+<td>R_config_callback</td>
+<td>R3 启动校验</td>
+<td>callback</td>
+<td>无效配置Start</td>
+<td>false；invalid_start_state；未启动线程</td>
+</tr>
+<tr>
+<td>R_config_writers</td>
+<td>R3 启动校验</td>
+<td>writers</td>
+<td>无效配置Start</td>
+<td>false；invalid_start_state；未启动线程</td>
+</tr>
+<tr>
+<td>S_copy</td>
+<td>S1 存储及消费</td>
+<td>copy</td>
+<td>保存多帧；检查processed连续前缀；读取/拒收/释放/重启</td>
+<td>数据/来源/时间/统计一致；背压无丢失；保留句柄阻止回收</td>
+</tr>
+<tr>
+<td>S_split</td>
+<td>S1 存储及消费</td>
+<td>split</td>
+<td>保存多帧；检查processed连续前缀；读取/拒收/释放/重启</td>
+<td>数据/来源/时间/统计一致；背压无丢失；保留句柄阻止回收</td>
+</tr>
+<tr>
+<td>S_zero</td>
+<td>S1 存储及消费</td>
+<td>zero</td>
+<td>保存多帧；检查processed连续前缀；读取/拒收/释放/重启</td>
+<td>数据/来源/时间/统计一致；背压无丢失；保留句柄阻止回收</td>
+</tr>
+<tr>
+<td>S_queuefull</td>
+<td>S1 存储及消费</td>
+<td>queuefull</td>
+<td>保存多帧；检查processed连续前缀；读取/拒收/释放/重启</td>
+<td>数据/来源/时间/统计一致；背压无丢失；保留句柄阻止回收</td>
+</tr>
+<tr>
+<td>S_poolfull</td>
+<td>S1 存储及消费</td>
+<td>poolfull</td>
+<td>保存多帧；检查processed连续前缀；读取/拒收/释放/重启</td>
+<td>数据/来源/时间/统计一致；背压无丢失；保留句柄阻止回收</td>
+</tr>
+<tr>
+<td>S_slots</td>
+<td>S1 存储及消费</td>
+<td>slots</td>
+<td>保存多帧；检查processed连续前缀；读取/拒收/释放/重启</td>
+<td>数据/来源/时间/统计一致；背压无丢失；保留句柄阻止回收</td>
+</tr>
+<tr>
+<td>S_closed</td>
+<td>S1 存储及消费</td>
+<td>closed</td>
+<td>保存多帧；检查processed连续前缀；读取/拒收/释放/重启</td>
+<td>数据/来源/时间/统计一致；背压无丢失；保留句柄阻止回收</td>
+</tr>
+<tr>
+<td>S_retry</td>
+<td>S1 存储及消费</td>
+<td>retry</td>
+<td>保存多帧；检查processed连续前缀；读取/拒收/释放/重启</td>
+<td>数据/来源/时间/统计一致；背压无丢失；保留句柄阻止回收</td>
+</tr>
+<tr>
+<td>S_notify</td>
+<td>S1 存储及消费</td>
+<td>notify</td>
+<td>保存多帧；检查processed连续前缀；读取/拒收/释放/重启</td>
+<td>批次发布与出队各通知一次；帧释放不通知；finish 后 all_released 正确且查询无回收副作用</td>
+</tr>
+<tr>
+<td>S_timeout</td>
+<td>S1 存储及消费</td>
+<td>timeout</td>
+<td>保存多帧；检查processed连续前缀；读取/拒收/释放/重启</td>
+<td>数据/来源/时间/统计一致；背压无丢失；保留句柄阻止回收</td>
+</tr>
+<tr>
+<td>S_invalid_null</td>
+<td>S2 输入全量预校验</td>
+<td>null</td>
+<td>混入无效DataView；调用Save</td>
+<td>精确错误；processed=0；无部分数据入队</td>
+</tr>
+<tr>
+<td>S_invalid_id</td>
+<td>S2 输入全量预校验</td>
+<td>id</td>
+<td>混入无效DataView；调用Save</td>
+<td>精确错误；processed=0；无部分数据入队</td>
+</tr>
+<tr>
+<td>S_invalid_block</td>
+<td>S2 输入全量预校验</td>
+<td>block</td>
+<td>混入无效DataView；调用Save</td>
+<td>精确错误；processed=0；无部分数据入队</td>
+</tr>
+<tr>
+<td>S_invalid_batch</td>
+<td>S2 输入全量预校验</td>
+<td>batch</td>
+<td>混入无效DataView；调用Save</td>
+<td>精确错误；processed=0；无部分数据入队</td>
+</tr>
+<tr>
+<td>S_invalid_prevalidate</td>
+<td>S2 输入全量预校验</td>
+<td>prevalidate</td>
+<td>混入无效DataView；调用Save</td>
+<td>精确错误；processed=0；无部分数据入队</td>
+</tr>
+<tr>
+<td>P_align_11_1</td>
+<td>P1 三策略通用分配</td>
+<td>模式11 对齐1</td>
+<td>先分配1字节；再分配对齐切片；超大请求；Close</td>
+<td>地址对齐、不重叠；超大请求不破坏当前块；Close后拒绝分配</td>
+</tr>
+<tr>
+<td>P_align_11_2</td>
+<td>P1 三策略通用分配</td>
+<td>模式11 对齐2</td>
+<td>先分配1字节；再分配对齐切片；超大请求；Close</td>
+<td>地址对齐、不重叠；超大请求不破坏当前块；Close后拒绝分配</td>
+</tr>
+<tr>
+<td>P_align_11_4</td>
+<td>P1 三策略通用分配</td>
+<td>模式11 对齐4</td>
+<td>先分配1字节；再分配对齐切片；超大请求；Close</td>
+<td>地址对齐、不重叠；超大请求不破坏当前块；Close后拒绝分配</td>
+</tr>
+<tr>
+<td>P_align_11_8</td>
+<td>P1 三策略通用分配</td>
+<td>模式11 对齐8</td>
+<td>先分配1字节；再分配对齐切片；超大请求；Close</td>
+<td>地址对齐、不重叠；超大请求不破坏当前块；Close后拒绝分配</td>
+</tr>
+<tr>
+<td>P_align_11_16</td>
+<td>P1 三策略通用分配</td>
+<td>模式11 对齐16</td>
+<td>先分配1字节；再分配对齐切片；超大请求；Close</td>
+<td>地址对齐、不重叠；超大请求不破坏当前块；Close后拒绝分配</td>
+</tr>
+<tr>
+<td>P_align_11_32</td>
+<td>P1 三策略通用分配</td>
+<td>模式11 对齐32</td>
+<td>先分配1字节；再分配对齐切片；超大请求；Close</td>
+<td>地址对齐、不重叠；超大请求不破坏当前块；Close后拒绝分配</td>
+</tr>
+<tr>
+<td>P_align_11_64</td>
+<td>P1 三策略通用分配</td>
+<td>模式11 对齐64</td>
+<td>先分配1字节；再分配对齐切片；超大请求；Close</td>
+<td>地址对齐、不重叠；超大请求不破坏当前块；Close后拒绝分配</td>
+</tr>
+<tr>
+<td>P_slots_11_1</td>
+<td>P2 位图边界</td>
+<td>模式11 槽位1</td>
+<td>分配至槽位上限；再申请失败；逆序释放；多代复用</td>
+<td>失败不扩容；数据完整；归零；复用成功</td>
+</tr>
+<tr>
+<td>P_slots_11_63</td>
+<td>P2 位图边界</td>
+<td>模式11 槽位63</td>
+<td>分配至槽位上限；再申请失败；逆序释放；多代复用</td>
+<td>失败不扩容；数据完整；归零；复用成功</td>
+</tr>
+<tr>
+<td>P_slots_11_64</td>
+<td>P2 位图边界</td>
+<td>模式11 槽位64</td>
+<td>分配至槽位上限；再申请失败；逆序释放；多代复用</td>
+<td>失败不扩容；数据完整；归零；复用成功</td>
+</tr>
+<tr>
+<td>P_slots_11_65</td>
+<td>P2 位图边界</td>
+<td>模式11 槽位65</td>
+<td>分配至槽位上限；再申请失败；逆序释放；多代复用</td>
+<td>失败不扩容；数据完整；归零；复用成功</td>
+</tr>
+<tr>
+<td>P_slots_11_129</td>
+<td>P2 位图边界</td>
+<td>模式11 槽位129</td>
+<td>分配至槽位上限；再申请失败；逆序释放；多代复用</td>
+<td>失败不扩容；数据完整；归零；复用成功</td>
+</tr>
+<tr>
+<td>P_move_11</td>
+<td>P3 唯一所有权</td>
+<td>11</td>
+<td>移动构造、覆盖移动赋值、自移动、析构和显式释放</td>
+<td>源清空；旧目标释放；自移动保留；只回收一次</td>
+</tr>
+<tr>
+<td>P_align_1N_1</td>
+<td>P1 三策略通用分配</td>
+<td>模式1N 对齐1</td>
+<td>先分配1字节；再分配对齐切片；超大请求；Close</td>
+<td>地址对齐、不重叠；超大请求不破坏当前块；Close后拒绝分配</td>
+</tr>
+<tr>
+<td>P_align_1N_2</td>
+<td>P1 三策略通用分配</td>
+<td>模式1N 对齐2</td>
+<td>先分配1字节；再分配对齐切片；超大请求；Close</td>
+<td>地址对齐、不重叠；超大请求不破坏当前块；Close后拒绝分配</td>
+</tr>
+<tr>
+<td>P_align_1N_4</td>
+<td>P1 三策略通用分配</td>
+<td>模式1N 对齐4</td>
+<td>先分配1字节；再分配对齐切片；超大请求；Close</td>
+<td>地址对齐、不重叠；超大请求不破坏当前块；Close后拒绝分配</td>
+</tr>
+<tr>
+<td>P_align_1N_8</td>
+<td>P1 三策略通用分配</td>
+<td>模式1N 对齐8</td>
+<td>先分配1字节；再分配对齐切片；超大请求；Close</td>
+<td>地址对齐、不重叠；超大请求不破坏当前块；Close后拒绝分配</td>
+</tr>
+<tr>
+<td>P_align_1N_16</td>
+<td>P1 三策略通用分配</td>
+<td>模式1N 对齐16</td>
+<td>先分配1字节；再分配对齐切片；超大请求；Close</td>
+<td>地址对齐、不重叠；超大请求不破坏当前块；Close后拒绝分配</td>
+</tr>
+<tr>
+<td>P_align_1N_32</td>
+<td>P1 三策略通用分配</td>
+<td>模式1N 对齐32</td>
+<td>先分配1字节；再分配对齐切片；超大请求；Close</td>
+<td>地址对齐、不重叠；超大请求不破坏当前块；Close后拒绝分配</td>
+</tr>
+<tr>
+<td>P_align_1N_64</td>
+<td>P1 三策略通用分配</td>
+<td>模式1N 对齐64</td>
+<td>先分配1字节；再分配对齐切片；超大请求；Close</td>
+<td>地址对齐、不重叠；超大请求不破坏当前块；Close后拒绝分配</td>
+</tr>
+<tr>
+<td>P_slots_1N_1</td>
+<td>P2 位图边界</td>
+<td>模式1N 槽位1</td>
+<td>分配至槽位上限；再申请失败；逆序释放；多代复用</td>
+<td>失败不扩容；数据完整；归零；复用成功</td>
+</tr>
+<tr>
+<td>P_slots_1N_63</td>
+<td>P2 位图边界</td>
+<td>模式1N 槽位63</td>
+<td>分配至槽位上限；再申请失败；逆序释放；多代复用</td>
+<td>失败不扩容；数据完整；归零；复用成功</td>
+</tr>
+<tr>
+<td>P_slots_1N_64</td>
+<td>P2 位图边界</td>
+<td>模式1N 槽位64</td>
+<td>分配至槽位上限；再申请失败；逆序释放；多代复用</td>
+<td>失败不扩容；数据完整；归零；复用成功</td>
+</tr>
+<tr>
+<td>P_slots_1N_65</td>
+<td>P2 位图边界</td>
+<td>模式1N 槽位65</td>
+<td>分配至槽位上限；再申请失败；逆序释放；多代复用</td>
+<td>失败不扩容；数据完整；归零；复用成功</td>
+</tr>
+<tr>
+<td>P_slots_1N_129</td>
+<td>P2 位图边界</td>
+<td>模式1N 槽位129</td>
+<td>分配至槽位上限；再申请失败；逆序释放；多代复用</td>
+<td>失败不扩容；数据完整；归零；复用成功</td>
+</tr>
+<tr>
+<td>P_move_1N</td>
+<td>P3 唯一所有权</td>
+<td>1N</td>
+<td>移动构造、覆盖移动赋值、自移动、析构和显式释放</td>
+<td>源清空；旧目标释放；自移动保留；只回收一次</td>
+</tr>
+<tr>
+<td>P_align_NN_1</td>
+<td>P1 三策略通用分配</td>
+<td>模式NN 对齐1</td>
+<td>先分配1字节；再分配对齐切片；超大请求；Close</td>
+<td>地址对齐、不重叠；超大请求不破坏当前块；Close后拒绝分配</td>
+</tr>
+<tr>
+<td>P_align_NN_2</td>
+<td>P1 三策略通用分配</td>
+<td>模式NN 对齐2</td>
+<td>先分配1字节；再分配对齐切片；超大请求；Close</td>
+<td>地址对齐、不重叠；超大请求不破坏当前块；Close后拒绝分配</td>
+</tr>
+<tr>
+<td>P_align_NN_4</td>
+<td>P1 三策略通用分配</td>
+<td>模式NN 对齐4</td>
+<td>先分配1字节；再分配对齐切片；超大请求；Close</td>
+<td>地址对齐、不重叠；超大请求不破坏当前块；Close后拒绝分配</td>
+</tr>
+<tr>
+<td>P_align_NN_8</td>
+<td>P1 三策略通用分配</td>
+<td>模式NN 对齐8</td>
+<td>先分配1字节；再分配对齐切片；超大请求；Close</td>
+<td>地址对齐、不重叠；超大请求不破坏当前块；Close后拒绝分配</td>
+</tr>
+<tr>
+<td>P_align_NN_16</td>
+<td>P1 三策略通用分配</td>
+<td>模式NN 对齐16</td>
+<td>先分配1字节；再分配对齐切片；超大请求；Close</td>
+<td>地址对齐、不重叠；超大请求不破坏当前块；Close后拒绝分配</td>
+</tr>
+<tr>
+<td>P_align_NN_32</td>
+<td>P1 三策略通用分配</td>
+<td>模式NN 对齐32</td>
+<td>先分配1字节；再分配对齐切片；超大请求；Close</td>
+<td>地址对齐、不重叠；超大请求不破坏当前块；Close后拒绝分配</td>
+</tr>
+<tr>
+<td>P_align_NN_64</td>
+<td>P1 三策略通用分配</td>
+<td>模式NN 对齐64</td>
+<td>先分配1字节；再分配对齐切片；超大请求；Close</td>
+<td>地址对齐、不重叠；超大请求不破坏当前块；Close后拒绝分配</td>
+</tr>
+<tr>
+<td>P_slots_NN_1</td>
+<td>P2 位图边界</td>
+<td>模式NN 槽位1</td>
+<td>分配至槽位上限；再申请失败；逆序释放；多代复用</td>
+<td>失败不扩容；数据完整；归零；复用成功</td>
+</tr>
+<tr>
+<td>P_slots_NN_63</td>
+<td>P2 位图边界</td>
+<td>模式NN 槽位63</td>
+<td>分配至槽位上限；再申请失败；逆序释放；多代复用</td>
+<td>失败不扩容；数据完整；归零；复用成功</td>
+</tr>
+<tr>
+<td>P_slots_NN_64</td>
+<td>P2 位图边界</td>
+<td>模式NN 槽位64</td>
+<td>分配至槽位上限；再申请失败；逆序释放；多代复用</td>
+<td>失败不扩容；数据完整；归零；复用成功</td>
+</tr>
+<tr>
+<td>P_slots_NN_65</td>
+<td>P2 位图边界</td>
+<td>模式NN 槽位65</td>
+<td>分配至槽位上限；再申请失败；逆序释放；多代复用</td>
+<td>失败不扩容；数据完整；归零；复用成功</td>
+</tr>
+<tr>
+<td>P_slots_NN_129</td>
+<td>P2 位图边界</td>
+<td>模式NN 槽位129</td>
+<td>分配至槽位上限；再申请失败；逆序释放；多代复用</td>
+<td>失败不扩容；数据完整；归零；复用成功</td>
+</tr>
+<tr>
+<td>P_move_NN</td>
+<td>P3 唯一所有权</td>
+<td>NN</td>
+<td>移动构造、覆盖移动赋值、自移动、析构和显式释放</td>
+<td>源清空；旧目标释放；自移动保留；只回收一次</td>
+</tr>
+<tr>
+<td>P_config_bytes</td>
+<td>P4 构造参数</td>
+<td>bytes</td>
+<td>构造无效配置</td>
+<td>抛出invalid_argument，不启动工作</td>
+</tr>
+<tr>
+<td>P_config_max</td>
+<td>P4 构造参数</td>
+<td>max</td>
+<td>构造无效配置</td>
+<td>抛出invalid_argument，不启动工作</td>
+</tr>
+<tr>
+<td>P_config_initial</td>
+<td>P4 构造参数</td>
+<td>initial</td>
+<td>构造无效配置</td>
+<td>抛出invalid_argument，不启动工作</td>
+</tr>
+<tr>
+<td>P_config_slots</td>
+<td>P4 构造参数</td>
+<td>slots</td>
+<td>构造无效配置</td>
+<td>抛出invalid_argument，不启动工作</td>
+</tr>
+<tr>
+<td>P_config_storequeue</td>
+<td>P4 构造参数</td>
+<td>storequeue</td>
+<td>构造无效配置</td>
+<td>抛出invalid_argument，不启动工作</td>
+</tr>
+<tr>
+<td>C_direct_1_1</td>
+<td>C1 并发端到端</td>
+<td>direct；1写线程；发布1</td>
+<td>同步起跑；每线程2001条混合长度与序号；重试背压；Finish后Stop</td>
+<td>来源/逐生产者顺序/全部字节/总数一致；无残留；有界结束</td>
+</tr>
+<tr>
+<td>C_direct_1_32</td>
+<td>C1 并发端到端</td>
+<td>direct；1写线程；发布32</td>
+<td>同步起跑；每线程2001条混合长度与序号；重试背压；Finish后Stop</td>
+<td>来源/逐生产者顺序/全部字节/总数一致；无残留；有界结束</td>
+</tr>
+<tr>
+<td>C_direct_4_1</td>
+<td>C1 并发端到端</td>
+<td>direct；4写线程；发布1</td>
+<td>同步起跑；每线程2001条混合长度与序号；重试背压；Finish后Stop</td>
+<td>来源/逐生产者顺序/全部字节/总数一致；无残留；有界结束</td>
+</tr>
+<tr>
+<td>C_direct_4_32</td>
+<td>C1 并发端到端</td>
+<td>direct；4写线程；发布32</td>
+<td>同步起跑；每线程2001条混合长度与序号；重试背压；Finish后Stop</td>
+<td>来源/逐生产者顺序/全部字节/总数一致；无残留；有界结束</td>
+</tr>
+<tr>
+<td>C_buffered_1_1</td>
+<td>C1 并发端到端</td>
+<td>buffered；1写线程；发布1</td>
+<td>同步起跑；每线程2001条混合长度与序号；重试背压；Finish后Stop</td>
+<td>来源/逐生产者顺序/全部字节/总数一致；无残留；有界结束</td>
+</tr>
+<tr>
+<td>C_buffered_1_32</td>
+<td>C1 并发端到端</td>
+<td>buffered；1写线程；发布32</td>
+<td>同步起跑；每线程2001条混合长度与序号；重试背压；Finish后Stop</td>
+<td>来源/逐生产者顺序/全部字节/总数一致；无残留；有界结束</td>
+</tr>
+<tr>
+<td>C_buffered_4_1</td>
+<td>C1 并发端到端</td>
+<td>buffered；4写线程；发布1</td>
+<td>同步起跑；每线程2001条混合长度与序号；重试背压；Finish后Stop</td>
+<td>来源/逐生产者顺序/全部字节/总数一致；无残留；有界结束</td>
+</tr>
+<tr>
+<td>C_buffered_4_32</td>
+<td>C1 并发端到端</td>
+<td>buffered；4写线程；发布32</td>
+<td>同步起跑；每线程2001条混合长度与序号；重试背压；Finish后Stop</td>
+<td>来源/逐生产者顺序/全部字节/总数一致；无残留；有界结束</td>
+</tr>
+<tr>
+<td>C_seal1N</td>
+<td>C2 并发释放与回收</td>
+<td>seal1N</td>
+<td>barrier控制Seal/Release竞争或多线程分配；重复多轮</td>
+<td>活跃地址不重叠；数据不串写；每块恰回收一次</td>
+</tr>
+<tr>
+<td>C_sealNN</td>
+<td>C2 并发释放与回收</td>
+<td>sealNN</td>
+<td>barrier控制Seal/Release竞争或多线程分配；重复多轮</td>
+<td>活跃地址不重叠；数据不串写；每块恰回收一次</td>
+</tr>
+<tr>
+<td>C_allocNN</td>
+<td>C2 并发释放与回收</td>
+<td>allocNN</td>
+<td>barrier控制Seal/Release竞争或多线程分配；重复多轮</td>
+<td>活跃地址不重叠；数据不串写；每块恰回收一次</td>
+</tr>
+<tr>
+<td>C_release1N</td>
+<td>C2 并发释放与回收</td>
+<td>release1N</td>
+<td>barrier控制Seal/Release竞争或多线程分配；重复多轮</td>
+<td>活跃地址不重叠；数据不串写；每块恰回收一次</td>
+</tr>
+<tr>
+<td>M_seed_1</td>
+<td>M1 模型状态机</td>
+<td>固定种子1；2块小池</td>
+<td>1000步随机写/Flush/拒收/持有/释放/扫描；末尾排空</td>
+<td>收到的完整消息序列等于成功写入的参考模型；池最终归零</td>
+</tr>
+<tr>
+<td>M_seed_7</td>
+<td>M1 模型状态机</td>
+<td>固定种子7；2块小池</td>
+<td>1000步随机写/Flush/拒收/持有/释放/扫描；末尾排空</td>
+<td>收到的完整消息序列等于成功写入的参考模型；池最终归零</td>
+</tr>
+<tr>
+<td>M_seed_42</td>
+<td>M1 模型状态机</td>
+<td>固定种子42；2块小池</td>
+<td>1000步随机写/Flush/拒收/持有/释放/扫描；末尾排空</td>
+<td>收到的完整消息序列等于成功写入的参考模型；池最终归零</td>
+</tr>
+<tr>
+<td>M_seed_20260925</td>
+<td>M1 模型状态机</td>
+<td>固定种子20260925；2块小池</td>
+<td>1000步随机写/Flush/拒收/持有/释放/扫描；末尾排空</td>
+<td>收到的完整消息序列等于成功写入的参考模型；池最终归零</td>
+</tr>
+<tr>
+<td>D_empty</td>
+<td>D1 契约违规进程隔离</td>
+<td>empty</td>
+<td>子进程安装错误回调后触发指定违规</td>
+<td>仅指定诊断原因触发哨兵退出码86；普通崩溃/其他异常不算通过</td>
+</tr>
+<tr>
+<td>D_double</td>
+<td>D1 契约违规进程隔离</td>
+<td>double</td>
+<td>子进程安装错误回调后触发指定违规</td>
+<td>仅指定诊断原因触发哨兵退出码86；普通崩溃/其他异常不算通过</td>
+</tr>
+<tr>
+<td>D_zero</td>
+<td>D1 契约违规进程隔离</td>
+<td>zero</td>
+<td>子进程安装错误回调后触发指定违规</td>
+<td>仅指定诊断原因触发哨兵退出码86；普通崩溃/其他异常不算通过</td>
+</tr>
+<tr>
+<td>D_align3</td>
+<td>D1 契约违规进程隔离</td>
+<td>align3</td>
+<td>子进程安装错误回调后触发指定违规</td>
+<td>仅指定诊断原因触发哨兵退出码86；普通崩溃/其他异常不算通过</td>
+</tr>
+<tr>
+<td>D_align128</td>
+<td>D1 契约违规进程隔离</td>
+<td>align128</td>
+<td>子进程安装错误回调后触发指定违规</td>
+<td>仅指定诊断原因触发哨兵退出码86；普通崩溃/其他异常不算通过</td>
+</tr>
+<tr>
+<td>D_seal</td>
+<td>D1 契约违规进程隔离</td>
+<td>to_write_finished</td>
+<td>子进程安装错误回调后触发指定违规</td>
+<td>仅指定诊断原因触发哨兵退出码86；普通崩溃/其他异常不算通过</td>
+</tr>
+<tr>
+<td>D_range</td>
+<td>D1 契约违规进程隔离</td>
+<td>range</td>
+<td>子进程安装错误回调后触发指定违规</td>
+<td>仅指定诊断原因触发哨兵退出码86；普通崩溃/其他异常不算通过</td>
+</tr>
+<tr>
+<td>D_foreign</td>
+<td>D1 契约违规进程隔离</td>
+<td>foreign</td>
+<td>子进程安装错误回调后触发指定违规</td>
+<td>仅指定诊断原因触发哨兵退出码86；普通崩溃/其他异常不算通过</td>
+</tr>
+<tr>
+<td>D_livepool</td>
+<td>D1 契约违规进程隔离</td>
+<td>livepool</td>
+<td>子进程安装错误回调后触发指定违规</td>
+<td>仅指定诊断原因触发哨兵退出码86；普通崩溃/其他异常不算通过</td>
+</tr>
+<tr>
+<td>T_pointer</td>
+<td>T1 编译期契约</td>
+<td>void f(WriterQueue* p){Writer&lt;&gt; w(p,0);unsigned n=0;auto v=&n;(void)w.write(v);}</td>
+<td>先编译合法对照，再编译违规模板实例</td>
+<td>合法对照成功；违规实例失败且匹配预期static_assert诊断</td>
+</tr>
+<tr>
+<td>T_array</td>
+<td>T1 编译期契约</td>
+<td>void f(WriterQueue* p){Writer&lt;&gt; w(p,0);char v[4]{};(void)w.write(v);}</td>
+<td>先编译合法对照，再编译违规模板实例</td>
+<td>合法对照成功；违规实例失败且匹配预期static_assert诊断</td>
+</tr>
+<tr>
+<td>T_nontrivial</td>
+<td>T1 编译期契约</td>
+<td>void f(WriterQueue* p){Writer&lt;&gt; w(p,0);std::string v;(void)w.write(v);}</td>
+<td>先编译合法对照，再编译违规模板实例</td>
+<td>合法对照成功；违规实例失败且匹配预期static_assert诊断</td>
+</tr>
+<tr>
+<td>T_maximum</td>
+<td>T1 编译期契约</td>
+<td>struct Large {char data[65536];};void f(WriterQueue* p){Writer&lt;&gt; w(p,0);Large v{};(void)w.write(v);}</td>
+<td>先编译合法对照，再编译违规模板实例</td>
+<td>合法对照成功；违规实例失败且匹配预期static_assert诊断</td>
+</tr>
+<tr>
+<td>T_publish0</td>
+<td>T1 编译期契约</td>
+<td>void f(WriterQueue* p){Writer&lt;0&gt; w(p,0);}</td>
+<td>先编译合法对照，再编译违规模板实例</td>
+<td>合法对照成功；违规实例失败且匹配预期static_assert诊断</td>
+</tr>
+<tr>
+<td>U_signal</td>
+<td>U1 事件语义</td>
+<td>signal</td>
+<td>Set/TryWait/Reset/取消/无信号等待</td>
+<td>信号保留一次；正确自动清除；取消退出；超时返回false</td>
+</tr>
+<tr>
+<td>U_cancel</td>
+<td>U1 事件语义</td>
+<td>cancel</td>
+<td>Set/TryWait/Reset/取消/无信号等待</td>
+<td>信号保留一次；正确自动清除；取消退出；超时返回false</td>
+</tr>
+<tr>
+<td>U_timeout</td>
+<td>U1 事件语义</td>
+<td>timeout</td>
+<td>Set/TryWait/Reset/取消/无信号等待</td>
+<td>信号保留一次；正确自动清除；取消退出；超时返回false</td>
+</tr>
+<tr>
+<td>P_tolerant_11_old</td>
+<td>P5 宽松释放契约</td>
+<td>11；is_check_slice_release=false；old</td>
+<td>仅测试访问器注入失效代号/越界/重复释放；随后正常释放并复用</td>
+<td>无错误；outstanding和池占用不变；合法释放仍恰回收一次</td>
+</tr>
+<tr>
+<td>P_tolerant_11_zero</td>
+<td>P5 宽松释放契约</td>
+<td>11；is_check_slice_release=false；zero</td>
+<td>仅测试访问器注入失效代号/越界/重复释放；随后正常释放并复用</td>
+<td>无错误；outstanding和池占用不变；合法释放仍恰回收一次</td>
+</tr>
+<tr>
+<td>P_tolerant_11_free</td>
+<td>P5 宽松释放契约</td>
+<td>11；is_check_slice_release=false；free</td>
+<td>仅测试访问器注入失效代号/越界/重复释放；随后正常释放并复用</td>
+<td>无错误；outstanding和池占用不变；合法释放仍恰回收一次</td>
+</tr>
+<tr>
+<td>P_tolerant_11_index</td>
+<td>P5 宽松释放契约</td>
+<td>11；is_check_slice_release=false；index</td>
+<td>仅测试访问器注入失效代号/越界/重复释放；随后正常释放并复用</td>
+<td>无错误；outstanding和池占用不变；合法释放仍恰回收一次</td>
+</tr>
+<tr>
+<td>P_tolerant_11_duplicate</td>
+<td>P5 宽松释放契约</td>
+<td>11；is_check_slice_release=false；duplicate</td>
+<td>仅测试访问器注入失效代号/越界/重复释放；随后正常释放并复用</td>
+<td>无错误；outstanding和池占用不变；合法释放仍恰回收一次</td>
+</tr>
+<tr>
+<td>P_tolerant_1N_old</td>
+<td>P5 宽松释放契约</td>
+<td>1N；is_check_slice_release=false；old</td>
+<td>仅测试访问器注入失效代号/越界/重复释放；随后正常释放并复用</td>
+<td>无错误；outstanding和池占用不变；合法释放仍恰回收一次</td>
+</tr>
+<tr>
+<td>P_tolerant_1N_zero</td>
+<td>P5 宽松释放契约</td>
+<td>1N；is_check_slice_release=false；zero</td>
+<td>仅测试访问器注入失效代号/越界/重复释放；随后正常释放并复用</td>
+<td>无错误；outstanding和池占用不变；合法释放仍恰回收一次</td>
+</tr>
+<tr>
+<td>P_tolerant_1N_free</td>
+<td>P5 宽松释放契约</td>
+<td>1N；is_check_slice_release=false；free</td>
+<td>仅测试访问器注入失效代号/越界/重复释放；随后正常释放并复用</td>
+<td>无错误；outstanding和池占用不变；合法释放仍恰回收一次</td>
+</tr>
+<tr>
+<td>P_tolerant_1N_index</td>
+<td>P5 宽松释放契约</td>
+<td>1N；is_check_slice_release=false；index</td>
+<td>仅测试访问器注入失效代号/越界/重复释放；随后正常释放并复用</td>
+<td>无错误；outstanding和池占用不变；合法释放仍恰回收一次</td>
+</tr>
+<tr>
+<td>P_tolerant_1N_duplicate</td>
+<td>P5 宽松释放契约</td>
+<td>1N；is_check_slice_release=false；duplicate</td>
+<td>仅测试访问器注入失效代号/越界/重复释放；随后正常释放并复用</td>
+<td>无错误；outstanding和池占用不变；合法释放仍恰回收一次</td>
+</tr>
+<tr>
+<td>P_tolerant_NN_old</td>
+<td>P5 宽松释放契约</td>
+<td>NN；is_check_slice_release=false；old</td>
+<td>仅测试访问器注入失效代号/越界/重复释放；随后正常释放并复用</td>
+<td>无错误；outstanding和池占用不变；合法释放仍恰回收一次</td>
+</tr>
+<tr>
+<td>P_tolerant_NN_zero</td>
+<td>P5 宽松释放契约</td>
+<td>NN；is_check_slice_release=false；zero</td>
+<td>仅测试访问器注入失效代号/越界/重复释放；随后正常释放并复用</td>
+<td>无错误；outstanding和池占用不变；合法释放仍恰回收一次</td>
+</tr>
+<tr>
+<td>P_tolerant_NN_free</td>
+<td>P5 宽松释放契约</td>
+<td>NN；is_check_slice_release=false；free</td>
+<td>仅测试访问器注入失效代号/越界/重复释放；随后正常释放并复用</td>
+<td>无错误；outstanding和池占用不变；合法释放仍恰回收一次</td>
+</tr>
+<tr>
+<td>P_tolerant_NN_index</td>
+<td>P5 宽松释放契约</td>
+<td>NN；is_check_slice_release=false；index</td>
+<td>仅测试访问器注入失效代号/越界/重复释放；随后正常释放并复用</td>
+<td>无错误；outstanding和池占用不变；合法释放仍恰回收一次</td>
+</tr>
+<tr>
+<td>P_tolerant_NN_duplicate</td>
+<td>P5 宽松释放契约</td>
+<td>NN；is_check_slice_release=false；duplicate</td>
+<td>仅测试访问器注入失效代号/越界/重复释放；随后正常释放并复用</td>
+<td>无错误；outstanding和池占用不变；合法释放仍恰回收一次</td>
+</tr>
+<tr>
+<td>D_strict_old</td>
+<td>D2 严格释放契约</td>
+<td>old</td>
+<td>注入失效内部释放请求</td>
+<td>专用退出86且精确错误原因</td>
+</tr>
+<tr>
+<td>D_strict_free</td>
+<td>D2 严格释放契约</td>
+<td>free</td>
+<td>注入失效内部释放请求</td>
+<td>专用退出86且精确错误原因</td>
+</tr>
+<tr>
+<td>D_strict_index</td>
+<td>D2 严格释放契约</td>
+<td>index</td>
+<td>注入失效内部释放请求</td>
+<td>专用退出86且精确错误原因</td>
+</tr>
+<tr>
+<td>D_strict_duplicate</td>
+<td>D2 严格释放契约</td>
+<td>duplicate</td>
+<td>注入失效内部释放请求</td>
+<td>专用退出86且精确错误原因</td>
+</tr>
+<tr>
+<td>W_pressure_drop</td>
+<td>W5 写端背压</td>
+<td>drop</td>
+<td>单块池耗尽；丢弃/总超时/解除拒收后释放后重试</td>
+<td>失败记录未交付；恢复后顺序正确；blocked/dropped统计符合模式</td>
+</tr>
+<tr>
+<td>W_pressure_block_timeout</td>
+<td>W5 写端背压</td>
+<td>block_timeout</td>
+<td>单块池耗尽；丢弃/总超时/解除拒收后释放后重试</td>
+<td>失败记录未交付；恢复后顺序正确；blocked/dropped统计符合模式</td>
+</tr>
+<tr>
+<td>W_pressure_block_resume</td>
+<td>W5 写端背压</td>
+<td>block_resume</td>
+<td>单块池耗尽；丢弃/总超时/解除拒收后释放后重试</td>
+<td>失败记录未交付；恢复后顺序正确；blocked/dropped统计符合模式</td>
+</tr>
+<tr>
+<td>R_stop_fast</td>
+<td>R4 工作线程停止恢复</td>
+<td>fast</td>
+<td>拒收时停止；停止后允许接收；重启排空</td>
+<td>有界退出；数据保留；重启恰好交付一次</td>
+</tr>
+<tr>
+<td>R_stop_timeout</td>
+<td>R4 工作线程停止恢复</td>
+<td>timeout</td>
+<td>拒收时停止；停止后允许接收；重启排空</td>
+<td>有界退出；数据保留；重启恰好交付一次</td>
+</tr>
+<tr>
+<td>S_config_callback</td>
+<td>S3 QueueReader构造校验</td>
+<td>callback</td>
+<td>空回调/零重试间隔构造</td>
+<td>invalid_argument</td>
+</tr>
+<tr>
+<td>S_config_retry</td>
+<td>S3 QueueReader构造校验</td>
+<td>retry</td>
+<td>空回调/零重试间隔构造</td>
+<td>invalid_argument</td>
+</tr>
+<tr>
+<td>M_complete_11</td>
+<td>M2 统一物理块完成入口</td>
+<td>11 策略；单块池；重复 3 代；保留独占切片</td>
+<td>Writing 下分配、释放并继续分配；WriteFinished 保留切片；交出写入端后释放；显式扫描；覆盖空块和多代复用</td>
+<td>Writing/WriteFinished 不提前回收；LeaveWriter 且全释放后可回收；扫描才减少占用并每块通知一次；每代内容正确</td>
+</tr>
+<tr>
+<td>M_complete_1N</td>
+<td>M2 统一物理块完成入口</td>
+<td>1N 策略；单块池；重复 3 代；保留独占切片</td>
+<td>Writing 下分配、释放并继续分配；WriteFinished 保留切片；交出写入端后释放；显式扫描；覆盖空块和多代复用</td>
+<td>Writing/WriteFinished 不提前回收；LeaveWriter 且全释放后可回收；扫描才减少占用并每块通知一次；每代内容正确</td>
+</tr>
+<tr>
+<td>M_complete_NN</td>
+<td>M2 统一物理块完成入口</td>
+<td>NN 策略；单块池；重复 3 代；保留独占切片</td>
+<td>Writing 下分配、释放并继续分配；WriteFinished 保留切片；交出写入端后释放；显式扫描；覆盖空块和多代复用</td>
+<td>Writing/WriteFinished 不提前回收；LeaveWriter 且全释放后可回收；扫描才减少占用并每块通知一次；每代内容正确</td>
+</tr>
+<tr>
+<td>M_source_complete</td>
+<td>M2 源块共用写入结束状态</td>
+<td>单源块；写入一条消息后 finish；回调保留帧</td>
+<td>写入结束后检查源状态与物理状态；读取尾部并移交帧；再检查物理状态；释放帧</td>
+<td>写入完成时源与基类均为 WriteFinished；完成记录出队后为 LeaveWriter；用户帧阻止回收，释放后 all_released 为 true</td>
+</tr>
+<tr>
+<td>D_complete_free</td>
+<td>D1 违规操作</td>
+<td>未借出的 Free 物理块</td>
+<td>直接调用公开的 to_write_finished</td>
+<td>精确完成状态诊断和专用退出86；不能从 Free 转 WriteFinished</td>
+</tr>
+<tr>
+<td>W_layout_u8_prefix_p1</td>
+<td>W6 可选前缀的端到端字节完整性</td>
+<td>u8；prefix；p1；32字节源块</td>
+<td>混合参数及动态字节写入；核对发布位置；拒收重试；换块；完成并排空</td>
+<td>与独立编码逐字节相同；无半消息、漏数据、重复数据；源池满足回收条件</td>
+</tr>
+<tr>
+<td>W_layout_u8_prefix_p3</td>
+<td>W6 可选前缀的端到端字节完整性</td>
+<td>u8；prefix；p3；32字节源块</td>
+<td>混合参数及动态字节写入；核对发布位置；拒收重试；换块；完成并排空</td>
+<td>与独立编码逐字节相同；无半消息、漏数据、重复数据；源池满足回收条件</td>
+</tr>
+<tr>
+<td>W_layout_u8_prefix_buffered</td>
+<td>W6 可选前缀的端到端字节完整性</td>
+<td>u8；prefix；buffered；32字节源块</td>
+<td>混合参数及动态字节写入；核对发布位置；拒收重试；换块；完成并排空</td>
+<td>与独立编码逐字节相同；无半消息、漏数据、重复数据；源池满足回收条件</td>
+</tr>
+<tr>
+<td>W_slots_u8_prefix</td>
+<td>W7 按实际前缀预留切片</td>
+<td>u8；prefix；min=0；单块1100次写入</td>
+<td>每次单字节写入后扫描两次；保留全部帧；完成后再逐帧核对及释放</td>
+<td>1100个切片不耗尽；数据保持不变；全部释放前不复用源块</td>
+</tr>
+<tr>
+<td>W_layout_u8_raw_p1</td>
+<td>W6 可选前缀的端到端字节完整性</td>
+<td>u8；raw；p1；32字节源块</td>
+<td>混合参数及动态字节写入；核对发布位置；拒收重试；换块；完成并排空</td>
+<td>与独立编码逐字节相同；无半消息、漏数据、重复数据；源池满足回收条件</td>
+</tr>
+<tr>
+<td>W_layout_u8_raw_p3</td>
+<td>W6 可选前缀的端到端字节完整性</td>
+<td>u8；raw；p3；32字节源块</td>
+<td>混合参数及动态字节写入；核对发布位置；拒收重试；换块；完成并排空</td>
+<td>与独立编码逐字节相同；无半消息、漏数据、重复数据；源池满足回收条件</td>
+</tr>
+<tr>
+<td>W_layout_u8_raw_buffered</td>
+<td>W6 可选前缀的端到端字节完整性</td>
+<td>u8；raw；buffered；32字节源块</td>
+<td>混合参数及动态字节写入；核对发布位置；拒收重试；换块；完成并排空</td>
+<td>与独立编码逐字节相同；无半消息、漏数据、重复数据；源池满足回收条件</td>
+</tr>
+<tr>
+<td>W_slots_u8_raw</td>
+<td>W7 按实际前缀预留切片</td>
+<td>u8；raw；min=0；单块1100次写入</td>
+<td>每次单字节写入后扫描两次；保留全部帧；完成后再逐帧核对及释放</td>
+<td>1100个切片不耗尽；数据保持不变；全部释放前不复用源块</td>
+</tr>
+<tr>
+<td>W_limits_u8</td>
+<td>W8 长度类型及溢出</td>
+<td>u8；块恰好容纳负载及前缀</td>
+<td>先写负数、空指针、超类型范围或加法溢出长度；再写最大测试负载</td>
+<td>非法写入无副作用；u8/u16上限和u32/u64的65536字节消息正确</td>
+</tr>
+<tr>
+<td>W_layout_u16_prefix_p1</td>
+<td>W6 可选前缀的端到端字节完整性</td>
+<td>u16；prefix；p1；32字节源块</td>
+<td>混合参数及动态字节写入；核对发布位置；拒收重试；换块；完成并排空</td>
+<td>与独立编码逐字节相同；无半消息、漏数据、重复数据；源池满足回收条件</td>
+</tr>
+<tr>
+<td>W_layout_u16_prefix_p3</td>
+<td>W6 可选前缀的端到端字节完整性</td>
+<td>u16；prefix；p3；32字节源块</td>
+<td>混合参数及动态字节写入；核对发布位置；拒收重试；换块；完成并排空</td>
+<td>与独立编码逐字节相同；无半消息、漏数据、重复数据；源池满足回收条件</td>
+</tr>
+<tr>
+<td>W_layout_u16_prefix_buffered</td>
+<td>W6 可选前缀的端到端字节完整性</td>
+<td>u16；prefix；buffered；32字节源块</td>
+<td>混合参数及动态字节写入；核对发布位置；拒收重试；换块；完成并排空</td>
+<td>与独立编码逐字节相同；无半消息、漏数据、重复数据；源池满足回收条件</td>
+</tr>
+<tr>
+<td>W_slots_u16_prefix</td>
+<td>W7 按实际前缀预留切片</td>
+<td>u16；prefix；min=0；单块1100次写入</td>
+<td>每次单字节写入后扫描两次；保留全部帧；完成后再逐帧核对及释放</td>
+<td>1100个切片不耗尽；数据保持不变；全部释放前不复用源块</td>
+</tr>
+<tr>
+<td>W_layout_u16_raw_p1</td>
+<td>W6 可选前缀的端到端字节完整性</td>
+<td>u16；raw；p1；32字节源块</td>
+<td>混合参数及动态字节写入；核对发布位置；拒收重试；换块；完成并排空</td>
+<td>与独立编码逐字节相同；无半消息、漏数据、重复数据；源池满足回收条件</td>
+</tr>
+<tr>
+<td>W_layout_u16_raw_p3</td>
+<td>W6 可选前缀的端到端字节完整性</td>
+<td>u16；raw；p3；32字节源块</td>
+<td>混合参数及动态字节写入；核对发布位置；拒收重试；换块；完成并排空</td>
+<td>与独立编码逐字节相同；无半消息、漏数据、重复数据；源池满足回收条件</td>
+</tr>
+<tr>
+<td>W_layout_u16_raw_buffered</td>
+<td>W6 可选前缀的端到端字节完整性</td>
+<td>u16；raw；buffered；32字节源块</td>
+<td>混合参数及动态字节写入；核对发布位置；拒收重试；换块；完成并排空</td>
+<td>与独立编码逐字节相同；无半消息、漏数据、重复数据；源池满足回收条件</td>
+</tr>
+<tr>
+<td>W_slots_u16_raw</td>
+<td>W7 按实际前缀预留切片</td>
+<td>u16；raw；min=0；单块1100次写入</td>
+<td>每次单字节写入后扫描两次；保留全部帧；完成后再逐帧核对及释放</td>
+<td>1100个切片不耗尽；数据保持不变；全部释放前不复用源块</td>
+</tr>
+<tr>
+<td>W_limits_u16</td>
+<td>W8 长度类型及溢出</td>
+<td>u16；块恰好容纳负载及前缀</td>
+<td>先写负数、空指针、超类型范围或加法溢出长度；再写最大测试负载</td>
+<td>非法写入无副作用；u8/u16上限和u32/u64的65536字节消息正确</td>
+</tr>
+<tr>
+<td>W_layout_u32_prefix_p1</td>
+<td>W6 可选前缀的端到端字节完整性</td>
+<td>u32；prefix；p1；32字节源块</td>
+<td>混合参数及动态字节写入；核对发布位置；拒收重试；换块；完成并排空</td>
+<td>与独立编码逐字节相同；无半消息、漏数据、重复数据；源池满足回收条件</td>
+</tr>
+<tr>
+<td>W_layout_u32_prefix_p3</td>
+<td>W6 可选前缀的端到端字节完整性</td>
+<td>u32；prefix；p3；32字节源块</td>
+<td>混合参数及动态字节写入；核对发布位置；拒收重试；换块；完成并排空</td>
+<td>与独立编码逐字节相同；无半消息、漏数据、重复数据；源池满足回收条件</td>
+</tr>
+<tr>
+<td>W_layout_u32_prefix_buffered</td>
+<td>W6 可选前缀的端到端字节完整性</td>
+<td>u32；prefix；buffered；32字节源块</td>
+<td>混合参数及动态字节写入；核对发布位置；拒收重试；换块；完成并排空</td>
+<td>与独立编码逐字节相同；无半消息、漏数据、重复数据；源池满足回收条件</td>
+</tr>
+<tr>
+<td>W_slots_u32_prefix</td>
+<td>W7 按实际前缀预留切片</td>
+<td>u32；prefix；min=0；单块1100次写入</td>
+<td>每次单字节写入后扫描两次；保留全部帧；完成后再逐帧核对及释放</td>
+<td>1100个切片不耗尽；数据保持不变；全部释放前不复用源块</td>
+</tr>
+<tr>
+<td>W_layout_u32_raw_p1</td>
+<td>W6 可选前缀的端到端字节完整性</td>
+<td>u32；raw；p1；32字节源块</td>
+<td>混合参数及动态字节写入；核对发布位置；拒收重试；换块；完成并排空</td>
+<td>与独立编码逐字节相同；无半消息、漏数据、重复数据；源池满足回收条件</td>
+</tr>
+<tr>
+<td>W_layout_u32_raw_p3</td>
+<td>W6 可选前缀的端到端字节完整性</td>
+<td>u32；raw；p3；32字节源块</td>
+<td>混合参数及动态字节写入；核对发布位置；拒收重试；换块；完成并排空</td>
+<td>与独立编码逐字节相同；无半消息、漏数据、重复数据；源池满足回收条件</td>
+</tr>
+<tr>
+<td>W_layout_u32_raw_buffered</td>
+<td>W6 可选前缀的端到端字节完整性</td>
+<td>u32；raw；buffered；32字节源块</td>
+<td>混合参数及动态字节写入；核对发布位置；拒收重试；换块；完成并排空</td>
+<td>与独立编码逐字节相同；无半消息、漏数据、重复数据；源池满足回收条件</td>
+</tr>
+<tr>
+<td>W_slots_u32_raw</td>
+<td>W7 按实际前缀预留切片</td>
+<td>u32；raw；min=0；单块1100次写入</td>
+<td>每次单字节写入后扫描两次；保留全部帧；完成后再逐帧核对及释放</td>
+<td>1100个切片不耗尽；数据保持不变；全部释放前不复用源块</td>
+</tr>
+<tr>
+<td>W_limits_u32</td>
+<td>W8 长度类型及溢出</td>
+<td>u32；块恰好容纳负载及前缀</td>
+<td>先写负数、空指针、超类型范围或加法溢出长度；再写最大测试负载</td>
+<td>非法写入无副作用；u8/u16上限和u32/u64的65536字节消息正确</td>
+</tr>
+<tr>
+<td>W_layout_u64_prefix_p1</td>
+<td>W6 可选前缀的端到端字节完整性</td>
+<td>u64；prefix；p1；32字节源块</td>
+<td>混合参数及动态字节写入；核对发布位置；拒收重试；换块；完成并排空</td>
+<td>与独立编码逐字节相同；无半消息、漏数据、重复数据；源池满足回收条件</td>
+</tr>
+<tr>
+<td>W_layout_u64_prefix_p3</td>
+<td>W6 可选前缀的端到端字节完整性</td>
+<td>u64；prefix；p3；32字节源块</td>
+<td>混合参数及动态字节写入；核对发布位置；拒收重试；换块；完成并排空</td>
+<td>与独立编码逐字节相同；无半消息、漏数据、重复数据；源池满足回收条件</td>
+</tr>
+<tr>
+<td>W_layout_u64_prefix_buffered</td>
+<td>W6 可选前缀的端到端字节完整性</td>
+<td>u64；prefix；buffered；32字节源块</td>
+<td>混合参数及动态字节写入；核对发布位置；拒收重试；换块；完成并排空</td>
+<td>与独立编码逐字节相同；无半消息、漏数据、重复数据；源池满足回收条件</td>
+</tr>
+<tr>
+<td>W_slots_u64_prefix</td>
+<td>W7 按实际前缀预留切片</td>
+<td>u64；prefix；min=0；单块1100次写入</td>
+<td>每次单字节写入后扫描两次；保留全部帧；完成后再逐帧核对及释放</td>
+<td>1100个切片不耗尽；数据保持不变；全部释放前不复用源块</td>
+</tr>
+<tr>
+<td>W_layout_u64_raw_p1</td>
+<td>W6 可选前缀的端到端字节完整性</td>
+<td>u64；raw；p1；32字节源块</td>
+<td>混合参数及动态字节写入；核对发布位置；拒收重试；换块；完成并排空</td>
+<td>与独立编码逐字节相同；无半消息、漏数据、重复数据；源池满足回收条件</td>
+</tr>
+<tr>
+<td>W_layout_u64_raw_p3</td>
+<td>W6 可选前缀的端到端字节完整性</td>
+<td>u64；raw；p3；32字节源块</td>
+<td>混合参数及动态字节写入；核对发布位置；拒收重试；换块；完成并排空</td>
+<td>与独立编码逐字节相同；无半消息、漏数据、重复数据；源池满足回收条件</td>
+</tr>
+<tr>
+<td>W_layout_u64_raw_buffered</td>
+<td>W6 可选前缀的端到端字节完整性</td>
+<td>u64；raw；buffered；32字节源块</td>
+<td>混合参数及动态字节写入；核对发布位置；拒收重试；换块；完成并排空</td>
+<td>与独立编码逐字节相同；无半消息、漏数据、重复数据；源池满足回收条件</td>
+</tr>
+<tr>
+<td>W_slots_u64_raw</td>
+<td>W7 按实际前缀预留切片</td>
+<td>u64；raw；min=0；单块1100次写入</td>
+<td>每次单字节写入后扫描两次；保留全部帧；完成后再逐帧核对及释放</td>
+<td>1100个切片不耗尽；数据保持不变；全部释放前不复用源块</td>
+</tr>
+<tr>
+<td>W_limits_u64</td>
+<td>W8 长度类型及溢出</td>
+<td>u64；块恰好容纳负载及前缀</td>
+<td>先写负数、空指针、超类型范围或加法溢出长度；再写最大测试负载</td>
+<td>非法写入无副作用；u8/u16上限和u32/u64的65536字节消息正确</td>
+</tr>
+<tr>
+<td>W_layout_empty_config</td>
+<td>W7/W8 空写入和布局校验</td>
+<td>全部前缀宽度；无前缀单字节块</td>
+<td>验证槽位公式、除数及加法边界；不匹配配置构造；无前缀空写入后写单字节</td>
+<td>非法配置抛invalid_argument；无前缀空写入false；有效写入成功</td>
+</tr>
+<tr>
+<td>W_layout_registration</td>
+<td>R5 无基类异构注册</td>
+<td>u8带前缀与u64无前缀共用Service</td>
+<td>空指针、重复及错误管理器注册；两写入器各写40条后排空</td>
+<td>精确错误码不变；线程编号和字节数据分别匹配</td>
+</tr>
+<tr>
+<td>W_layout_worker</td>
+<td>R5 无基类后台读取</td>
+<td>u8带前缀与u64无前缀共用Worker</td>
+<td>启动读取线程；两个类型写入；finish及stop后核对所有字节</td>
+<td>异步搬运正确；统计准确；源块全归还</td>
+</tr>
+<tr>
+<td>T_len_signed</td>
+<td>T2 长度类型及无前缀静态约束</td>
+<td>Writer&lt;1,true,int&gt; writer(nullptr,0);</td>
+<td>合法对照编译成功后编译非法调用</td>
+<td>TDataLen must be an unqualified unsigned integer of at most 64 bits</td>
+</tr>
+<tr>
+<td>T_len_bool</td>
+<td>T2 长度类型及无前缀静态约束</td>
+<td>Writer&lt;1,true,bool&gt; writer(nullptr,0);</td>
+<td>合法对照编译成功后编译非法调用</td>
+<td>TDataLen must be an unqualified unsigned integer of at most 64 bits</td>
+</tr>
+<tr>
+<td>T_len_float</td>
+<td>T2 长度类型及无前缀静态约束</td>
+<td>Writer&lt;1,true,double&gt; writer(nullptr,0);</td>
+<td>合法对照编译成功后编译非法调用</td>
+<td>TDataLen must be an unqualified unsigned integer of at most 64 bits</td>
+</tr>
+<tr>
+<td>T_len_const</td>
+<td>T2 长度类型及无前缀静态约束</td>
+<td>Writer&lt;1,true,const unsigned&gt; writer(nullptr,0);</td>
+<td>合法对照编译成功后编译非法调用</td>
+<td>TDataLen must be an unqualified unsigned integer of at most 64 bits</td>
+</tr>
+<tr>
+<td>T_len_u8_payload</td>
+<td>T2 长度类型及无前缀静态约束</td>
+<td>struct Large {char data[256];}; void f(WriterQueue* p){Writer&lt;1,true,std::uint8_t&gt; w(p,0);Large v{};(void)w.write(v);}</td>
+<td>合法对照编译成功后编译非法调用</td>
+<td>payload does not fit TDataLen</td>
+</tr>
+<tr>
+<td>T_raw_empty</td>
+<td>T2 长度类型及无前缀静态约束</td>
+<td>void f(WriterQueue* p){Writer&lt;1,false&gt; w(p,0);(void)w.write();}</td>
+<td>合法对照编译成功后编译非法调用</td>
+<td>unframed payload must not be empty</td>
+</tr>
+<tr>
+<td>W_pressure_timeout_invalid</td>
+<td>W9 Writer 持有等待策略</td>
+<td>Writer超时为0、负数、超出时钟范围</td>
+<td>分别构造 Writer</td>
+<td>均抛出invalid_argument；拒绝发生在任何等待之前</td>
+</tr>
+<tr>
+<td>W_pressure_timeout_limit</td>
+<td>W9 Writer 持有等待策略</td>
+<td>Writer使用时钟允许的最大毫秒时限</td>
+<td>构造 Writer 后发送并排空当前块</td>
+<td>边界合法，不误拒绝</td>
+</tr>
+<tr>
+<td>W_pressure_spin_timeout</td>
+<td>W9 Writer 持有等待策略</td>
+<td>单块写入器；最大自旋次数，30ms总时限</td>
+<td>写满块，连续两次尝试写入并超时；读取后重试成功</td>
+<td>自旋受到总期限约束；累计和最大阻塞计数正确；原数据及重试数据完整</td>
+</tr>
+</tbody></table></div>
+</article><footer class="site-footer"><span>TwoBufQueue · C++ · Apache-2.0</span><span><a href="../../README.zh-CN.html">项目首页</a><a href="#top">回到顶部 ↑</a></span></footer></main></div></body></html>

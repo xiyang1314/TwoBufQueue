@@ -17,6 +17,8 @@ def main():
     manifest = json.loads((ROOT / 'release-manifest.json').read_text())
     selected = {record['path'] for record in manifest['files']}
     selected.add('release-manifest.json')
+    if 'README.html' not in selected or 'README.zh-CN.html' not in selected:
+        raise ValueError('Generate and export the HTML overviews before building Pages')
     allowed = selected | {'index.html', '.nojekyll'}
     for path in output.rglob('*'):
         if path.is_file() and path.relative_to(output).as_posix() not in allowed:
@@ -27,7 +29,7 @@ def main():
         target.parent.mkdir(parents=True, exist_ok=True)
         shutil.copy2(ROOT / name, target)
     (output / '.nojekyll').write_text('')
-    (output / 'index.html').write_text('<!doctype html><html lang="en"><meta charset="utf-8"><meta http-equiv="refresh" content="0; url=docs/index.html"><title>TwoBufQueue reports</title><a href="docs/index.html">Open TwoBufQueue performance reports</a></html>\n')
+    (output / 'index.html').write_text('<!doctype html><html lang="en"><meta charset="utf-8"><meta http-equiv="refresh" content="0; url=README.html"><title>TwoBufQueue</title><a href="README.html">Open TwoBufQueue overview</a> · <a href="README.zh-CN.html">中文介绍</a></html>\n')
     print(json.dumps({'output': str(output), 'files': len(selected) + 2}))
 
 

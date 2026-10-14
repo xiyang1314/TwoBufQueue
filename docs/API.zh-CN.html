@@ -1,0 +1,486 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>接口使用指南 · TwoBufQueue</title><link rel="stylesheet" href="assets/readme.css"></head><body><!-- Generated from docs/API.zh-CN.md; SHA256 b92b57967907ddd6046bd4c59caf0b3103aab32badd16955f672cabb323e2b70. --><a class="skip-link" href="#content">跳到正文</a><header class="site-header"><div class="header-inner"><a class="brand" href="../README.zh-CN.html"><span class="brand-symbol" aria-hidden="true"><i></i><i></i></span>TwoBufQueue<span class="brand-version">C++</span></a><nav aria-label="主要导航"><a href="../README.zh-CN.html">项目首页</a><a href="API.zh-CN.html">接口指南</a><a href="../examples/README.html">使用示例</a><a href="code/index.html">代码阅读</a><a href="index.html">性能报告</a></nav><div class="languages"><a href="API.html">EN</a><a href="API.zh-CN.html" aria-current="page">中文</a></div></div></header><div class="page-layout guide-layout" id="top"><aside class="toc"><p class="toc-label">本页目录</p><nav aria-label="目录"><a class="toc-depth-2" href="#先选择需要的用法">先选择需要的用法</a><a class="toc-depth-2" href="#一个完整的发送与接收例子">一个完整的发送与接收例子</a><a class="toc-depth-2" href="#怎么发送消息">怎么发送消息</a><a class="toc-depth-2" href="#接收回调的三个参数">接收回调的三个参数</a><a class="toc-depth-2" href="#flush-交接当前块-finish-stop-的区别">flush、交接当前块、finish、stop 的区别</a><a class="toc-depth-2" href="#两层缓存分别怎么配置">两层缓存分别怎么配置</a><a class="toc-depth-3" href="#按需分配与空闲块回收">按需分配与空闲块回收</a><a class="toc-depth-3" href="#第一层-writersourceconfig">第一层：WriterSourceConfig</a><a class="toc-depth-3" href="#第二层与后台线程-twobufqueueoptions">第二层与后台线程：TwoBufQueueOptions</a><a class="toc-depth-2" href="#什么时候读取尚未写满的当前块">什么时候读取尚未写满的当前块</a><a class="toc-depth-2" href="#连续发送-writesession">连续发送：WriteSession</a><a class="toc-depth-2" href="#多生产者与多消费者">多生产者与多消费者</a><a class="toc-depth-2" href="#同步回调-序号与批量回调">同步回调、序号与批量回调</a><a class="toc-depth-3" href="#回调在生产者线程执行">回调在生产者线程执行</a><a class="toc-depth-3" href="#消息需要序号">消息需要序号</a><a class="toc-depth-3" href="#直接处理一批数据">直接处理一批数据</a><a class="toc-depth-2" href="#正确结束程序">正确结束程序</a><a class="toc-depth-2" href="#需要自己组合底层组件时">需要自己组合底层组件时</a></nav><div class="toc-footer"><a href="../README.zh-CN.html">回到首页</a></div></aside><main id="content" class="guide-main"><section class="guide-hero"><div class="eyebrow"><span></span>TWOBUFQUEUE · 文档</div><h1>接口使用指南</h1><p>先创建生产者使用的 <code>writer</code>，再把“接收消息的回调函数”和 writer 交给 <code>TwoBufQueue</code>。生产者直接调用 writer 发送；默认情况下，队列在后台复制数据并执行回调。</p>
+<p><a href="../README.zh-CN.html">中文首页</a> · <a href="API.html">English API</a> · <a href="INTEGRATION.zh-CN.html">接入工程</a> · <a href="../examples/README.html">可运行示例</a></p>
+</section><details class="mobile-toc"><summary>本页目录</summary><nav><a class="toc-depth-2" href="#先选择需要的用法">先选择需要的用法</a><a class="toc-depth-2" href="#一个完整的发送与接收例子">一个完整的发送与接收例子</a><a class="toc-depth-2" href="#怎么发送消息">怎么发送消息</a><a class="toc-depth-2" href="#接收回调的三个参数">接收回调的三个参数</a><a class="toc-depth-2" href="#flush-交接当前块-finish-stop-的区别">flush、交接当前块、finish、stop 的区别</a><a class="toc-depth-2" href="#两层缓存分别怎么配置">两层缓存分别怎么配置</a><a class="toc-depth-3" href="#按需分配与空闲块回收">按需分配与空闲块回收</a><a class="toc-depth-3" href="#第一层-writersourceconfig">第一层：WriterSourceConfig</a><a class="toc-depth-3" href="#第二层与后台线程-twobufqueueoptions">第二层与后台线程：TwoBufQueueOptions</a><a class="toc-depth-2" href="#什么时候读取尚未写满的当前块">什么时候读取尚未写满的当前块</a><a class="toc-depth-2" href="#连续发送-writesession">连续发送：WriteSession</a><a class="toc-depth-2" href="#多生产者与多消费者">多生产者与多消费者</a><a class="toc-depth-2" href="#同步回调-序号与批量回调">同步回调、序号与批量回调</a><a class="toc-depth-3" href="#回调在生产者线程执行">回调在生产者线程执行</a><a class="toc-depth-3" href="#消息需要序号">消息需要序号</a><a class="toc-depth-3" href="#直接处理一批数据">直接处理一批数据</a><a class="toc-depth-2" href="#正确结束程序">正确结束程序</a><a class="toc-depth-2" href="#需要自己组合底层组件时">需要自己组合底层组件时</a></nav></details><article class="guide-content"><h2 id="先选择需要的用法">先选择需要的用法</h2>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>你的需求</th>
+<th>使用方式</th>
+<th>示例</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>逐条发送，后台逐条接收</td>
+<td><code>Writer&lt;&gt;</code> + <code>TwoBufQueue</code></td>
+<td><a href="code/examples/01_basic.cpp.html">基础示例</a></td>
+</tr>
+<tr>
+<td>连续快速发送多条消息</td>
+<td><code>Writer&lt;UINT32_MAX&gt;</code> + <code>WriteSession</code></td>
+<td><a href="code/examples/two_buf_queue/07_quick_write_muti_msg.cpp.html">循环发送</a></td>
+</tr>
+<tr>
+<td>每条消息带一个序号</td>
+<td><code>SeqWriter</code></td>
+<td><a href="code/examples/two_buf_queue/05_seq_writer.cpp.html">序号示例</a></td>
+</tr>
+<tr>
+<td>一次回调接收一组数据</td>
+<td><code>TwoBufQueueBatch</code></td>
+<td><a href="code/examples/two_buf_queue/02_batch_callback.cpp.html">分组接收回调</a></td>
+</tr>
+<tr>
+<td>回调就在发送线程执行</td>
+<td>非 void <code>SyncContext</code></td>
+<td><a href="code/examples/two_buf_queue/06_sync_writer.cpp.html">同步回调</a></td>
+</tr>
+<tr>
+<td>直接读取第一层，省去第二层复制</td>
+<td>自行组合 <code>ReadWorker</code> 与源回调</td>
+<td><a href="code/examples/two_buf_queue/04_layer1_callback.cpp.html">直接读取</a></td>
+</tr>
+</tbody></table></div>
+<p>第一次使用先看下面的完整例子；只有需要调参数时，再读配置部分。</p>
+<h2 id="一个完整的发送与接收例子">一个完整的发送与接收例子</h2>
+<div class="code-frame"><div class="code-label">C++</div><pre tabindex="0"><code class="language-cpp"><span class="syntax-keyword">#include</span> &lt;<span class="syntax-type">TwoBufQueue</span>.hpp&gt;
+<span class="syntax-keyword">#include</span> &lt;cstdio&gt;
+
+<span class="syntax-keyword">int</span> main() {
+    <span class="syntax-comment">// 创建发送入口；同时创建它需要的第一层内存池。</span>
+    <span class="syntax-keyword">auto</span> writer = <span class="syntax-type">TwoBufQueue</span>::make_writer&lt;<span class="syntax-type">TwoBufQueue</span>::Writer&lt;&gt;&gt;();
+
+    <span class="syntax-comment">// 接收消息的回调函数。data 和 size 是本条消息的内容与长度。</span>
+    <span class="syntax-keyword">auto</span> on_record = [](<span class="syntax-type">std</span>::int32_t source_id, <span class="syntax-keyword">const</span> <span class="syntax-type">std</span>::byte* data,
+                        <span class="syntax-type">std</span>::size_t size) <span class="syntax-keyword">noexcept</span> {
+        <span class="syntax-type">std</span>::printf(<span class="syntax-string">&quot;source=%d: %.*s\n&quot;</span>, <span class="syntax-keyword">static_cast</span>&lt;<span class="syntax-keyword">int</span>&gt;(source_id),
+                    <span class="syntax-keyword">static_cast</span>&lt;<span class="syntax-keyword">int</span>&gt;(size), reinterpret_cast&lt;<span class="syntax-keyword">const</span> char*&gt;(data));
+    };
+
+    <span class="syntax-comment">// 构造时启动后台处理；writer 必须比 queue 活得更久。</span>
+    <span class="syntax-type">TwoBufQueue</span>::<span class="syntax-type">TwoBufQueue</span> queue(on_record, writer);
+    <span class="syntax-keyword">const</span> <span class="syntax-keyword">bool</span> ok = writer.write_mem(<span class="syntax-string">&quot;hello&quot;</span>, <span class="syntax-number">5</span>);
+
+    writer.finish(); <span class="syntax-comment">// 结束发送，交接最后一块。</span>
+    queue.stop();    <span class="syntax-comment">// 等待后台处理收尾。</span>
+    <span class="syntax-keyword">return</span> ok &amp;&amp; queue.error_code() == <span class="syntax-type">TwoBufQueue</span>::ReadError::none ? <span class="syntax-number">0</span> : <span class="syntax-number">1</span>;
+}</code></pre></div><p><code>write_mem</code> 返回成功表示消息已提交，不表示回调已经执行。上例默认异步；构造配置错误或分配失败可能抛异常，实际应用可在初始化处捕获处理。</p>
+<h2 id="怎么发送消息">怎么发送消息</h2>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>函数</th>
+<th>适合发送什么</th>
+<th>返回值</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>writer.write(value...)</code></td>
+<td>整数、简单结构体等可平凡复制的值</td>
+<td><code>true</code> 成功；<code>false</code> 本次没有写入</td>
+</tr>
+<tr>
+<td><code>writer.write_mem(data, len)</code></td>
+<td>字符串、字节数组、动态内存中的内容</td>
+<td><code>true</code> 成功；<code>false</code> 本次没有写入</td>
+</tr>
+</tbody></table></div>
+<p><code>write</code> 复制参数的字节内容，多个参数紧密拼接成一条消息。它不接受指针或原生数组作为负载；要发送指针指向的内容，使用 <code>write_mem</code>。不能直接写 <code>std::string</code> 这类拥有动态内存的对象，应传它的 <code>data()</code> 和长度。</p>
+<div class="code-frame"><div class="code-label">C++</div><pre tabindex="0"><code class="language-cpp"><span class="syntax-keyword">const</span> <span class="syntax-type">std</span>::uint64_t value = <span class="syntax-number">42</span>;
+<span class="syntax-keyword">const</span> <span class="syntax-keyword">bool</span> value_ok = writer.write(value);
+<span class="syntax-keyword">const</span> <span class="syntax-keyword">bool</span> text_ok = writer.write_mem(<span class="syntax-string">&quot;hello&quot;</span>, <span class="syntax-number">5</span>);
+<span class="syntax-comment">// 检查每次返回值；失败的消息没有进入队列。</span></code></pre></div><p>异步发送会复制输入内容；调用返回后可以复用输入内存。输入地址必须有效，且不能与写入目标重叠。</p>
+<p>默认 <code>Writer&lt;&gt;</code> 为每条消息保存两字节长度，单条负载最多 65,535 字节；完整消息还必须装入一个第一层块。需要更宽的长度字段时，可使用 <code>Writer&lt;1, true, std::uint32_t&gt;</code>。传入 <code>write_mem</code> 的长度必须能放进所选类型，不能靠强制转换截断长度。当前不自动拆分超出块容量的消息。</p>
+<p>带长度的普通 Writer 支持空消息；不带长度时拒绝空负载。<strong>Session 的 <code>write_mem</code> 另外要求长度大于 0。</strong> 数据格式是本进程中的字节表示，不是跨机器序列化协议。</p>
+<h2 id="接收回调的三个参数">接收回调的三个参数</h2>
+<div class="code-frame"><div class="code-label">C++</div><pre tabindex="0"><code class="language-cpp"><span class="syntax-keyword">auto</span> on_record = [](<span class="syntax-type">std</span>::int32_t source_id, <span class="syntax-keyword">const</span> <span class="syntax-type">std</span>::byte* data,
+                    <span class="syntax-type">std</span>::size_t size) <span class="syntax-keyword">noexcept</span> {
+    <span class="syntax-comment">// 在这里处理一条消息。</span>
+};</code></pre></div><div class="table-scroll"><table>
+<thead>
+<tr>
+<th>参数</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>source_id</code></td>
+<td>你给 Writer 设置的来源编号；不是操作系统线程 ID</td>
+</tr>
+<tr>
+<td><code>data</code></td>
+<td>本条消息的负载地址，不含长度前缀</td>
+</tr>
+<tr>
+<td><code>size</code></td>
+<td>本条消息的负载字节数</td>
+</tr>
+</tbody></table></div>
+<p>默认由一个后台消费线程依次调用回调。启用多个消费线程后，回调可能并发执行，应保护共享业务状态。</p>
+<p><strong>数据指针只在这次回调期间有效。</strong> 需要交给业务线程池时，先复制到应用自己持有的存储，再分发任务。不要把 <code>data</code> 或 <code>DataBatch</code> 的借用指针直接留给异步任务。队列当前不直接接收外部 executor 参数。</p>
+<p>收到结构体字节时，先确认长度，再用 <code>std::memcpy</code> 复制到本地对象；地址可能没有按结构体对齐。逐条回调返回 <code>void</code>，没有“返回 false 要求重试”的机制。<code>noexcept</code> 回调在内部处理或记录错误，不向外抛异常。</p>
+<h2 id="flush-交接当前块-finish-stop-的区别">flush、交接当前块、finish、stop 的区别</h2>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>操作</th>
+<th>做什么</th>
+<th>之后还能继续写吗</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>writer.flush()</code></td>
+<td>发布已经写入的位置，并请求后台读取；不结束当前块</td>
+<td>可以</td>
+</tr>
+<tr>
+<td><code>writer.finish_block()</code></td>
+<td>交接当前块；下次写入再取新块</td>
+<td>可以</td>
+</tr>
+<tr>
+<td><code>writer.finish()</code></td>
+<td>结束这个 Writer，并交接最后一块</td>
+<td>不可以</td>
+</tr>
+<tr>
+<td><code>queue.stop()</code></td>
+<td>收尾复制与消费工作；需要所有生产者已经结束</td>
+<td>不应再写</td>
+</tr>
+</tbody></table></div>
+<p><code>flush()</code> 不等于等待回调完成，也不等于文件落盘。当前块扫描开启时，后台可以读取已发布的部分；关闭扫描时，flush 也不会交付尚未交接的当前块，需调用 <code>finish_block()</code> 或最终 <code>finish()</code>。</p>
+<p>正在使用 Session 时，不直接调用 writer 的这些操作。需要发布时使用 <code>session.flush()</code>；需要交接或结束时先释放 Session。</p>
+<h2 id="两层缓存分别怎么配置">两层缓存分别怎么配置</h2>
+<p>第一层属于每个 Writer；第二层属于整个队列。两层容量分别设置，不能把第一层大小当成第二层大小。</p>
+<div class="code-frame"><div class="code-label">C++</div><pre tabindex="0"><code class="language-cpp"><span class="syntax-keyword">auto</span> writer = <span class="syntax-type">TwoBufQueue</span>::make_writer&lt;<span class="syntax-type">TwoBufQueue</span>::Writer&lt;&gt;&gt;({
+    .block_size = <span class="syntax-number">4096</span>, <span class="syntax-comment">// 第一层每块 4 KiB。</span>
+    .pool_min = <span class="syntax-number">4</span>,
+    .pool_max = <span class="syntax-number">4</span>,      <span class="syntax-comment">// 第一层数据池上限约 16 KiB。</span>
+});
+<span class="syntax-type">TwoBufQueue</span>::TwoBufQueueOptions options;
+options.output_block_size = <span class="syntax-number">64</span> * <span class="syntax-number">1024</span>;
+options.output_pool_min = <span class="syntax-number">2</span>;
+options.output_pool_max = <span class="syntax-number">16</span>; <span class="syntax-comment">// 第二层数据池上限约 1 MiB。</span>
+<span class="syntax-comment">// TwoBufQueue::TwoBufQueue queue(on_record, writer, options);</span></code></pre></div><p>这里的容量计算只包含数据块，不含队列槽位、块元数据和应用输入数据。第二层单块必须能容纳第一层的最大可读范围，通常设为不小于第一层单块。</p>
+<h3 id="按需分配与空闲块回收">按需分配与空闲块回收</h3>
+<p><code>pool_min</code> 是初始块数，<code>pool_max</code> 是总块数上限。池里没有可复用块时，按需要创建新块；不必提前分配到最大数量。</p>
+<p>底层 <code>WarmPool</code> 还支持 <code>max_free_count</code>，限制保留的空闲块数。归还时，若空闲块达到此上限且总块数高于 <code>min_count</code>，多余块进入回收流程；已借出的块不会被回收。</p>
+<p>当前 <code>make_writer</code> 和 <code>TwoBufQueueOptions</code> 的快捷配置默认保留空闲块，没有提供空闲保留上限字段。需要源池自动回收时，手动构造 <code>WriterPool(min_count, max_count, factory, max_free_count)</code>，再连接源队列和 Writer。见<a href="code/examples/two_buf_queue/08_all_parameters.cpp.html">参数示例</a>。</p>
+<h3 id="第一层-writersourceconfig">第一层：WriterSourceConfig</h3>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>参数</th>
+<th>默认值</th>
+<th>用户需要理解的含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>block_size</code></td>
+<td>64 KiB</td>
+<td>一个第一层块的字节数；含消息前缀</td>
+</tr>
+<tr>
+<td><code>pool_min</code> / <code>pool_max</code></td>
+<td>2 / 8</td>
+<td>初始块数／最大块数；每个 Writer 独立</td>
+</tr>
+<tr>
+<td><code>thread_id</code></td>
+<td>0</td>
+<td>来源编号；多个 Writer 不能重复</td>
+</tr>
+<tr>
+<td><code>queue_capacity</code></td>
+<td>256</td>
+<td>块交接记录的容量，至少为 2；不是消息条数</td>
+</tr>
+<tr>
+<td><code>backpressure.mode</code></td>
+<td><code>Drop</code></td>
+<td>取不到新块时，立即失败还是等待</td>
+</tr>
+<tr>
+<td><code>backpressure.spin_count</code></td>
+<td>1,000</td>
+<td><code>Block</code> 等待前先做多少次短暂重试</td>
+</tr>
+<tr>
+<td><code>backpressure.wait_get_timeout</code></td>
+<td>5 秒</td>
+<td><code>Block</code> 的一次等待上限；含短暂重试时间</td>
+</tr>
+</tbody></table></div>
+<p><code>Drop</code> 是拒绝本次消息，应用从返回值决定是否重试或丢弃；<code>Block</code> 等到超时也会失败。可用 <code>writer.backpressure_stats()</code> 查看压力次数、拒绝条数和等待次数。多个第一层池的总容量要按 Writer 数量累计。</p>
+<h3 id="第二层与后台线程-twobufqueueoptions">第二层与后台线程：TwoBufQueueOptions</h3>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>参数</th>
+<th>默认值</th>
+<th>用户需要理解的含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>output_block_size</code></td>
+<td>64 KiB</td>
+<td>一个第二层块的数据容量</td>
+</tr>
+<tr>
+<td><code>output_frame_capacity</code></td>
+<td>64</td>
+<td>每块容纳多少段来源数据；一段可能含多条消息</td>
+</tr>
+<tr>
+<td><code>output_pool_min</code> / <code>output_pool_max</code></td>
+<td>2 / 8</td>
+<td>第二层初始块数／最大块数</td>
+</tr>
+<tr>
+<td><code>output_queue_capacity</code></td>
+<td>8</td>
+<td>输出块交接容量，与池块数分别设置</td>
+</tr>
+<tr>
+<td><code>read_layer1_thread_count</code></td>
+<td>1</td>
+<td>复制线程数，最多为 Writer 数量</td>
+</tr>
+<tr>
+<td><code>output_mode</code></td>
+<td><code>MPSC</code></td>
+<td>复制线程与消费线程的并发组合</td>
+</tr>
+<tr>
+<td><code>output_reader_count</code></td>
+<td>1</td>
+<td>消费线程数；多个线程需 <code>SPMC</code> / <code>MPMC</code></td>
+</tr>
+<tr>
+<td><code>output_reader_mode</code></td>
+<td><code>WaitSignal</code></td>
+<td>空闲时等通知；<code>Polling</code> 为持续轮询</td>
+</tr>
+<tr>
+<td><code>output_retry_wait</code></td>
+<td>1 ms</td>
+<td>批量回调拒绝后，在等待模式下的重试间隔</td>
+</tr>
+<tr>
+<td><code>cancel_claim_mode</code></td>
+<td><code>QueueTail</code></td>
+<td>批量回调拒绝后的重新领取策略</td>
+</tr>
+<tr>
+<td><code>output_enable_stats</code></td>
+<td><code>false</code></td>
+<td>是否统计输出交接队列的活动</td>
+</tr>
+</tbody></table></div>
+<p>块数上限必须大于 0，初始块数不超过上限；线程配置与输出模式要匹配。全部显式参数和约束见<a href="code/examples/two_buf_queue/08_all_parameters.cpp.html">参数示例</a>。</p>
+<h2 id="什么时候读取尚未写满的当前块">什么时候读取尚未写满的当前块</h2>
+<p>当前块就是生产者还在使用、尚未交接的第一层块。用 <code>options.read_config.is_scan_current</code> 决定后台是否读取它。</p>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>设置</th>
+<th>行为</th>
+<th>适合的需求</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>true</code>（默认）</td>
+<td>读取当前块里已经发布的消息，也读取完成块</td>
+<td>消息较稀疏，希望写完后即使生产者空闲也能被读取</td>
+</tr>
+<tr>
+<td><code>false</code></td>
+<td>只读取已经交接的完成块</td>
+<td>可以等一批到达，重视生产者提交性能</td>
+</tr>
+</tbody></table></div>
+<p>Writer 的第一个模板参数控制多久发布一次位置：<code>Writer&lt;1&gt;</code> 每条发布；<code>Writer&lt;10&gt;</code> 每十条发布；<code>Writer&lt;UINT32_MAX&gt;</code> 只在 flush、换块或结束时发布。</p>
+<p><strong>发布位置不等于唤醒线程。</strong> <code>flush()</code>、换块与 <code>finish()</code> 请求读取；仅写入一个已发布位置不代表消费者马上运行。生产者空闲前若还有不足发布批次的数据，需主动 flush；关闭扫描时则需交接当前块。</p>
+<p>常用读取参数都在 <code>options.read_config</code> 中：</p>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>参数</th>
+<th>默认值</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>idle_rescan_interval</code></td>
+<td>5 ms</td>
+<td>当前块初始扫描间隔</td>
+</tr>
+<tr>
+<td><code>idle_rescan_max_interval</code></td>
+<td>30 ms</td>
+<td>连续空扫描后间隔逐步增大的上限</td>
+</tr>
+<tr>
+<td><code>idle_spin_count</code></td>
+<td>1,000</td>
+<td>无完成块时等待前先做的短暂轮询次数</td>
+</tr>
+<tr>
+<td><code>work_wait_min_interval</code></td>
+<td>1 ms</td>
+<td>普通等待的最小时长；事件可以提前唤醒</td>
+</tr>
+<tr>
+<td><code>worker_cpu</code></td>
+<td>-1</td>
+<td>默认由系统调度；指定核心是否可用取决于平台</td>
+</tr>
+<tr>
+<td><code>finish_timeout</code></td>
+<td>5 秒</td>
+<td>收尾复制的总时限；超时需检查错误</td>
+</tr>
+<tr>
+<td><code>finish_retry_interval</code></td>
+<td>1 ms</td>
+<td>收尾未完成时再次尝试的间隔</td>
+</tr>
+</tbody></table></div>
+<p>扫描到数据后恢复初始间隔，连续空扫描则逐步延长。调小间隔不保证操作系统按相同精度调度线程。<code>finish_timeout</code> 也不会强行中断正在执行的业务回调。</p>
+<h2 id="连续发送-writesession">连续发送：WriteSession</h2>
+<p>Session 适合一次循环写很多条。它只写当前这一块，空间不足就返回，由应用的外层循环决定换块。</p>
+<p>使用异步 <code>Writer&lt;UINT32_MAX&gt;</code> 或对应的 SeqWriter；其他发布次数和同步 Writer 不提供这个接口。</p>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>接口</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>get_current_session(timeout)</code></td>
+<td>复用当前块；没有块时尝试获取</td>
+</tr>
+<tr>
+<td><code>get_next_session(timeout)</code></td>
+<td>交接当前块，然后获取下一块</td>
+</tr>
+<tr>
+<td><code>session.write(...)</code> / <code>write_mem(...)</code></td>
+<td>在这个块里写一条消息；不会自动换块</td>
+</tr>
+<tr>
+<td><code>session.flush()</code></td>
+<td>发布已写数据并通知；不换块，也不结束 Session</td>
+</tr>
+<tr>
+<td><code>session = {}</code> 或离开作用域</td>
+<td>结束使用，把位置同步回 writer；不会自动 flush</td>
+</tr>
+</tbody></table></div>
+<p>超时参数默认 0，只尝试一次；正值表示在时限内尝试获取。返回空 Session 时，用 <code>if (!session)</code> 处理失败，不能继续写。</p>
+<p>内层循环只在成功后增加消息下标。<code>insufficient_space</code> 时退出内层，先释放旧 Session，再由外层获取下一块。完整双循环见<a href="code/examples/two_buf_queue/07_quick_write_muti_msg.cpp.html">快速写多条记录</a>。</p>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>SessionWriteResult</th>
+<th>含义</th>
+<th>应用怎么处理</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>success</code></td>
+<td>这一条写入成功</td>
+<td>推进消息下标</td>
+</tr>
+<tr>
+<td><code>insufficient_space</code></td>
+<td>当前块剩余空间不足</td>
+<td>退出内层，由外层换块</td>
+</tr>
+<tr>
+<td><code>invalid_argument</code></td>
+<td><code>write_mem</code> 长度为 0</td>
+<td>修正参数；输入地址仍须由调用方保证有效</td>
+</tr>
+<tr>
+<td><code>exceeds_block_capacity</code></td>
+<td>整条消息超过块的总容量</td>
+<td>调整消息或配置；换新块也装不下</td>
+</tr>
+<tr>
+<td><code>error</code></td>
+<td>Session 无效等其他错误</td>
+<td>停止本次写入并处理错误</td>
+</tr>
+</tbody></table></div>
+<p>一个 Writer 同时只用一个 Session。Session 的寿命短于 writer，使用期间不直接调用 writer 操作；不需要 <code>close()</code>。最后是否 <code>session.flush()</code> 由应用选择，结束生产前必须先释放 Session。</p>
+<h2 id="多生产者与多消费者">多生产者与多消费者</h2>
+<p>每个生产线程使用自己的 Writer，并设置不同来源编号；同一队列中的 Writer 类型要一致。全部 Writer 在队列构造时传入，不能运行到一半再追加。</p>
+<div class="code-frame"><div class="code-label">C++</div><pre tabindex="0"><code class="language-cpp"><span class="syntax-keyword">auto</span> writer0 = <span class="syntax-type">TwoBufQueue</span>::make_writer&lt;<span class="syntax-type">TwoBufQueue</span>::Writer&lt;&gt;&gt;({.thread_id = <span class="syntax-number">0</span>});
+<span class="syntax-keyword">auto</span> writer1 = <span class="syntax-type">TwoBufQueue</span>::make_writer&lt;<span class="syntax-type">TwoBufQueue</span>::Writer&lt;&gt;&gt;({.thread_id = <span class="syntax-number">1</span>});
+<span class="syntax-type">TwoBufQueue</span>::<span class="syntax-type">TwoBufQueue</span> queue(on_record, {&amp;writer0, &amp;writer1});
+<span class="syntax-comment">// 线程 0 只操作 writer0；线程 1 只操作 writer1。</span></code></pre></div><p>一个 Writer 只允许一个生产线程写。多个 Writer 不保证全局先后顺序；增加消费线程后，也不保证业务回调完成顺序。多消费者是分担工作，不是每个消费者都收到所有消息。</p>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>输出模式</th>
+<th>复制线程（输出生产者）</th>
+<th>消费工作线程</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>SPSC</code></td>
+<td>1</td>
+<td>1</td>
+</tr>
+<tr>
+<td><code>MPSC</code></td>
+<td>一个或多个</td>
+<td>1</td>
+</tr>
+<tr>
+<td><code>SPMC</code></td>
+<td>1</td>
+<td>一个或多个</td>
+</tr>
+<tr>
+<td><code>MPMC</code></td>
+<td>一个或多个</td>
+<td>一个或多个</td>
+</tr>
+</tbody></table></div>
+<p>复制线程数用 <code>read_layer1_thread_count</code>，消费线程数用 <code>output_reader_count</code>。多消费者的共享状态应自行同步。<a href="code/examples/two_buf_queue/03_multi_thread_writer.cpp.html">多生产者示例</a> · <a href="code/examples/two_buf_queue/08_all_parameters.cpp.html">完整线程配置</a>。</p>
+<h2 id="同步回调-序号与批量回调">同步回调、序号与批量回调</h2>
+<h3 id="回调在生产者线程执行">回调在生产者线程执行</h3>
+<p>先定义回调，把它的类型放进 <code>SyncContext</code>，再传给 Writer 的最后一个模板参数：</p>
+<div class="code-frame"><div class="code-label">C++</div><pre tabindex="0"><code class="language-cpp"><span class="syntax-keyword">auto</span> on_record = [](<span class="syntax-type">std</span>::int32_t, <span class="syntax-keyword">const</span> <span class="syntax-type">std</span>::byte*, <span class="syntax-type">std</span>::size_t) <span class="syntax-keyword">noexcept</span> {
+    <span class="syntax-comment">// 接收消息的回调函数；此处就在发送线程执行。</span>
+};
+using Context = <span class="syntax-type">TwoBufQueue</span>::SyncContext&lt;decltype(on_record)&gt;;
+<span class="syntax-keyword">auto</span> writer = <span class="syntax-type">TwoBufQueue</span>::make_writer&lt;
+    <span class="syntax-type">TwoBufQueue</span>::Writer&lt;<span class="syntax-number">1</span>, <span class="syntax-keyword">true</span>, <span class="syntax-type">std</span>::uint16_t, Context&gt;&gt;();
+<span class="syntax-type">TwoBufQueue</span>::<span class="syntax-type">TwoBufQueue</span> queue(on_record, writer);
+<span class="syntax-keyword">const</span> <span class="syntax-keyword">bool</span> ok = writer.write(<span class="syntax-type">std</span>::uint64_t{<span class="syntax-number">42</span>}); <span class="syntax-comment">// 返回前回调已执行。</span>
+writer.finish();
+queue.stop();</code></pre></div><p>默认 <code>TSyncContext=void</code> 为异步；非 void 为同步。同步模式不建立第二层池或后台读取线程，单 Writer 不加互斥锁，多 Writer 的回调用共享互斥锁串行执行。多个 Writer 的同步回调不要重入同一队列。慢回调会直接拖累生产者。</p>
+<p>不要用普通 Writer 的 <code>output_mode=Sync</code> 代替这个写法；该组合会报配置错误。<code>TwoBufQueueBatch</code> 的 <code>Sync</code> 则表示在复制线程执行批量回调，含义不同。</p>
+<h3 id="消息需要序号">消息需要序号</h3>
+<p><code>SeqWriter</code> 的回调多一个序号参数：<code>void(source_id, sequence, data, size) noexcept</code>。序号分配不保证多个 Writer 的全局回调顺序。同步写法同样在最后传 Context。<a href="code/examples/two_buf_queue/05_seq_writer.cpp.html">序号示例</a>。</p>
+<h3 id="直接处理一批数据">直接处理一批数据</h3>
+<p><code>TwoBufQueueBatch</code> 把 <code>DataBatch</code> 交给回调。一段 <code>DataFrame</code> 可以包含多条记录，不是一条消息。返回 <code>true</code> 接受这一批，返回 <code>false</code> 留给后续重试；无论返回什么，都不能在回调外保存借用指针。</p>
+<p><code>Writer&lt;..., false&gt;</code> 不保存消息长度，需由业务自己识别边界，并使用批量接口。直接读第一层的源回调也是借用视图：返回 <code>true</code> 后由读取器推进位置并归还完成块，用户不自行消费或归还。<a href="code/examples/two_buf_queue/02_batch_callback.cpp.html">批量示例</a> · <a href="code/examples/two_buf_queue/04_layer1_callback.cpp.html">直接读取示例</a>。</p>
+<h2 id="正确结束程序">正确结束程序</h2>
+<ol>
+<li>停止生产；如果有生产者线程，先 join。</li>
+<li>释放所有仍在使用的 Session。</li>
+<li>对每个 Writer 调用 <code>finish()</code>。</li>
+<li>调用 <code>queue.stop()</code>，再检查 <code>queue.error_code()</code>。</li>
+<li>若回调向业务线程池派发了自有数据任务，再等待这些任务结束。</li>
+</ol>
+<p>writer、回调以及回调访问的业务资源须覆盖相应处理的寿命。收尾超时或错误不能当成已全部处理；文件 flush、关闭和落盘确认由应用自行处理。<a href="ASYNC_LOGGING.zh-CN.html">异步日志示例</a> 演示了完整收尾。</p>
+<h2 id="需要自己组合底层组件时">需要自己组合底层组件时</h2>
+<p>常规使用通过 <code>make_writer</code> 管理第一层资源。自定义创建或统计时，可显式建立 <code>WriterPool</code>、<code>make_writer_queue(pool, capacity, enable_stats)</code> 和 <code>Writer(queue, id, backpressure)</code>；这些对象都须覆盖队列运行期。</p>
+<p>每个源队列只能有一个读取器负责，单 Writer 与多 Writer 有各自的读取实现。源范围、输出 frame 与消息是不同概念；确认、重试和归还交给对应读取器，避免重复归还。参数与底层例子见<a href="../examples/README.html">示例索引</a>及<a href="code/examples/two_buf_queue/08_all_parameters.cpp.html">全部参数</a>。</p>
+</article><footer class="site-footer"><span>TwoBufQueue · C++ · Apache-2.0</span><span><a href="../README.zh-CN.html">项目首页</a><a href="#top">回到顶部 ↑</a></span></footer></main></div></body></html>

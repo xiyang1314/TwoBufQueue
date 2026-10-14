@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>read_ctrl 功能测试 · TwoBufQueue</title><link rel="stylesheet" href="../docs/assets/readme.css"></head><body><!-- Generated from test/READ_CTRL_TESTS.md; SHA256 138acf37b5185006d882c4612698e7124672eadd942435ee86d14aca456b921f. --><a class="skip-link" href="#content">跳到正文</a><header class="site-header"><div class="header-inner"><a class="brand" href="../README.zh-CN.html"><span class="brand-symbol" aria-hidden="true"><i></i><i></i></span>TwoBufQueue<span class="brand-version">C++</span></a><nav aria-label="主要导航"><a href="../README.zh-CN.html">项目首页</a><a href="../docs/API.zh-CN.html">接口指南</a><a href="../examples/README.html">使用示例</a><a href="../docs/code/index.html">代码阅读</a><a href="../docs/index.html">性能报告</a></nav></div></header><div class="page-layout guide-layout" id="top"><aside class="toc"><p class="toc-label">本页目录</p><nav aria-label="目录"><a class="toc-depth-2" href="#直接-pop-改动验证-2026-10-06">直接 pop 改动验证（2026-10-06）</a><a class="toc-depth-2" href="#构建与运行">构建与运行</a><a class="toc-depth-2" href="#本次结果-2026-10-04">本次结果（2026-10-04）</a><a class="toc-depth-2" href="#独立单-writer-实现验证-2026-10-08">独立单 Writer 实现验证（2026-10-08）</a><a class="toc-depth-2" href="#当前接口的发布检查">当前接口的发布检查</a></nav><div class="toc-footer"><a href="../README.zh-CN.html">回到首页</a></div></aside><main id="content" class="guide-main"><section class="guide-hero"><div class="eyebrow"><span></span>TWOBUFQUEUE · 文档</div><h1>read_ctrl 功能测试</h1><p>测试使用真实 Writer、LiveHandoffQueue 和 WarmPool，通过公开接口观察数据、游标、队列和统计。
+Callback 是普通模板类型，不继承样例类。失败时打印源文件、行号及断言，单个 CTest 用例可独立运行。</p>
+<table>
+<thead>
+<tr>
+<th>文件</th>
+<th align="right">用例数</th>
+<th>验证内容</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>test_read_item.cpp</code></td>
+<td align="right">5</td>
+<td>连续空扫描 5/10/20/30 ms；提前唤醒不改变状态；有数据恢复初始间隔；force；来源独立；时间及乘法溢出边界</td>
+</tr>
+<tr>
+<td><code>test_read_service.cpp</code></td>
+<td align="right">14</td>
+<td>空记录与延迟 begin；完成块优先；逐块确认；任意 false 停止整轮；无失败优先重试；全部来源固定快照；current 单次范围；无论成功失败均更新时间；取消、期限、来源注册、Writer 寿命和统计去重</td>
+</tr>
+<tr>
+<td><code>test_read_active_completion.cpp</code></td>
+<td align="right">4</td>
+<td>回调中完成当前块（成功/失败）；快照后追加交接记录；单块池背压及同地址新代号复用</td>
+</tr>
+<tr>
+<td><code>test_reader_cohesion.cpp</code></td>
+<td align="right">9</td>
+<td>3 Writer 并发即时/批量发布；单块池；current 未 send 即可读取；空间通知重试；快退后重启；慢退超时与打断；配置校验</td>
+</tr>
+<tr>
+<td><code>test_read_notifications.cpp</code></td>
+<td align="right">10</td>
+<td>来源定向读取、重复及多来源通知合并、完成块优先、全量扫描与通知重合及拒收、批量尾部 flush、回调中再次通知、超过 64 个来源、背压/取消保留、空间重试及注册后重启</td>
+</tr>
+<tr>
+<td><code>test_single_reader.cpp</code></td>
+<td align="right">18</td>
+<td>独立构造和配置校验、完成块优先、拒收及 pending 转交、current 单次快照、回调中通知、取消/期限、换块竞态、固定前缀、单块池并发、flush/finish 与空间重试、超时读取、快退重启、慢退超时及打断</td>
+</tr>
+<tr>
+<td><code>writer_queue_tests.cpp</code>、<code>test_unified_data.cpp</code></td>
+<td align="right">2</td>
+<td>外部池与队列寿命、Writer/ReadService 集成、缓冲存储拒收重试、消息边界、复制后源块回收</td>
+</tr>
+</tbody></table>
+<p>来源通知的 10 项回归通过 <code>ctest -R &#39;^read_ctrl_notification_&#39;</code> 单独运行。
+单 Writer 的 18 项回归通过 <code>ctest -R &#39;^read_ctrl_single_&#39;</code> 单独运行。
+下面带日期的结果保留当时的测试范围。原有 <code>ctest -L read_ctrl</code> 包含 34 项；完整顶层回归另含 6 项独立 LiveHandoffQueue 测试、
+Writer/切片回归和 7 个示例。旧的 <code>handoff_seq_current_batch</code> 整批失败语义由新的逐块确认用例替代；
+<code>handoff_seq_completed_priority</code> 由 <code>read_ctrl_service_completed_priority</code> 替代。</p>
+<p>时间规则直接向 ReadItem 传入可控时刻，不依赖 sleep 猜测毫秒时序。
+换块竞态由原子同步门控制，成功、拒收和快照后追加各覆盖 30 轮。
+并发测试校验每个来源的所有序号，确保无丢失、重复或乱序；每轮加入拒收并检查全部资源最终归还。
+线程测试的超时仅防止死锁，不作为性能或 p99 结论。</p>
+</section><details class="mobile-toc"><summary>本页目录</summary><nav><a class="toc-depth-2" href="#直接-pop-改动验证-2026-10-06">直接 pop 改动验证（2026-10-06）</a><a class="toc-depth-2" href="#构建与运行">构建与运行</a><a class="toc-depth-2" href="#本次结果-2026-10-04">本次结果（2026-10-04）</a><a class="toc-depth-2" href="#独立单-writer-实现验证-2026-10-08">独立单 Writer 实现验证（2026-10-08）</a><a class="toc-depth-2" href="#当前接口的发布检查">当前接口的发布检查</a></nav></details><article class="guide-content"><h2 id="直接-pop-改动验证-2026-10-06">直接 pop 改动验证（2026-10-06）</h2>
+<p>Windows、MinGW GCC 15.2.0、Debug，启用 <code>-Wall -Wextra -Werror</code>，本次选定的 46 项全部通过：</p>
+<ul>
+<li>6 项 LiveHandoffQueue：直接 pop 释放容量、资源保留到 finish、连续 pop 后按序 finish、
+过期凭证识别、池限制、50,000 条并发 FIFO（含本地 pending 重试）及发布窗口。</li>
+<li>32 项 read_ctrl：含完成块拒收后持有 pending、阻塞时追加记录、固定前缀、
+逐块确认、当前块竞态、快退后重启及超时后向新 Service 转交 pending。</li>
+<li><code>writer_queue_tests</code>、<code>test_writer</code> 两项 Writer 回归。</li>
+<li>两个顺序队列示例、基本示例、多 Writer/Reader 示例、全参数示例共 5 项。</li>
+<li><code>handoff_queue_cancel_two_buf</code>：输出 HandoffQueue 与源 pop 队列的组合。</li>
+</ul>
+<p><code>queue.pending_count()</code> 现在不包含已 pop 的记录；Reader 的 pending_finished_count() 仍包含它们。
+未运行使用旧 BigMemoryStore / ReadCallback 等接口的 <code>test_unified_data</code>、
+<code>test/func/source_lifecycle</code> 及其他历史套件；本次结果不代表全量测试或性能测试。</p>
+<h2 id="构建与运行">构建与运行</h2>
+<p>在组件根目录运行（Visual Studio 等多配置生成器同时指定 <code>--config Debug</code> / <code>-C Debug</code>）：</p>
+<div class="code-frame"><div class="code-label">Shell</div><pre tabindex="0"><code class="language-sh"><span class="syntax-keyword">cmake</span> -S . -B build-read-debug -DCMAKE_BUILD_TYPE=Debug -DBRQ_BUILD_TESTS=ON -DBRQ_BUILD_FUNCTIONAL_TESTS=OFF -DBRQ_BUILD_BENCHMARKS=OFF
+<span class="syntax-keyword">cmake</span> --build build-read-debug --parallel 4
+<span class="syntax-keyword">ctest</span> --test-dir build-read-debug -L read_ctrl --output-on-failure
+<span class="syntax-keyword">ctest</span> --test-dir build-read-debug --output-on-failure</code></pre></div><p>将 Debug 与构建目录替换为 Release 可验证优化构建。测试断言在两种构建中均开启。
+例如只运行快照后追加的竞态：</p>
+<div class="code-frame"><div class="code-label">Shell</div><pre tabindex="0"><code class="language-sh"><span class="syntax-keyword">ctest</span> --test-dir build-read-debug -R &#39;^read_ctrl_handoff_prefix_append$&#39; --output-on-failure</code></pre></div><p><code>BRQ_BUILD_FUNCTIONAL_TESTS=OFF</code> 仅关闭历史 <code>test/func</code> 跨模块套件；上述新测试由
+<code>BRQ_BUILD_TESTS=ON</code> 构建。历史套件及 benchmarks 仍有旧回调 API，尚未全部迁移，
+本次结果不代表它们或其他操作系统已经通过。</p>
+<h2 id="本次结果-2026-10-04">本次结果（2026-10-04）</h2>
+<p>Windows、MinGW GCC 15.2.0、Ninja，编译启用 <code>-Wall -Wextra -Werror</code>：</p>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>构建</th>
+<th align="right">read_ctrl（含集成）</th>
+<th align="right">全部顶层回归与示例</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Debug</td>
+<td align="right">34 / 34 通过</td>
+<td align="right">51 / 51 通过</td>
+</tr>
+<tr>
+<td>Release</td>
+<td align="right">34 / 34 通过</td>
+<td align="right">51 / 51 通过</td>
+</tr>
+</tbody></table></div>
+<p>Debug 分为核心测试与其余回归两批运行；重复验证的线程用例不重复计数。
+本次没有发现需要修改生产逻辑的问题；修改的是测试、CTest 注册和相关说明。
+未运行历史 <code>test/func</code> 套件、性能基准或其他操作系统测试。</p>
+<h2 id="独立单-writer-实现验证-2026-10-08">独立单 Writer 实现验证（2026-10-08）</h2>
+<p>macOS arm64、Homebrew Clang 18.1.8、Release：60 项读端测试、7 项 LiveHandoffQueue 和全部 13 个示例，共 80 项通过。
+单 Writer 新增 18 项；原多 Writer 通知 10 项保持通过。Debug + AddressSanitizer / UBSan 的 Service、交接竞态、Worker、通知和 single 共 55 项通过。
+未运行仍引用已移除接口的 <code>test_unified_data</code> 或历史 <code>test/func</code> 套件，也未验证 Windows / Linux。</p>
+<p>本机全示例构建使用 Homebrew libc++18（提供部分示例使用的 <code>std::jthread</code>），最低 macOS 14.4，
+并以 <code>-Wno-error=unused-function</code> 允许既有 ARM 时间实现中的未使用函数警告。没有为此修改库代码。
+性能数据与复现命令见 <code>benchmarks/SINGLE_READER.zh-CN.md</code>。</p>
+<h2 id="当前接口的发布检查">当前接口的发布检查</h2>
+<p>默认构建现在包含顶层回归、全部示例和有效的 functional 套件。旧 <code>review_20260925/repro.cpp</code> 保留为历史诊断，不再通过当前 CMake 编译；它引用的 QueueReader、ReadBatch 和 CurrentRangeReader 已被替换。</p>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>历史检查</th>
+<th>当前有效覆盖</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>address / address_multi / address_control</td>
+<td><code>test_writer</code> 的 true_argument_addresses：重载 operator&amp;，单参数、多参数、write_mem 对照，逐字节校验</td>
+</tr>
+<tr>
+<td>replace / pending_replace / restart_control</td>
+<td><code>read_ctrl_service_registration</code>、<code>read_ctrl_service_writer_lifetime</code>、<code>read_ctrl_service_generation_stats</code>、<code>read_ctrl_single_restart_current</code>；运行期间追加 Writer 已不属于受支持接口</td>
+</tr>
+<tr>
+<td>retry_boundaries</td>
+<td><code>read_ctrl_service_retry_reclassified</code>、通知的 rejected_and_cancelled / full_scan_rejection_retains_notifications、source_lifecycle_buffered_retry_without_release_notify</td>
+</tr>
+<tr>
+<td>stop_deadline / stop_fast</td>
+<td>worker / single 的 slow_stop_timeout、fast_stop_restart、interrupt_slow_stop；零/负 finish_timeout 由 validation 拒绝</td>
+</tr>
+<tr>
+<td>interval / interval_boundaries</td>
+<td><code>read_ctrl_item_saturation</code>、empty_backoff / early_scan / data_resets、worker / single 的 validation</td>
+</tr>
+</tbody></table></div>
+<p>DataBatch 现在是借用视图。并发管道测试通过 OutputQueue 的 loan 持有输出块，在四个处理线程上验证完整字节、每个来源的 FIFO、恰好一次处理，再归还 loan；直接模式先复制到应用自有数据。短负载不再受已经移除的 minimum 配置限制，<code>W_short_payload</code> 验证 3 字节消息被完整接收。<code>support/joining_thread.hpp</code> 仅用于测试与示例的析构 join，兼容尚未提供 std::jthread 的 Apple libc++；不改变生产者热路径。</p>
+<p>2026-10-11，macOS 14.4.1 / Apple M3 的实际验证：</p>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>构建</th>
+<th align="right">通过 / 总数</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>干净源码、默认 Release（Apple Clang）</td>
+<td align="right">564 / 564</td>
+</tr>
+<tr>
+<td>当前源码、默认 Release（Apple Clang）</td>
+<td align="right">564 / 564</td>
+</tr>
+<tr>
+<td>Debug、ASan / UBSan（Apple Clang）</td>
+<td align="right">564 / 564</td>
+</tr>
+<tr>
+<td>Release、启用 SPSC 对照（Clang 18.1.8）</td>
+<td align="right">567 / 567</td>
+</tr>
+</tbody></table></div>
+<p>默认构建无需关闭 functional 测试或降低警告级别。Linux、Windows、macOS 的 CI 已配置，但云端任务尚未执行；以上通过数只表示本机结果。保存的日志和检查摘要见 <a href="../docs/performance_data/release_20261011/release-checks/summary.json">发布验证数据</a>。性能测试复现脚本也通过小规模运行和续跑检查，续跑保留原始数据、运行命令和源码快照。</p>
+<p>同日完成首页和接入工作后，从筛选后的发布源码副本重新构建：默认测试 <strong>567 / 567 通过</strong>，包含新增异步日志示例及其慢回调 Block / Drop 用例。独立应用通过 add_subdirectory、本地 FetchContent、搬移安装目录后的 find_package 三种方式，每种校验 1,000 条记录。安装头文件与 CMake 导出文件没有开发源码或构建目录的绝对路径。该轮未重跑性能测量，生产 C++ 和主表 Payload 拷贝方式与原正式测量一致。<a href="../docs/release-checks/summary.json">本轮检查记录</a>。</p>
+</article><footer class="site-footer"><span>TwoBufQueue · C++ · Apache-2.0</span><span><a href="../README.zh-CN.html">项目首页</a><a href="#top">回到顶部 ↑</a></span></footer></main></div></body></html>

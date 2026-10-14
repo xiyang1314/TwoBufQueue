@@ -1,0 +1,104 @@
+{
+  "source": "docs/performance_data/burst_from_empty_20261013/formal/report_results.json",
+  "source_sha256": "a6910828f9f4d4446cce5e54a996599096d8f53ce592c62c241cfdb720fa4685",
+  "metric": "mean per-run business group-average p50 divided by 13 ns",
+  "normal_business_ns": 13,
+  "rows": [
+    {
+      "queue": "TwoBufQueue",
+      "burst_mib": 2,
+      "value": 1.2019230769230769,
+      "business_p50_ns": 15.625
+    },
+    {
+      "queue": "ReaderWriterQueue",
+      "burst_mib": 2,
+      "value": 3.0048076923076925,
+      "business_p50_ns": 39.0625
+    },
+    {
+      "queue": "rigtorp",
+      "burst_mib": 2,
+      "value": 1.2019230769230769,
+      "business_p50_ns": 15.625
+    },
+    {
+      "queue": "atomic_queue",
+      "burst_mib": 2,
+      "value": 3.338675213674359,
+      "business_p50_ns": 43.402777777766666
+    },
+    {
+      "queue": "TwoBufQueue",
+      "burst_mib": 4,
+      "value": 1.2019230769230769,
+      "business_p50_ns": 15.625
+    },
+    {
+      "queue": "ReaderWriterQueue",
+      "burst_mib": 4,
+      "value": 3.338675213674359,
+      "business_p50_ns": 43.402777777766666
+    },
+    {
+      "queue": "rigtorp",
+      "burst_mib": 4,
+      "value": 1.7361111111102565,
+      "business_p50_ns": 22.569444444433334
+    },
+    {
+      "queue": "atomic_queue",
+      "burst_mib": 4,
+      "value": 3.67254273504359,
+      "business_p50_ns": 47.74305555556667
+    },
+    {
+      "queue": "TwoBufQueue",
+      "burst_mib": 8,
+      "value": 1.2019230769230769,
+      "business_p50_ns": 15.625
+    },
+    {
+      "queue": "ReaderWriterQueue",
+      "burst_mib": 8,
+      "value": 3.605769230769231,
+      "business_p50_ns": 46.875
+    },
+    {
+      "queue": "rigtorp",
+      "burst_mib": 8,
+      "value": 3.338675213674359,
+      "business_p50_ns": 43.402777777766666
+    },
+    {
+      "queue": "atomic_queue",
+      "burst_mib": 8,
+      "value": 3.806089743592308,
+      "business_p50_ns": 49.4791666667
+    },
+    {
+      "queue": "TwoBufQueue",
+      "burst_mib": 16,
+      "value": 1.4022435897461538,
+      "business_p50_ns": 18.2291666667
+    },
+    {
+      "queue": "ReaderWriterQueue",
+      "burst_mib": 16,
+      "value": 4.4738247863230765,
+      "business_p50_ns": 58.159722222199996
+    },
+    {
+      "queue": "rigtorp",
+      "burst_mib": 16,
+      "value": 3.271901709402564,
+      "business_p50_ns": 42.534722222233334
+    },
+    {
+      "queue": "atomic_queue",
+      "burst_mib": 16,
+      "value": 7.678952991451283,
+      "business_p50_ns": 99.82638888886667
+    }
+  ]
+}

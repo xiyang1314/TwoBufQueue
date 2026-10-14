@@ -1,0 +1,413 @@
+{
+  "schema_version": 1,
+  "complete_source": true,
+  "files": [
+    {
+      "source_path": "benchmarks/plot_release.py",
+      "html_path": "docs/code/benchmarks/plot_release.py.html",
+      "language": "python",
+      "category": "benchmarks",
+      "lines": 70,
+      "bytes": 4593,
+      "sha256": "08d920278ab9e26764f178bad25f97f4733ff40ccce83fc67d18c868d9ed7add",
+      "description": "从保存的测量结果生成性能图表，不重新执行性能测试。",
+      "referenced_by": [
+        "docs/PERFORMANCE.html"
+      ]
+    },
+    {
+      "source_path": "benchmarks/run_release_benchmarks.py",
+      "html_path": "docs/code/benchmarks/run_release_benchmarks.py.html",
+      "language": "python",
+      "category": "benchmarks",
+      "lines": 219,
+      "bytes": 22978,
+      "sha256": "66eb9d1fbda521ea10122e9116d8eaf533af3fc921473247130ff3e467dcd4aa",
+      "description": "按配置运行正式测试、校验负载，并保存环境和全部测量记录。",
+      "referenced_by": [
+        "docs/PERFORMANCE.html"
+      ]
+    },
+    {
+      "source_path": "docs/performance_data/burst_instruction_1m_20261012/business_original.asm",
+      "html_path": "docs/code/docs/performance_data/burst_instruction_1m_20261012/business_original.asm.html",
+      "language": "asm",
+      "category": "assembly",
+      "lines": 45,
+      "bytes": 2241,
+      "sha256": "08406ddd772ca8ede16d6926e3ebe5b4dd75f8781fc2e47461d22c8b26289851",
+      "description": "性能分析中保存的汇编指令，可按行定位并阅读。",
+      "referenced_by": [
+        "docs/performance_burst_tail_instruction_1m.html"
+      ]
+    },
+    {
+      "source_path": "docs/performance_data/latency32_investigation_20261010/run.py",
+      "html_path": "docs/code/docs/performance_data/latency32_investigation_20261010/run.py.html",
+      "language": "python",
+      "category": "benchmarks",
+      "lines": 43,
+      "bytes": 2782,
+      "sha256": "b8404e51c569262c2ab3083753ae384223cd9faf205f9a443f7b30d048b5eaf6",
+      "description": "保存的性能实验脚本，保留当时的测试与结果处理逻辑。",
+      "referenced_by": [
+        "docs/performance_8m_32b_latency.html"
+      ]
+    },
+    {
+      "source_path": "docs/performance_data/plateau_compare_256m_zero_20261012/restyle_comparison.py",
+      "html_path": "docs/code/docs/performance_data/plateau_compare_256m_zero_20261012/restyle_comparison.py.html",
+      "language": "python",
+      "category": "benchmarks",
+      "lines": 312,
+      "bytes": 32224,
+      "sha256": "8b58ac45ab455ad60167f75f9b921ffbce182c191fba5d00514883884528a14c",
+      "description": "保存的性能实验脚本，保留当时的测试与结果处理逻辑。",
+      "referenced_by": [
+        "docs/performance_256m_zero_publish1_plateau.html",
+        "docs/performance_256m_zero_publish_max_plateau.html",
+        "docs/performance_256m_zero_session_plateau.html"
+      ]
+    },
+    {
+      "source_path": "docs/performance_data/plateau_compare_256m_zero_20261012/weighted_common_config_20261012/select_weighted.py",
+      "html_path": "docs/code/docs/performance_data/plateau_compare_256m_zero_20261012/weighted_common_config_20261012/select_weighted.py.html",
+      "language": "python",
+      "category": "benchmarks",
+      "lines": 185,
+      "bytes": 12319,
+      "sha256": "3383dfde2412f84084155decccb7c2a404e0fed6bd201122a8cd7110af4e5e5c",
+      "description": "保存的性能实验脚本，保留当时的测试与结果处理逻辑。",
+      "referenced_by": [
+        "docs/performance_256m_zero_publish1_plateau.html",
+        "docs/performance_256m_zero_publish_max_plateau.html",
+        "docs/performance_256m_zero_session_plateau.html"
+      ]
+    },
+    {
+      "source_path": "docs/performance_data/rigtorp_prefetch_20261011/push_codegen.s",
+      "html_path": "docs/code/docs/performance_data/rigtorp_prefetch_20261011/push_codegen.s.html",
+      "language": "asm",
+      "category": "assembly",
+      "lines": 66,
+      "bytes": 1465,
+      "sha256": "82a1a154b6093e112d2b0d1f7f679e57e131555c0823038f534c9ded8c76238c",
+      "description": "性能分析中保存的汇编指令，可按行定位并阅读。",
+      "referenced_by": [
+        "docs/RIGTORP_PERFORMANCE.html"
+      ]
+    },
+    {
+      "source_path": "docs/performance_data/twobufqueue_8b_regression_20261011/README.txt",
+      "html_path": "docs/code/docs/performance_data/twobufqueue_8b_regression_20261011/README.txt.html",
+      "language": "text",
+      "category": "notes",
+      "lines": 35,
+      "bytes": 6208,
+      "sha256": "d78fb2b107c5ec2076cf6c6acbef243d75c7299c5c5216d54e6b07ad333ee611",
+      "description": "保存的技术说明与实验记录。",
+      "referenced_by": [
+        "docs/PERFORMANCE.html"
+      ]
+    },
+    {
+      "source_path": "examples/01_basic.cpp",
+      "html_path": "docs/code/examples/01_basic.cpp.html",
+      "language": "cpp",
+      "category": "examples",
+      "lines": 42,
+      "bytes": 1992,
+      "sha256": "b372cddf860b8c1d382e3ed40cedc0af70223d44732cb102a7460a43b800c742",
+      "description": "最小完整流程：创建发送入口，接收消息，再结束发送并等待处理完。",
+      "referenced_by": [
+        "README.html",
+        "README.zh-CN.html",
+        "docs/API.html",
+        "docs/API.zh-CN.html",
+        "docs/INTEGRATION.zh-CN.html",
+        "examples/README.html"
+      ]
+    },
+    {
+      "source_path": "examples/components/11_warm_pool.cpp",
+      "html_path": "docs/code/examples/components/11_warm_pool.cpp.html",
+      "language": "cpp",
+      "category": "examples",
+      "lines": 48,
+      "bytes": 2519,
+      "sha256": "a70cc3acfed661c048ea8d683674886e736b65815c1aabb74dfc16933ebfbddf",
+      "description": "借出和归还池中资源，观察资源何时可再次使用。",
+      "referenced_by": [
+        "examples/README.html"
+      ]
+    },
+    {
+      "source_path": "examples/components/12_warm_pool_factory.cpp",
+      "html_path": "docs/code/examples/components/12_warm_pool_factory.cpp.html",
+      "language": "cpp",
+      "category": "examples",
+      "lines": 55,
+      "bytes": 2487,
+      "sha256": "b6fed44574f344c2376bc6799dce52d8dfbeb5a75c10512efb287fe0241e1a2a",
+      "description": "为内存池提供自定义资源创建和销毁方法。",
+      "referenced_by": [
+        "examples/README.html"
+      ]
+    },
+    {
+      "source_path": "examples/components/13_spsc_live_handoff_queue.cpp",
+      "html_path": "docs/code/examples/components/13_spsc_live_handoff_queue.cpp.html",
+      "language": "cpp",
+      "category": "examples",
+      "lines": 149,
+      "bytes": 5922,
+      "sha256": "b84abdec239131fe297543f9c2d02d222f95c16be171bce4429f4452f2b088e7",
+      "description": "读取尚在生产中的资源范围，并在处理完后归还。",
+      "referenced_by": [
+        "examples/README.html"
+      ]
+    },
+    {
+      "source_path": "examples/components/14_spsc_live_handoff_queue_claim.cpp",
+      "html_path": "docs/code/examples/components/14_spsc_live_handoff_queue_claim.cpp.html",
+      "language": "cpp",
+      "category": "examples",
+      "lines": 155,
+      "bytes": 6735,
+      "sha256": "85c4a87e31201c0cec22258d358539792a7355061646410ca90f3a3e7e1816d8",
+      "description": "领取队首资源；暂时不能处理时取消领取并保留记录。",
+      "referenced_by": [
+        "examples/README.html"
+      ]
+    },
+    {
+      "source_path": "examples/components/15_handoff_queue.cpp",
+      "html_path": "docs/code/examples/components/15_handoff_queue.cpp.html",
+      "language": "cpp",
+      "category": "examples",
+      "lines": 96,
+      "bytes": 4101,
+      "sha256": "5eb6782de0411328907ba7a85e2c5644d1be6d8d364bcd4cf71883b1b89a9621",
+      "description": "使用内置消费线程处理交接资源，拒绝时等待重试。",
+      "referenced_by": [
+        "examples/README.html"
+      ]
+    },
+    {
+      "source_path": "examples/components/16_handoff_queue_mpmc.cpp",
+      "html_path": "docs/code/examples/components/16_handoff_queue_mpmc.cpp.html",
+      "language": "cpp",
+      "category": "examples",
+      "lines": 87,
+      "bytes": 3505,
+      "sha256": "55bf689f5ab389d62e8825b0d36d9a7a6c1810820226922c238f6c3bf2f6fc35",
+      "description": "多个生产者和消费者共享交接队列，校验并发处理结果。",
+      "referenced_by": [
+        "examples/README.html"
+      ]
+    },
+    {
+      "source_path": "examples/example_support.hpp",
+      "html_path": "docs/code/examples/example_support.hpp.html",
+      "language": "cpp",
+      "category": "examples",
+      "lines": 54,
+      "bytes": 1887,
+      "sha256": "d69c038e581e952c16786e08c4fd1ff1a0de51a329e16c03463d52ea640c5332",
+      "description": "示例共用的检查、解析与辅助函数。",
+      "referenced_by": [
+        "examples/README.html"
+      ]
+    },
+    {
+      "source_path": "examples/two_buf_queue/02_batch_callback.cpp",
+      "html_path": "docs/code/examples/two_buf_queue/02_batch_callback.cpp.html",
+      "language": "cpp",
+      "category": "examples",
+      "lines": 34,
+      "bytes": 1822,
+      "sha256": "b6ca51970fe572f3c54e4a276a6b87a1300e2d9db0ddd55ffec335be0743bae7",
+      "description": "用整批回调接收数据，并读取每个来源范围中的记录。",
+      "referenced_by": [
+        "README.html",
+        "README.zh-CN.html",
+        "docs/API.html",
+        "docs/API.zh-CN.html",
+        "examples/README.html"
+      ]
+    },
+    {
+      "source_path": "examples/two_buf_queue/03_multi_thread_writer.cpp",
+      "html_path": "docs/code/examples/two_buf_queue/03_multi_thread_writer.cpp.html",
+      "language": "cpp",
+      "category": "examples",
+      "lines": 63,
+      "bytes": 3476,
+      "sha256": "ed8e6737732b8d5342e2fa156c2428cbcbceb08b565aa7abcd3b1dc4569919c2",
+      "description": "多个生产线程各用自己的 Writer，后台接收并校验消息。",
+      "referenced_by": [
+        "README.html",
+        "README.zh-CN.html",
+        "docs/API.html",
+        "docs/API.zh-CN.html",
+        "examples/README.html"
+      ]
+    },
+    {
+      "source_path": "examples/two_buf_queue/04_layer1_callback.cpp",
+      "html_path": "docs/code/examples/two_buf_queue/04_layer1_callback.cpp.html",
+      "language": "cpp",
+      "category": "examples",
+      "lines": 62,
+      "bytes": 3252,
+      "sha256": "89066b9f90e85a69b702d7ab24a7ccabca0e7ec1a0398dff6bcc4afd46464411",
+      "description": "直接读取第一层源块，省去第二层复制。",
+      "referenced_by": [
+        "README.html",
+        "README.zh-CN.html",
+        "docs/API.html",
+        "docs/API.zh-CN.html",
+        "examples/README.html"
+      ]
+    },
+    {
+      "source_path": "examples/two_buf_queue/05_seq_writer.cpp",
+      "html_path": "docs/code/examples/two_buf_queue/05_seq_writer.cpp.html",
+      "language": "cpp",
+      "category": "examples",
+      "lines": 74,
+      "bytes": 3796,
+      "sha256": "8e37b60971670ffef6c50e5d3ad77c9b4e9cb2eb8d1e458275f8789cd743530a",
+      "description": "给消息分配序号，并通过回调读取来源、序号和负载。",
+      "referenced_by": [
+        "README.html",
+        "README.zh-CN.html",
+        "docs/API.html",
+        "docs/API.zh-CN.html",
+        "examples/README.html"
+      ]
+    },
+    {
+      "source_path": "examples/two_buf_queue/06_sync_writer.cpp",
+      "html_path": "docs/code/examples/two_buf_queue/06_sync_writer.cpp.html",
+      "language": "cpp",
+      "category": "examples",
+      "lines": 49,
+      "bytes": 2772,
+      "sha256": "d75cd0f892937f9b742018a797e8008cfe98062a37cb2ff51e5648bbe06bae0a",
+      "description": "在生产者线程执行接收回调；write 返回前完成消息处理。",
+      "referenced_by": [
+        "README.html",
+        "README.zh-CN.html",
+        "docs/API.html",
+        "docs/API.zh-CN.html",
+        "examples/README.html"
+      ]
+    },
+    {
+      "source_path": "examples/two_buf_queue/07_quick_write_muti_msg.cpp",
+      "html_path": "docs/code/examples/two_buf_queue/07_quick_write_muti_msg.cpp.html",
+      "language": "cpp",
+      "category": "examples",
+      "lines": 48,
+      "bytes": 2825,
+      "sha256": "9ee581e8758ca8ddf0ccac3fdfb4f63c5b789eff80cdbfeb695932252cb4acc7",
+      "description": "用双层循环快速写多条消息：内层写当前块，外层明确选择下一块。",
+      "referenced_by": [
+        "README.html",
+        "README.zh-CN.html",
+        "docs/API.html",
+        "docs/API.zh-CN.html",
+        "examples/README.html"
+      ]
+    },
+    {
+      "source_path": "examples/two_buf_queue/08_all_parameters.cpp",
+      "html_path": "docs/code/examples/two_buf_queue/08_all_parameters.cpp.html",
+      "language": "cpp",
+      "category": "examples",
+      "lines": 111,
+      "bytes": 8895,
+      "sha256": "73c58b4b8538c22185f5cd31357ef7e5f8a44fba7c7bdcea0aeba66327b84216",
+      "description": "逐项展示 Writer、两层内存池、读取与消费线程的全部参数。",
+      "referenced_by": [
+        "README.html",
+        "README.zh-CN.html",
+        "docs/API.html",
+        "docs/API.zh-CN.html",
+        "examples/README.html"
+      ]
+    },
+    {
+      "source_path": "examples/two_buf_queue/09_async_logger.cpp",
+      "html_path": "docs/code/examples/two_buf_queue/09_async_logger.cpp.html",
+      "language": "cpp",
+      "category": "examples",
+      "lines": 114,
+      "bytes": 6040,
+      "sha256": "4ebeb34f63fa9b70c104a9c819d77093e33ab99324c95cfc940f2d31310313f5",
+      "description": "把业务日志交给后台写文件，演示缓存满时的处理与安全退出。",
+      "referenced_by": [
+        "README.html",
+        "README.zh-CN.html",
+        "docs/ASYNC_LOGGING.html",
+        "docs/ASYNC_LOGGING.zh-CN.html",
+        "examples/README.html"
+      ]
+    },
+    {
+      "source_path": "src/base_components/HandoffQueue/handoff_queue.hpp",
+      "html_path": "docs/code/src/base_components/HandoffQueue/handoff_queue.hpp.html",
+      "language": "cpp",
+      "category": "components",
+      "lines": 102,
+      "bytes": 5915,
+      "sha256": "451fac983f6fb8af9feadbdcaf9e93519bfbdb831b37ae0263181b82a9912747",
+      "description": "资源交接队列实现，包含多种并发模式和消费工作线程。",
+      "referenced_by": [
+        "examples/README.html"
+      ]
+    },
+    {
+      "source_path": "src/base_components/LiveHandoffQueue/spsc_live_handoff_queue.hpp",
+      "html_path": "docs/code/src/base_components/LiveHandoffQueue/spsc_live_handoff_queue.hpp.html",
+      "language": "cpp",
+      "category": "components",
+      "lines": 353,
+      "bytes": 16643,
+      "sha256": "04322881bf4b2a0176bc6c3ef1889f8e23d4f6ab7eaa44c4053fdfe3b3ed549f",
+      "description": "单生产者与单消费者之间交接资源，并支持读取正在生产的内容。",
+      "referenced_by": [
+        "examples/README.html"
+      ]
+    },
+    {
+      "source_path": "src/base_components/WarmPool/warm_pool.hpp",
+      "html_path": "docs/code/src/base_components/WarmPool/warm_pool.hpp.html",
+      "language": "cpp",
+      "category": "components",
+      "lines": 375,
+      "bytes": 16354,
+      "sha256": "cdc88f35642e4c81bfbb9072027fe56d1592180a070bef22afadd6954c0bd641",
+      "description": "资源池实现：创建、借出、归还和容量控制。",
+      "referenced_by": [
+        "README.html",
+        "README.zh-CN.html",
+        "examples/README.html"
+      ]
+    },
+    {
+      "source_path": "test/integration/CMakeLists.txt",
+      "html_path": "docs/code/test/integration/CMakeLists.txt.html",
+      "language": "cmake",
+      "category": "build",
+      "lines": 32,
+      "bytes": 1380,
+      "sha256": "a2f8d5d000fab5520e0a77f6d68e2c0d93b8ca572d8a0630e12eaf4c3f37b114",
+      "description": "验证本地源码、FetchContent 和安装包三种工程接入方式。",
+      "referenced_by": [
+        "docs/INTEGRATION.html"
+      ]
+    }
+  ]
+}

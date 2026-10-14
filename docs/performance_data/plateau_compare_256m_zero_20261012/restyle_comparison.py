@@ -259,20 +259,36 @@ def main():
                     'additional_measurement_audit':extra_audit,
                     'same_configuration_all_metrics':True,'same_tunable_configuration_all_lengths':True}
         embedded_json = json.dumps(embedded,ensure_ascii=False).replace('<','\\u003c')
+        mode_explanation = {
+            'session': 'TwoBufQueue 使用单块 WriteSession，在当前块内连续写入多条消息；块满时由外层循环获取下一块。',
+            'publish_max': 'TwoBufQueue 使用普通 write，只在块交接时发布进度，不扫描当前未完成块。',
+            'publish1': 'TwoBufQueue 使用普通 write，每写入一条消息就发布进度，并开启当前块扫描。',
+        }[mode]
+        metric_guide = f'''<section id="measurement"><div class="section-head"><h2>本报告测什么？</h2><p class="sub">测生产者向队列发送消息的吞吐与耗时：消息交给队列有多快，生产者每条消息要花多少时间。</p></div><div class="intro">
+<p>对比 TwoBufQueue、ReaderWriterQueue、rigtorp/SPSCQueue 和 atomic_queue，消息长度为 8 / 16 / 32 / 64 B。<strong>{esc(mode_explanation)}</strong>业务回调循环次数为 0，消费者仍正常接收消息并调用回调。</p>
+<p><strong>测试流程：</strong>提前准备消息 → 生产者连续发送并计时 → 停止计时 → 等待本轮消息消费完成。所有队列采用相同的消息条数和长度。</p>
+<p><strong>计时范围：</strong>计入生产者发送阶段的消息复制、进度发布、发送中发生的申请块或换块，以及可能的重试等待。输入准备、轮末交接与回调排空在计时外执行；复制和消费线程同时运行，仍会影响生产者的实际速度。</p>
+<p><strong>吞吐：</strong>成功发送的消息总数 ÷ 生产者累计发送时间，单位 M条/s（每秒百万条消息），越高越好。数据吞吐 GB/s 按消息净负载字节数计算。</p>
+<p><strong>p50、p99、p999 都是生产者线程发送消息耗时的分位数，越低越好。</strong>为精确测量很短的发送操作，每连续发送 1,000 条成功消息计时一次，再将这组时间除以 1,000，得到一个“平均每条发送耗时”样本。</p>
+<p><strong>p50（50% 分位）：</strong>在一次运行中，50% 的分组样本，其平均每条发送耗时不超过这个值。</p>
+<p><strong>p99（99% 分位）：</strong>在一次运行中，99% 的分组样本，其平均每条发送耗时不超过这个值。</p>
+<p><strong>p999（99.9% 分位）：</strong>在一次运行中，99.9% 的分组样本，其平均每条发送耗时不超过这个值。</p>
+<p>每次运行分别计算这些分位数，表中再取三次运行结果的平均值。这里衡量的是<strong>生产者提交消息的开销</strong>：分位数来自每组 1,000 条的平均耗时，不是单次 write 调用的分位数，也不是从发送到消费者收到消息的端到端延时。</p>
+</div></section>'''
         title = f'256 MiB 缓存 · 回调循环为 0 · {mode_name}'
         content = f'''<!doctype html>
 <html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>{esc(title)} · SPSC 性能对比</title><style>{css}</style></head>
 <body data-mode="{mode}"><header><div class="wrap"><div class="eyebrow">TWOBUFQUEUE / SPSC BENCHMARK</div><h1>{esc(title)}</h1>
-<p>与 ReaderWriterQueue、rigtorp/SPSCQueue、atomic_queue 对比。按消息长度分组，所有结果来自已完成的同一批测量。</p>
+<p>比较生产者线程把消息发送到队列的速度和耗时：吞吐越高越好，生产者发送耗时的 p50 / p99 / p999 越低越好。与 ReaderWriterQueue、rigtorp/SPSCQueue、atomic_queue 对比。</p>
 <div class="chips"><span class="chip">每次 10,000,000 条</span><span class="chip">3 次平均</span><span class="chip">8 / 16 / 32 / 64 B 共用参数</span><span class="chip">权重 35 / 30 / 20 / 15</span><span class="chip">publish_count = {pub_label}</span><span class="chip">is_scan_current = {scan_label}</span><span class="chip">高 QoS · 未硬绑核</span></div></div></header>
-<nav class="nav"><div class="wrap"><div class="nav-links"><a href="#overview">概览</a><a href="#performance">性能对比</a><a href="#runs">三次原始结果</a><a href="#parameters">全部参数</a><a href="#method">测试方法</a></div><div class="actions"><button id="export-json">导出 JSON</button><button onclick="window.print()">打印</button></div></div></nav>
-<main class="wrap"><div class="footer">其他模式：{peers}</div>
+<nav class="nav"><div class="wrap"><div class="nav-links"><a href="#measurement">测什么</a><a href="#overview">概览</a><a href="#performance">性能对比</a><a href="#runs">三次原始结果</a><a href="#parameters">全部参数</a><a href="#method">测试方法</a></div><div class="actions"><button id="export-json">导出 JSON</button><button onclick="window.print()">打印</button></div></div></nav>
+<main class="wrap">{metric_guide}<div class="footer">其他模式：{peers}</div>
 <section id="overview"><div class="section-head"><h2>吞吐概览</h2><p class="sub">同一长度的四个队列放在一起；吞吐单位 M条/s。</p><div class="status"><span class="tag">完整数据与顺序校验通过</span><span class="tag">按四项指标选定共同参数</span><span class="tag">各队列每份报告只用一套调优参数</span></div></div>
 <div class="intro"><p>TwoBufQueue 两层数据池各固定 <strong>256 MiB</strong>，合计 512 MiB；原生 SPSC 的消息存储预算为 256 MiB。备用槽、padding 计入预算，控制结构另计。</p><p><strong>每个队列的吞吐、p50、p99、p999 使用同一套参数，8 / 16 / 32 / 64 B 也共用这套调优参数。</strong>按权重 35% / 30% / 20% / 15% 综合选参，四种长度等权参与。原生容量随消息长度按固定字节预算推导，复制策略沿用各长度已固定的负载实现。</p><p>此次用共同参数对应的遍历阶段三次实测值更新表格，因此数值与旧版逐项独立选优不同；原始记录保留，ReaderWriterQueue 的邻域补测另外保存。</p></div><div class="metrics-grid">{''.join(cards)}</div></section>
 <section id="performance" class="matrix"><div class="section-head"><h2>性能对比</h2><p class="sub">同消息长度使用相同背景色；TwoBufQueue 整行加粗并描边。吞吐下方显示三次测量的最小值与最大值。</p></div>
 <div class="filter"><span>消息长度</span><button data-filter="all" aria-pressed="true">全部</button>{''.join(f'<button data-filter="{n}" aria-pressed="false">{n} B</button>' for n in LENGTHS)}</div>
-<div class="table-scroll"><table id="comparison-table"><thead><tr><th>实现 / 复制方式</th><th>吞吐<br><span class="unit">M条/s</span></th><th>数据吞吐<br><span class="unit">GB/s</span></th><th>p50<br><span class="unit">ns/条</span></th><th>p99<br><span class="unit">ns/条</span></th><th>p999<br><span class="unit">ns/条</span></th><th>背压%</th></tr></thead>{''.join(performance)}</table></div>
-<p class="table-note">延时是每组 <strong>1,000 次成功写入的平均耗时</strong>的分位数，再对三次运行取平均；并非单次调用或端到端延时。同一行所有指标来自同一配置；同一队列的四种长度也共用调优参数。综合选参是一套参数下的取舍，各单项不再声称分别最优。点击任一指标均跳到该行同一套完整参数。<strong>背压% = 背压消息条数 ÷ 总消息条数 × 100%</strong>，使用三次吞吐测量的合计数；下方同时列出分子 / 分母。每条消息即使写入失败多次，也只算一条背压消息。</p></section>
+<div class="table-scroll"><table id="comparison-table"><thead><tr><th>实现 / 复制方式</th><th>吞吐<br><span class="unit">M条/s</span></th><th>数据吞吐<br><span class="unit">GB/s</span></th><th>生产者发送耗时<br>p50 <span class="unit">ns/条</span></th><th>生产者发送耗时<br>p99 <span class="unit">ns/条</span></th><th>生产者发送耗时<br>p999 <span class="unit">ns/条</span></th><th>背压%</th></tr></thead>{''.join(performance)}</table></div>
+<p class="table-note">表中的 p50 / p99 / p999 衡量<strong>生产者线程发送消息的耗时</strong>：先统计每组 <strong>1,000 次成功写入的平均耗时</strong>的分位数，再对三次运行取平均；并非单次调用或端到端延时。同一行所有指标来自同一配置；同一队列的四种长度也共用调优参数。综合选参是一套参数下的取舍，各单项不再声称分别最优。点击任一指标均跳到该行同一套完整参数。<strong>背压% = 背压消息条数 ÷ 总消息条数 × 100%</strong>，使用三次吞吐测量的合计数；下方同时列出分子 / 分母。每条消息即使写入失败多次，也只算一条背压消息。</p></section>
 <section id="runs"><div class="section-head"><h2>三次原始结果</h2><p class="sub">每项均保留三次实测，不删除慢结果；四项指标使用同一个参数编号。</p></div>{''.join(raw_tables)}<p class="table-note">吞吐与延时分别运行三次，运行模式和随机种子按实际记录列出。p999 每次来自约 10,000 个分组样本，尾部约 10 个，容易受调度波动影响。</p></section>
 <section id="parameters"><div class="section-head"><h2>全部初始化参数</h2><p class="sub">按队列只列一次初始化参数，所有消息长度共用。容量条数等随长度变化的值用取值规则列出，完整运行参数保存在导出的 JSON 与原始记录中。</p></div><div class="params-actions actions"><button id="expand-params">展开全部参数</button><button id="collapse-params">折叠全部参数</button></div>{''.join(parameter_groups)}</section>
 <section id="method"><div class="section-head"><h2>测试方法与环境</h2><p class="sub">沿用现有结果、负载、复制方式和参数选择规则。</p></div><div class="method-grid">

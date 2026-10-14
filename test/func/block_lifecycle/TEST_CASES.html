@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>底层块生命周期用例 · TwoBufQueue</title><link rel="stylesheet" href="../../../docs/assets/readme.css"></head><body><!-- Generated from test/func/block_lifecycle/TEST_CASES.md; SHA256 8e707fe5b92e855404554e04f0a11b1fcea50645b0fb75aa6b032bbffabbc2ab. --><a class="skip-link" href="#content">跳到正文</a><header class="site-header"><div class="header-inner"><a class="brand" href="../../../README.zh-CN.html"><span class="brand-symbol" aria-hidden="true"><i></i><i></i></span>TwoBufQueue<span class="brand-version">C++</span></a><nav aria-label="主要导航"><a href="../../../README.zh-CN.html">项目首页</a><a href="../../../docs/API.zh-CN.html">接口指南</a><a href="../../../examples/README.html">使用示例</a><a href="../../../docs/code/index.html">代码阅读</a><a href="../../../docs/index.html">性能报告</a></nav></div></header><div class="page-layout guide-layout" id="top"><aside class="toc"><p class="toc-label">本页目录</p><nav aria-label="目录"></nav><div class="toc-footer"><a href="../../../README.zh-CN.html">回到首页</a></div></aside><main id="content" class="guide-main"><section class="guide-hero"><div class="eyebrow"><span></span>TWOBUFQUEUE · 文档</div><h1>底层块生命周期用例</h1></section><details class="mobile-toc"><summary>本页目录</summary><nav></nav></details><article class="guide-content"><p>测试入口为本目录的 tests.cpp 和 CMakeLists.txt，CTest 名称使用 <code>block_lifecycle_</code> 前缀。
+三种策略分别独立实例化，不通过编译开关切换全局模式。</p>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>用例</th>
+<th>步骤与预期</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>state_single、state_1n、state_nn</td>
+<td>Writing 下分配及释放，WriteFinished 仍不能回收；LeaveWriter 后下一次 get 自动扫描、重置并复用原地址</td>
+</tr>
+<tr>
+<td>read_progress</td>
+<td>发布 32 字节，只读取并释放前 16 字节；交出块后仍不能复用，尾部登记和释放后才可回收</td>
+</tr>
+<tr>
+<td>force_ignore</td>
+<td>非严格释放检查：强制回收后及复用后释放旧句柄，不修改新代位图、计数或数据</td>
+</tr>
+<tr>
+<td>scan_skip_head</td>
+<td>四块混合就绪，跳过仍持有的队首和队中块；只回收已释放块，余下负载逐字节保持不变</td>
+</tr>
+<tr>
+<td>scan_before_create</td>
+<td>存在可回收块时优先复用，再考虑新建；静止时预分配仍遵守容量上限</td>
+</tr>
+<tr>
+<td>bounds_single、bounds_1n、bounds_nn</td>
+<td>对齐补齐、恰好耗尽字节、槽位耗尽和失败请求；失败不推进游标，释放不复用同代编号</td>
+</tr>
+<tr>
+<td>bitmap_reuse</td>
+<td>1300 个切片跨多字位图边界，多释放线程、八代复用，逐条核对负载和代号</td>
+</tr>
+<tr>
+<td>last_release_scan</td>
+<td>最后一次释放与 get/扫描同时开始，立即复用并写入新内容；旧释放完成后新代计数及字节仍正确</td>
+</tr>
+<tr>
+<td>many_getters</td>
+<td>四个取块者、四个释放者，共 6000 条；独立序号与反码验证无缺失、重复或覆盖</td>
+</tr>
+<tr>
+<td>same_block_alloc_release</td>
+<td>直接多线程共享一个块分配并释放；Writing 期间反复扫描不得提前回收</td>
+</tr>
+<tr>
+<td>wait_timeouts</td>
+<td>零、负时限只尝试一次；正时限有界；释放后在剩余期限内通过重扫取得块</td>
+</tr>
+<tr>
+<td>wait_multiple</td>
+<td>四个等待者取得四个不同块；取得后保留到全部等待者成功，避免一个块被依次复用伪造通过</td>
+</tr>
+<tr>
+<td>slice_pool_single、slice_pool_1n、slice_pool_nn</td>
+<td>三类 SlicePool 反复自动换块、复用；close 幂等且禁止继续分配</td>
+</tr>
+<tr>
+<td>close_then_release</td>
+<td>先 close，后由其他线程释放现有切片；析构扫描可安全完成</td>
+</tr>
+<tr>
+<td>notifications</td>
+<td>release 不通知；实际扫描回收后按块通知，回调在 BlockPool 分配锁之外执行</td>
+</tr>
+<tr>
+<td>destructor_scan</td>
+<td>没有后续 get 的情况下，析构清理已经满足条件的块，并且不调用外部回调</td>
+</tr>
+<tr>
+<td>pointer_single、pointer_1n、pointer_nn</td>
+<td>未初始化偏移为零；初始及复用指针指向 buf_；对齐、容量末端、失败分配和五代重置正确</td>
+</tr>
+<tr>
+<td>pointer_publication</td>
+<td>写线程先写入序号及反码，再发布写指针；读取线程登记并校验 10000 条记录</td>
+</tr>
+<tr>
+<td>slice_state_range</td>
+<td>Writing、WriteFinished、LeaveWriter 各登记连续切片；静态断言 Free/ForceRecycle 小于 Writing</td>
+</tr>
+<tr>
+<td>intrusive_queue</td>
+<td>空队列、单节点、FIFO、栈与队列转移，20000 次固定种子混合操作与独立 deque 参照一致</td>
+</tr>
+<tr>
+<td>derived_recycle_condition</td>
+<td>使用队列的 StorageBlock 链接不绕过具体 Block 的自定义回收条件</td>
+</tr>
+</tbody></table></div>
+<p>以下用例运行在独立子进程中，要求专用退出码 91 且错误文字匹配；普通崩溃、超时和错误原因不符均失败。</p>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>death 用例</th>
+<th>应拒绝的操作</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>force_writing、force_finished、force_free、force_twice</td>
+<td>在 LeaveWriter 以外的状态调用 force_recycle</td>
+</tr>
+<tr>
+<td>leave_writing、leave_twice、finish_twice</td>
+<td>跳过或重复状态转换</td>
+</tr>
+<tr>
+<td>allocate_finished</td>
+<td>完成写入后继续普通 allocate</td>
+</tr>
+<tr>
+<td>slice_bounds、slice_duplicate</td>
+<td>登记超出已发布字节的范围，或重复登记非连续范围</td>
+</tr>
+<tr>
+<td>slice_free、slice_forced</td>
+<td>在 Free、ForceRecycle 状态登记切片</td>
+</tr>
+<tr>
+<td>release_twice、release_forced、release_stale</td>
+<td>严格模式下重复释放、释放强制失效句柄或旧代句柄</td>
+</tr>
+<tr>
+<td>destructor_writing、destructor_unread、destructor_slice</td>
+<td>块仍在写入、尚有未读字节、或用户仍持有切片时销毁池</td>
+</tr>
+</tbody></table></div>
+<p>完整管道的补充用例位于相邻 source_lifecycle 目录：</p>
+<ul>
+<li><code>buffered_retry_without_release_notify</code>：活动扫描间隔设为 10 秒，不发送释放唤醒；保留第一批帧阻止第二批保存，释放后须在 2 秒内交付第二批，内容和计数准确。</li>
+<li><code>discard_unread_tail</code>：停机时仍有未交付尾部，管理器通过临时切片清理，不遗留无法回收的读取进度。</li>
+<li><code>held_frame_destruction</code>：用户已取得但未释放的帧不能被析构清理隐式作废，必须报告契约错误。</li>
+</ul>
+</article><footer class="site-footer"><span>TwoBufQueue · C++ · Apache-2.0</span><span><a href="../../../README.zh-CN.html">项目首页</a><a href="#top">回到顶部 ↑</a></span></footer></main></div></body></html>

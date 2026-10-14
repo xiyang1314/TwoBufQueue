@@ -25,7 +25,7 @@
 
 ## Code generation and limits / 汇编与结论边界
 
-保存的 16 B 推送汇编中，两个路径均为一条 `ldr q0`、一条 `str q0` 和相同的 `stlur` 发布；开启路径在复制前增加 `prfm pstl1keep`，没有额外清零存储。[汇编](performance_data/rigtorp_prefetch_20261011/push_codegen.s)。
+保存的 16 B 推送汇编中，两个路径均为一条 `ldr q0`、一条 `str q0` 和相同的 `stlur` 发布；开启路径在复制前增加 `prfm pstl1keep`，没有额外清零存储。[汇编](code/docs/performance_data/rigtorp_prefetch_20261011/push_codegen.s.html)。
 
 `__builtin_prefetch(destination, 1, 3)` 表示为写操作给出高时间局部性的预取提示，它不写入消息内容；这是性能提示，不保证每个平台都会提速。[GCC 官方说明](https://gcc.gnu.org/onlinedocs/gcc/Other-Builtins.html#index-__builtin_prefetch)。不支持该内建函数的编译器使用普通完整复制。
 
@@ -33,7 +33,7 @@
 
 固定队列对象偏移 0/64（mod 128）的对照均没有改善该回退，因此未采用对齐改动。[排除布局假设的记录](performance_data/rigtorp_prefetch_20261011/placement-control/summary.json)。
 
-前期把预取统一加入普通 Payload 复制时，rigtorp 提升，但 8 B ReaderWriterQueue 吞吐从约 766 降到 481 M条/s，因此未采用这个版本。[统一添加提示的对照](performance_data/rigtorp_prefetch_20261011/fix-control/summary.json)。该修正只在 rigtorp 适配器显式请求提示。后续 ReaderWriterQueue 16/32 B 的调用端复制调整单独披露于 [性能口径](PERFORMANCE.md)，不属于这次预取开关对照。
+前期把预取统一加入普通 Payload 复制时，rigtorp 提升，但 8 B ReaderWriterQueue 吞吐从约 766 降到 481 M条/s，因此未采用这个版本。[统一添加提示的对照](performance_data/rigtorp_prefetch_20261011/fix-control/summary.json)。该修正只在 rigtorp 适配器显式请求提示。后续 ReaderWriterQueue 16/32 B 的调用端复制调整单独披露于 [性能口径](PERFORMANCE.html)，不属于这次预取开关对照。
 
 ## Fresh formal reports / 修正后的完整复测
 

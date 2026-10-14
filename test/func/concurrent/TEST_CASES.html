@@ -1,0 +1,497 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>并发数据测试用例 · TwoBufQueue</title><link rel="stylesheet" href="../../../docs/assets/readme.css"></head><body><!-- Generated from test/func/concurrent/TEST_CASES.md; SHA256 77c0d304074ccea96170d85547a78a1ccccab141f71d871636232b51cacf4f15. --><a class="skip-link" href="#content">跳到正文</a><header class="site-header"><div class="header-inner"><a class="brand" href="../../../README.zh-CN.html"><span class="brand-symbol" aria-hidden="true"><i></i><i></i></span>TwoBufQueue<span class="brand-version">C++</span></a><nav aria-label="主要导航"><a href="../../../README.zh-CN.html">项目首页</a><a href="../../../docs/API.zh-CN.html">接口指南</a><a href="../../../examples/README.html">使用示例</a><a href="../../../docs/code/index.html">代码阅读</a><a href="../../../docs/index.html">性能报告</a></nav></div></header><div class="page-layout guide-layout" id="top"><aside class="toc"><p class="toc-label">本页目录</p><nav aria-label="目录"></nav><div class="toc-footer"><a href="../../../README.zh-CN.html">回到首页</a></div></aside><main id="content" class="guide-main"><section class="guide-hero"><div class="eyebrow"><span></span>TWOBUFQUEUE · 文档</div><h1>并发数据测试用例</h1></section><details class="mobile-toc"><summary>本页目录</summary><nav></nav></details><article class="guide-content"><p>每个ID独立进程；仅验证接口声明支持的并发方式。具体实现前制定此表。</p>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>ID</th>
+<th>测试点</th>
+<th>前置条件</th>
+<th>操作</th>
+<th>期望</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>pipe_direct_sync_1_1</td>
+<td>C1 并发传输与数据所有权</td>
+<td>direct; sync; 1 个独立 writer；发布阈值 1；每 writer 1537 条；小池与有界处理队列</td>
+<td>同时启动写入；交替长度16/17/31/64/127/257/509；成功后污染输入；交错Flush；读取时核对顺序；异步模式移交4线程延迟校验并乱序释放；reject模式周期拒收并核对重试原字节</td>
+<td>按(writer,seq)逐条唯一且完整；长度/来源/全字节一致；单writer入口有序；处理后复核帧未变化；所有成功写入恰好收到；池全部回收；拒收场景必须实际发生拒收</td>
+</tr>
+<tr>
+<td>pipe_direct_sync_1_32</td>
+<td>C1 并发传输与数据所有权</td>
+<td>direct; sync; 1 个独立 writer；发布阈值 32；每 writer 1537 条；小池与有界处理队列</td>
+<td>同时启动写入；交替长度16/17/31/64/127/257/509；成功后污染输入；交错Flush；读取时核对顺序；异步模式移交4线程延迟校验并乱序释放；reject模式周期拒收并核对重试原字节</td>
+<td>按(writer,seq)逐条唯一且完整；长度/来源/全字节一致；单writer入口有序；处理后复核帧未变化；所有成功写入恰好收到；池全部回收；拒收场景必须实际发生拒收</td>
+</tr>
+<tr>
+<td>pipe_direct_sync_4_1</td>
+<td>C1 并发传输与数据所有权</td>
+<td>direct; sync; 4 个独立 writer；发布阈值 1；每 writer 1537 条；小池与有界处理队列</td>
+<td>同时启动写入；交替长度16/17/31/64/127/257/509；成功后污染输入；交错Flush；读取时核对顺序；异步模式移交4线程延迟校验并乱序释放；reject模式周期拒收并核对重试原字节</td>
+<td>按(writer,seq)逐条唯一且完整；长度/来源/全字节一致；单writer入口有序；处理后复核帧未变化；所有成功写入恰好收到；池全部回收；拒收场景必须实际发生拒收</td>
+</tr>
+<tr>
+<td>pipe_direct_sync_4_32</td>
+<td>C1 并发传输与数据所有权</td>
+<td>direct; sync; 4 个独立 writer；发布阈值 32；每 writer 1537 条；小池与有界处理队列</td>
+<td>同时启动写入；交替长度16/17/31/64/127/257/509；成功后污染输入；交错Flush；读取时核对顺序；异步模式移交4线程延迟校验并乱序释放；reject模式周期拒收并核对重试原字节</td>
+<td>按(writer,seq)逐条唯一且完整；长度/来源/全字节一致；单writer入口有序；处理后复核帧未变化；所有成功写入恰好收到；池全部回收；拒收场景必须实际发生拒收</td>
+</tr>
+<tr>
+<td>pipe_direct_async_1_1</td>
+<td>C1 并发传输与数据所有权</td>
+<td>direct; async; 1 个独立 writer；发布阈值 1；每 writer 1537 条；小池与有界处理队列</td>
+<td>同时启动写入；交替长度16/17/31/64/127/257/509；成功后污染输入；交错Flush；读取时核对顺序；异步模式移交4线程延迟校验并乱序释放；reject模式周期拒收并核对重试原字节</td>
+<td>按(writer,seq)逐条唯一且完整；长度/来源/全字节一致；单writer入口有序；处理后复核帧未变化；所有成功写入恰好收到；池全部回收；拒收场景必须实际发生拒收</td>
+</tr>
+<tr>
+<td>pipe_direct_async_1_32</td>
+<td>C1 并发传输与数据所有权</td>
+<td>direct; async; 1 个独立 writer；发布阈值 32；每 writer 1537 条；小池与有界处理队列</td>
+<td>同时启动写入；交替长度16/17/31/64/127/257/509；成功后污染输入；交错Flush；读取时核对顺序；异步模式移交4线程延迟校验并乱序释放；reject模式周期拒收并核对重试原字节</td>
+<td>按(writer,seq)逐条唯一且完整；长度/来源/全字节一致；单writer入口有序；处理后复核帧未变化；所有成功写入恰好收到；池全部回收；拒收场景必须实际发生拒收</td>
+</tr>
+<tr>
+<td>pipe_direct_async_4_1</td>
+<td>C1 并发传输与数据所有权</td>
+<td>direct; async; 4 个独立 writer；发布阈值 1；每 writer 1537 条；小池与有界处理队列</td>
+<td>同时启动写入；交替长度16/17/31/64/127/257/509；成功后污染输入；交错Flush；读取时核对顺序；异步模式移交4线程延迟校验并乱序释放；reject模式周期拒收并核对重试原字节</td>
+<td>按(writer,seq)逐条唯一且完整；长度/来源/全字节一致；单writer入口有序；处理后复核帧未变化；所有成功写入恰好收到；池全部回收；拒收场景必须实际发生拒收</td>
+</tr>
+<tr>
+<td>pipe_direct_async_4_32</td>
+<td>C1 并发传输与数据所有权</td>
+<td>direct; async; 4 个独立 writer；发布阈值 32；每 writer 1537 条；小池与有界处理队列</td>
+<td>同时启动写入；交替长度16/17/31/64/127/257/509；成功后污染输入；交错Flush；读取时核对顺序；异步模式移交4线程延迟校验并乱序释放；reject模式周期拒收并核对重试原字节</td>
+<td>按(writer,seq)逐条唯一且完整；长度/来源/全字节一致；单writer入口有序；处理后复核帧未变化；所有成功写入恰好收到；池全部回收；拒收场景必须实际发生拒收</td>
+</tr>
+<tr>
+<td>pipe_direct_reject_1_1</td>
+<td>C1 并发传输与数据所有权</td>
+<td>direct; reject; 1 个独立 writer；发布阈值 1；每 writer 1537 条；小池与有界处理队列</td>
+<td>同时启动写入；交替长度16/17/31/64/127/257/509；成功后污染输入；交错Flush；读取时核对顺序；异步模式移交4线程延迟校验并乱序释放；reject模式周期拒收并核对重试原字节</td>
+<td>按(writer,seq)逐条唯一且完整；长度/来源/全字节一致；单writer入口有序；处理后复核帧未变化；所有成功写入恰好收到；池全部回收；拒收场景必须实际发生拒收</td>
+</tr>
+<tr>
+<td>pipe_direct_reject_1_32</td>
+<td>C1 并发传输与数据所有权</td>
+<td>direct; reject; 1 个独立 writer；发布阈值 32；每 writer 1537 条；小池与有界处理队列</td>
+<td>同时启动写入；交替长度16/17/31/64/127/257/509；成功后污染输入；交错Flush；读取时核对顺序；异步模式移交4线程延迟校验并乱序释放；reject模式周期拒收并核对重试原字节</td>
+<td>按(writer,seq)逐条唯一且完整；长度/来源/全字节一致；单writer入口有序；处理后复核帧未变化；所有成功写入恰好收到；池全部回收；拒收场景必须实际发生拒收</td>
+</tr>
+<tr>
+<td>pipe_direct_reject_4_1</td>
+<td>C1 并发传输与数据所有权</td>
+<td>direct; reject; 4 个独立 writer；发布阈值 1；每 writer 1537 条；小池与有界处理队列</td>
+<td>同时启动写入；交替长度16/17/31/64/127/257/509；成功后污染输入；交错Flush；读取时核对顺序；异步模式移交4线程延迟校验并乱序释放；reject模式周期拒收并核对重试原字节</td>
+<td>按(writer,seq)逐条唯一且完整；长度/来源/全字节一致；单writer入口有序；处理后复核帧未变化；所有成功写入恰好收到；池全部回收；拒收场景必须实际发生拒收</td>
+</tr>
+<tr>
+<td>pipe_direct_reject_4_32</td>
+<td>C1 并发传输与数据所有权</td>
+<td>direct; reject; 4 个独立 writer；发布阈值 32；每 writer 1537 条；小池与有界处理队列</td>
+<td>同时启动写入；交替长度16/17/31/64/127/257/509；成功后污染输入；交错Flush；读取时核对顺序；异步模式移交4线程延迟校验并乱序释放；reject模式周期拒收并核对重试原字节</td>
+<td>按(writer,seq)逐条唯一且完整；长度/来源/全字节一致；单writer入口有序；处理后复核帧未变化；所有成功写入恰好收到；池全部回收；拒收场景必须实际发生拒收</td>
+</tr>
+<tr>
+<td>large_direct_1</td>
+<td>C2 最大消息与跨块复用</td>
+<td>direct; 1 writer；每writer 129条；长度65534/65535；块65537字节；异步4处理线程</td>
+<td>写满/近满消息触发连续换块；污染输入；回调移交并延迟校验；结束排空</td>
+<td>前缀无截断；全部字节与不可变参考数据一致；消息计数/顺序/唯一性正确；无残留块</td>
+</tr>
+<tr>
+<td>large_direct_4</td>
+<td>C2 最大消息与跨块复用</td>
+<td>direct; 4 writer；每writer 129条；长度65534/65535；块65537字节；异步4处理线程</td>
+<td>写满/近满消息触发连续换块；污染输入；回调移交并延迟校验；结束排空</td>
+<td>前缀无截断；全部字节与不可变参考数据一致；消息计数/顺序/唯一性正确；无残留块</td>
+</tr>
+<tr>
+<td>pipe_buffered_sync_1_1</td>
+<td>C1 并发传输与数据所有权</td>
+<td>buffered; sync; 1 个独立 writer；发布阈值 1；每 writer 1537 条；小池与有界处理队列</td>
+<td>同时启动写入；交替长度16/17/31/64/127/257/509；成功后污染输入；交错Flush；读取时核对顺序；异步模式移交4线程延迟校验并乱序释放；reject模式周期拒收并核对重试原字节</td>
+<td>按(writer,seq)逐条唯一且完整；长度/来源/全字节一致；单writer入口有序；处理后复核帧未变化；所有成功写入恰好收到；池全部回收；拒收场景必须实际发生拒收</td>
+</tr>
+<tr>
+<td>pipe_buffered_sync_1_32</td>
+<td>C1 并发传输与数据所有权</td>
+<td>buffered; sync; 1 个独立 writer；发布阈值 32；每 writer 1537 条；小池与有界处理队列</td>
+<td>同时启动写入；交替长度16/17/31/64/127/257/509；成功后污染输入；交错Flush；读取时核对顺序；异步模式移交4线程延迟校验并乱序释放；reject模式周期拒收并核对重试原字节</td>
+<td>按(writer,seq)逐条唯一且完整；长度/来源/全字节一致；单writer入口有序；处理后复核帧未变化；所有成功写入恰好收到；池全部回收；拒收场景必须实际发生拒收</td>
+</tr>
+<tr>
+<td>pipe_buffered_sync_4_1</td>
+<td>C1 并发传输与数据所有权</td>
+<td>buffered; sync; 4 个独立 writer；发布阈值 1；每 writer 1537 条；小池与有界处理队列</td>
+<td>同时启动写入；交替长度16/17/31/64/127/257/509；成功后污染输入；交错Flush；读取时核对顺序；异步模式移交4线程延迟校验并乱序释放；reject模式周期拒收并核对重试原字节</td>
+<td>按(writer,seq)逐条唯一且完整；长度/来源/全字节一致；单writer入口有序；处理后复核帧未变化；所有成功写入恰好收到；池全部回收；拒收场景必须实际发生拒收</td>
+</tr>
+<tr>
+<td>pipe_buffered_sync_4_32</td>
+<td>C1 并发传输与数据所有权</td>
+<td>buffered; sync; 4 个独立 writer；发布阈值 32；每 writer 1537 条；小池与有界处理队列</td>
+<td>同时启动写入；交替长度16/17/31/64/127/257/509；成功后污染输入；交错Flush；读取时核对顺序；异步模式移交4线程延迟校验并乱序释放；reject模式周期拒收并核对重试原字节</td>
+<td>按(writer,seq)逐条唯一且完整；长度/来源/全字节一致；单writer入口有序；处理后复核帧未变化；所有成功写入恰好收到；池全部回收；拒收场景必须实际发生拒收</td>
+</tr>
+<tr>
+<td>pipe_buffered_async_1_1</td>
+<td>C1 并发传输与数据所有权</td>
+<td>buffered; async; 1 个独立 writer；发布阈值 1；每 writer 1537 条；小池与有界处理队列</td>
+<td>同时启动写入；交替长度16/17/31/64/127/257/509；成功后污染输入；交错Flush；读取时核对顺序；异步模式移交4线程延迟校验并乱序释放；reject模式周期拒收并核对重试原字节</td>
+<td>按(writer,seq)逐条唯一且完整；长度/来源/全字节一致；单writer入口有序；处理后复核帧未变化；所有成功写入恰好收到；池全部回收；拒收场景必须实际发生拒收</td>
+</tr>
+<tr>
+<td>pipe_buffered_async_1_32</td>
+<td>C1 并发传输与数据所有权</td>
+<td>buffered; async; 1 个独立 writer；发布阈值 32；每 writer 1537 条；小池与有界处理队列</td>
+<td>同时启动写入；交替长度16/17/31/64/127/257/509；成功后污染输入；交错Flush；读取时核对顺序；异步模式移交4线程延迟校验并乱序释放；reject模式周期拒收并核对重试原字节</td>
+<td>按(writer,seq)逐条唯一且完整；长度/来源/全字节一致；单writer入口有序；处理后复核帧未变化；所有成功写入恰好收到；池全部回收；拒收场景必须实际发生拒收</td>
+</tr>
+<tr>
+<td>pipe_buffered_async_4_1</td>
+<td>C1 并发传输与数据所有权</td>
+<td>buffered; async; 4 个独立 writer；发布阈值 1；每 writer 1537 条；小池与有界处理队列</td>
+<td>同时启动写入；交替长度16/17/31/64/127/257/509；成功后污染输入；交错Flush；读取时核对顺序；异步模式移交4线程延迟校验并乱序释放；reject模式周期拒收并核对重试原字节</td>
+<td>按(writer,seq)逐条唯一且完整；长度/来源/全字节一致；单writer入口有序；处理后复核帧未变化；所有成功写入恰好收到；池全部回收；拒收场景必须实际发生拒收</td>
+</tr>
+<tr>
+<td>pipe_buffered_async_4_32</td>
+<td>C1 并发传输与数据所有权</td>
+<td>buffered; async; 4 个独立 writer；发布阈值 32；每 writer 1537 条；小池与有界处理队列</td>
+<td>同时启动写入；交替长度16/17/31/64/127/257/509；成功后污染输入；交错Flush；读取时核对顺序；异步模式移交4线程延迟校验并乱序释放；reject模式周期拒收并核对重试原字节</td>
+<td>按(writer,seq)逐条唯一且完整；长度/来源/全字节一致；单writer入口有序；处理后复核帧未变化；所有成功写入恰好收到；池全部回收；拒收场景必须实际发生拒收</td>
+</tr>
+<tr>
+<td>pipe_buffered_reject_1_1</td>
+<td>C1 并发传输与数据所有权</td>
+<td>buffered; reject; 1 个独立 writer；发布阈值 1；每 writer 1537 条；小池与有界处理队列</td>
+<td>同时启动写入；交替长度16/17/31/64/127/257/509；成功后污染输入；交错Flush；读取时核对顺序；异步模式移交4线程延迟校验并乱序释放；reject模式周期拒收并核对重试原字节</td>
+<td>按(writer,seq)逐条唯一且完整；长度/来源/全字节一致；单writer入口有序；处理后复核帧未变化；所有成功写入恰好收到；池全部回收；拒收场景必须实际发生拒收</td>
+</tr>
+<tr>
+<td>pipe_buffered_reject_1_32</td>
+<td>C1 并发传输与数据所有权</td>
+<td>buffered; reject; 1 个独立 writer；发布阈值 32；每 writer 1537 条；小池与有界处理队列</td>
+<td>同时启动写入；交替长度16/17/31/64/127/257/509；成功后污染输入；交错Flush；读取时核对顺序；异步模式移交4线程延迟校验并乱序释放；reject模式周期拒收并核对重试原字节</td>
+<td>按(writer,seq)逐条唯一且完整；长度/来源/全字节一致；单writer入口有序；处理后复核帧未变化；所有成功写入恰好收到；池全部回收；拒收场景必须实际发生拒收</td>
+</tr>
+<tr>
+<td>pipe_buffered_reject_4_1</td>
+<td>C1 并发传输与数据所有权</td>
+<td>buffered; reject; 4 个独立 writer；发布阈值 1；每 writer 1537 条；小池与有界处理队列</td>
+<td>同时启动写入；交替长度16/17/31/64/127/257/509；成功后污染输入；交错Flush；读取时核对顺序；异步模式移交4线程延迟校验并乱序释放；reject模式周期拒收并核对重试原字节</td>
+<td>按(writer,seq)逐条唯一且完整；长度/来源/全字节一致；单writer入口有序；处理后复核帧未变化；所有成功写入恰好收到；池全部回收；拒收场景必须实际发生拒收</td>
+</tr>
+<tr>
+<td>pipe_buffered_reject_4_32</td>
+<td>C1 并发传输与数据所有权</td>
+<td>buffered; reject; 4 个独立 writer；发布阈值 32；每 writer 1537 条；小池与有界处理队列</td>
+<td>同时启动写入；交替长度16/17/31/64/127/257/509；成功后污染输入；交错Flush；读取时核对顺序；异步模式移交4线程延迟校验并乱序释放；reject模式周期拒收并核对重试原字节</td>
+<td>按(writer,seq)逐条唯一且完整；长度/来源/全字节一致；单writer入口有序；处理后复核帧未变化；所有成功写入恰好收到；池全部回收；拒收场景必须实际发生拒收</td>
+</tr>
+<tr>
+<td>large_buffered_1</td>
+<td>C2 最大消息与跨块复用</td>
+<td>buffered; 1 writer；每writer 129条；长度65534/65535；块65537字节；异步4处理线程</td>
+<td>写满/近满消息触发连续换块；污染输入；回调移交并延迟校验；结束排空</td>
+<td>前缀无截断；全部字节与不可变参考数据一致；消息计数/顺序/唯一性正确；无残留块</td>
+</tr>
+<tr>
+<td>large_buffered_4</td>
+<td>C2 最大消息与跨块复用</td>
+<td>buffered; 4 writer；每writer 129条；长度65534/65535；块65537字节；异步4处理线程</td>
+<td>写满/近满消息触发连续换块；污染输入；回调移交并延迟校验；结束排空</td>
+<td>前缀无截断；全部字节与不可变参考数据一致；消息计数/顺序/唯一性正确；无残留块</td>
+</tr>
+<tr>
+<td>pool_1N_1</td>
+<td>C3 分配和释放同时持续发生</td>
+<td>1N池；槽位上限1；8块；4个释放线程；1N用1个分配线程，NN用4个；每分配者2001片</td>
+<td>反复申请变长且变化对齐的slice；写唯一代次内容；移交处理队列；处理线程两次逐字节校验后污染并释放；记录活跃地址区间</td>
+<td>所有申请的片恰好处理一次；存活片地址不重叠；对齐正确；持有期间不被重用；申请与释放在时间上交错；最终in_use=0</td>
+</tr>
+<tr>
+<td>pool_1N_64</td>
+<td>C3 分配和释放同时持续发生</td>
+<td>1N池；槽位上限64；8块；4个释放线程；1N用1个分配线程，NN用4个；每分配者2001片</td>
+<td>反复申请变长且变化对齐的slice；写唯一代次内容；移交处理队列；处理线程两次逐字节校验后污染并释放；记录活跃地址区间</td>
+<td>所有申请的片恰好处理一次；存活片地址不重叠；对齐正确；持有期间不被重用；申请与释放在时间上交错；最终in_use=0</td>
+</tr>
+<tr>
+<td>pool_1N_65</td>
+<td>C3 分配和释放同时持续发生</td>
+<td>1N池；槽位上限65；8块；4个释放线程；1N用1个分配线程，NN用4个；每分配者2001片</td>
+<td>反复申请变长且变化对齐的slice；写唯一代次内容；移交处理队列；处理线程两次逐字节校验后污染并释放；记录活跃地址区间</td>
+<td>所有申请的片恰好处理一次；存活片地址不重叠；对齐正确；持有期间不被重用；申请与释放在时间上交错；最终in_use=0</td>
+</tr>
+<tr>
+<td>pin_1N</td>
+<td>C4 固定持有块不得被复用</td>
+<td>1N池；2块；每块1片；100轮；每片占满块</td>
+<td>持有两片写不同内容；其他线程反复尝试分配均失败；跨线程释放其中一片；分配者复用空闲块并改写；另一片持续检查旧内容</td>
+<td>持有片地址和字节始终不变；池耗尽真实发生；释放后可恢复分配；无提前复用和二次回收</td>
+</tr>
+<tr>
+<td>pool_NN_1</td>
+<td>C3 分配和释放同时持续发生</td>
+<td>NN池；槽位上限1；8块；4个释放线程；1N用1个分配线程，NN用4个；每分配者2001片</td>
+<td>反复申请变长且变化对齐的slice；写唯一代次内容；移交处理队列；处理线程两次逐字节校验后污染并释放；记录活跃地址区间</td>
+<td>所有申请的片恰好处理一次；存活片地址不重叠；对齐正确；持有期间不被重用；申请与释放在时间上交错；最终in_use=0</td>
+</tr>
+<tr>
+<td>pool_NN_64</td>
+<td>C3 分配和释放同时持续发生</td>
+<td>NN池；槽位上限64；8块；4个释放线程；1N用1个分配线程，NN用4个；每分配者2001片</td>
+<td>反复申请变长且变化对齐的slice；写唯一代次内容；移交处理队列；处理线程两次逐字节校验后污染并释放；记录活跃地址区间</td>
+<td>所有申请的片恰好处理一次；存活片地址不重叠；对齐正确；持有期间不被重用；申请与释放在时间上交错；最终in_use=0</td>
+</tr>
+<tr>
+<td>pool_NN_65</td>
+<td>C3 分配和释放同时持续发生</td>
+<td>NN池；槽位上限65；8块；4个释放线程；1N用1个分配线程，NN用4个；每分配者2001片</td>
+<td>反复申请变长且变化对齐的slice；写唯一代次内容；移交处理队列；处理线程两次逐字节校验后污染并释放；记录活跃地址区间</td>
+<td>所有申请的片恰好处理一次；存活片地址不重叠；对齐正确；持有期间不被重用；申请与释放在时间上交错；最终in_use=0</td>
+</tr>
+<tr>
+<td>pin_NN</td>
+<td>C4 固定持有块不得被复用</td>
+<td>NN池；2块；每块1片；100轮；每片占满块</td>
+<td>持有两片写不同内容；其他线程反复尝试分配均失败；跨线程释放其中一片；分配者复用空闲块并改写；另一片持续检查旧内容</td>
+<td>持有片地址和字节始终不变；池耗尽真实发生；释放后可恢复分配；无提前复用和二次回收</td>
+</tr>
+<tr>
+<td>queue_1</td>
+<td>C5 队列环绕与移动所有权</td>
+<td>SPSC容量1；生产/消费各1线程；20001个独占payload</td>
+<td>生产者发布唯一编号和变长内容；满时核对未移动参数；消费者front保留期间反复检查；多次环绕后pop</td>
+<td>严格FIFO；不缺失不重复；front期间数据稳定；满时原参数仍完整；结束为空</td>
+</tr>
+<tr>
+<td>queue_2</td>
+<td>C5 队列环绕与移动所有权</td>
+<td>SPSC容量2；生产/消费各1线程；20001个独占payload</td>
+<td>生产者发布唯一编号和变长内容；满时核对未移动参数；消费者front保留期间反复检查；多次环绕后pop</td>
+<td>严格FIFO；不缺失不重复；front期间数据稳定；满时原参数仍完整；结束为空</td>
+</tr>
+<tr>
+<td>queue_3</td>
+<td>C5 队列环绕与移动所有权</td>
+<td>SPSC容量3；生产/消费各1线程；20001个独占payload</td>
+<td>生产者发布唯一编号和变长内容；满时核对未移动参数；消费者front保留期间反复检查；多次环绕后pop</td>
+<td>严格FIFO；不缺失不重复；front期间数据稳定；满时原参数仍完整；结束为空</td>
+</tr>
+<tr>
+<td>queue_7</td>
+<td>C5 队列环绕与移动所有权</td>
+<td>SPSC容量7；生产/消费各1线程；20001个独占payload</td>
+<td>生产者发布唯一编号和变长内容；满时核对未移动参数；消费者front保留期间反复检查；多次环绕后pop</td>
+<td>严格FIFO；不缺失不重复；front期间数据稳定；满时原参数仍完整；结束为空</td>
+</tr>
+<tr>
+<td>queue_64</td>
+<td>C5 队列环绕与移动所有权</td>
+<td>SPSC容量64；生产/消费各1线程；20001个独占payload</td>
+<td>生产者发布唯一编号和变长内容；满时核对未移动参数；消费者front保留期间反复检查；多次环绕后pop</td>
+<td>严格FIFO；不缺失不重复；front期间数据稳定；满时原参数仍完整；结束为空</td>
+</tr>
+<tr>
+<td>queue_65</td>
+<td>C5 队列环绕与移动所有权</td>
+<td>SPSC容量65；生产/消费各1线程；20001个独占payload</td>
+<td>生产者发布唯一编号和变长内容；满时核对未移动参数；消费者front保留期间反复检查；多次环绕后pop</td>
+<td>严格FIFO；不缺失不重复；front期间数据稳定；满时原参数仍完整；结束为空</td>
+</tr>
+<tr>
+<td>active_direct</td>
+<td>C6 活动块切片与后续写入重叠</td>
+<td>direct; 单writer；发布阈值32；257轮握手；4线程异步处理</td>
+<td>每轮写入不足发布阈值的数据并Flush；等回调确认可见再继续写同一活动块；已交出帧跨轮持有并复核；Finish后排空</td>
+<td>Finish前确实已读；无半条消息/重复增量；新写入不能改变已交出帧；最终逐条完整</td>
+</tr>
+<tr>
+<td>active_buffered</td>
+<td>C6 活动块切片与后续写入重叠</td>
+<td>buffered; 单writer；发布阈值32；257轮握手；4线程异步处理</td>
+<td>每轮写入不足发布阈值的数据并Flush；等回调确认可见再继续写同一活动块；已交出帧跨轮持有并复核；Finish后排空</td>
+<td>Finish前确实已读；无半条消息/重复增量；新写入不能改变已交出帧；最终逐条完整</td>
+</tr>
+<tr>
+<td>block_NN_slots_1</td>
+<td>C7 块级分配锁</td>
+<td>直接共享一个 NN 块；8 个分配线程；槽位 1；重复 16 代</td>
+<td>同时分配直至耗尽；检查地址唯一和全字节内容；8 线程释放；交替先 to_write_finished 后释放、先释放后 to_write_finished</td>
+<td>每代恰好成功 1 次；失败不超卖槽位；所有切片内容正确；回收通知每代恰好一次</td>
+</tr>
+<tr>
+<td>block_NN_slots_63</td>
+<td>C7 块级分配锁</td>
+<td>直接共享一个 NN 块；8 个分配线程；槽位 63；重复 16 代</td>
+<td>同时分配直至耗尽；检查地址唯一和全字节内容；8 线程释放；交替先 to_write_finished 后释放、先释放后 to_write_finished</td>
+<td>每代恰好成功 63 次；失败不超卖槽位；所有切片内容正确；回收通知每代恰好一次</td>
+</tr>
+<tr>
+<td>block_NN_slots_64</td>
+<td>C7 块级分配锁</td>
+<td>直接共享一个 NN 块；8 个分配线程；槽位 64；重复 16 代</td>
+<td>同时分配直至耗尽；检查地址唯一和全字节内容；8 线程释放；交替先 to_write_finished 后释放、先释放后 to_write_finished</td>
+<td>每代恰好成功 64 次；失败不超卖槽位；所有切片内容正确；回收通知每代恰好一次</td>
+</tr>
+<tr>
+<td>block_NN_slots_65</td>
+<td>C7 块级分配锁</td>
+<td>直接共享一个 NN 块；8 个分配线程；槽位 65；重复 16 代</td>
+<td>同时分配直至耗尽；检查地址唯一和全字节内容；8 线程释放；交替先 to_write_finished 后释放、先释放后 to_write_finished</td>
+<td>每代恰好成功 65 次；失败不超卖槽位；所有切片内容正确；回收通知每代恰好一次</td>
+</tr>
+<tr>
+<td>block_NN_slots_129</td>
+<td>C7 块级分配锁</td>
+<td>直接共享一个 NN 块；8 个分配线程；槽位 129；重复 16 代</td>
+<td>同时分配直至耗尽；检查地址唯一和全字节内容；8 线程释放；交替先 to_write_finished 后释放、先释放后 to_write_finished</td>
+<td>每代恰好成功 129 次；失败不超卖槽位；所有切片内容正确；回收通知每代恰好一次</td>
+</tr>
+<tr>
+<td>block_NN_bytes</td>
+<td>C7 块级分配锁</td>
+<td>直接共享一个 8192 字节 NN 块；槽位 8193；8 线程；每片 16 字节且对齐 16；16 代</td>
+<td>并发分配至字节耗尽；排序核对地址；检查全字节内容；并发释放并复用</td>
+<td>每代恰好 512 片；地址不重叠；字节不被覆盖；全部且仅回收一次</td>
+</tr>
+<tr>
+<td>block_NN_streaming</td>
+<td>C7 块级分配锁</td>
+<td>一个 NN 块；4 个分配者各 257 片；4 个消费者；16/17/31/63/127 字节，1..64 对齐</td>
+<td>直接 allocate、队列移交、延迟两次校验并释放；强制首批释放后继续分配；分配结束才 to_write_finished</td>
+<td>1028 片地址区间不重叠（包括已释放片）；对齐和全部字节正确；释放确实与后续分配交错；无重复/遗漏，最终回收一次</td>
+</tr>
+<tr>
+<td>block_without_lock_11</td>
+<td>C7 块级分配锁</td>
+<td>11 块；外部分配串行；128 字节；4 槽位</td>
+<td>混用 allocate 和 allow_without_lock；模拟发布连续尾部后 make_slice；超大请求失败；释放不复用槽位</td>
+<td>失败不移动偏移；地址、对齐和发布字节正确；第 5 片失败；交出写入端并扫描后全部回收</td>
+</tr>
+<tr>
+<td>block_without_lock_1N</td>
+<td>C7 块级分配锁</td>
+<td>1N 块；外部分配串行；128 字节；4 槽位</td>
+<td>混用 allocate 和 allow_without_lock；模拟发布连续尾部后 make_slice；超大请求失败；释放不复用槽位</td>
+<td>失败不移动偏移；地址、对齐和发布字节正确；第 5 片失败；交出写入端并扫描后全部回收</td>
+</tr>
+<tr>
+<td>block_without_lock_NN</td>
+<td>C7 块级分配锁</td>
+<td>NN 块；外部分配串行；128 字节；4 槽位</td>
+<td>混用 allocate 和 allow_without_lock；模拟发布连续尾部后 make_slice；超大请求失败；释放不复用槽位</td>
+<td>失败不移动偏移；地址、对齐和发布字节正确；第 5 片失败；交出写入端并扫描后全部回收</td>
+</tr>
+<tr>
+<td>direct_pool_cross_11</td>
+<td>C8 独立 BlockPool 并发取还</td>
+<td>跨线程块，is_n_alloc=false；1 个取块者、1 个归还者</td>
+<td>每取块者 1001 次；取块后登记存活块，分配变化长度的切片并写入参考字节；WriteFinished、LeaveWriter 后移交，消费者乱序延迟复核、污染后释放；强制首批释放与后续取块交错</td>
+<td>存活块不重复借出；字节、身份逐条正确且不重不漏；运行期不超容量；取还确实交错；结束全部归还</td>
+</tr>
+<tr>
+<td>direct_pool_1N</td>
+<td>C8 独立 BlockPool 并发取还</td>
+<td>跨线程块，is_n_alloc=false；1 个取块者、4 个归还者</td>
+<td>每取块者 1001 次；取块后登记存活块，分配变化长度的切片并写入参考字节；WriteFinished、LeaveWriter 后移交，消费者乱序延迟复核、污染后释放；强制首批释放与后续取块交错</td>
+<td>存活块不重复借出；字节、身份逐条正确且不重不漏；运行期不超容量；取还确实交错；结束全部归还</td>
+</tr>
+<tr>
+<td>direct_pool_N1</td>
+<td>C8 独立 BlockPool 并发取还</td>
+<td>跨线程块，is_n_alloc=true；4 个取块者、1 个归还者；消费端只登记释放，取块端扫描回收</td>
+<td>每取块者 1001 次；取块后登记存活块，分配变化长度的切片并写入参考字节；WriteFinished、LeaveWriter 后移交，消费者乱序延迟复核、污染后释放；强制首批释放与后续取块交错</td>
+<td>存活块不重复借出；字节、身份逐条正确且不重不漏；运行期不超容量；取还确实交错；结束全部归还</td>
+</tr>
+<tr>
+<td>direct_pool_NN_preallocated</td>
+<td>C8 独立 BlockPool 并发取还</td>
+<td>默认 is_n_alloc=true；4 个取块者、4 个归还者；预分配全部 8 块</td>
+<td>每取块者 1001 次；取块后登记存活块，分配变化长度的切片并写入参考字节；WriteFinished、LeaveWriter 后移交，消费者乱序延迟复核、污染后释放；强制首批释放与后续取块交错</td>
+<td>存活块不重复借出；字节、身份逐条正确且不重不漏；运行期不超容量；取还确实交错；结束全部归还</td>
+</tr>
+<tr>
+<td>direct_pool_NN_growth</td>
+<td>C8 独立 BlockPool 并发取还</td>
+<td>默认 is_n_alloc=true；4 个取块者、4 个归还者；从 0 块增长，上限 8 块</td>
+<td>每取块者 1001 次；取块后登记存活块，分配变化长度的切片并写入参考字节；WriteFinished、LeaveWriter 后移交，消费者乱序延迟复核、污染后释放；强制首批释放与后续取块交错</td>
+<td>存活块不重复借出；字节、身份逐条正确且不重不漏；运行期不超容量；取还确实交错；结束全部归还</td>
+</tr>
+<tr>
+<td>direct_pool_external_lock</td>
+<td>C8 独立 BlockPool 并发取还</td>
+<td>is_n_alloc=true；4 个取块者使用共同外部锁调用 get_without_lock；4 个归还者</td>
+<td>每取块者 1001 次；取块后登记存活块，分配变化长度的切片并写入参考字节；WriteFinished、LeaveWriter 后移交，消费者乱序延迟复核、污染后释放；强制首批释放与后续取块交错</td>
+<td>存活块不重复借出；字节、身份逐条正确且不重不漏；运行期不超容量；取还确实交错；结束全部归还</td>
+</tr>
+<tr>
+<td>direct_pool_same_thread</td>
+<td>C8 独立 BlockPool 并发取还</td>
+<td>同线程块，is_n_alloc=false；3 块、128 代</td>
+<td>每代借完全部块并核对第 4 次失败；交替先完成后释放、先释放后完成；静止时预分配</td>
+<td>普通栈路径正确；每代回收 3 块；槽位与字节可以复用；计数归零</td>
+</tr>
+<tr>
+<td>direct_pool_held_block</td>
+<td>C8 独立 BlockPool 并发取还</td>
+<td>默认并发池，2 块；固定持有 1 块；4 个取还线程</td>
+<td>固定片写参考字节并封闭；工作线程争用另一块，多次填充、释放、完成；主线程持续复核固定片</td>
+<td>存活片始终不变；只有空闲块可被复用；不超出 2 块；最终全部归还</td>
+</tr>
+<tr>
+<td>direct_pool_wait_ready_blocks</td>
+<td>C8 独立 BlockPool 并发取还</td>
+<td>默认并发池，8 块已符合回收条件但尚未扫描；8 个等待者</td>
+<td>同时调用 wait_get；取得的块保持 Writing 直到全部等待者结束，再交出并扫描</td>
+<td>无需任何释放事件即可取得 8 个不同块；无重复借出；最终一次扫描归还全部块</td>
+</tr>
+<tr>
+<td>direct_pool_wait_burst</td>
+<td>C8 独立 BlockPool 并发取还</td>
+<td>默认并发池，8 块全部借出；8 个线程调用 wait_get</td>
+<td>等待线程全部启动后批量设置 WriteFinished、LeaveWriter；新借出块保留到所有线程完成</td>
+<td>等待不持有分配锁；定时重扫发现就绪块；8 个等待者各取得一个不同块</td>
+</tr>
+<tr>
+<td>direct_pool_wait_timeout</td>
+<td>C8 独立 BlockPool 并发取还</td>
+<td>默认并发池，唯一块保持占用；50ms 总期限</td>
+<td>其他线程反复扫描仍被占用的块；调用 wait_get(50ms)</td>
+<td>返回 nullptr；重复扫描不重置总期限，不超过块上限，不改变占用块</td>
+</tr>
+<tr>
+<td>direct_pool_wait_nonpositive</td>
+<td>C9 每次取块独立时限</td>
+<td>单块池，零和负时限</td>
+<td>空闲时取块；占用时用零和负时限重试；归还后再取</td>
+<td>非正时限只尝试一次，不进入休眠；空闲块可取得，占用块数据不变</td>
+</tr>
+<tr>
+<td>direct_pool_wait_independent</td>
+<td>C9 每次取块独立时限</td>
+<td>单块池；两个等待者分别使用50ms和5s</td>
+<td>保持块占用直到短等待结束；确认长等待仍在阻塞，再归还</td>
+<td>短等待超时不影响长等待；长等待取得唯一归还块；最终占用归零</td>
+</tr>
+<tr>
+<td>direct_pool_wait_max_millis</td>
+<td>C9 每次取块独立时限</td>
+<td>单块池；milliseconds::max()</td>
+<td>启动等待线程，保持块占用并检查未提前返回，然后交出块</td>
+<td>时长转换和截止时间加法不溢出，不提前超时；定时重扫后成功取得原块</td>
+</tr>
+<tr>
+<td>direct_pool_wait_max_ticks</td>
+<td>C9 每次取块独立时限</td>
+<td>单块池；steady_clock::duration::max()</td>
+<td>启动等待线程，保持块占用并检查未提前返回，然后交出块</td>
+<td>时长转换和截止时间加法不溢出，不提前超时；定时重扫后成功取得原块</td>
+</tr>
+</tbody></table></div>
+</article><footer class="site-footer"><span>TwoBufQueue · C++ · Apache-2.0</span><span><a href="../../../README.zh-CN.html">项目首页</a><a href="#top">回到顶部 ↑</a></span></footer></main></div></body></html>
