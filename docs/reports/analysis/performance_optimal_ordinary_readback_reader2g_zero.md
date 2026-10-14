@@ -14,7 +14,7 @@
 
 列表包含全部候选，未按速度或背压过滤；完整原始计数保留。本机资源快照记录到全局换页活动；部分大块配置波动较大，三次吞吐范围可悬停查看。
 
-[全部阶段和参数 JSON](../../performance_data/ordinary_readback_optimal_20261011/all_candidates.json.gz) · [每次测量原始数据](../../performance_data/ordinary_readback_optimal_20261011/raw.jsonl.gz) · [各指标最优参数](../../performance_data/ordinary_readback_optimal_20261011/best.json) · [测量审计](../../performance_data/ordinary_readback_optimal_20261011/audit.json) · [原完整对照报告](../../performance_data/ordinary_readback_optimal_20261011/report_full_details_before_compact_20261011.md)
+[全部阶段和参数 JSON](../../performance_data/ordinary_readback_optimal_20261011/all_candidates.json.gz) · [每次测量原始数据](../../performance_data/ordinary_readback_optimal_20261011/raw.jsonl.gz) · [各指标最优参数](../../performance_data/ordinary_readback_optimal_20261011/best.json) · [测量审计](../../performance_data/ordinary_readback_optimal_20261011/audit.json) · [原完整对照报告](https://xiyang1314.github.io/TwoBufQueue/docs/performance_data/ordinary_readback_optimal_20261011/report_full_details_before_compact_20261011.html)
 
 消息长度
 

@@ -125,7 +125,8 @@ template<class TValue> void write_value(std::ostream& out, const TValue& value) 
 inline void write_config(std::ostream& out, const PerformanceConfig& config) {
     out << '{'; bool first = true;
     for_each_parameter(config,[&](const char* name, const auto& field) {
-        if (!first) out << ','; first = false;
+        if (!first) out << ',';
+        first = false;
         out << '"' << name << "\":"; write_value(out,field);
     });
     out << '}';

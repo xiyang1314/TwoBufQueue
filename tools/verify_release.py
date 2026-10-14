@@ -13,12 +13,12 @@ from document_links import document_links
 
 def verify(root, check_manifest=True):
     manifest = root / 'release-manifest.json'
-    records = json.loads(manifest.read_text())['files'] if manifest.exists() else []
+    records = json.loads(manifest.read_text(encoding='utf-8'))['files'] if manifest.exists() else []
     paths = [root / r['path'] for r in records] if records else [p for p in root.rglob('*') if p.is_file()
         and '.git' not in p.relative_to(root).parts and 'performance_archive' not in p.parts
         and not any(x.startswith('build') for x in p.relative_to(root).parts)]
     reading_path = root / 'tools/github_reading_pages.json'
-    reading_pages = {page['markdown'] for page in json.loads(reading_path.read_text())['pages']} if reading_path.exists() else set()
+    reading_pages = {page['markdown'] for page in json.loads(reading_path.read_text(encoding='utf-8'))['pages']} if reading_path.exists() else set()
     errors = []
     for record in records if check_manifest else []:
         path = root / record['path']
@@ -47,7 +47,7 @@ def verify(root, check_manifest=True):
             elif root != target and root not in target.parents:
                 errors.append('Link escapes publication tree: ' + reference)
     compression = root / 'compression-manifest.json'
-    packed = json.loads(compression.read_text())['files'] if compression.exists() else []
+    packed = json.loads(compression.read_text(encoding='utf-8'))['files'] if compression.exists() else []
     for record in packed:
         path = root / record['compressed_path']
         if not path.is_file():
@@ -77,7 +77,7 @@ def main():
     text = json.dumps(result, indent=2) + '\n'
     if args.output:
         args.output.parent.mkdir(parents=True, exist_ok=True)
-        args.output.write_text(text)
+        args.output.write_text(text, encoding='utf-8')
     print(text, end='')
 
 

@@ -63,12 +63,17 @@ def render_report(folder, report, result):
     parameters_view = {key: value for key, value in profile.items() if key != 'bursts_mib'}
     parameters_view['display_bursts_mib'] = bursts
     prefix = os.path.relpath(folder, report.parent).replace(os.sep, '/')
-    profile_reference = os.path.relpath(folder/'selected_config.json', Path(__file__).resolve().parents[2]).replace(os.sep, '/')
+    profile_path = (folder / 'selected_config.json').resolve()
+    try:
+        profile_reference = os.path.relpath(profile_path, Path(__file__).resolve().parents[2]).replace(os.sep, '/')
+    except ValueError:
+        # Windows cannot form a relative path across different drives.
+        profile_reference = profile_path.as_posix()
     burst_list = '、'.join(str(b) for b in bursts) + ' MiB'
     machine = dict(profile.get('machine', {}))
     environment_file = folder / 'environment.json'
     if environment_file.exists():
-        machine.update(json.loads(environment_file.read_text()).get('machine', {}))
+        machine.update(json.loads(environment_file.read_text(encoding='utf-8')).get('machine', {}))
     cpu = html.escape(machine.get('cpu', '测试机器'))
     scheduling = ('高 QoS · 未硬绑核'
                   if machine.get('producer_qos') == 'user_interactive'
@@ -144,4 +149,4 @@ def render_report(folder, report, result):
             h += f'<li><a href="{prefix}/formal/raw/{business}k_{queue}_run{run}.json">{name} · 第 {run} 轮原始样本</a></li>'
     h += '</ul></details><details><summary>完整初始化参数与展示范围</summary><p>保留业务负载、各队列初始化、计时窗口和编译选项；display_bursts_mib 表示本页展示的发送量。原始测量参数与记录可通过上方链接查看。</p><pre>' + html.escape(json.dumps(parameters_view, ensure_ascii=False, indent=2)) + '</pre></details></section></main></body></html>'
     report.parent.mkdir(parents=True, exist_ok=True)
-    report.write_text(h)
+    report.write_text(h, encoding='utf-8')

@@ -2,7 +2,7 @@
 
 生产者把日志内容提交给队列，后台回调负责写文件。这让业务线程不用在每次记日志时等待文件操作。示例会校验最终文件中每条已接受记录的内容、顺序和数量。
 
-[示例源码](../../examples/two_buf_queue/09_async_logger.cpp) · [接口指南](API.zh-CN.md) · [English explanation](ASYNC_LOGGING.zh-CN.md)
+[示例源码](https://xiyang1314.github.io/TwoBufQueue/docs/code/examples/two_buf_queue/09_async_logger.cpp.zh-CN.html) · [接口指南](https://xiyang1314.github.io/TwoBufQueue/docs/guides/API.zh-CN.html) · [English explanation](https://xiyang1314.github.io/TwoBufQueue/docs/guides/ASYNC_LOGGING.zh-CN.html)
 
 ## 一、构建并运行
 
@@ -42,4 +42,4 @@ Visual Studio 构建使用 `build/Release/brq_tbq_09_async_logger.exe`。程序�
 
 ## 四、用在业务中还需补什么
 
-文件轮转、时间戳格式、崩溃恢复、持久化与 I/O 重试属于日志系统策略，示例没有自动实现。回调接收到的结构体可能没有对齐，先检查长度，再复制到本地对象。更完整的记录与所有权约定见[接口指南](API.zh-CN.md)。
+文件轮转、时间戳格式、崩溃恢复、持久化与 I/O 重试属于日志系统策略，示例没有自动实现。回调接收到的结构体可能没有对齐，先检查长度，再复制到本地对象。更完整的记录与所有权约定见[接口指南](https://xiyang1314.github.io/TwoBufQueue/docs/guides/API.zh-CN.html)。

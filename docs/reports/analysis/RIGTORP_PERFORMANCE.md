@@ -1,6 +1,6 @@
 # rigtorp benchmark regression
 
-[English](RIGTORP_PERFORMANCE.md) · [简体中文](RIGTORP_PERFORMANCE.zh-CN.md)
+[English](https://xiyang1314.github.io/TwoBufQueue/docs/reports/analysis/RIGTORP_PERFORMANCE.html) · [简体中文](https://xiyang1314.github.io/TwoBufQueue/docs/reports/analysis/RIGTORP_PERFORMANCE.zh-CN.html)
 
 This correction changes the external benchmark adapter. The original rigtorp, ReaderWriterQueue and atomic_queue headers retain their pinned versions and original SHA-256 hashes.
 
@@ -27,7 +27,7 @@ All 160 formal measurements and 16 complete validations passed. [Summary](../../
 
 ## 2. Code generation and limits
 
-In the saved 16 B push assembly, both paths use one `ldr q0`, one `str q0` and the same `stlur` publication. The enabled path adds `prfm pstl1keep` before the copy; it adds no zeroing stores. [Assembly](../../performance_data/rigtorp_prefetch_20261011/push_codegen.s).
+In the saved 16 B push assembly, both paths use one `ldr q0`, one `str q0` and the same `stlur` publication. The enabled path adds `prfm pstl1keep` before the copy; it adds no zeroing stores. [Assembly](https://xiyang1314.github.io/TwoBufQueue/docs/code/docs/performance_data/rigtorp_prefetch_20261011/push_codegen.s.html).
 
 `__builtin_prefetch(destination, 1, 3)` requests write prefetch with high temporal locality; it does not write the payload. This hint does not guarantee a speedup on every platform. See the [GCC documentation](https://gcc.gnu.org/onlinedocs/gcc/Other-Builtins.html#index-__builtin_prefetch). Compilers without this builtin use a normal complete copy.
 
@@ -35,10 +35,10 @@ The control confirms that destination write prefetch removes the regression in t
 
 Placing the queue object at offsets 0 and 64 modulo 128 did not improve the regression, so no alignment change was adopted. [Placement control](../../performance_data/rigtorp_prefetch_20261011/placement-control/summary.json).
 
-An earlier variant added the hint to the ordinary Payload copy for every adapter. rigtorp improved, but 8 B ReaderWriterQueue throughput fell from about 766 to 481 M messages/s, so that variant was rejected. [Shared-hint control](../../performance_data/rigtorp_prefetch_20261011/fix-control/summary.json). The adopted correction requests the hint only in the rigtorp adapter. Later ReaderWriterQueue 16/32 B copy changes are disclosed separately in the [benchmark methodology](../PERFORMANCE.md); they are not part of this prefetch-switch control.
+An earlier variant added the hint to the ordinary Payload copy for every adapter. rigtorp improved, but 8 B ReaderWriterQueue throughput fell from about 766 to 481 M messages/s, so that variant was rejected. [Shared-hint control](../../performance_data/rigtorp_prefetch_20261011/fix-control/summary.json). The adopted correction requests the hint only in the rigtorp adapter. Later ReaderWriterQueue 16/32 B copy changes are disclosed separately in the [benchmark methodology](https://xiyang1314.github.io/TwoBufQueue/docs/reports/PERFORMANCE.html); they are not part of this prefetch-switch control.
 
 ## 3. Subsequent complete measurements
 
 The four reports below were remeasured at commit `f698f25`: all 400 independent formal measurements, 40 full-payload/FIFO validations and 45 callback calibration runs completed. For rigtorp at 8 MiB / 16 B, the five-run means are 317.500 M messages/s and 3.017 ns group-average p50. At 256 MiB, callback iterations are fixed to 1/1/2/4 for 8/16/32/64 B, with calibration ratios 3.09/2.17/1.95/2.38; 8 B and 32 B slightly miss the target. That run removes forced inlining from benchmark lambdas and does not change rigtorp prefetch or upstream headers. Ordinary write and Session share freshly measured native results for the same capacity. The earlier switch control remains above; do not attribute every difference between runs to prefetch.
 
-[8 MiB ordinary write](../comparison/performance_8m_zero.md) · [8 MiB Session](../comparison/performance_8m_zero_session.md) · [256 MiB ordinary write](../comparison/performance_256m_callback.md) · [256 MiB Session](../comparison/performance_256m_callback_session.md) · [All raw records](../../performance_data/release_20261011_inline_fixed_110024/raw.jsonl.gz) · [Run manifest](../../performance_data/release_20261011_inline_fixed_110024/manifest.json).
+[8 MiB ordinary write](https://xiyang1314.github.io/TwoBufQueue/docs/reports/comparison/performance_8m_zero.html) · [8 MiB Session](https://xiyang1314.github.io/TwoBufQueue/docs/reports/comparison/performance_8m_zero_session.html) · [256 MiB ordinary write](https://xiyang1314.github.io/TwoBufQueue/docs/reports/comparison/performance_256m_callback.html) · [256 MiB Session](https://xiyang1314.github.io/TwoBufQueue/docs/reports/comparison/performance_256m_callback_session.html) · [All raw records](../../performance_data/release_20261011_inline_fixed_110024/raw.jsonl.gz) · [Run manifest](../../performance_data/release_20261011_inline_fixed_110024/manifest.json).

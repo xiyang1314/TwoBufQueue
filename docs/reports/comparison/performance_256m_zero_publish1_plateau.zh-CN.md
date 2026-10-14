@@ -1,4 +1,4 @@
-[English](performance_256m_zero_publish1_plateau.md) · [中文](performance_256m_zero_publish1_plateau.zh-CN.md)
+[English](https://xiyang1314.github.io/TwoBufQueue/docs/reports/comparison/performance_256m_zero_publish1_plateau.html) · [中文](https://xiyang1314.github.io/TwoBufQueue/docs/reports/comparison/performance_256m_zero_publish1_plateau.zh-CN.html)
 
 TWOBUFQUEUE / SPSC BENCHMARK
 
@@ -34,7 +34,7 @@ TWOBUFQUEUE / SPSC BENCHMARK
 
 每次运行分别计算这些分位数，表中再取三次运行结果的平均值。这里衡量的是 **生产者提交消息的开销**：分位数来自每组 1,000 条的平均耗时，不是单次 write 调用的分位数，也不是从发送到消费者收到消息的端到端延时。
 
-其他模式：[WriteSession](performance_256m_zero_session_plateau.zh-CN.md) · [普通 write · publish MAX](performance_256m_zero_publish_max_plateau.zh-CN.md)
+其他模式：[WriteSession](https://xiyang1314.github.io/TwoBufQueue/docs/reports/comparison/performance_256m_zero_session_plateau.zh-CN.html) · [普通 write · publish MAX](https://xiyang1314.github.io/TwoBufQueue/docs/reports/comparison/performance_256m_zero_publish_max_plateau.zh-CN.html)
 
 ## 吞吐概览
 
@@ -651,6 +651,6 @@ Clang 18.1.8 · Release · -O3 -DNDEBUG · 无 sanitizer。
 
 测量二进制 SHA-256：1a898890a865e21c4842f8f40f56c3cf9bbfdde912ff2de86782a5c9a3eb0493
 
-[参数选择记录](../../performance_data/plateau_compare_256m_zero_20261012/weighted_common_config_20261012/weighted_common_selection.json.gz) · [选参程序](../../performance_data/plateau_compare_256m_zero_20261012/weighted_common_config_20261012/select_weighted.py) · [ReaderWriterQueue 补测记录](../../performance_data/plateau_compare_256m_zero_20261012/weighted_common_config_20261012/readerwriterqueue_combined/raw.jsonl) · [原始遍历记录](../../performance_data/plateau_compare_256m_zero_20261012/raw.jsonl.gz) · [原始遍历列表](../../performance_data/plateau_compare_256m_zero_20261012/all_candidates.csv.gz) · [原始测量审计](../../performance_data/plateau_compare_256m_zero_20261012/audit.json) · [环境与依赖](../../performance_data/plateau_compare_256m_zero_20261012/environment.json) · [测量源码](../../performance_data/plateau_compare_256m_zero_20261012/measurement_sources.tar.gz) · [报告生成器](../../performance_data/plateau_compare_256m_zero_20261012/restyle_comparison.py)
+[参数选择记录](../../performance_data/plateau_compare_256m_zero_20261012/weighted_common_config_20261012/weighted_common_selection.json.gz) · [选参程序](https://xiyang1314.github.io/TwoBufQueue/docs/code/docs/performance_data/plateau_compare_256m_zero_20261012/weighted_common_config_20261012/select_weighted.py.zh-CN.html) · [ReaderWriterQueue 补测记录](../../performance_data/plateau_compare_256m_zero_20261012/weighted_common_config_20261012/readerwriterqueue_combined/raw.jsonl) · [原始遍历记录](../../performance_data/plateau_compare_256m_zero_20261012/raw.jsonl.gz) · [原始遍历列表](../../performance_data/plateau_compare_256m_zero_20261012/all_candidates.csv.gz) · [原始测量审计](../../performance_data/plateau_compare_256m_zero_20261012/audit.json) · [环境与依赖](../../performance_data/plateau_compare_256m_zero_20261012/environment.json) · [测量源码](../../performance_data/plateau_compare_256m_zero_20261012/measurement_sources.tar.gz) · [报告生成器](https://xiyang1314.github.io/TwoBufQueue/docs/code/docs/performance_data/plateau_compare_256m_zero_20261012/restyle_comparison.py.zh-CN.html)
 
 报告更新日期：2026-10-12 · 按指定权重选共同参数 · 256 MiB / 回调循环 0 / 三次平均

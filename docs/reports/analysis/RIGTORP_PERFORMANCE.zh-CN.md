@@ -1,6 +1,6 @@
 # rigtorp benchmark regression / 性能回退修正
 
-[English](RIGTORP_PERFORMANCE.md) · [简体中文](RIGTORP_PERFORMANCE.zh-CN.md)
+[English](https://xiyang1314.github.io/TwoBufQueue/docs/reports/analysis/RIGTORP_PERFORMANCE.html) · [简体中文](https://xiyang1314.github.io/TwoBufQueue/docs/reports/analysis/RIGTORP_PERFORMANCE.zh-CN.html)
 
 本次修正的是测试调用端。rigtorp、ReaderWriterQueue 和 atomic_queue 的原始头文件均保持固定版本与原始 SHA-256。
 
@@ -27,7 +27,7 @@
 
 ## 二、Code generation and limits / 汇编与结论边界
 
-保存的 16 B 推送汇编中，两个路径均为一条 `ldr q0`、一条 `str q0` 和相同的 `stlur` 发布；开启路径在复制前增加 `prfm pstl1keep`，没有额外清零存储。[汇编](../../performance_data/rigtorp_prefetch_20261011/push_codegen.s)。
+保存的 16 B 推送汇编中，两个路径均为一条 `ldr q0`、一条 `str q0` 和相同的 `stlur` 发布；开启路径在复制前增加 `prfm pstl1keep`，没有额外清零存储。[汇编](https://xiyang1314.github.io/TwoBufQueue/docs/code/docs/performance_data/rigtorp_prefetch_20261011/push_codegen.s.zh-CN.html)。
 
 `__builtin_prefetch(destination, 1, 3)` 表示为写操作给出高时间局部性的预取提示，它不写入消息内容；这是性能提示，不保证每个平台都会提速。[GCC 官方说明](https://gcc.gnu.org/onlinedocs/gcc/Other-Builtins.html#index-__builtin_prefetch)。不支持该内建函数的编译器使用普通完整复制。
 
@@ -35,10 +35,10 @@
 
 固定队列对象偏移 0/64（mod 128）的对照均没有改善该回退，因此未采用对齐改动。[排除布局假设的记录](../../performance_data/rigtorp_prefetch_20261011/placement-control/summary.json)。
 
-前期把预取统一加入普通 Payload 复制时，rigtorp 提升，但 8 B ReaderWriterQueue 吞吐从约 766 降到 481 M条/s，因此未采用这个版本。[统一添加提示的对照](../../performance_data/rigtorp_prefetch_20261011/fix-control/summary.json)。该修正只在 rigtorp 适配器显式请求提示。后续 ReaderWriterQueue 16/32 B 的调用端复制调整单独披露于 [性能口径](../PERFORMANCE.zh-CN.md)，不属于这次预取开关对照。
+前期把预取统一加入普通 Payload 复制时，rigtorp 提升，但 8 B ReaderWriterQueue 吞吐从约 766 降到 481 M条/s，因此未采用这个版本。[统一添加提示的对照](../../performance_data/rigtorp_prefetch_20261011/fix-control/summary.json)。该修正只在 rigtorp 适配器显式请求提示。后续 ReaderWriterQueue 16/32 B 的调用端复制调整单独披露于 [性能口径](https://xiyang1314.github.io/TwoBufQueue/docs/reports/PERFORMANCE.zh-CN.html)，不属于这次预取开关对照。
 
 ## 三、Fresh formal reports / 修正后的完整复测
 
 最新四份报告用提交 `f698f25` 重新测量：400 次独立正式测量、40 次完整负载/FIFO 校验、45 次回调校准全部完成。8 MiB / 16 B 的 rigtorp 五次平均为 317.500 M条/s，分组平均写入 p50 为 3.017 ns。256 MiB 的回调循环按 8/16/32/64 B 固定为 1/1/2/4；校准时间比约 3.09/2.17/1.95/2.38，其中 8 B 与 32 B 略超出目标。此次改动是取消测试框架 lambda 的强制内联，没有再次修改 rigtorp 预取或第三方头文件。同缓存普通 write / Session 共享新测的开源结果；上方历史开关对照仍保留，不能把不同轮次的全部差异归因于预取。
 
-[8 MiB 普通 write](../comparison/performance_8m_zero.md) · [8 MiB Session](../comparison/performance_8m_zero_session.md) · [256 MiB 普通 write](../comparison/performance_256m_callback.md) · [256 MiB Session](../comparison/performance_256m_callback_session.md) · [全部原始记录](../../performance_data/release_20261011_inline_fixed_110024/raw.jsonl.gz) · [运行清单](../../performance_data/release_20261011_inline_fixed_110024/manifest.json)。
+[8 MiB 普通 write](https://xiyang1314.github.io/TwoBufQueue/docs/reports/comparison/performance_8m_zero.html) · [8 MiB Session](https://xiyang1314.github.io/TwoBufQueue/docs/reports/comparison/performance_8m_zero_session.html) · [256 MiB 普通 write](https://xiyang1314.github.io/TwoBufQueue/docs/reports/comparison/performance_256m_callback.html) · [256 MiB Session](https://xiyang1314.github.io/TwoBufQueue/docs/reports/comparison/performance_256m_callback_session.html) · [全部原始记录](../../performance_data/release_20261011_inline_fixed_110024/raw.jsonl.gz) · [运行清单](../../performance_data/release_20261011_inline_fixed_110024/manifest.json)。

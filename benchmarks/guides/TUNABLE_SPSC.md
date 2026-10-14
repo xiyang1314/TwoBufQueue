@@ -1,6 +1,6 @@
 # Configurable SPSC benchmarks
 
-[English](TUNABLE_SPSC.md) · [简体中文](TUNABLE_SPSC.md)
+[English](https://xiyang1314.github.io/TwoBufQueue/benchmarks/guides/TUNABLE_SPSC.html) · [简体中文](https://xiyang1314.github.io/TwoBufQueue/benchmarks/guides/TUNABLE_SPSC.html)
 
 The benchmark runs the complete asynchronous TwoBufQueue pipeline: `Writer → SingleReadWorker → layer-2 copy → output queue → per-record callback`. Controls use the pinned upstream SPSC implementations of rigtorp/SPSCQueue, moodycamel ReaderWriterQueue and atomic_queue. Every implementation transfers the complete payload by value; it does not send a pointer or add a timestamp.
 
@@ -28,7 +28,7 @@ python3 benchmarks/spsc/run_release_benchmarks.py --binary ./build-spsc/brq_tuna
 
 The default runner measures 8/16/32/64 B, 10 million successful messages per run and three runs per metric, retaining every trial. Callback iterations are 0 for 8 MiB. For 256 MiB, ordinary write calibrates the callback interval/send-time ratio toward 2–3; the selected loop count is then shared by Session and all controls at that length. If the target is not reached within the calibration budget, the runner records `target_met=false` and the actual ratio. The ratio includes dispatch, waiting and scheduling; it is not the sum of callback CPU times.
 
-The release profile enables current-block scanning for ordinary write, with 1 ms initial/maximum scan intervals and minimum wait, publishing every 10 writes. Session retains scanning disabled and maximum publication count. Pool budgets are equal, but reader/publication settings differ, so these are not same-parameter controls. Other published modes have their own disclosed settings. See [performance evidence](../../docs/reports/PERFORMANCE.md) for exact report configurations.
+The release profile enables current-block scanning for ordinary write, with 1 ms initial/maximum scan intervals and minimum wait, publishing every 10 writes. Session retains scanning disabled and maximum publication count. Pool budgets are equal, but reader/publication settings differ, so these are not same-parameter controls. Other published modes have their own disclosed settings. See [performance evidence](https://xiyang1314.github.io/TwoBufQueue/docs/reports/PERFORMANCE.html) for exact report configurations.
 
 The runner writes HTML, raw JSONL, complete settings, every command, source archives, source/dependency/executable hashes, compiler flags and environment information. Existing selected reports are archived. Native controls measured in the same batch are shared between ordinary-write and Session reports. They are not filled in from historical scores.
 
@@ -46,7 +46,7 @@ On macOS, the producer uses user_interactive QoS without hard CPU affinity; form
 
 `payload_bytes` is the net length, including a sequence number in its first 8 bytes. The benchmark uses `Writer<publish_count, false>` without a length prefix; fixed-size batch parsing invokes the same Sink once per record. Every 8-byte payload word varies with its sequence, preventing a constant tail from dominating compiler optimization.
 
-The external Payload retains `bytes{}` initialization and ordinary `bytes(other.bytes)` full member copying. rigtorp can request a destination write-prefetch constructor through its original `try_emplace`. ReaderWriterQueue can request zeroing followed by a complete memcpy; published 16/32 B settings enable this path while 8/64 B use member copying. Extra zeroing is timed. Upstream queue headers remain unchanged. Copy choices are selected before timing and disclosed because their generated code can affect rankings independently of the queue algorithm. [Copy-control evidence](../../docs/reports/PERFORMANCE.md#7-copy-constructor-sensitivity).
+The external Payload retains `bytes{}` initialization and ordinary `bytes(other.bytes)` full member copying. rigtorp can request a destination write-prefetch constructor through its original `try_emplace`. ReaderWriterQueue can request zeroing followed by a complete memcpy; published 16/32 B settings enable this path while 8/64 B use member copying. Extra zeroing is timed. Upstream queue headers remain unchanged. Copy choices are selected before timing and disclosed because their generated code can affect rankings independently of the queue algorithm. [Copy-control evidence](https://xiyang1314.github.io/TwoBufQueue/docs/reports/PERFORMANCE.html#copy-constructor-sensitivity).
 
 ## 4. Use the test class
 

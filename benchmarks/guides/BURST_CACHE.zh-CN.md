@@ -1,6 +1,6 @@
 # 连续发送一批消息，对业务性能产生什么影响
 
-当前[正式报告](../../docs/reports/burst/performance_burst_from_empty.zh-CN.md)比较几种队列在突发连续发送后，对生产者热路径业务的影响。此前预填充大积压的实验与报告保留在后面的历史章节。
+当前[正式报告](https://xiyang1314.github.io/TwoBufQueue/docs/reports/burst/performance_burst_from_empty.zh-CN.html)比较几种队列在突发连续发送后，对生产者热路径业务的影响。此前预填充大积压的实验与报告保留在后面的历史章节。
 
 ## 一、一次运行得到当前报告
 

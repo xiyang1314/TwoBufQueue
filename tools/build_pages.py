@@ -14,7 +14,7 @@ def main():
     output = args.output.resolve()
     if output == ROOT or output in ROOT.parents:
         parser.error('Output must be separate from the source root')
-    manifest = json.loads((ROOT / 'release-manifest.json').read_text())
+    manifest = json.loads((ROOT / 'release-manifest.json').read_text(encoding='utf-8'))
     selected = {record['path'] for record in manifest['files']}
     selected.add('release-manifest.json')
     if 'README.html' not in selected or 'README.zh-CN.html' not in selected:
@@ -28,8 +28,8 @@ def main():
         target = output / name
         target.parent.mkdir(parents=True, exist_ok=True)
         shutil.copy2(ROOT / name, target)
-    (output / '.nojekyll').write_text('')
-    (output / 'index.html').write_text('<!doctype html><html lang="en"><meta charset="utf-8"><meta http-equiv="refresh" content="0; url=README.html"><title>TwoBufQueue</title><a href="README.html">Open TwoBufQueue overview</a> · <a href="README.zh-CN.html">中文介绍</a></html>\n')
+    (output / '.nojekyll').write_text('', encoding='utf-8')
+    (output / 'index.html').write_text('<!doctype html><html lang="en"><meta charset="utf-8"><meta http-equiv="refresh" content="0; url=README.html"><title>TwoBufQueue</title><a href="README.html">Open TwoBufQueue overview</a> · <a href="README.zh-CN.html">中文介绍</a></html>\n', encoding='utf-8')
     print(json.dumps({'output': str(output), 'files': len(selected) + 2}))
 
 

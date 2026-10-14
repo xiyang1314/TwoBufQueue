@@ -4,7 +4,7 @@
 
 为追求生产者热路径性能，采用双层缓存设计，通过批量发布和传输，让生产者使用小缓存，让消费者使用大缓存容纳积压，尽可能降低消息传输对业务执行的影响。
 
-[简短首页](README.zh-CN.md) · [文档导航](docs/index.zh-CN.md) · [English](README_DETAIL.md) · [接口指南](docs/guides/API.zh-CN.md) · [性能测试](docs/reports/PERFORMANCE.zh-CN.md) · [示例索引](examples/README.zh-CN.md) · [代码阅读](docs/code/index.zh-CN.md)
+[简短首页](https://xiyang1314.github.io/TwoBufQueue/README.zh-CN.html) · [文档导航](https://xiyang1314.github.io/TwoBufQueue/docs/index.zh-CN.html) · [English](https://xiyang1314.github.io/TwoBufQueue/README_DETAIL.html) · [接口指南](https://xiyang1314.github.io/TwoBufQueue/docs/guides/API.zh-CN.html) · [性能测试](https://xiyang1314.github.io/TwoBufQueue/docs/reports/PERFORMANCE.zh-CN.html) · [示例索引](https://xiyang1314.github.io/TwoBufQueue/examples/README.zh-CN.html) · [代码阅读](https://xiyang1314.github.io/TwoBufQueue/docs/code/index.zh-CN.html)
 
 **目录**
 
@@ -51,11 +51,11 @@
 
 | 你的发送方式 | 查看完整结果 |
 |---|---|
-| 在一个块中连续写多条消息 | [WriteSession](docs/reports/comparison/performance_256m_zero_session_plateau.zh-CN.md) |
-| 使用普通 write，允许在块交接时发布 | [批量发布](docs/reports/comparison/performance_256m_zero_publish_max_plateau.zh-CN.md) |
-| 使用普通 write，每条消息都发布进度 | [每条发布](docs/reports/comparison/performance_256m_zero_publish1_plateau.zh-CN.md) |
+| 在一个块中连续写多条消息 | [WriteSession](https://xiyang1314.github.io/TwoBufQueue/docs/reports/comparison/performance_256m_zero_session_plateau.zh-CN.html) |
+| 使用普通 write，允许在块交接时发布 | [批量发布](https://xiyang1314.github.io/TwoBufQueue/docs/reports/comparison/performance_256m_zero_publish_max_plateau.zh-CN.html) |
+| 使用普通 write，每条消息都发布进度 | [每条发布](https://xiyang1314.github.io/TwoBufQueue/docs/reports/comparison/performance_256m_zero_publish1_plateau.zh-CN.html) |
 
-报告还包含 p50、p99、p999 和背压。写入耗时按每组 **1,000 次写入的平均耗时**统计，不是单次调用或端到端延时；不同写入方式分别调优。完整负载、参数、三轮数据和复现命令见[性能测试说明](docs/reports/PERFORMANCE.zh-CN.md)。
+报告还包含 p50、p99、p999 和背压。写入耗时按每组 **1,000 次写入的平均耗时**统计，不是单次调用或端到端延时；不同写入方式分别调优。完整负载、参数、三轮数据和复现命令见[性能测试说明](https://xiyang1314.github.io/TwoBufQueue/docs/reports/PERFORMANCE.zh-CN.html)。
 
 ### 1.2 连续发送一批消息，业务还能跑多快？
 
@@ -73,12 +73,12 @@
 
 图中普通 write 与单块 Session 使用相同参数。环境为 Apple M3、macOS 14.4.1、Clang 18.1.8；每次 1,000 万条、5 次取平均，回调循环次数为 0；两层数据池各 8 MiB，合计 16 MiB。本机高 QoS，**未硬绑核**。
 
-p50 是每组 **1,000 次写入平均耗时**的分位数，不能当成单次调用或端到端延时。吞吐累计分轮发送时间，排空在计时外，申请块和换块在写入计时内。[数据来源与完整测量口径](docs/reports/PERFORMANCE.zh-CN.md)。
+p50 是每组 **1,000 次写入平均耗时**的分位数，不能当成单次调用或端到端延时。吞吐累计分轮发送时间，排空在计时外，申请块和换块在写入计时内。[数据来源与完整测量口径](https://xiyang1314.github.io/TwoBufQueue/docs/reports/PERFORMANCE.zh-CN.html)。
 
 | 条件 | 普通 write | WriteSession |
 |---|---|---|
-| 每层 8 MiB，回调循环 0 次 | [报告](docs/reports/comparison/performance_8m_zero.md) | [报告](docs/reports/comparison/performance_8m_zero_session.md) |
-| 每层 256 MiB，回调工作量校准 | [报告](docs/reports/comparison/performance_256m_callback.md) | [报告](docs/reports/comparison/performance_256m_callback_session.md) |
+| 每层 8 MiB，回调循环 0 次 | [报告](https://xiyang1314.github.io/TwoBufQueue/docs/reports/comparison/performance_8m_zero.html) | [报告](https://xiyang1314.github.io/TwoBufQueue/docs/reports/comparison/performance_8m_zero_session.html) |
+| 每层 256 MiB，回调工作量校准 | [报告](https://xiyang1314.github.io/TwoBufQueue/docs/reports/comparison/performance_256m_callback.html) | [报告](https://xiyang1314.github.io/TwoBufQueue/docs/reports/comparison/performance_256m_callback_session.html) |
 
 报告还对比 ReaderWriterQueue、rigtorp/SPSCQueue 与 atomic_queue，保留全部正式次数、参数和命令。独立 A/B 实验表明，外部负载复制构造的变化会显著改变部分队列的成绩，不能把差异全部归因于队列算法。完整数据校验通过，也不意味着这些数字是所有平台的通用排名。
 
@@ -92,7 +92,7 @@ p50 是每组 **1,000 次写入平均耗时**的分位数，不能当成单次�
 
 但是，即便没有背压，如果生产者连续发送大量消息后，业务线程性能可能会大幅度降低。原因是大量发送消息会占用很多缓存，从而冲刷掉当前业务线程 CPU 的热缓存。
 
-TwoBufQueue 让生产者反复使用较小的消息池，把较大的积压空间留给消费端，尽可能减轻消息发送对后续业务的影响。上方实验关注的正是这种情况：[发送后业务性能](docs/reports/burst/performance_burst_from_empty.zh-CN.md)。
+TwoBufQueue 让生产者反复使用较小的消息池，把较大的积压空间留给消费端，尽可能减轻消息发送对后续业务的影响。上方实验关注的正是这种情况：[发送后业务性能](https://xiyang1314.github.io/TwoBufQueue/docs/reports/burst/performance_burst_from_empty.zh-CN.html)。
 
 ### 2.2 批量发布与交接相比每条交接，性能提高得多吗？
 
@@ -100,7 +100,7 @@ TwoBufQueue 让生产者反复使用较小的消息池，把较大的积压空�
 
 例如，本机 8 B 消息实测中，**Session 连续写入吞吐约 2,306.5 M条/s，普通 write 批量发布约 1,022 M条/s，每条发布约 490 M条/s。** 相比每条发布，Session 约为 **4.7 倍**，普通批量发布约为 **2.1 倍**。
 
-具体见 [Session 报告](docs/reports/comparison/performance_256m_zero_session_plateau.zh-CN.md)、[普通批量发布报告](docs/reports/comparison/performance_256m_zero_publish_max_plateau.zh-CN.md)、[每条发布报告](docs/reports/comparison/performance_256m_zero_publish1_plateau.zh-CN.md)。各方式采用各自调优后的参数，数字对应完整实测配置。
+具体见 [Session 报告](https://xiyang1314.github.io/TwoBufQueue/docs/reports/comparison/performance_256m_zero_session_plateau.zh-CN.html)、[普通批量发布报告](https://xiyang1314.github.io/TwoBufQueue/docs/reports/comparison/performance_256m_zero_publish_max_plateau.zh-CN.html)、[每条发布报告](https://xiyang1314.github.io/TwoBufQueue/docs/reports/comparison/performance_256m_zero_publish1_plateau.zh-CN.html)。各方式采用各自调优后的参数，数字对应完整实测配置。
 
 ### 2.3 消息缓存满了，生产者必须等吗？
 
@@ -118,7 +118,7 @@ TwoBufQueue 当前通过两层独立配置的缓存和后台复制承接短时�
 
 TwoBufQueue 可以设置一个较宽松的内存上限，内存池根据实际需要申请内存块。配置空闲块保留上限后，多余的空闲块也会进入回收流程，根据预设参数动态调整。
 
-当前快捷构造默认保留空闲块；需要自动回收时，可在手动构造源池时设置空闲块保留上限。配置方法见[内存池动态调整](docs/guides/API.zh-CN.md#61-按需分配与空闲块回收)。
+当前快捷构造默认保留空闲块；需要自动回收时，可在手动构造源池时设置空闲块保留上限。配置方法见[内存池动态调整](https://xiyang1314.github.io/TwoBufQueue/docs/guides/API.zh-CN.html#按需分配与空闲块回收)。
 
 ### 2.5 对于大消息，怎么发送才能达到更好的效果？
 
@@ -138,7 +138,7 @@ TwoBufQueue 可以设置一个较宽松的内存上限，内存池根据实际�
 
 如果优先使用刚归还的空闲块，在后台能够及时归还的情况下，生产者就可以集中复用较少的块，减少反复写入的内存范围，对业务热缓存的干扰也更小。TwoBufQueue 采用的就是这种策略。
 
-[缓存池设计与实现](src/base_components/WarmPool/warm_pool.hpp)。
+[缓存池设计与实现](https://xiyang1314.github.io/TwoBufQueue/docs/code/src/base_components/WarmPool/warm_pool.hpp.zh-CN.html)。
 
 ## 三、与常规单层缓存队列对比
 
@@ -208,11 +208,11 @@ flowchart LR
     class H,I consumer;
 ```
 
-消费者分担任务，不是每个消费者都接收所有消息。线程数量可以配置。[线程与输出模式配置](docs/guides/API.zh-CN.md#九多生产者与多消费者)。
+消费者分担任务，不是每个消费者都接收所有消息。线程数量可以配置。[线程与输出模式配置](https://xiyang1314.github.io/TwoBufQueue/docs/guides/API.zh-CN.html#多生产者与多消费者)。
 
 ### 3.3 设计要点
 
-TwoBufQueue 的两张图展示的是双层异步路径；可选直接读取路径省去第二层复制，非 void `SyncContext` 则让逐条回调在生产者线程执行。配置和数据生命周期见[接口文档](docs/guides/API.zh-CN.md)。
+TwoBufQueue 的两张图展示的是双层异步路径；可选直接读取路径省去第二层复制，非 void `SyncContext` 则让逐条回调在生产者线程执行。配置和数据生命周期见[接口文档](https://xiyang1314.github.io/TwoBufQueue/docs/guides/API.zh-CN.html)。
 
 这些设计与前面问题的对应关系如下：
 
@@ -235,7 +235,7 @@ TwoBufQueue 的两张图展示的是双层异步路径；可选直接读取路�
 
 **优势：** 连续发送时可以获得很低的生产者提交开销。相比每条都走完整提交流程，TwoBufQueue 的批量写入方式能减少重复工作，让业务线程更快完成这一批发送。
 
-[性能对比](docs/reports/comparison/performance_256m_zero_session_plateau.zh-CN.md) · [使用示例](examples/two_buf_queue/07_quick_write_muti_msg.cpp)
+[性能对比](https://xiyang1314.github.io/TwoBufQueue/docs/reports/comparison/performance_256m_zero_session_plateau.zh-CN.html) · [使用示例](https://xiyang1314.github.io/TwoBufQueue/docs/code/examples/two_buf_queue/07_quick_write_muti_msg.cpp.zh-CN.html)
 
 #### 4.1.2 允许批量通知与处理
 
@@ -243,7 +243,7 @@ TwoBufQueue 的两张图展示的是双层异步路径；可选直接读取路�
 
 **优势：** 相比逐条共享进度和交接，集中提交一批消息可以减少生产者与辅助线程之间的协调工作。在能接受批量到达的业务中，把更多 CPU 时间留给生产者业务，同时保持高吞吐。
 
-[批量发布的性能结果](docs/reports/comparison/performance_256m_zero_publish_max_plateau.zh-CN.md) · [每条发布的性能结果](docs/reports/comparison/performance_256m_zero_publish1_plateau.zh-CN.md)
+[批量发布的性能结果](https://xiyang1314.github.io/TwoBufQueue/docs/reports/comparison/performance_256m_zero_publish_max_plateau.zh-CN.html) · [每条发布的性能结果](https://xiyang1314.github.io/TwoBufQueue/docs/reports/comparison/performance_256m_zero_publish1_plateau.zh-CN.html)
 
 #### 4.1.3 传输较大的消息或数据块
 
@@ -251,7 +251,7 @@ TwoBufQueue 的两张图展示的是双层异步路径；可选直接读取路�
 
 **优势：** 可以把一段连续数据作为消息交给消费端，减少业务层逐条分发，并把耗时处理留在辅助线程。消费端容纳积压的容量可以独立配置。后续计划通过拆分与重组，让超过单个源块的大消息也能使用较小的生产者消息池传输。
 
-[用法与长度限制](docs/guides/API.zh-CN.md) · [参数示例](examples/two_buf_queue/08_all_parameters.cpp)。当前单条消息须装入一个源块；大消息专项性能测试后续补充。
+[用法与长度限制](https://xiyang1314.github.io/TwoBufQueue/docs/guides/API.zh-CN.html) · [参数示例](https://xiyang1314.github.io/TwoBufQueue/docs/code/examples/two_buf_queue/08_all_parameters.cpp.zh-CN.html)。当前单条消息须装入一个源块；大消息专项性能测试后续补充。
 
 #### 4.1.4 消费者速度不稳定
 
@@ -267,7 +267,7 @@ TwoBufQueue 的两张图展示的是双层异步路径；可选直接读取路�
 
 **优势：** 相比连续写入一个很大的单层消息区，小生产者消息池可以减轻消息发送对业务缓存的干扰。收益不仅是发送快，还包括发送完后业务函数仍能保持较低耗时。
 
-[业务性能对比](docs/reports/burst/performance_burst_from_empty.zh-CN.md)：本机发送 16 MiB 后，TwoBufQueue 的业务耗时从正常约 13 ns/次增至 18.2 ns/次；详细条件见报告。
+[业务性能对比](https://xiyang1314.github.io/TwoBufQueue/docs/reports/burst/performance_burst_from_empty.zh-CN.html)：本机发送 16 MiB 后，TwoBufQueue 的业务耗时从正常约 13 ns/次增至 18.2 ns/次；详细条件见报告。
 
 #### 4.1.6 需要多种生产者—消费者组合
 
@@ -275,7 +275,7 @@ TwoBufQueue 的两张图展示的是双层异步路径；可选直接读取路�
 
 **优势：** 一个组件覆盖单生产者、多个生产者以及多个消费者的组合，减少为不同并发需求分别拼装组件的工作。各生产者有自己的写入入口，也可以按来源区分消息，方便接入已有业务。
 
-[多生产者示例](examples/two_buf_queue/03_multi_thread_writer.cpp) · [消费线程配置](examples/two_buf_queue/08_all_parameters.cpp)
+[多生产者示例](https://xiyang1314.github.io/TwoBufQueue/docs/code/examples/two_buf_queue/03_multi_thread_writer.cpp.zh-CN.html) · [消费线程配置](https://xiyang1314.github.io/TwoBufQueue/docs/code/examples/two_buf_queue/08_all_parameters.cpp.zh-CN.html)
 
 ### 4.2 劣势场景
 
@@ -328,25 +328,25 @@ int main() {
 }
 ```
 
-[异步日志示例](examples/two_buf_queue/09_async_logger.cpp) 演示后台写文件、小容量池受压、等待／丢弃、flush 和退出，并逐条校验保存的文件。
+[异步日志示例](https://xiyang1314.github.io/TwoBufQueue/docs/code/examples/two_buf_queue/09_async_logger.cpp.zh-CN.html) 演示后台写文件、小容量池受压、等待／丢弃、flush 和退出，并逐条校验保存的文件。
 
-当前需要 **C++20**。构建与接入方式见[下方说明](#53-构建与接入)；参数、消息格式和生命周期见[接口指南](docs/guides/API.zh-CN.md)。
+当前需要 **C++20**。构建与接入方式见[下方说明](#53-构建与接入)；参数、消息格式和生命周期见[接口指南](https://xiyang1314.github.io/TwoBufQueue/docs/guides/API.zh-CN.html)。
 
 ### 5.2 按用途选择示例
 
 | 需求 | 示例 |
 |---|---|
-| 逐条写入与回调 | [01_basic](examples/01_basic.cpp) |
-| 一次回调接收一组数据 | [02_batch_callback](examples/two_buf_queue/02_batch_callback.cpp) |
-| 多个业务线程写入 | [03_multi_thread_writer](examples/two_buf_queue/03_multi_thread_writer.cpp) |
-| 直接读取源块 | [04_layer1_callback](examples/two_buf_queue/04_layer1_callback.cpp) |
-| 给记录加序号 | [05_seq_writer](examples/two_buf_queue/05_seq_writer.cpp) |
-| 在写线程执行回调 | [06_sync_writer](examples/two_buf_queue/06_sync_writer.cpp) |
-| 循环快速写多条记录 | [07_quick_write_muti_msg](examples/two_buf_queue/07_quick_write_muti_msg.cpp) |
-| 调整构造参数 | [08_all_parameters](examples/two_buf_queue/08_all_parameters.cpp) |
-| 后台写业务日志 | [09_async_logger](examples/two_buf_queue/09_async_logger.cpp) |
+| 逐条写入与回调 | [01_basic](https://xiyang1314.github.io/TwoBufQueue/docs/code/examples/01_basic.cpp.zh-CN.html) |
+| 一次回调接收一组数据 | [02_batch_callback](https://xiyang1314.github.io/TwoBufQueue/docs/code/examples/two_buf_queue/02_batch_callback.cpp.zh-CN.html) |
+| 多个业务线程写入 | [03_multi_thread_writer](https://xiyang1314.github.io/TwoBufQueue/docs/code/examples/two_buf_queue/03_multi_thread_writer.cpp.zh-CN.html) |
+| 直接读取源块 | [04_layer1_callback](https://xiyang1314.github.io/TwoBufQueue/docs/code/examples/two_buf_queue/04_layer1_callback.cpp.zh-CN.html) |
+| 给记录加序号 | [05_seq_writer](https://xiyang1314.github.io/TwoBufQueue/docs/code/examples/two_buf_queue/05_seq_writer.cpp.zh-CN.html) |
+| 在写线程执行回调 | [06_sync_writer](https://xiyang1314.github.io/TwoBufQueue/docs/code/examples/two_buf_queue/06_sync_writer.cpp.zh-CN.html) |
+| 循环快速写多条记录 | [07_quick_write_muti_msg](https://xiyang1314.github.io/TwoBufQueue/docs/code/examples/two_buf_queue/07_quick_write_muti_msg.cpp.zh-CN.html) |
+| 调整构造参数 | [08_all_parameters](https://xiyang1314.github.io/TwoBufQueue/docs/code/examples/two_buf_queue/08_all_parameters.cpp.zh-CN.html) |
+| 后台写业务日志 | [09_async_logger](https://xiyang1314.github.io/TwoBufQueue/docs/code/examples/two_buf_queue/09_async_logger.cpp.zh-CN.html) |
 
-项目中还提供了内存池等基础组件的独立使用示例，具体可看[全部示例导航](examples/README.zh-CN.md)。
+项目中还提供了内存池等基础组件的独立使用示例，具体可看[全部示例导航](https://xiyang1314.github.io/TwoBufQueue/examples/README.zh-CN.html)。
 
 ### 5.3 构建与接入
 
@@ -372,7 +372,7 @@ find_package(TwoBufQueue 0.1 CONFIG REQUIRED)
 target_link_libraries(your_app PRIVATE TwoBufQueue::TwoBufQueue)
 ```
 
-[接入文档](docs/guides/INTEGRATION.zh-CN.md) 包含安装命令、可迁移安装目录和 FetchContent 用法。CMake 包版本为 0.1.0，仅用于包版本识别，不表示已创建 Release 或标签。
+[接入文档](https://xiyang1314.github.io/TwoBufQueue/docs/guides/INTEGRATION.zh-CN.html) 包含安装命令、可迁移安装目录和 FetchContent 用法。CMake 包版本为 0.1.0，仅用于包版本识别，不表示已创建 Release 或标签。
 
 ### 5.4 使用边界
 
@@ -383,7 +383,7 @@ target_link_libraries(your_app PRIVATE TwoBufQueue::TwoBufQueue)
 - 关闭 current 扫描后，flush 不会交付当前未完成块；尾部需要显式交接或 finish。启用扫描时，发布策略与线程调度仍会影响交付延时。
 - 先停止并 join 生产线程，再逐个 `writer.finish()`，最后 `queue.stop()` 并检查错误。队列 flush 不等于回调完成或文件落盘。
 
-[接口约定](docs/guides/API.zh-CN.md) · [测试记录](test/reader/READ_CTRL_TESTS.md) · [贡献说明](CONTRIBUTING.zh-CN.md)。Linux、Windows、macOS CI 已配置；保存的本机记录明确列出实际验证平台。
+[接口约定](https://xiyang1314.github.io/TwoBufQueue/docs/guides/API.zh-CN.html) · [测试记录](https://xiyang1314.github.io/TwoBufQueue/test/reader/READ_CTRL_TESTS.html) · [贡献说明](https://xiyang1314.github.io/TwoBufQueue/CONTRIBUTING.zh-CN.html)。Linux、Windows、macOS CI 已配置；保存的本机记录明确列出实际验证平台。
 
 ## 六、后续计划
 
@@ -392,4 +392,4 @@ target_link_libraries(your_app PRIVATE TwoBufQueue::TwoBufQueue)
 - **SeqWriter 后端排序与两阶段处理**：第一阶段由多个线程并行执行可并行的消息处理，结果保留原始消息序号；第二阶段汇集乱序完成的结果，按消息序号排序，并串行执行需要保持消息顺序的处理。目标是兼顾并行处理能力与最终执行顺序。当前 SeqWriter 可以携带序号，尚未实现这一后台有序执行流程；结果暂存和缺失序号等处理规则将随功能补充。
 - **更多 C++ 标准版本**：当前最低要求仍为 C++20；后续补充兼容实现和相应构建测试。
 
-采用 [Apache-2.0](LICENSE)，版权所有 © 2026 chuan lu。见 [NOTICE](NOTICE)；[中文许可证](LICENSE.zh-CN.md) 是参考译文。
+采用 [Apache-2.0](LICENSE)，版权所有 © 2026 chuan lu。见 [NOTICE](NOTICE)；[中文许可证](https://xiyang1314.github.io/TwoBufQueue/LICENSE.zh-CN.html) 是参考译文。

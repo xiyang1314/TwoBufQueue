@@ -269,6 +269,9 @@ int main() {
         c.output.output_pool_min = c.output.output_pool_max = 2;
         c.spsc_capacity = 32; c.sample_every = 1; c.max_samples = 4096;
         c.timer_calibration_samples = 1000; c.timeout_seconds = 15;
+        // Count-accounting contracts must be independent of TSC samples rejected
+        // after CPU migration. Production benchmarks still default to automatic.
+        c.timer = perf::TimerKind::steady;
         c.call_batch_size = 31; // Deliberately does not divide the message count.
         unsigned cases = 0;
         for (const auto bytes : {8u,16u,32u,64u}) {

@@ -1,6 +1,6 @@
 # 命名规范
 
-[English](NAMING.md) · [简体中文](NAMING.zh-CN.md)
+[English](https://xiyang1314.github.io/TwoBufQueue/NAMING.html) · [简体中文](https://xiyang1314.github.io/TwoBufQueue/NAMING.zh-CN.html)
 
 - 类、结构体、枚举类型、自定义类型别名：`PascalCase`，例如 `WriterQueue`、`DataFrame`、`ReadConfig`。现有类名已符合，保持原名。
 - 函数与成员函数：`snake_case`，例如 `allocate()`、`try_read()`、`add_writer()`。构造/析构函数遵循 C++ 规则，与类同名；运算符保留语言规定名称。

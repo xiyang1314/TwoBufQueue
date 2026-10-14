@@ -2,7 +2,7 @@
 
 当前需要 C++20、CMake 3.20+ 和线程支持。应用只需包含 `<TwoBufQueue.hpp>`，并链接 `TwoBufQueue::TwoBufQueue`；不需要自己添加内部头文件路径。macOS 当前要求 14.4+ 和支持相应接口的 SDK。
 
-[中文首页](../../README.zh-CN.md) · [接口使用指南](API.zh-CN.md) · [English integration](INTEGRATION.zh-CN.md)
+[中文首页](https://xiyang1314.github.io/TwoBufQueue/README.zh-CN.html) · [接口使用指南](https://xiyang1314.github.io/TwoBufQueue/docs/guides/API.zh-CN.html) · [English integration](https://xiyang1314.github.io/TwoBufQueue/docs/guides/INTEGRATION.zh-CN.html)
 
 ## 一、最简单：源码放在工程里
 
@@ -52,7 +52,7 @@ FetchContent_MakeAvailable(TwoBufQueue)
 target_link_libraries(my_app PRIVATE TwoBufQueue::TwoBufQueue)
 ```
 
-此处假定应用 target `my_app` 已创建。远程仓库发布后，可换成实际 `GIT_REPOSITORY` 和固定提交号 `GIT_TAG`；不要用不断变化的分支代替可复现版本。远程写法及接入自测见[完整接入说明](INTEGRATION.zh-CN.md)。
+此处假定应用 target `my_app` 已创建。远程仓库发布后，可换成实际 `GIT_REPOSITORY` 和固定提交号 `GIT_TAG`；不要用不断变化的分支代替可复现版本。远程写法及接入自测见[完整接入说明](https://xiyang1314.github.io/TwoBufQueue/docs/guides/INTEGRATION.zh-CN.html)。
 
 ## 四、常见问题
 
@@ -63,4 +63,4 @@ target_link_libraries(my_app PRIVATE TwoBufQueue::TwoBufQueue)
 | macOS 编译接口不可用 | 系统与 SDK 是否支持 14.4+；必要时配置 `CMAKE_OSX_DEPLOYMENT_TARGET=14.4` |
 | 不想构建库的测试或示例 | 设置 `BRQ_BUILD_TESTS=OFF`、`BRQ_BUILD_EXAMPLES=OFF` |
 
-下一步看[接口指南](API.zh-CN.md)或直接运行[基础示例](../../examples/01_basic.cpp)。
+下一步看[接口指南](https://xiyang1314.github.io/TwoBufQueue/docs/guides/API.zh-CN.html)或直接运行[基础示例](https://xiyang1314.github.io/TwoBufQueue/docs/code/examples/01_basic.cpp.zh-CN.html)。

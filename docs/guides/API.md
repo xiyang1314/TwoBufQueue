@@ -2,18 +2,18 @@
 
 Create a producer's `writer`, then give the writer and a message-receiving callback to `TwoBufQueue`. Send through the writer. By default, the queue copies data and calls the callback in the background.
 
-[Project overview](../../README.md) · [中文接口指南](API.zh-CN.md) · [Integration](INTEGRATION.md) · [Runnable examples](../../examples/README.md)
+[Project overview](https://xiyang1314.github.io/TwoBufQueue/README.html) · [中文接口指南](https://xiyang1314.github.io/TwoBufQueue/docs/guides/API.zh-CN.html) · [Integration](https://xiyang1314.github.io/TwoBufQueue/docs/guides/INTEGRATION.html) · [Runnable examples](https://xiyang1314.github.io/TwoBufQueue/examples/README.html)
 
 ## 1. Choose the interface
 
 | What you need | Use | Example |
 |---|---|---|
-| Send and receive individual records | `Writer<>` + `TwoBufQueue` | [Basic](../../examples/01_basic.cpp) |
-| Submit many records in a loop | `Writer<UINT32_MAX>` + `WriteSession` | [Loop](../../examples/two_buf_queue/07_quick_write_muti_msg.cpp) |
-| Add a sequence number | `SeqWriter` | [Sequence](../../examples/two_buf_queue/05_seq_writer.cpp) |
-| Receive grouped data in one callback | `TwoBufQueueBatch` | [Grouped-data callback](../../examples/two_buf_queue/02_batch_callback.cpp) |
-| Execute the callback on the producer | Non-void `SyncContext` | [Synchronous](../../examples/two_buf_queue/06_sync_writer.cpp) |
-| Read source blocks without layer-2 copying | Compose `ReadWorker` and a source callback | [Direct read](../../examples/two_buf_queue/04_layer1_callback.cpp) |
+| Send and receive individual records | `Writer<>` + `TwoBufQueue` | [Basic](https://xiyang1314.github.io/TwoBufQueue/docs/code/examples/01_basic.cpp.html) |
+| Submit many records in a loop | `Writer<UINT32_MAX>` + `WriteSession` | [Loop](https://xiyang1314.github.io/TwoBufQueue/docs/code/examples/two_buf_queue/07_quick_write_muti_msg.cpp.html) |
+| Add a sequence number | `SeqWriter` | [Sequence](https://xiyang1314.github.io/TwoBufQueue/docs/code/examples/two_buf_queue/05_seq_writer.cpp.html) |
+| Receive grouped data in one callback | `TwoBufQueueBatch` | [Grouped-data callback](https://xiyang1314.github.io/TwoBufQueue/docs/code/examples/two_buf_queue/02_batch_callback.cpp.html) |
+| Execute the callback on the producer | Non-void `SyncContext` | [Synchronous](https://xiyang1314.github.io/TwoBufQueue/docs/code/examples/two_buf_queue/06_sync_writer.cpp.html) |
+| Read source blocks without layer-2 copying | Compose `ReadWorker` and a source callback | [Direct read](https://xiyang1314.github.io/TwoBufQueue/docs/code/examples/two_buf_queue/04_layer1_callback.cpp.html) |
 
 Start with the complete example below; read configuration when you need to tune it.
 
@@ -126,7 +126,7 @@ These budgets exclude metadata, queue slots and application inputs. An output bl
 
 The underlying `WarmPool` also accepts `max_free_count`, a free-block retention limit. On return, when the free count reaches that limit and the total count exceeds `min_count`, excess blocks enter reclamation. Borrowed blocks are not reclaimed.
 
-The `make_writer` and `TwoBufQueueOptions` convenience configurations retain free blocks by default and do not expose this retention limit. For source-pool reclamation, construct `WriterPool(min_count, max_count, factory, max_free_count)` manually, then connect a source queue and Writer. See [all parameters](../../examples/two_buf_queue/08_all_parameters.cpp).
+The `make_writer` and `TwoBufQueueOptions` convenience configurations retain free blocks by default and do not expose this retention limit. For source-pool reclamation, construct `WriterPool(min_count, max_count, factory, max_free_count)` manually, then connect a source queue and Writer. See [all parameters](https://xiyang1314.github.io/TwoBufQueue/docs/code/examples/two_buf_queue/08_all_parameters.cpp.html).
 
 ### 6.2 Source: WriterSourceConfig
 
@@ -158,7 +158,7 @@ Drop rejects this message; the application chooses retry or discard. Block can f
 | `cancel_claim_mode` | `QueueTail` | Reclaim ordering after batch refusal |
 | `output_enable_stats` | `false` | Enable output handoff statistics |
 
-Maximum block counts must be positive; initial counts cannot exceed them. Worker counts must match the selected mode. See [all parameters](../../examples/two_buf_queue/08_all_parameters.cpp) for complete constraints.
+Maximum block counts must be positive; initial counts cannot exceed them. Worker counts must match the selected mode. See [all parameters](https://xiyang1314.github.io/TwoBufQueue/docs/code/examples/two_buf_queue/08_all_parameters.cpp.html) for complete constraints.
 
 ## 7. Reading the active block
 
@@ -199,7 +199,7 @@ A Session writes one block. When space runs out, it returns a result and the app
 | `session.flush()` | Publish and notify; keep the Session and block active |
 | `session = {}` or scope exit | Return the cursor to the Writer; no automatic flush |
 
-Timeout defaults to zero, one attempt. A positive timeout allows acquisition retries. Check `if (!session)` before writing. In the inner loop, advance the message index only on success. On insufficient space, leave that loop, release the old Session and acquire the next block outside it. See the [complete nested-loop example](../../examples/two_buf_queue/07_quick_write_muti_msg.cpp).
+Timeout defaults to zero, one attempt. A positive timeout allows acquisition retries. Check `if (!session)` before writing. In the inner loop, advance the message index only on success. On insufficient space, leave that loop, release the old Session and acquire the next block outside it. See the [complete nested-loop example](https://xiyang1314.github.io/TwoBufQueue/docs/code/examples/two_buf_queue/07_quick_write_muti_msg.cpp.html).
 
 | SessionWriteResult | Meaning | Action |
 |---|---|---|
@@ -231,7 +231,7 @@ There is no global order across producers, and parallel consumers need not compl
 | `SPMC` | 1 | One or more |
 | `MPMC` | One or more | One or more |
 
-Use `read_layer1_thread_count` for copying and `output_reader_count` for consumption. Protect shared callback state. [Multiple producers](../../examples/two_buf_queue/03_multi_thread_writer.cpp) · [Worker configuration](../../examples/two_buf_queue/08_all_parameters.cpp).
+Use `read_layer1_thread_count` for copying and `output_reader_count` for consumption. Protect shared callback state. [Multiple producers](https://xiyang1314.github.io/TwoBufQueue/docs/code/examples/two_buf_queue/03_multi_thread_writer.cpp.html) · [Worker configuration](https://xiyang1314.github.io/TwoBufQueue/docs/code/examples/two_buf_queue/08_all_parameters.cpp.html).
 
 ## 10. Synchronous, sequence and batch callbacks
 
@@ -258,13 +258,13 @@ An ordinary Writer with `output_mode=Sync` is rejected; it does not select this 
 
 ### 10.2 Add a sequence number
 
-SeqWriter's callback adds a sequence: `void(source_id, sequence, data, size) noexcept`. Sequence allocation does not promise global callback order. Its final Context parameter selects synchronous delivery in the same way. See the [sequence example](../../examples/two_buf_queue/05_seq_writer.cpp).
+SeqWriter's callback adds a sequence: `void(source_id, sequence, data, size) noexcept`. Sequence allocation does not promise global callback order. Its final Context parameter selects synchronous delivery in the same way. See the [sequence example](https://xiyang1314.github.io/TwoBufQueue/docs/code/examples/two_buf_queue/05_seq_writer.cpp.html).
 
 ### 10.3 Process a batch directly
 
 TwoBufQueueBatch passes a borrowed DataBatch. One DataFrame can hold several records. Return true to accept the batch or false to retain it for retry; never keep borrowed pointers outside the callback.
 
-`Writer<..., false>` omits length prefixes and requires application-defined boundaries and a batch interface. A direct layer-1 callback also borrows a range: on acceptance the reader advances and returns completed blocks. Do not consume or return them yourself. [Batch example](../../examples/two_buf_queue/02_batch_callback.cpp) · [Direct read](../../examples/two_buf_queue/04_layer1_callback.cpp).
+`Writer<..., false>` omits length prefixes and requires application-defined boundaries and a batch interface. A direct layer-1 callback also borrows a range: on acceptance the reader advances and returns completed blocks. Do not consume or return them yourself. [Batch example](https://xiyang1314.github.io/TwoBufQueue/docs/code/examples/two_buf_queue/02_batch_callback.cpp.html) · [Direct read](https://xiyang1314.github.io/TwoBufQueue/docs/code/examples/two_buf_queue/04_layer1_callback.cpp.html).
 
 ## 11. End production safely
 
@@ -274,10 +274,10 @@ TwoBufQueueBatch passes a borrowed DataBatch. One DataFrame can hold several rec
 4. Call queue.stop and check queue.error_code.
 5. Wait for any tasks that the callback sent to an application pool using owned data.
 
-Keep Writers, callbacks and their resources alive for the work they serve. A timeout or error is not proof of complete delivery. File flush, closing and durable-storage confirmation are application responsibilities. The [asynchronous logger](ASYNC_LOGGING.md) demonstrates shutdown.
+Keep Writers, callbacks and their resources alive for the work they serve. A timeout or error is not proof of complete delivery. File flush, closing and durable-storage confirmation are application responsibilities. The [asynchronous logger](https://xiyang1314.github.io/TwoBufQueue/docs/guides/ASYNC_LOGGING.html) demonstrates shutdown.
 
 ## 12. Composing lower-level components
 
 Normal use lets make_writer own source resources. For custom factories or statistics, explicitly create WriterPool, make_writer_queue(pool, capacity, enable_stats) and Writer(queue, id, backpressure). All dependencies must outlive the running pipeline.
 
-Each source queue has one read owner. Source ranges, output frames and records are different units. Let the matching reader manage confirmation, retries and return; do not return the same resource twice. See [component examples](../../examples/README.md) and [all parameters](../../examples/two_buf_queue/08_all_parameters.cpp).
+Each source queue has one read owner. Source ranges, output frames and records are different units. Let the matching reader manage confirmation, retries and return; do not return the same resource twice. See [component examples](https://xiyang1314.github.io/TwoBufQueue/examples/README.html) and [all parameters](https://xiyang1314.github.io/TwoBufQueue/docs/code/examples/two_buf_queue/08_all_parameters.cpp.html).

@@ -9,9 +9,9 @@
 #endif
 
 namespace {
-using namespace TwoBufQueue;
-using namespace TwoBufQueue::performance;
-namespace perf_detail = TwoBufQueue::performance::detail;
+using namespace ::TwoBufQueue;
+using namespace ::TwoBufQueue::performance;
+namespace perf_detail = ::TwoBufQueue::performance::detail;
 constexpr std::uint32_t max_publish = (std::numeric_limits<std::uint32_t>::max)();
 constexpr std::size_t payload_bytes = 32;
 using Payload32 = Payload<payload_bytes>;

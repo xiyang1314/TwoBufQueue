@@ -288,10 +288,10 @@ class SearchContract(unittest.TestCase):
             search.output = Path(directory)
             results = [tune.objective_result(candidates, objective, 8, 0) for objective in tune.OBJECTIVES]
             search.write_reports(candidates, [], results)
-            saved = json.loads((search.output/"best.json").read_text())
+            saved = json.loads((search.output/"best.json").read_text(encoding='utf-8'))
             self.assertEqual([v["objective"] for v in saved["winners"]], ["throughput"])
             self.assertEqual(len(saved["unresolved"]), 3)
-            self.assertIn("精度不足", (search.output/"SUMMARY.md").read_text())
+            self.assertIn("精度不足", (search.output/"SUMMARY.md").read_text(encoding='utf-8'))
 
 
 if __name__ == "__main__":

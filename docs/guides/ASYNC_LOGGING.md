@@ -1,8 +1,8 @@
 # Asynchronous logging
 
-[English](ASYNC_LOGGING.md) · [简体中文](ASYNC_LOGGING.zh-CN.md)
+[English](https://xiyang1314.github.io/TwoBufQueue/docs/guides/ASYNC_LOGGING.html) · [简体中文](https://xiyang1314.github.io/TwoBufQueue/docs/guides/ASYNC_LOGGING.zh-CN.html)
 
-[Example source](../../examples/two_buf_queue/09_async_logger.cpp) · [Integration](INTEGRATION.md)
+[Example source](https://xiyang1314.github.io/TwoBufQueue/docs/code/examples/two_buf_queue/09_async_logger.cpp.html) · [Integration](https://xiyang1314.github.io/TwoBufQueue/docs/guides/INTEGRATION.html)
 
 The application submits a trivially copyable record containing sequence, request ID and text. The copy worker moves source ranges into output blocks; an independent callback thread formats records and writes the file. The callback checks the record length and copies its bytes with `memcpy`, because callback addresses may be unaligned.
 

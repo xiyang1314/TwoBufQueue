@@ -8,7 +8,7 @@ TWOBUFQUEUE / PERFORMANCE NOTES
 
 [总览](#按消息长度查看吞吐) · [吞吐与延时](#吞吐与写入耗时) · [时间与背压](#回调时间与背压) · [原始值](#逐次测量值) · [测试口径](#测试口径与复现信息)
 
-另一组：[256 MiB · 回调校准](performance_256m_callback.md)
+另一组：[256 MiB · 回调校准](https://xiyang1314.github.io/TwoBufQueue/docs/reports/comparison/performance_256m_callback.html)
 
 ## 按消息长度查看吞吐
 

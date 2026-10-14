@@ -1,4 +1,4 @@
-[English](performance_burst_from_empty.md) · [中文](performance_burst_from_empty.zh-CN.md)
+[English](https://xiyang1314.github.io/TwoBufQueue/docs/reports/burst/performance_burst_from_empty.html) · [中文](https://xiyang1314.github.io/TwoBufQueue/docs/reports/burst/performance_burst_from_empty.zh-CN.html)
 
 # How does a continuous message batch affect business performance?
 

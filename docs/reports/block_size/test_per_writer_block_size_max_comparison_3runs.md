@@ -122,6 +122,6 @@ M条/s。保留比例 = 完整流水线写端吞吐 ÷ 单线程吞吐。8 MiB �
 | 512 MiB | 5 GiB | 4 GiB | 1 |
 | 1 GiB | 10 GiB | 8 GiB | 1 |
 
-[完整流水线详细报告](test_per_writer_block_size_reader80_3runs_max.md) · [单线程 MAX 详细报告](test_per_write_block_size_only_writer_reader80_3runs_publish_max.md) · [单线程逐条发布报告](test_per_write_block_size_only_writer_reader80_3runs_publish1.md)
+[完整流水线详细报告](https://xiyang1314.github.io/TwoBufQueue/docs/reports/block_size/test_per_writer_block_size_reader80_3runs_max.html) · [单线程 MAX 详细报告](https://xiyang1314.github.io/TwoBufQueue/docs/reports/block_size/test_per_write_block_size_only_writer_reader80_3runs_publish_max.html) · [单线程逐条发布报告](https://xiyang1314.github.io/TwoBufQueue/docs/reports/block_size/test_per_write_block_size_only_writer_reader80_3runs_publish1.html)
 
 [汇总 JSON](../../performance_data/block_size_reader80_3runs_20261011/comparison.json) · [流水线原始记录](../../performance_data/block_size_reader80_3runs_20261011/pipeline_max/raw.jsonl) · [单线程原始记录](../../performance_data/block_size_reader80_3runs_20261011/only_writer/raw.jsonl) · [校验记录](../../performance_data/block_size_reader80_3runs_20261011/audit.json)

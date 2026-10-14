@@ -1,4 +1,4 @@
-[English](performance_burst_from_empty.md) · [中文](performance_burst_from_empty.zh-CN.md)
+[English](https://xiyang1314.github.io/TwoBufQueue/docs/reports/burst/performance_burst_from_empty.html) · [中文](https://xiyang1314.github.io/TwoBufQueue/docs/reports/burst/performance_burst_from_empty.zh-CN.html)
 
 # 连续发送一批消息，对业务性能产生什么影响
 

@@ -1,6 +1,6 @@
 # Small producer pools and background pending work
 
-[English](HOT_PATH_CACHE.md) · [简体中文](HOT_PATH_CACHE.md)
+[English](https://xiyang1314.github.io/TwoBufQueue/benchmarks/guides/HOT_PATH_CACHE.html) · [简体中文](https://xiyang1314.github.io/TwoBufQueue/benchmarks/guides/HOT_PATH_CACHE.html)
 
 This separate experiment runs business work while reusing a small TwoBufQueue source pool. A copy worker transfers messages into a fixed 256 MiB output pool, with an independent callback consumer. It does not replace the submission-only benchmark or modify upstream SPSC implementations.
 

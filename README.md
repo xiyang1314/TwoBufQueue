@@ -4,7 +4,7 @@
 
 Its two-layer buffer design prioritizes producer hot-path performance. Batch publication and transfer let producers use small buffers while consumers use larger buffers, reducing the effect of message transfer on business execution. Supports single or multiple producers and consumers. Currently requires C++20.
 
-[简体中文](README.zh-CN.md) · [Full guide](README_DETAIL.md) · [API guide](docs/guides/API.md) · [Examples](examples/README.md) · [Benchmarks](docs/reports/PERFORMANCE.md)
+[简体中文](https://xiyang1314.github.io/TwoBufQueue/README.zh-CN.html) · [Full guide](https://xiyang1314.github.io/TwoBufQueue/README_DETAIL.html) · [API guide](https://xiyang1314.github.io/TwoBufQueue/docs/guides/API.html) · [Examples](https://xiyang1314.github.io/TwoBufQueue/examples/README.html) · [Benchmarks](https://xiyang1314.github.io/TwoBufQueue/docs/reports/PERFORMANCE.html)
 
 **Contents**
 
@@ -49,7 +49,7 @@ Most records may be only a few dozen bytes, with an occasional snapshot, sample 
 
 Small buffers may not cover bursts and can make the producer wait. Large buffers may retain memory for peaks that happen only occasionally. When normal traffic and peak traffic differ greatly, how can burst capacity and memory use be balanced?
 
-> These questions guide the design and continued improvement of TwoBufQueue. See [Problems and solutions](README_DETAIL.md#2-problems-and-solutions) for the approaches and planned features. Continue below for the performance measurements.
+> These questions guide the design and continued improvement of TwoBufQueue. See [Problems and solutions](https://xiyang1314.github.io/TwoBufQueue/README_DETAIL.html#problems-and-solutions) for the approaches and planned features. Continue below for the performance measurements.
 
 ## 2. How fast is it?
 
@@ -59,7 +59,7 @@ The four charts compare producer submission throughput in **million messages/s; 
 
 ![Producer submission throughput for 8, 16, 32 and 64 B messages](docs/assets/session_write_throughput.svg)
 
-[Full Session results](docs/reports/comparison/performance_256m_zero_session_plateau.md) · [Ordinary write, batch publication](docs/reports/comparison/performance_256m_zero_publish_max_plateau.md) · [Ordinary write, per-record publication](docs/reports/comparison/performance_256m_zero_publish1_plateau.md)
+[Full Session results](https://xiyang1314.github.io/TwoBufQueue/docs/reports/comparison/performance_256m_zero_session_plateau.html) · [Ordinary write, batch publication](https://xiyang1314.github.io/TwoBufQueue/docs/reports/comparison/performance_256m_zero_publish_max_plateau.html) · [Ordinary write, per-record publication](https://xiyang1314.github.io/TwoBufQueue/docs/reports/comparison/performance_256m_zero_publish1_plateau.html)
 
 ### 2.2 Business performance after a continuous message batch
 
@@ -67,7 +67,7 @@ Every queue follows the same sequence: **normal business work → send a continu
 
 ![Post-send business cost relative to normal after 2, 4, 8 and 16 MiB batches](docs/assets/burst_business_ratio.svg)
 
-Normal business work costs about **13 ns/call** on this host. After a 16 MiB batch, TwoBufQueue costs **18.2 ns/call**, ReaderWriterQueue 58.2, rigtorp 42.5 and atomic_queue 99.8. [Full experiment and parameters](docs/reports/burst/performance_burst_from_empty.md)
+Normal business work costs about **13 ns/call** on this host. After a 16 MiB batch, TwoBufQueue costs **18.2 ns/call**, ReaderWriterQueue 58.2, rigtorp 42.5 and atomic_queue 99.8. [Full experiment and parameters](https://xiyang1314.github.io/TwoBufQueue/docs/reports/burst/performance_burst_from_empty.html)
 
 These are separate experiments on Apple M3. Submission uses 256 MiB per TwoBufQueue layer and callback loop count 0. Business impact uses a 16 KiB producer pool, a 256 MiB consumer pool and callback loop count 64. Native queues use 256 MiB of message storage. Three-run means, high QoS and no hard CPU affinity; see the reports for timing scope and limitations.
 
@@ -85,7 +85,7 @@ In practical terms: the producer runs on the hot-path thread and the consumer ru
 
 Two-layer transfer adds copying and background work. A single-layer queue may fit better when individual send-to-receive time is the main objective, or when traffic and processing are light. Capacity is finite; insufficient copy progress or sustained overload still causes backpressure.
 
-[Detailed benefits, tradeoffs and design comparison](README_DETAIL.md)
+[Detailed benefits, tradeoffs and design comparison](https://xiyang1314.github.io/TwoBufQueue/README_DETAIL.html)
 
 ## 4. Get started
 
@@ -134,16 +134,16 @@ cmake --build build --config Release --parallel
 ctest --test-dir build -C Release --output-on-failure
 ```
 
-Link the CMake target `TwoBufQueue::TwoBufQueue`. [Installation and integration](docs/guides/INTEGRATION.md) · [More examples](examples/README.md)
+Link the CMake target `TwoBufQueue::TwoBufQueue`. [Installation and integration](https://xiyang1314.github.io/TwoBufQueue/docs/guides/INTEGRATION.html) · [More examples](https://xiyang1314.github.io/TwoBufQueue/examples/README.html)
 
 ## 5. Full documentation
 
 | What you need | Start here |
 |---|---|
-| Two-layer design, use cases and roadmap | [Full guide README_DETAIL](README_DETAIL.md) |
-| Writing, publication, callbacks, threads and parameters | [API guide](docs/guides/API.md) |
-| Session, multiple producers and synchronous callbacks | [Examples](examples/README.md) |
-| Measurement scope, parameters and reproduction | [Benchmark methodology](docs/reports/PERFORMANCE.md) |
-| Application logging through the queue | [Async logging guide](docs/guides/ASYNC_LOGGING.md) |
+| Two-layer design, use cases and roadmap | [Full guide README_DETAIL](https://xiyang1314.github.io/TwoBufQueue/README_DETAIL.html) |
+| Writing, publication, callbacks, threads and parameters | [API guide](https://xiyang1314.github.io/TwoBufQueue/docs/guides/API.html) |
+| Session, multiple producers and synchronous callbacks | [Examples](https://xiyang1314.github.io/TwoBufQueue/examples/README.html) |
+| Measurement scope, parameters and reproduction | [Benchmark methodology](https://xiyang1314.github.io/TwoBufQueue/docs/reports/PERFORMANCE.html) |
+| Application logging through the queue | [Async logging guide](https://xiyang1314.github.io/TwoBufQueue/docs/guides/ASYNC_LOGGING.html) |
 
-Apache-2.0. [License](LICENSE) · [Contributing](CONTRIBUTING.md)
+Apache-2.0. [License](LICENSE) · [Contributing](https://xiyang1314.github.io/TwoBufQueue/CONTRIBUTING.html)

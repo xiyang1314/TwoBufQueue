@@ -181,7 +181,7 @@ static void cancel_race() {
     assert(!queue.has_ready());
 }
 
-static void sync() {
+static void sync_case() {
     Pool pool(3, 3);
     HandoffOptions options;
     options.mode = HandoffMode::Sync;
@@ -268,7 +268,7 @@ int main(int argc, char** argv) {
     else if (name == "parallel") parallel();
     else if (name == "first_order") first_order();
     else if (name == "race") cancel_race();
-    else if (name == "sync") sync();
+    else if (name == "sync") sync_case();
     else if (name == "config") configuration();
     else if (name == "two_buf") two_buf();
     else assert(false);

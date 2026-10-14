@@ -8,7 +8,7 @@ TWOBUFQUEUE / PERFORMANCE NOTES
 
 [总览](#按消息长度查看吞吐) · [吞吐与延时](#吞吐与写入耗时) · [时间与背压](#回调时间与背压) · [原始值](#逐次测量值) · [测试口径](#测试口径与复现信息)
 
-其他报告：[256M 普通](performance_256m_callback.md) · [8M 普通](performance_8m_zero.md) · [8M Session](performance_8m_zero_session.md)
+其他报告：[256M 普通](https://xiyang1314.github.io/TwoBufQueue/docs/reports/comparison/performance_256m_callback.html) · [8M 普通](https://xiyang1314.github.io/TwoBufQueue/docs/reports/comparison/performance_8m_zero.html) · [8M Session](https://xiyang1314.github.io/TwoBufQueue/docs/reports/comparison/performance_8m_zero_session.html)
 
 ## 先看负载复制的敏感性
 

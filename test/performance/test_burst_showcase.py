@@ -86,7 +86,7 @@ class Contract(unittest.TestCase):
     def test_wrong_capacity_and_window_rejected(self):
         with tempfile.TemporaryDirectory() as directory:
             folder=Path(directory);self.fixture(folder)
-            data=json.loads((folder/'raw/48k_TwoBufQueue_run1.json').read_text())
+            data=json.loads((folder/'raw/48k_TwoBufQueue_run1.json').read_text(encoding='utf-8'))
             data['queue_config']['source_pool_max']=5
             with self.assertRaises(ValueError):pipeline.validate(data,48,[1],2500,32)
             data['queue_config']['source_pool_max']=4
@@ -104,7 +104,7 @@ class Contract(unittest.TestCase):
                     if t=='tr' and dict(attrs).get('class')=='tb':self.tb+=1
                 def handle_data(self,d):self.text.append(d)
             report=root/'report.html';pipeline.render_report(root,report,result)
-            parsed=Parser();parsed.feed(report.read_text())
+            parsed=Parser();parsed.feed(report.read_text(encoding='utf-8'))
             self.assertEqual(parsed.tables,1);self.assertEqual(parsed.tb,1)
             self.assertIn('耗时(ns/次)',''.join(parsed.text))
             self.assertIn('p50',''.join(parsed.text))

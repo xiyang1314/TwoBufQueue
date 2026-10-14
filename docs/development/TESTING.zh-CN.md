@@ -1,6 +1,6 @@
 # 测试与验证
 
-[English](TESTING.md) · [简体中文](TESTING.zh-CN.md)
+[English](https://xiyang1314.github.io/TwoBufQueue/docs/development/TESTING.html) · [简体中文](https://xiyang1314.github.io/TwoBufQueue/docs/development/TESTING.zh-CN.html)
 
 当前独立 Release 构建包含库回归、functional 套件、可运行示例和接入检查。英文文档准备过程中，只包含发布清单文件的独立副本在本机 macOS 上通过 **567 / 567 项测试**。这是正确性检查，不是新性能成绩，也不代表 Linux、Windows 已实际运行。
 
@@ -29,6 +29,6 @@ ctest --test-dir build -C Release -L catalog --output-on-failure
 
 ## 三、历史记录与平台范围
 
-[读端历史检查](../../test/reader/READ_CTRL_TESTS.md)按日期区分当时覆盖范围。[发布检查记录](../release-checks/summary.json)和[此前验证数据](../performance_data/release_20261011/release-checks/summary.json)保留实际平台、命令和限制，不能把旧子集数量当作今天的完整测试数量。
+[读端历史检查](https://xiyang1314.github.io/TwoBufQueue/test/reader/READ_CTRL_TESTS.html)按日期区分当时覆盖范围。[发布检查记录](../release-checks/summary.json)和[此前验证数据](../performance_data/release_20261011/release-checks/summary.json)保留实际平台、命令和限制，不能把旧子集数量当作今天的完整测试数量。
 
 Linux、Windows、macOS 及 sanitizer / 可选开源 SPSC 对照的 CI 已配置，远程执行要等仓库发布并实际运行。文档和界面翻译不改变库的非注释 C++ 内容，也不修改历史测量的源码快照。

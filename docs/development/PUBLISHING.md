@@ -1,6 +1,6 @@
 # GitHub publication
 
-[English](PUBLISHING.md) · [简体中文](PUBLISHING.zh-CN.md)
+[English](https://xiyang1314.github.io/TwoBufQueue/docs/development/PUBLISHING.html) · [简体中文](https://xiyang1314.github.io/TwoBufQueue/docs/development/PUBLISHING.zh-CN.html)
 
 The upload tree is `~/Documents/TwoBufQueueRelease/TwoBufQueue`. The development directory, temporary experiments, original samples and existing destination extras remain on disk. `release-manifest.json` lists publication files; unselected existing destination files are ignored by Git.
 
@@ -62,13 +62,13 @@ npm install --prefix .deps/readme marked@17.0.5
 node tools/build_readme_html.mjs
 ```
 
-[English HTML overview](../../README.md) · [Chinese HTML overview](../../README.zh-CN.md) · [Source browser](../code/index.md). On GitHub the HTML file has a source view; use the actual GitHub Pages website URL to present the styled page and add it to the repository Website field. Keep the relative links for local clones until the real published URL is known.
+[English HTML overview](https://xiyang1314.github.io/TwoBufQueue/README.html) · [Chinese HTML overview](https://xiyang1314.github.io/TwoBufQueue/README.zh-CN.html) · [Source browser](https://xiyang1314.github.io/TwoBufQueue/docs/code/index.html). On GitHub the HTML file has a source view; use the actual GitHub Pages website URL to present the styled page and add it to the repository Website field. Keep the relative links for local clones until the real published URL is known.
 
 ## 5. Show the HTML overview and reports
 
 In repository Settings → Pages → Build and deployment, select **GitHub Actions**. Run the **Publish performance reports** workflow. It packages only the manifest files as a static site, with the root redirecting to `README.html`; GitHub supplies the actual website URL. Put that URL in the repository Website field. Reports, evidence and source links keep their relative paths. Markdown files remain downloadable source documents.
 
-README and the report index feature [continuous sending and business performance](../reports/burst/performance_burst_from_empty.md), where every batch starts with zero pending messages. The earlier [prepared-backlog report](../reports/burst/performance_burst_cache.md) is labelled as a separate historical experiment. The HTML generator rebuilds both current overview figures from saved results: Session submission throughput for four message sizes, and post-send business cost divided by the fixed 13 ns reference. It also writes SVG figures for the Markdown overview. The historical absolute-cost figure remains available through `python3 tools/plot_burst_release.py`. These commands do not run benchmarks.
+README and the report index feature [continuous sending and business performance](https://xiyang1314.github.io/TwoBufQueue/docs/reports/burst/performance_burst_from_empty.html), where every batch starts with zero pending messages. The earlier [prepared-backlog report](https://xiyang1314.github.io/TwoBufQueue/docs/reports/burst/performance_burst_cache.html) is labelled as a separate historical experiment. The HTML generator rebuilds both current overview figures from saved results: Session submission throughput for four message sizes, and post-send business cost divided by the fixed 13 ns reference. It also writes SVG figures for the Markdown overview. The historical absolute-cost figure remains available through `python3 tools/plot_burst_release.py`. These commands do not run benchmarks.
 
 The workflow uses GitHub's [Pages actions](https://docs.github.com/en/pages/getting-started-with-github-pages/using-custom-workflows-with-github-pages). It is manually dispatched so preparing or pushing source alone does not publish the site.
 

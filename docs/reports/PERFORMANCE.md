@@ -1,18 +1,18 @@
 # Performance evidence
 
-[English](PERFORMANCE.md) · [简体中文](PERFORMANCE.zh-CN.md)
+[English](https://xiyang1314.github.io/TwoBufQueue/docs/reports/PERFORMANCE.html) · [简体中文](https://xiyang1314.github.io/TwoBufQueue/docs/reports/PERFORMANCE.zh-CN.html)
 
-[README](../../README.md) · [Complete configurable benchmark guide ](../../benchmarks/guides/TUNABLE_SPSC.md)
+[README](https://xiyang1314.github.io/TwoBufQueue/README.html) · [Complete configurable benchmark guide ](https://xiyang1314.github.io/TwoBufQueue/benchmarks/guides/TUNABLE_SPSC.html)
 
 ## 1. Current comparison entry points
 
 | Experiment | Report | What is timed |
 |---|---|---|
-| 256 MiB, WriteSession, empty callback | [Session](comparison/performance_256m_zero_session_plateau.md) | Producer submission, including session acquisition and switching |
-| 256 MiB, ordinary write, maximum publish count | [Block-handoff publication](comparison/performance_256m_zero_publish_max_plateau.md) | Producer submission, including block acquisition and switching |
-| 256 MiB, ordinary write, publication every record | [Per-record publication](comparison/performance_256m_zero_publish1_plateau.md) | Producer submission, including publication |
-| Continuous message batches, each starting empty | [Business performance after a batch](burst/performance_burst_from_empty.md) | Business execution immediately after sending; ratio to normal business cost |
-| Earlier experiment: prepared message backlog | [Prepared-backlog business execution](burst/performance_burst_cache.md) | Same business workload with approximately 198–205 MiB pending |
+| 256 MiB, WriteSession, empty callback | [Session](https://xiyang1314.github.io/TwoBufQueue/docs/reports/comparison/performance_256m_zero_session_plateau.html) | Producer submission, including session acquisition and switching |
+| 256 MiB, ordinary write, maximum publish count | [Block-handoff publication](https://xiyang1314.github.io/TwoBufQueue/docs/reports/comparison/performance_256m_zero_publish_max_plateau.html) | Producer submission, including block acquisition and switching |
+| 256 MiB, ordinary write, publication every record | [Per-record publication](https://xiyang1314.github.io/TwoBufQueue/docs/reports/comparison/performance_256m_zero_publish1_plateau.html) | Producer submission, including publication |
+| Continuous message batches, each starting empty | [Business performance after a batch](https://xiyang1314.github.io/TwoBufQueue/docs/reports/burst/performance_burst_from_empty.html) | Business execution immediately after sending; ratio to normal business cost |
+| Earlier experiment: prepared message backlog | [Prepared-backlog business execution](https://xiyang1314.github.io/TwoBufQueue/docs/reports/burst/performance_burst_cache.html) | Same business workload with approximately 198–205 MiB pending |
 
 The first three reports use three independent runs, callback loop count 0 and one common block configuration per report across 8/16/32/64 B. Configuration selection uses the stated 35% throughput, 30% p50, 20% p99 and 15% p999 weights. The current business experiment starts every batch empty and uses regular upstream SPSC APIs with fixed callback work. Business p50 reflects 16-call group means; the write reports use 1,000-write group means. The two business reports have different initial backlog states.
 
@@ -24,7 +24,7 @@ Flow: normal business execution → continuous message batch → immediate busin
 
 The current table reports post-send business p50: time 16 business calls per group and divide by 16, calculate p50 independently for each run, then average three runs. The normal reference comes from the same no-queue control and is about **13 ns/call** on this host; every ratio is post-send cost divided by 13 ns. Charts, README and report all use the [same complete result](../performance_data/burst_from_empty_20261013/formal/report_results.json), without reselecting trials.
 
-Source and output budgets are counted separately; consumers and copy workers continue running. Pending messages accumulate naturally after each batch, without preparing an initial backlog of approximately 200 MiB. The old 80% prefill rule belongs only to the [historical prepared-backlog experiment](burst/performance_burst_cache.md); its [figure](../assets/burst_business_cost_prefilled.svg) and original results remain available.
+Source and output budgets are counted separately; consumers and copy workers continue running. Pending messages accumulate naturally after each batch, without preparing an initial backlog of approximately 200 MiB. The old 80% prefill rule belongs only to the [historical prepared-backlog experiment](https://xiyang1314.github.io/TwoBufQueue/docs/reports/burst/performance_burst_cache.html); its [figure](../assets/burst_business_cost_prefilled.svg) and original results remain available.
 
 From the project root, replay the current fixed workload or regenerate its figure:
 
@@ -36,7 +36,7 @@ python3 tools/plot_burst_release.py
 
 The plot command reads saved results and updates `docs/assets/burst_business_cost.svg` and its numeric JSON; it does not run performance tests. The original measurements and their hashes remain unchanged.
 
-[Run the batch/business experiment](../../benchmarks/guides/BURST_CACHE.md) · [Search writer configurations](../../benchmarks/guides/TUNABLE_SPSC.md) · [Browse all published reports](index.md).
+[Run the batch/business experiment](https://xiyang1314.github.io/TwoBufQueue/benchmarks/guides/BURST_CACHE.html) · [Search writer configurations](https://xiyang1314.github.io/TwoBufQueue/benchmarks/guides/TUNABLE_SPSC.html) · [Browse all published reports](https://xiyang1314.github.io/TwoBufQueue/docs/reports/index.html).
 
 ## 3. Compressed evidence
 
@@ -56,8 +56,8 @@ The saved `f698f25` experiment retains every formal run. The chart and main tabl
 
 | Condition | Ordinary write | WriteSession |
 |---|---|---|
-| 8 MiB per layer, callback iterations 0 | [Historical report (Chinese)](comparison/performance_8m_zero.md) | [Historical report (Chinese)](comparison/performance_8m_zero_session.md) |
-| 256 MiB per layer, calibrated callback work | [Historical report (Chinese)](comparison/performance_256m_callback.md) | [Historical report (Chinese)](comparison/performance_256m_callback_session.md) |
+| 8 MiB per layer, callback iterations 0 | [Historical report (Chinese)](https://xiyang1314.github.io/TwoBufQueue/docs/reports/comparison/performance_8m_zero.html) | [Historical report (Chinese)](https://xiyang1314.github.io/TwoBufQueue/docs/reports/comparison/performance_8m_zero_session.html) |
+| 256 MiB per layer, calibrated callback work | [Historical report (Chinese)](https://xiyang1314.github.io/TwoBufQueue/docs/reports/comparison/performance_256m_callback.html) | [Historical report (Chinese)](https://xiyang1314.github.io/TwoBufQueue/docs/reports/comparison/performance_256m_callback_session.html) |
 
 ## 5. Historical ordinary-write scan-current run
 
@@ -81,7 +81,7 @@ The p50/p99/p999 samples, CPU/RSS, backpressure, round counts and actual paramet
 
 ## 7. Copy-constructor sensitivity
 
-All implementations copy the complete variable payload. The ordinary copy constructor is `bytes(other.bytes)`. ReaderWriterQueue 16/32 B uses a tagged `CopyAfterZero` constructor through the original `try_emplace`: default-zero the destination, then `memcpy` the full payload once; both operations are timed. Its 8/64 B paths retain member copying. rigtorp optionally requests a destination write-prefetch hint through its original `try_emplace` API, followed by one complete member copy, with no extra zeroing. These per-transport choices are fixed before timing and disclosed in each row and the complete parameters. See the [rigtorp control](analysis/RIGTORP_PERFORMANCE.md) and [native copy control](../performance_data/native_copy_control_20261011/summary.json). Upstream headers remain unchanged and are checked against pinned hashes. The earlier [independent A/B](../performance_data/copy_sensitivity_20261011/summary.json) changes only the external message copy constructor; validation passes but results change markedly. The precise processor-level explanation has not been established.
+All implementations copy the complete variable payload. The ordinary copy constructor is `bytes(other.bytes)`. ReaderWriterQueue 16/32 B uses a tagged `CopyAfterZero` constructor through the original `try_emplace`: default-zero the destination, then `memcpy` the full payload once; both operations are timed. Its 8/64 B paths retain member copying. rigtorp optionally requests a destination write-prefetch hint through its original `try_emplace` API, followed by one complete member copy, with no extra zeroing. These per-transport choices are fixed before timing and disclosed in each row and the complete parameters. See the [rigtorp control](https://xiyang1314.github.io/TwoBufQueue/docs/reports/analysis/RIGTORP_PERFORMANCE.html) and [native copy control](../performance_data/native_copy_control_20261011/summary.json). Upstream headers remain unchanged and are checked against pinned hashes. The earlier [independent A/B](../performance_data/copy_sensitivity_20261011/summary.json) changes only the external message copy constructor; validation passes but results change markedly. The precise processor-level explanation has not been established.
 
 The main table discloses per-adapter optimizations rather than enforcing one copy strategy: ReaderWriterQueue 16/32 B includes zeroing before copying, and rigtorp includes destination write prefetch. Rankings reflect external Payload code and compiler generation as well as queue algorithms. Historical A/B results are not mixed into the formal batch.
 
@@ -98,15 +98,15 @@ The follow-up uses the same two measured binaries and arguments: 8 MiB, callback
 
 These are arithmetic means of five independent runs per metric. The p50 is a quantile of 1,000-write group averages, not single-message or end-to-end latency. Complete commands, executable hashes and all 44 runs are retained in the [summary](../performance_data/copy_sensitivity_20261011/16b-recheck/summary.json), [metadata](../performance_data/copy_sensitivity_20261011/16b-recheck/metadata.json) and [raw data](../performance_data/copy_sensitivity_20261011/16b-recheck/raw.jsonl). The original measured and variant sources are in the archives linked below.
 
-This follow-up reproduced 16 B copy-constructor sensitivity. The rigtorp constructor-body `memcpy` restored throughput to approximately the earlier 363 M messages/s. ReaderWriterQueue p50 recovered to about 1.292 ns, but throughput near 480 M messages/s remained below the earlier 742 M messages/s. This is a pre-fix historical control; current main tables explicitly retain the ReaderWriterQueue 16/32 B zero-then-copy path. Hardware counters have not isolated the precise processor/compiler mechanism. An 8 B local improvement neither proves all lengths improve nor establishes such a large queue-algorithm advantage for TwoBufQueue. Current main reports were remeasured with the corrected program, without replacing results by historical scores. The rigtorp regression is removed through optional adapter-side destination prefetch; see the [same-executable control and limits](analysis/RIGTORP_PERFORMANCE.md).
+This follow-up reproduced 16 B copy-constructor sensitivity. The rigtorp constructor-body `memcpy` restored throughput to approximately the earlier 363 M messages/s. ReaderWriterQueue p50 recovered to about 1.292 ns, but throughput near 480 M messages/s remained below the earlier 742 M messages/s. This is a pre-fix historical control; current main tables explicitly retain the ReaderWriterQueue 16/32 B zero-then-copy path. Hardware counters have not isolated the precise processor/compiler mechanism. An 8 B local improvement neither proves all lengths improve nor establishes such a large queue-algorithm advantage for TwoBufQueue. Current main reports were remeasured with the corrected program, without replacing results by historical scores. The rigtorp regression is removed through optional adapter-side destination prefetch; see the [same-executable control and limits](https://xiyang1314.github.io/TwoBufQueue/docs/reports/analysis/RIGTORP_PERFORMANCE.html).
 
 ## 8. Reproduce and inspect
 
-The [runner](../../benchmarks/spsc/run_release_benchmarks.py) records original source snapshots, executable/source/dependency hashes, compiler flags, commands, calibration and all trials. Resume requires identical inputs. Build with `BRQ_BUILD_SPSC_BENCHMARKS=ON`; dependencies are benchmark-only and explicitly downloaded by `bootstrap_spsc.py`, never by default configure. Follow [the complete commands](../../benchmarks/guides/TUNABLE_SPSC.md).
+The [runner](https://xiyang1314.github.io/TwoBufQueue/docs/code/benchmarks/spsc/run_release_benchmarks.py.html) records original source snapshots, executable/source/dependency hashes, compiler flags, commands, calibration and all trials. Resume requires identical inputs. Build with `BRQ_BUILD_SPSC_BENCHMARKS=ON`; dependencies are benchmark-only and explicitly downloaded by `bootstrap_spsc.py`, never by default configure. Follow [the complete commands](https://xiyang1314.github.io/TwoBufQueue/benchmarks/guides/TUNABLE_SPSC.html).
 
 [Formal raw data](../performance_data/release_20261011_inline_fixed_110024/raw.jsonl.gz) · [environment](../performance_data/release_20261011_inline_fixed_110024/environment.json) · [original measured source](../performance_data/release_20261011_inline_fixed_110024/source.tar.gz) · [copy-control raw data](../performance_data/copy_sensitivity_20261011/raw.jsonl)
 
-The previous four-report matched experiment was measured from commit `f698f25`, which removes forced inlining from six benchmark lambdas while leaving the queue library unchanged. The [8 B regression evidence](../performance_data/twobufqueue_8b_regression_20261011/README.txt) records the controls and limits. This run retains 400 independent formal measurements, 40 separate complete-payload/FIFO validations and 45 callback calibration runs; all completed successfully. The 256 MiB callback loop counts for 8/16/32/64 B are 1/1/2/4, shared across all transports and Session. Calibration ratios are 3.09/2.17/1.95/2.38; 8 B and 32 B slightly miss the 2–3 target and remain disclosed. Native controls are shared between ordinary/Session reports of the same cache size, so report counts cannot be added together. Exact measured-source hashes and the source archive are retained; scratch/report files explain the dirty worktree flag. Saved absolute command paths identify the measurement host, not portable instructions.
+The previous four-report matched experiment was measured from commit `f698f25`, which removes forced inlining from six benchmark lambdas while leaving the queue library unchanged. The [8 B regression evidence](https://xiyang1314.github.io/TwoBufQueue/docs/code/docs/performance_data/twobufqueue_8b_regression_20261011/README.txt.html) records the controls and limits. This run retains 400 independent formal measurements, 40 separate complete-payload/FIFO validations and 45 callback calibration runs; all completed successfully. The 256 MiB callback loop counts for 8/16/32/64 B are 1/1/2/4, shared across all transports and Session. Calibration ratios are 3.09/2.17/1.95/2.38; 8 B and 32 B slightly miss the 2–3 target and remain disclosed. Native controls are shared between ordinary/Session reports of the same cache size, so report counts cannot be added together. Exact measured-source hashes and the source archive are retained; scratch/report files explain the dirty worktree flag. Saved absolute command paths identify the measurement host, not portable instructions.
 
 Regenerate the historical producer-write figure with Python 3.9+ and ReportLab 4.4.9:
 
@@ -115,4 +115,4 @@ python -m pip install reportlab==4.4.9
 python benchmarks/spsc/plot_release.py --data docs/performance_data/release_20261011_inline_fixed_110024
 ```
 
-The [plot script](../../benchmarks/spsc/plot_release.py) reads the original two results files, exports [SVG](../assets/write_cost_8m.svg), and saves its [numeric chart data](../assets/write_cost_8m.json). It does not run benchmarks or change measurement data.
+The [plot script](https://xiyang1314.github.io/TwoBufQueue/docs/code/benchmarks/spsc/plot_release.py.html) reads the original two results files, exports [SVG](../assets/write_cost_8m.svg), and saves its [numeric chart data](../assets/write_cost_8m.json). It does not run benchmarks or change measurement data.

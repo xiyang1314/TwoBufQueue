@@ -168,7 +168,8 @@ static void capacity_edges() {
     const std::array<std::byte, 2> data{std::byte{1}, std::byte{2}};
     CHECK(writer.write_mem(data.data(), data.size())); // 4 bytes.
     CHECK(writer.published_write_ptr() == first);
-    CHECK(!writer.write_mem(data.data(), 33)); // Cannot fit even an entire block; leave capacity unchanged.
+    const std::array<std::byte, 33> oversized{};
+    CHECK(!writer.write_mem(oversized.data(), oversized.size())); // Leave capacity unchanged.
     CHECK(writer.write_mem(nullptr, 0)); // An empty payload still has a length prefix.
     writer.flush();
     CHECK(writer.published_write_ptr() == first + 22);

@@ -1,8 +1,8 @@
 # CMake integration
 
-[English](INTEGRATION.md) · [简体中文](INTEGRATION.zh-CN.md)
+[English](https://xiyang1314.github.io/TwoBufQueue/docs/guides/INTEGRATION.html) · [简体中文](https://xiyang1314.github.io/TwoBufQueue/docs/guides/INTEGRATION.zh-CN.html)
 
-[English README](../../README.md) · [中文首页](../../README.zh-CN.md)
+[English README](https://xiyang1314.github.io/TwoBufQueue/README.html) · [中文首页](https://xiyang1314.github.io/TwoBufQueue/README.zh-CN.html)
 
 All three methods expose the same `TwoBufQueue::TwoBufQueue` target and `<TwoBufQueue.hpp>` header. The target propagates C++20 and thread linkage; consumers do not need to add internal include paths or link a platform synchronization library by hand. macOS consumers require 14.4+; set their deployment target before `project()` or during configure.
 
@@ -74,7 +74,7 @@ Configure the consumer with `-DCMAKE_PREFIX_PATH=/absolute/path/to/install`. On 
 
 After installation, the application no longer depends on the original source directory. Move the complete install prefix and update `CMAKE_PREFIX_PATH`. The package version is 0.1.0 and accepts compatible versions within the same minor series; this does not imply that a GitHub Release has been created.
 
-The [integration consumer](../../test/integration/CMakeLists.txt) is runnable through `BRQ_INTEGRATION_MODE=add_subdirectory`, `fetchcontent`, or `package`. Example source-mode check:
+The [integration consumer](https://xiyang1314.github.io/TwoBufQueue/docs/code/test/integration/CMakeLists.txt.html) is runnable through `BRQ_INTEGRATION_MODE=add_subdirectory`, `fetchcontent`, or `package`. Example source-mode check:
 
 ```sh
 cmake -S test/integration -B build-consumer -DBRQ_SOURCE_DIR=../.. -DBRQ_INTEGRATION_MODE=fetchcontent

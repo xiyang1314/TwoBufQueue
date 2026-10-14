@@ -1,10 +1,10 @@
-[English](index.md) · [中文](index.zh-CN.md)
+[English](https://xiyang1314.github.io/TwoBufQueue/docs/reports/index.html) · [中文](https://xiyang1314.github.io/TwoBufQueue/docs/reports/index.zh-CN.html)
 
 # TwoBufQueue
 
 生产者小缓存，批量复制，独立处理回调。 · 让生产者保持小缓存，让消费者拥有处理积压的空间。
 
-[项目首页](../../README.zh-CN.md) · [中文介绍](../../README.zh-CN.md)
+[项目首页](https://xiyang1314.github.io/TwoBufQueue/README.zh-CN.html) · [中文介绍](https://xiyang1314.github.io/TwoBufQueue/README.zh-CN.html)
 
 C++20 Apache-2.0 Apple M3 本机实测 包含完整参数与原始数据
 
@@ -42,41 +42,41 @@ C++20 Apache-2.0 Apple M3 本机实测 包含完整参数与原始数据
 
 正常业务约为 13 ns/次（虚线）。发送 16 MiB 后，TwoBufQueue 为 18.2 ns/次（1.40 倍），ReaderWriterQueue 为 58.2 ns，rigtorp 为 42.5 ns，atomic_queue 为 99.8 ns。发送 2 MiB 后，TwoBufQueue 与 rigtorp 均为 15.6 ns/次。
 
-每组 16 次业务调用平均耗时的 p50，再取三轮平均。生产者采用高 QoS，未硬绑核。 [完整结果、比值与初始化参数](burst/performance_burst_from_empty.zh-CN.md).
+每组 16 次业务调用平均耗时的 p50，再取三轮平均。生产者采用高 QoS，未硬绑核。 [完整结果、比值与初始化参数](https://xiyang1314.github.io/TwoBufQueue/docs/reports/burst/performance_burst_from_empty.zh-CN.html).
 
 ## 指标怎么看
 
 写入报告按每组 1,000 次发送统计生产者提交耗时；业务报告按每组 16 次调用统计业务执行耗时。它们不是单条消息或端到端延时。各报告公开线程数、两层缓存和对照负载的复制方式，结果适用于记录的测试配置。
 
-[测试方法与复现](PERFORMANCE.zh-CN.md) · [发布内容](../development/RELEASE_CONTENTS.zh-CN.md) · [发布步骤](../development/PUBLISHING.zh-CN.md)
+[测试方法与复现](https://xiyang1314.github.io/TwoBufQueue/docs/reports/PERFORMANCE.zh-CN.html) · [发布内容](https://xiyang1314.github.io/TwoBufQueue/docs/development/RELEASE_CONTENTS.zh-CN.html) · [发布步骤](https://xiyang1314.github.io/TwoBufQueue/docs/development/PUBLISHING.zh-CN.html)
 
 ### 其他测量与历史实验
 
 
 
-- [performance 256m callback](comparison/performance_256m_callback.md)
-- [performance 256m callback session](comparison/performance_256m_callback_session.md)
-- [performance 8m 16b 32b 64b tuned](comparison/performance_8m_16b_32b_64b_tuned.md)
-- [performance 8m 16b 32b tuned](comparison/performance_8m_16b_32b_tuned.md)
-- [performance 8m 32b latency](analysis/performance_8m_32b_latency.md)
-- [performance 8m zero](comparison/performance_8m_zero.md)
-- [performance 8m zero session](comparison/performance_8m_zero_session.md)
-- [performance burst business sizes](burst/performance_burst_business_sizes.md)
-- [performance burst tail 1m](burst/performance_burst_tail_1m.md)
-- [performance burst tail instruction 1m](burst/performance_burst_tail_instruction_1m.md)
-- [performance hot path cache](analysis/performance_hot_path_cache.md)
-- [performance optimal ordinary readback reader2g zero](analysis/performance_optimal_ordinary_readback_reader2g_zero.md)
-- [performance optimal three modes reader2g zero](analysis/performance_optimal_three_modes_reader2g_zero.md)
-- [test per write block size only writer publish1](block_size/test_per_write_block_size_only_writer_publish1.md)
-- [test per write block size only writer publish max](block_size/test_per_write_block_size_only_writer_publish_max.md)
-- [test per write block size only writer reader80 3runs publish1](block_size/test_per_write_block_size_only_writer_reader80_3runs_publish1.md)
-- [test per write block size only writer reader80 3runs publish max](block_size/test_per_write_block_size_only_writer_reader80_3runs_publish_max.md)
-- [test per write block size readback fixed reader 3runs](block_size/test_per_write_block_size_readback_fixed_reader_3runs.md)
-- [test per writer block size](block_size/test_per_writer_block_size.md)
-- [test per writer block size cache hits](block_size/test_per_writer_block_size_cache_hits.md)
-- [test per writer block size max comparison 3runs](block_size/test_per_writer_block_size_max_comparison_3runs.md)
-- [test per writer block size no current](block_size/test_per_writer_block_size_no_current.md)
-- [test per writer block size no current publish1](block_size/test_per_writer_block_size_no_current_publish1.md)
-- [test per writer block size reader80 3runs max](block_size/test_per_writer_block_size_reader80_3runs_max.md)
+- [performance 256m callback](https://xiyang1314.github.io/TwoBufQueue/docs/reports/comparison/performance_256m_callback.html)
+- [performance 256m callback session](https://xiyang1314.github.io/TwoBufQueue/docs/reports/comparison/performance_256m_callback_session.html)
+- [performance 8m 16b 32b 64b tuned](https://xiyang1314.github.io/TwoBufQueue/docs/reports/comparison/performance_8m_16b_32b_64b_tuned.html)
+- [performance 8m 16b 32b tuned](https://xiyang1314.github.io/TwoBufQueue/docs/reports/comparison/performance_8m_16b_32b_tuned.html)
+- [performance 8m 32b latency](https://xiyang1314.github.io/TwoBufQueue/docs/reports/analysis/performance_8m_32b_latency.html)
+- [performance 8m zero](https://xiyang1314.github.io/TwoBufQueue/docs/reports/comparison/performance_8m_zero.html)
+- [performance 8m zero session](https://xiyang1314.github.io/TwoBufQueue/docs/reports/comparison/performance_8m_zero_session.html)
+- [performance burst business sizes](https://xiyang1314.github.io/TwoBufQueue/docs/reports/burst/performance_burst_business_sizes.html)
+- [performance burst tail 1m](https://xiyang1314.github.io/TwoBufQueue/docs/reports/burst/performance_burst_tail_1m.html)
+- [performance burst tail instruction 1m](https://xiyang1314.github.io/TwoBufQueue/docs/reports/burst/performance_burst_tail_instruction_1m.html)
+- [performance hot path cache](https://xiyang1314.github.io/TwoBufQueue/docs/reports/analysis/performance_hot_path_cache.html)
+- [performance optimal ordinary readback reader2g zero](https://xiyang1314.github.io/TwoBufQueue/docs/reports/analysis/performance_optimal_ordinary_readback_reader2g_zero.html)
+- [performance optimal three modes reader2g zero](https://xiyang1314.github.io/TwoBufQueue/docs/reports/analysis/performance_optimal_three_modes_reader2g_zero.html)
+- [test per write block size only writer publish1](https://xiyang1314.github.io/TwoBufQueue/docs/reports/block_size/test_per_write_block_size_only_writer_publish1.html)
+- [test per write block size only writer publish max](https://xiyang1314.github.io/TwoBufQueue/docs/reports/block_size/test_per_write_block_size_only_writer_publish_max.html)
+- [test per write block size only writer reader80 3runs publish1](https://xiyang1314.github.io/TwoBufQueue/docs/reports/block_size/test_per_write_block_size_only_writer_reader80_3runs_publish1.html)
+- [test per write block size only writer reader80 3runs publish max](https://xiyang1314.github.io/TwoBufQueue/docs/reports/block_size/test_per_write_block_size_only_writer_reader80_3runs_publish_max.html)
+- [test per write block size readback fixed reader 3runs](https://xiyang1314.github.io/TwoBufQueue/docs/reports/block_size/test_per_write_block_size_readback_fixed_reader_3runs.html)
+- [test per writer block size](https://xiyang1314.github.io/TwoBufQueue/docs/reports/block_size/test_per_writer_block_size.html)
+- [test per writer block size cache hits](https://xiyang1314.github.io/TwoBufQueue/docs/reports/block_size/test_per_writer_block_size_cache_hits.html)
+- [test per writer block size max comparison 3runs](https://xiyang1314.github.io/TwoBufQueue/docs/reports/block_size/test_per_writer_block_size_max_comparison_3runs.html)
+- [test per writer block size no current](https://xiyang1314.github.io/TwoBufQueue/docs/reports/block_size/test_per_writer_block_size_no_current.html)
+- [test per writer block size no current publish1](https://xiyang1314.github.io/TwoBufQueue/docs/reports/block_size/test_per_writer_block_size_no_current_publish1.html)
+- [test per writer block size reader80 3runs max](https://xiyang1314.github.io/TwoBufQueue/docs/reports/block_size/test_per_writer_block_size_reader80_3runs_max.html)
 
 报告保留原始测量日期；打包不会重跑或替换测试结果。

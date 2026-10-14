@@ -124,8 +124,8 @@
 
 正式二进制 SHA-256：d042e98522f916c7a9f38d510d3dde48e9682f448a269f3e107e96e380506714。源代码仍含调查之前的未提交改动，文件哈希见 source-manifest.json。原有 8 / 16 / 32 / 64 B 完整报告保留旧配置的结果，本页是追加的 32 B 定位和复测。
 
-[汇总与完整参数](../../performance_data/latency32_investigation_20261010/confirmation-summary.json) · [源代码与二进制哈希](../../performance_data/latency32_investigation_20261010/source-manifest.json) · [复测配置](../../performance_data/latency32_investigation_20261010/confirmation-configs.json) · [复测脚本](../../performance_data/latency32_investigation_20261010/run.py)
+[汇总与完整参数](../../performance_data/latency32_investigation_20261010/confirmation-summary.json) · [源代码与二进制哈希](../../performance_data/latency32_investigation_20261010/source-manifest.json) · [复测配置](../../performance_data/latency32_investigation_20261010/confirmation-configs.json) · [复测脚本](https://xiyang1314.github.io/TwoBufQueue/docs/code/docs/performance_data/latency32_investigation_20261010/run.py.html)
 
-[第一组原始数据](../../performance_data/latency32_investigation_20261010/confirmation-configs-143853/raw.jsonl) · [第二组原始数据](../../performance_data/latency32_investigation_20261010/confirmation-configs-143931/raw.jsonl) · [计时组分类诊断](../../performance_data/latency32_investigation_20261010/phase11-configs-143756/classification-results.json) · [原完整报告](../comparison/performance_8m_zero.md)
+[第一组原始数据](../../performance_data/latency32_investigation_20261010/confirmation-configs-143853/raw.jsonl) · [第二组原始数据](../../performance_data/latency32_investigation_20261010/confirmation-configs-143931/raw.jsonl) · [计时组分类诊断](../../performance_data/latency32_investigation_20261010/phase11-configs-143756/classification-results.json) · [原完整报告](https://xiyang1314.github.io/TwoBufQueue/docs/reports/comparison/performance_8m_zero.html)
 
 生成时间：2026-10-10T14:40:35.996138+08:00

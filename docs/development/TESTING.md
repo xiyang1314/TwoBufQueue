@@ -1,6 +1,6 @@
 # Testing and validation
 
-[English](TESTING.md) · [简体中文](TESTING.zh-CN.md)
+[English](https://xiyang1314.github.io/TwoBufQueue/docs/development/TESTING.html) · [简体中文](https://xiyang1314.github.io/TwoBufQueue/docs/development/TESTING.zh-CN.html)
 
 The current standalone Release build includes library regression tests, functional suites, runnable examples and integration checks. A fresh copy containing only publication-manifest files passed **567 / 567 tests** on the local macOS host during English-documentation preparation. This records correctness checks, not a new performance measurement or Linux/Windows result.
 
@@ -37,6 +37,6 @@ Machine-readable case catalogs and their Markdown tables are kept identical; the
 
 ## 3. Historical evidence
 
-The [dated reader checks (Chinese)](../../test/reader/READ_CTRL_TESTS.md) distinguish the test coverage available on each date. The [saved release checks](../release-checks/summary.json) and [earlier validation records](../performance_data/release_20261011/release-checks/summary.json) retain their recorded platforms, commands and limits. Do not treat an old subset count as today's full-suite count or claim a platform that did not run.
+The [dated reader checks (Chinese)](https://xiyang1314.github.io/TwoBufQueue/test/reader/READ_CTRL_TESTS.html) distinguish the test coverage available on each date. The [saved release checks](../release-checks/summary.json) and [earlier validation records](../performance_data/release_20261011/release-checks/summary.json) retain their recorded platforms, commands and limits. Do not treat an old subset count as today's full-suite count or claim a platform that did not run.
 
 CI is configured for Linux, Windows and macOS, plus sanitizers and optional pinned SPSC adapters. Remote CI execution is still pending until the repository is published and the workflows run. Source/UI translation does not change the library's non-comment C++ content or the historical measured-source archives.

@@ -376,9 +376,13 @@ protected:
     static FAST_LOG_ALWAYS_INLINE void with_argument_bytes(Callback&& callback, const Args&... args) noexcept {
         if constexpr (sizeof...(Args) == 1) {
             (callback(reinterpret_cast<const std::byte*>(std::addressof(args)), sizeof(Args)), ...);
+        } else if constexpr (sizeof...(Args) == 0) {
+            // Keep a valid, initialized address for an empty synchronous payload.
+            const std::byte empty{};
+            callback(std::addressof(empty), std::size_t{0});
         } else {
             constexpr std::size_t size = (std::size_t{0} + ... + sizeof(Args));
-            std::array<std::byte, size == 0 ? 1 : size> payload;
+            std::array<std::byte, size> payload;
             copy_arguments(std::index_sequence_for<Args...>{}, payload.data(), args...);
             callback(payload.data(), size);
         }

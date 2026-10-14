@@ -1,4 +1,4 @@
-[English](performance_256m_zero_session_plateau.md) · [中文](performance_256m_zero_session_plateau.zh-CN.md)
+[English](https://xiyang1314.github.io/TwoBufQueue/docs/reports/comparison/performance_256m_zero_session_plateau.html) · [中文](https://xiyang1314.github.io/TwoBufQueue/docs/reports/comparison/performance_256m_zero_session_plateau.zh-CN.html)
 
 TWOBUFQUEUE / SPSC BENCHMARK
 
@@ -34,7 +34,7 @@ Compare TwoBufQueue, ReaderWriterQueue, rigtorp/SPSCQueue and atomic_queue with 
 
 Compute these quantiles independently per run, then average the three run results. The measurement is **Producer message-submission overhead**: quantiles use 1,000-write group means, not individual write calls or producer-to-consumer end-to-end latency.
 
-Other modes: [Ordinary write · publish MAX](performance_256m_zero_publish_max_plateau.md) · [Ordinary write · publish every record](performance_256m_zero_publish1_plateau.md)
+Other modes: [Ordinary write · publish MAX](https://xiyang1314.github.io/TwoBufQueue/docs/reports/comparison/performance_256m_zero_publish_max_plateau.html) · [Ordinary write · publish every record](https://xiyang1314.github.io/TwoBufQueue/docs/reports/comparison/performance_256m_zero_publish1_plateau.html)
 
 ## Throughput overview
 
@@ -651,6 +651,6 @@ Earlier per-metric selections are backed up. All four metrics here use common co
 
 Measured executable SHA-256: 1a898890a865e21c4842f8f40f56c3cf9bbfdde912ff2de86782a5c9a3eb0493
 
-[Configuration selection record](../../performance_data/plateau_compare_256m_zero_20261012/weighted_common_config_20261012/weighted_common_selection.json.gz) · [Selection program](../../performance_data/plateau_compare_256m_zero_20261012/weighted_common_config_20261012/select_weighted.py) · [Additional ReaderWriterQueue measurements](../../performance_data/plateau_compare_256m_zero_20261012/weighted_common_config_20261012/readerwriterqueue_combined/raw.jsonl) · [Original search records](../../performance_data/plateau_compare_256m_zero_20261012/raw.jsonl.gz) · [Original candidate list](../../performance_data/plateau_compare_256m_zero_20261012/all_candidates.csv.gz) · [Measurement audit](../../performance_data/plateau_compare_256m_zero_20261012/audit.json) · [Environment and dependencies](../../performance_data/plateau_compare_256m_zero_20261012/environment.json) · [Measured source](../../performance_data/plateau_compare_256m_zero_20261012/measurement_sources.tar.gz) · [Report generator](../../performance_data/plateau_compare_256m_zero_20261012/restyle_comparison.py)
+[Configuration selection record](../../performance_data/plateau_compare_256m_zero_20261012/weighted_common_config_20261012/weighted_common_selection.json.gz) · [Selection program](https://xiyang1314.github.io/TwoBufQueue/docs/code/docs/performance_data/plateau_compare_256m_zero_20261012/weighted_common_config_20261012/select_weighted.py.html) · [Additional ReaderWriterQueue measurements](../../performance_data/plateau_compare_256m_zero_20261012/weighted_common_config_20261012/readerwriterqueue_combined/raw.jsonl) · [Original search records](../../performance_data/plateau_compare_256m_zero_20261012/raw.jsonl.gz) · [Original candidate list](../../performance_data/plateau_compare_256m_zero_20261012/all_candidates.csv.gz) · [Measurement audit](../../performance_data/plateau_compare_256m_zero_20261012/audit.json) · [Environment and dependencies](../../performance_data/plateau_compare_256m_zero_20261012/environment.json) · [Measured source](../../performance_data/plateau_compare_256m_zero_20261012/measurement_sources.tar.gz) · [Report generator](https://xiyang1314.github.io/TwoBufQueue/docs/code/docs/performance_data/plateau_compare_256m_zero_20261012/restyle_comparison.py.html)
 
 Updated: 2026-10-12 · common configuration selected by stated weights · 256 MiB / callback iterations 0 / mean of three runs

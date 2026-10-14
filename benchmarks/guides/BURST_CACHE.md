@@ -1,8 +1,8 @@
 # Business performance after a continuous message batch
 
-[English](BURST_CACHE.md) · [简体中文](BURST_CACHE.md)
+[English](https://xiyang1314.github.io/TwoBufQueue/benchmarks/guides/BURST_CACHE.html) · [简体中文](https://xiyang1314.github.io/TwoBufQueue/benchmarks/guides/BURST_CACHE.html)
 
-The [current report](../../docs/reports/burst/performance_burst_from_empty.md) compares subsequent producer business work after continuous message bursts. Its batches start empty. The earlier prepared-backlog experiment remains a separately labelled historical test; its approximately 200 MiB prefill does not apply to the current report.
+The [current report](https://xiyang1314.github.io/TwoBufQueue/docs/reports/burst/performance_burst_from_empty.html) compares subsequent producer business work after continuous message bursts. Its batches start empty. The earlier prepared-backlog experiment remains a separately labelled historical test; its approximately 200 MiB prefill does not apply to the current report.
 
 ## 1. Reproduce the current report in one run
 

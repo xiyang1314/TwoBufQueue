@@ -10,7 +10,7 @@ TwoBufQueue · 单线程 Writer · 4294967295
 
 两种策略都使用相同轮容量 6.4 MiB，预热后都交接尾块，从无当前块状态开始正式测量。 每轮计时结束后 finish_block 并立即归还尾块，尾部交接不计时，下一轮申请块仍计时。正式运行不读取消息负载；每个块大小、每种策略另有独立进程校验全部字节和 FIFO 顺序。 吞吐是单线程写入与即时归还的成绩，不是完整 TwoBufQueue 流水线吞吐。
 
-吞吐最高：2 KiB，530.748 M条/s；p50 最低：512 KiB，1.692 ns。 [查看另一种发布策略](test_per_write_block_size_only_writer_publish1.md)
+吞吐最高：2 KiB，530.748 M条/s；p50 最低：512 KiB，1.692 ns。 [查看另一种发布策略](https://xiyang1314.github.io/TwoBufQueue/docs/reports/block_size/test_per_write_block_size_only_writer_publish1.html)
 
 ## 写入性能
 

@@ -138,7 +138,7 @@ ldr w9, [x9]              // 读取 next，决定下一个节点地址
 
 ## 数据与复核
 
-[结构化证据汇总](../../performance_data/burst_instruction_1m_20261012/evidence_summary.json) · [原始数据索引与 SHA-256](../../performance_data/burst_instruction_1m_20261012/raw_index.json) · [原测试的业务函数汇编](../../performance_data/burst_instruction_1m_20261012/business_original.asm) · [四种程序的业务机器码一致性](../../performance_data/burst_instruction_1m_20261012/business_assembly_identity.json)
+[结构化证据汇总](../../performance_data/burst_instruction_1m_20261012/evidence_summary.json) · [原始数据索引与 SHA-256](../../performance_data/burst_instruction_1m_20261012/raw_index.json) · [原测试的业务函数汇编](https://xiyang1314.github.io/TwoBufQueue/docs/code/docs/performance_data/burst_instruction_1m_20261012/business_original.asm.html) · [四种程序的业务机器码一致性](../../performance_data/burst_instruction_1m_20261012/business_assembly_identity.json)
 
 原始 JSON 用 gzip 无损压缩；未过滤慢样本。诊断源码与采集脚本一并保留。生产 Writer / Pool / Reader 实现未修改；“连续重试”仅在隔离源码中作实验。完整 1–16 MiB 报告也未覆盖。
 

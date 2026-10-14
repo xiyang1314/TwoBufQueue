@@ -37,7 +37,7 @@ def main():
     manifest = ROOT / 'release-manifest.json'
     if not manifest.is_file():
         parser.error('Run this tool from the exported publication tree')
-    records = json.loads(manifest.read_text())['files']
+    records = json.loads(manifest.read_text(encoding='utf-8'))['files']
     paths = [ROOT / r['path'] for r in records] + [manifest]
     prefix = 'TwoBufQueue-' + args.version
     source = output / (prefix + '-source.tar.gz')
