@@ -7,7 +7,8 @@ void self_test(){
     std::uint64_t business=0;
     for(auto t:{Transport::two_buf_queue,Transport::readerwriterqueue,Transport::rigtorp,Transport::atomic_queue}){
         c.queue.transport=t;auto r=bc::run(c);if(r.points.size()!=4||r.formal!=2*(16+64)*1024/32||r.accepted!=r.completed)throw std::runtime_error("burst counts");
-        if(business&&business!=r.business_checksum)throw std::runtime_error("different business workload");business=r.business_checksum;
+        if(business&&business!=r.business_checksum)throw std::runtime_error("different business workload");
+        business=r.business_checksum;
         if(r.config.queue.source.block_size!=512)throw std::runtime_error("2KiB means total pool");
     }
     c.prefill=false;c.drain_before_burst=true;

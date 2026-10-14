@@ -13,7 +13,7 @@ struct RawReceiver {
         if (id < 0 || id >= 4 || size == 0) { good = false; return false; }
         try {
             auto &output = bytes[static_cast<std::size_t>(id)];
-            output.insert(output.end(), data, data + size);
+            for (std::size_t i = 0; i < size; ++i) output.push_back(data[i]);
             return true;
         } catch (...) { good = false; return false; }
     }
@@ -34,7 +34,7 @@ struct RawReceiver {
 
 template<class T> void append_value(std::vector<std::byte>& bytes, const T& value) {
     const auto* begin = reinterpret_cast<const std::byte*>(&value);
-    bytes.insert(bytes.end(), begin, begin + sizeof(T));
+    for (std::size_t i = 0; i < sizeof(T); ++i) bytes.push_back(begin[i]);
 }
 template<bool WriteLen, class Len>
 void append_record(std::vector<std::byte>& output, const std::vector<std::byte>& payload) {

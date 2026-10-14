@@ -23,7 +23,14 @@ jobs:
       - name: Configure
         shell: bash
         run: cmake -S "$BRQ_SOURCE" -B build-brq -DCMAKE_BUILD_TYPE=Release -DBRQ_DISABLE_TSC=${{ matrix.portable_clock }}
-      - run: cmake --build build-brq --config Release --parallel 2
+      - name: Build
+        shell: bash
+        run: |
+          if test "$RUNNER_OS" = Linux; then
+            cmake --build build-brq --config Release --parallel 2 -- -k
+          else
+            cmake --build build-brq --config Release --parallel 2
+          fi
       - run: ctest --test-dir build-brq -C Release --output-on-failure
       - name: Validate publication documents and evidence
         shell: bash
@@ -90,7 +97,11 @@ jobs:
         shell: bash
         run: |
           cmake -S "$BRQ_SOURCE" -B build-compare -DCMAKE_BUILD_TYPE=Release -DBRQ_BUILD_SPSC_BENCHMARKS=ON
-          cmake --build build-compare --config Release --parallel 2
+          if test "$RUNNER_OS" = Linux; then
+            cmake --build build-compare --config Release --parallel 2 -- -k
+          else
+            cmake --build build-compare --config Release --parallel 2
+          fi
           ctest --test-dir build-compare -C Release --output-on-failure
       - name: Validate small benchmark runs and report generation
         shell: bash
