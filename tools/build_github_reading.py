@@ -381,7 +381,7 @@ def build(root):
             after = after.replace('[HTML overview](README.md)', '[Documentation index](docs/index.md)')
             after = after.replace('[HTML 首页](README.zh-CN.md)', '[文档导航](docs/index.zh-CN.md)')
             # Include both locale indexes even before a website has been published.
-            generate('docs/index.zh-CN.html' if name.endswith('.zh-CN.md') else 'docs/index.html')
+            generate('docs/reports/index.zh-CN.html' if name.endswith('.zh-CN.md') else 'docs/reports/index.html')
         if after != before:
             document.write_text(after, encoding='utf-8')
             rewritten += 1

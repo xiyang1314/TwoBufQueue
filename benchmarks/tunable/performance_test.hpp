@@ -2,7 +2,7 @@
 #include "adapters.hpp"
 #include "timing.hpp"
 #include "publication_plan.hpp"
-#include "../process_metrics.hpp"
+#include "../common/process_metrics.hpp"
 #include <condition_variable>
 #include <cstdio>
 #include <cstdlib>

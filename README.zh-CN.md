@@ -4,7 +4,7 @@
 
 为追求生产者热路径性能，采用双层缓存设计，通过批量发布和传输，让生产者使用小缓存，让消费者使用大缓存处理消息，尽可能降低消息传输对业务执行的影响。支持单个或多个生产者、消费者；当前要求 C++20。
 
-[English](README.md) · [完整介绍](README_DETAIL.zh-CN.md) · [接口指南](docs/API.zh-CN.md) · [使用示例](examples/README.zh-CN.md) · [性能测试](docs/PERFORMANCE.zh-CN.md)
+[English](README.md) · [完整介绍](README_DETAIL.zh-CN.md) · [接口指南](docs/guides/API.zh-CN.md) · [使用示例](examples/README.zh-CN.md) · [性能测试](docs/reports/PERFORMANCE.zh-CN.md)
 
 **目录**
 
@@ -59,7 +59,7 @@
 
 ![8、16、32、64 B 消息的生产者发送吞吐](docs/assets/session_write_throughput.svg)
 
-[Session 完整结果](docs/performance_256m_zero_session_plateau.zh-CN.md) · [普通 write，批量发布](docs/performance_256m_zero_publish_max_plateau.zh-CN.md) · [普通 write，每条发布](docs/performance_256m_zero_publish1_plateau.zh-CN.md)
+[Session 完整结果](docs/reports/comparison/performance_256m_zero_session_plateau.zh-CN.md) · [普通 write，批量发布](docs/reports/comparison/performance_256m_zero_publish_max_plateau.zh-CN.md) · [普通 write，每条发布](docs/reports/comparison/performance_256m_zero_publish1_plateau.zh-CN.md)
 
 ### 2.2 连续发送一批消息后，业务还能跑多快？
 
@@ -67,7 +67,7 @@
 
 ![连续发送 2、4、8、16 MiB 后，业务耗时相对正常耗时的比值](docs/assets/burst_business_ratio.svg)
 
-本机正常业务约 **13 ns/次**。发送 16 MiB 后，TwoBufQueue 为 **18.2 ns/次**，ReaderWriterQueue 为 58.2，rigtorp 为 42.5，atomic_queue 为 99.8。[完整实验与参数](docs/performance_burst_from_empty.zh-CN.md)
+本机正常业务约 **13 ns/次**。发送 16 MiB 后，TwoBufQueue 为 **18.2 ns/次**，ReaderWriterQueue 为 58.2，rigtorp 为 42.5，atomic_queue 为 99.8。[完整实验与参数](docs/reports/burst/performance_burst_from_empty.zh-CN.md)
 
 两组实验在 Apple M3 上分别测量，不能混为同一个配置：发送吞吐实验中，两层池各为 256 MiB，回调循环为 0；业务实验中，生产者池为 16 KiB、消费者池为 256 MiB，回调循环为 64。开源队列均使用 256 MiB 消息存储。三轮平均，高 QoS，未硬绑核；测量范围与限制见完整报告。
 
@@ -132,16 +132,16 @@ cmake --build build --config Release --parallel
 ctest --test-dir build -C Release --output-on-failure
 ```
 
-通过 CMake 链接 `TwoBufQueue::TwoBufQueue`。[安装和项目接入](docs/INTEGRATION.zh-CN.md) · [更多使用示例](examples/README.zh-CN.md)
+通过 CMake 链接 `TwoBufQueue::TwoBufQueue`。[安装和项目接入](docs/guides/INTEGRATION.zh-CN.md) · [更多使用示例](examples/README.zh-CN.md)
 
 ## 五、完整文档
 
 | 想了解什么 | 从这里开始 |
 |---|---|
 | 为什么采用双层缓存、适用场景与后续计划 | [完整介绍 README_DETAIL](README_DETAIL.zh-CN.md) |
-| 写入、发布、回调、线程与参数 | [接口指南](docs/API.zh-CN.md) |
+| 写入、发布、回调、线程与参数 | [接口指南](docs/guides/API.zh-CN.md) |
 | Session、多个生产者、同步回调等具体用法 | [使用示例](examples/README.zh-CN.md) |
-| 测量口径、参数与复现方法 | [性能测试说明](docs/PERFORMANCE.zh-CN.md) |
-| 使用队列实现异步日志 | [异步日志指南](docs/ASYNC_LOGGING.zh-CN.md) |
+| 测量口径、参数与复现方法 | [性能测试说明](docs/reports/PERFORMANCE.zh-CN.md) |
+| 使用队列实现异步日志 | [异步日志指南](docs/guides/ASYNC_LOGGING.zh-CN.md) |
 
 Apache-2.0。[许可证](LICENSE) · [参与贡献](CONTRIBUTING.zh-CN.md)

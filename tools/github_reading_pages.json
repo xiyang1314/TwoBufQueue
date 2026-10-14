@@ -290,7 +290,21 @@
       "六后续计划": "六后续计划",
       "后续计划": "六后续计划"
     },
-    "benchmarks/BURST_CACHE.md": {
+    "benchmarks/README.md": {
+      "benchmark-entry-points": "benchmark-entry-points",
+      "1-choose-an-experiment": "1-choose-an-experiment",
+      "choose-an-experiment": "1-choose-an-experiment",
+      "2-build-the-benchmark-tools": "2-build-the-benchmark-tools",
+      "build-the-benchmark-tools": "2-build-the-benchmark-tools"
+    },
+    "benchmarks/README.zh-CN.md": {
+      "性能测试导航": "性能测试导航",
+      "一选择测试": "一选择测试",
+      "选择测试": "一选择测试",
+      "二构建测试程序": "二构建测试程序",
+      "构建测试程序": "二构建测试程序"
+    },
+    "benchmarks/guides/BURST_CACHE.md": {
       "business-performance-after-a-continuous-message-batch": "business-performance-after-a-continuous-message-batch",
       "1-reproduce-the-current-report-in-one-run": "1-reproduce-the-current-report-in-one-run",
       "reproduce-the-current-report-in-one-run": "1-reproduce-the-current-report-in-one-run",
@@ -301,7 +315,7 @@
       "4-tail-and-instruction-diagnostics": "4-tail-and-instruction-diagnostics",
       "tail-and-instruction-diagnostics": "4-tail-and-instruction-diagnostics"
     },
-    "benchmarks/BURST_CACHE.zh-CN.md": {
+    "benchmarks/guides/BURST_CACHE.zh-CN.md": {
       "连续发送一批消息对业务性能产生什么影响": "连续发送一批消息对业务性能产生什么影响",
       "连续发送一批消息-对业务性能产生什么影响": "连续发送一批消息对业务性能产生什么影响",
       "一一次运行得到当前报告": "一一次运行得到当前报告",
@@ -323,7 +337,7 @@
       "八只检查1-mib发送后的尾部": "八只检查1-mib发送后的尾部",
       "只检查1-mib发送后的尾部": "八只检查1-mib发送后的尾部"
     },
-    "benchmarks/HOT_PATH_CACHE.md": {
+    "benchmarks/guides/HOT_PATH_CACHE.md": {
       "small-producer-pools-and-background-pending-work": "small-producer-pools-and-background-pending-work",
       "1-build-and-reproduce": "1-build-and-reproduce",
       "build-and-reproduce": "1-build-and-reproduce",
@@ -332,7 +346,7 @@
       "3-selection-and-evidence": "3-selection-and-evidence",
       "selection-and-evidence": "3-selection-and-evidence"
     },
-    "benchmarks/HOT_PATH_CACHE.zh-CN.md": {
+    "benchmarks/guides/HOT_PATH_CACHE.zh-CN.md": {
       "热路径小数据池与后台积压测试": "热路径小数据池与后台积压测试",
       "一构建与复现": "一构建与复现",
       "构建与复现": "一构建与复现",
@@ -341,13 +355,7 @@
       "三参数筛选与数据": "三参数筛选与数据",
       "参数筛选与数据": "三参数筛选与数据"
     },
-    "benchmarks/README.md": {
-      "benchmark-entry-points": "benchmark-entry-points"
-    },
-    "benchmarks/README.zh-CN.md": {
-      "当前性能测试入口": "当前性能测试入口"
-    },
-    "benchmarks/TUNABLE_SPSC.md": {
+    "benchmarks/guides/TUNABLE_SPSC.md": {
       "configurable-spsc-benchmarks": "configurable-spsc-benchmarks",
       "1-build-and-run": "1-build-and-run",
       "build-and-run": "1-build-and-run",
@@ -364,7 +372,7 @@
       "7-read-and-regenerate-reports": "7-read-and-regenerate-reports",
       "read-and-regenerate-reports": "7-read-and-regenerate-reports"
     },
-    "benchmarks/TUNABLE_SPSC.zh-CN.md": {
+    "benchmarks/guides/TUNABLE_SPSC.zh-CN.md": {
       "单-writer-参数搜索与-spsc-对比": "单-writer-参数搜索与-spsc-对比",
       "一构建与运行": "一构建与运行",
       "构建与运行": "一构建与运行",
@@ -400,7 +408,98 @@
       "十四固定第二层容量的三种-writer-模式寻优": "十四固定第二层容量的三种-writer-模式寻优",
       "固定第二层容量的三种-writer-模式寻优": "十四固定第二层容量的三种-writer-模式寻优"
     },
-    "docs/API.md": {
+    "docs/code/index.md": {
+      "source-browser": "source-browser",
+      "examples": "examples",
+      "components": "components",
+      "benchmark-scripts": "benchmark-scripts",
+      "assembly": "assembly",
+      "build-integration": "build-integration",
+      "technical-notes": "technical-notes",
+      "content": "source-browser",
+      "benchmarks": "benchmark-scripts",
+      "build": "build-integration",
+      "notes": "technical-notes"
+    },
+    "docs/code/index.zh-CN.md": {
+      "代码阅读": "代码阅读",
+      "使用示例": "使用示例",
+      "组件实现": "组件实现",
+      "性能测试脚本": "性能测试脚本",
+      "汇编与指令记录": "汇编与指令记录",
+      "工程接入配置": "工程接入配置",
+      "技术记录": "技术记录",
+      "content": "代码阅读",
+      "examples": "使用示例",
+      "components": "组件实现",
+      "benchmarks": "性能测试脚本",
+      "assembly": "汇编与指令记录",
+      "build": "工程接入配置",
+      "notes": "技术记录"
+    },
+    "docs/development/PUBLISHING.md": {
+      "github-publication": "github-publication",
+      "1-validate-the-prepared-tree": "1-validate-the-prepared-tree",
+      "validate-the-prepared-tree": "1-validate-the-prepared-tree",
+      "2-maintain-this-repository-directly": "2-maintain-this-repository-directly",
+      "maintain-this-repository-directly": "2-maintain-this-repository-directly",
+      "3-create-and-connect-the-repository": "3-create-and-connect-the-repository",
+      "create-and-connect-the-repository": "3-create-and-connect-the-repository",
+      "4-generate-all-html-documentation": "4-generate-all-html-documentation",
+      "generate-all-html-documentation": "4-generate-all-html-documentation",
+      "5-show-the-html-overview-and-reports": "5-show-the-html-overview-and-reports",
+      "show-the-html-overview-and-reports": "5-show-the-html-overview-and-reports",
+      "6-package-the-first-release": "6-package-the-first-release",
+      "package-the-first-release": "6-package-the-first-release",
+      "7-repository-readme-and-the-html-documentation-site": "7-repository-readme-and-the-html-documentation-site",
+      "repository-readme-and-the-html-documentation-site": "7-repository-readme-and-the-html-documentation-site",
+      "8-link-github-documentation-to-the-html-site": "8-link-github-documentation-to-the-html-site",
+      "link-github-documentation-to-the-html-site": "8-link-github-documentation-to-the-html-site"
+    },
+    "docs/development/PUBLISHING.zh-CN.md": {
+      "github-publication--github-发布": "github-publication--github-发布",
+      "github-publication-github-发布": "github-publication--github-发布",
+      "一validate-the-prepared-tree": "一validate-the-prepared-tree",
+      "validate-the-prepared-tree": "一validate-the-prepared-tree",
+      "二create-and-connect-the-repository": "二create-and-connect-the-repository",
+      "create-and-connect-the-repository": "二create-and-connect-the-repository",
+      "三generate-all-html-documentation": "三generate-all-html-documentation",
+      "generate-all-html-documentation": "三generate-all-html-documentation",
+      "四show-the-html-overview-and-reports": "四show-the-html-overview-and-reports",
+      "show-the-html-overview-and-reports": "四show-the-html-overview-and-reports",
+      "五package-the-first-release": "五package-the-first-release",
+      "package-the-first-release": "五package-the-first-release",
+      "六github-首页与-html-文档网站": "六github-首页与-html-文档网站",
+      "github-首页与-html-文档网站": "六github-首页与-html-文档网站",
+      "七将-github-文档入口切换到-html-网站": "七将-github-文档入口切换到-html-网站",
+      "将-github-文档入口切换到-html-网站": "七将-github-文档入口切换到-html-网站"
+    },
+    "docs/development/RELEASE_CONTENTS.md": {
+      "release-contents": "release-contents"
+    },
+    "docs/development/RELEASE_CONTENTS.zh-CN.md": {
+      "release-source-copy--发布源码副本": "release-source-copy--发布源码副本",
+      "release-source-copy-发布源码副本": "release-source-copy--发布源码副本"
+    },
+    "docs/development/TESTING.md": {
+      "testing-and-validation": "testing-and-validation",
+      "1-run-the-current-suite": "1-run-the-current-suite",
+      "run-the-current-suite": "1-run-the-current-suite",
+      "2-inspect-one-part": "2-inspect-one-part",
+      "inspect-one-part": "2-inspect-one-part",
+      "3-historical-evidence": "3-historical-evidence",
+      "historical-evidence": "3-historical-evidence"
+    },
+    "docs/development/TESTING.zh-CN.md": {
+      "测试与验证": "测试与验证",
+      "一运行当前完整测试": "一运行当前完整测试",
+      "运行当前完整测试": "一运行当前完整测试",
+      "二单独检查一部分": "二单独检查一部分",
+      "单独检查一部分": "二单独检查一部分",
+      "三历史记录与平台范围": "三历史记录与平台范围",
+      "历史记录与平台范围": "三历史记录与平台范围"
+    },
+    "docs/guides/API.md": {
       "api-usage-guide": "api-usage-guide",
       "1-choose-the-interface": "1-choose-the-interface",
       "choose-the-interface": "1-choose-the-interface",
@@ -439,7 +538,7 @@
       "12-composing-lower-level-components": "12-composing-lower-level-components",
       "composing-lower-level-components": "12-composing-lower-level-components"
     },
-    "docs/API.zh-CN.md": {
+    "docs/guides/API.zh-CN.md": {
       "接口使用指南": "接口使用指南",
       "一先选择需要的用法": "一先选择需要的用法",
       "先选择需要的用法": "一先选择需要的用法",
@@ -483,12 +582,12 @@
       "十二需要自己组合底层组件时": "十二需要自己组合底层组件时",
       "需要自己组合底层组件时": "十二需要自己组合底层组件时"
     },
-    "docs/ASYNC_LOGGING.md": {
+    "docs/guides/ASYNC_LOGGING.md": {
       "asynchronous-logging": "asynchronous-logging",
       "1-flush-and-shutdown": "1-flush-and-shutdown",
       "flush-and-shutdown": "1-flush-and-shutdown"
     },
-    "docs/ASYNC_LOGGING.zh-CN.md": {
+    "docs/guides/ASYNC_LOGGING.zh-CN.md": {
       "异步日志示例怎么使用": "异步日志示例怎么使用",
       "一构建并运行": "一构建并运行",
       "构建并运行": "一构建并运行",
@@ -499,7 +598,7 @@
       "四用在业务中还需补什么": "四用在业务中还需补什么",
       "用在业务中还需补什么": "四用在业务中还需补什么"
     },
-    "docs/INTEGRATION.md": {
+    "docs/guides/INTEGRATION.md": {
       "cmake-integration": "cmake-integration",
       "1-vendored-source": "1-vendored-source",
       "vendored-source": "1-vendored-source",
@@ -508,7 +607,7 @@
       "3-installed-package": "3-installed-package",
       "installed-package": "3-installed-package"
     },
-    "docs/INTEGRATION.zh-CN.md": {
+    "docs/guides/INTEGRATION.zh-CN.md": {
       "把-twobufqueue-接入工程": "把-twobufqueue-接入工程",
       "一最简单源码放在工程里": "一最简单源码放在工程里",
       "最简单源码放在工程里": "一最简单源码放在工程里",
@@ -521,7 +620,38 @@
       "四常见问题": "四常见问题",
       "常见问题": "四常见问题"
     },
-    "docs/PERFORMANCE.md": {
+    "docs/index.md": {
+      "documentation-index": "documentation-index",
+      "1-usage-guides": "1-usage-guides",
+      "usage-guides": "1-usage-guides",
+      "2-performance-reports": "2-performance-reports",
+      "performance-reports": "2-performance-reports",
+      "3-development-and-publication": "3-development-and-publication",
+      "development-and-publication": "3-development-and-publication"
+    },
+    "docs/index.zh-CN.md": {
+      "文档导航": "文档导航",
+      "一使用指南": "一使用指南",
+      "使用指南": "一使用指南",
+      "二性能报告": "二性能报告",
+      "性能报告": "二性能报告",
+      "三开发与发布": "三开发与发布",
+      "开发与发布": "三开发与发布"
+    },
+    "docs/performance_data/ordinary_readback_optimal_20261011/report_full_details_before_compact_20261011.md": {
+      "twobufqueue普通-write每条-publish普通-writepublish-max-参数遍历": "twobufqueue普通-write每条-publish普通-writepublish-max-参数遍历",
+      "twobufqueue-普通-write-每条-publish-普通-write-publish-max-参数遍历": "twobufqueue普通-write每条-publish普通-writepublish-max-参数遍历",
+      "独立复测后的最优参数六次正式运行均无-writer-背压": "独立复测后的最优参数六次正式运行均无-writer-背压",
+      "独立复测后的最优参数-六次正式运行均无-writer-背压": "独立复测后的最优参数六次正式运行均无-writer-背压",
+      "不限-writer-背压的速度最优观测": "不限-writer-背压的速度最优观测",
+      "同参数交错对照只改变普通写入的读回操作": "同参数交错对照只改变普通写入的读回操作",
+      "同参数交错对照-只改变普通写入的读回操作": "同参数交错对照只改变普通写入的读回操作",
+      "全部候选含初筛与独立复测": "全部候选含初筛与独立复测",
+      "全部候选-含初筛与独立复测": "全部候选含初筛与独立复测",
+      "length": "twobufqueue普通-write每条-publish普通-writepublish-max-参数遍历",
+      "mode": "twobufqueue普通-write每条-publish普通-writepublish-max-参数遍历"
+    },
+    "docs/reports/PERFORMANCE.md": {
       "performance-evidence": "performance-evidence",
       "1-current-comparison-entry-points": "1-current-comparison-entry-points",
       "current-comparison-entry-points": "1-current-comparison-entry-points",
@@ -542,7 +672,7 @@
       "8-reproduce-and-inspect": "8-reproduce-and-inspect",
       "reproduce-and-inspect": "8-reproduce-and-inspect"
     },
-    "docs/PERFORMANCE.zh-CN.md": {
+    "docs/reports/PERFORMANCE.zh-CN.md": {
       "性能报告怎么看": "性能报告怎么看",
       "一想了解哪种性能": "一想了解哪种性能",
       "想了解哪种性能": "一想了解哪种性能",
@@ -555,51 +685,7 @@
       "五在自己的机器重现": "五在自己的机器重现",
       "在自己的机器重现": "五在自己的机器重现"
     },
-    "docs/PUBLISHING.md": {
-      "github-publication": "github-publication",
-      "1-validate-the-prepared-tree": "1-validate-the-prepared-tree",
-      "validate-the-prepared-tree": "1-validate-the-prepared-tree",
-      "2-maintain-this-repository-directly": "2-maintain-this-repository-directly",
-      "maintain-this-repository-directly": "2-maintain-this-repository-directly",
-      "3-create-and-connect-the-repository": "3-create-and-connect-the-repository",
-      "create-and-connect-the-repository": "3-create-and-connect-the-repository",
-      "4-generate-all-html-documentation": "4-generate-all-html-documentation",
-      "generate-all-html-documentation": "4-generate-all-html-documentation",
-      "5-show-the-html-overview-and-reports": "5-show-the-html-overview-and-reports",
-      "show-the-html-overview-and-reports": "5-show-the-html-overview-and-reports",
-      "6-package-the-first-release": "6-package-the-first-release",
-      "package-the-first-release": "6-package-the-first-release",
-      "7-repository-readme-and-the-html-documentation-site": "7-repository-readme-and-the-html-documentation-site",
-      "repository-readme-and-the-html-documentation-site": "7-repository-readme-and-the-html-documentation-site",
-      "8-link-github-documentation-to-the-html-site": "8-link-github-documentation-to-the-html-site",
-      "link-github-documentation-to-the-html-site": "8-link-github-documentation-to-the-html-site"
-    },
-    "docs/PUBLISHING.zh-CN.md": {
-      "github-publication--github-发布": "github-publication--github-发布",
-      "github-publication-github-发布": "github-publication--github-发布",
-      "一validate-the-prepared-tree": "一validate-the-prepared-tree",
-      "validate-the-prepared-tree": "一validate-the-prepared-tree",
-      "二create-and-connect-the-repository": "二create-and-connect-the-repository",
-      "create-and-connect-the-repository": "二create-and-connect-the-repository",
-      "三generate-all-html-documentation": "三generate-all-html-documentation",
-      "generate-all-html-documentation": "三generate-all-html-documentation",
-      "四show-the-html-overview-and-reports": "四show-the-html-overview-and-reports",
-      "show-the-html-overview-and-reports": "四show-the-html-overview-and-reports",
-      "五package-the-first-release": "五package-the-first-release",
-      "package-the-first-release": "五package-the-first-release",
-      "六github-首页与-html-文档网站": "六github-首页与-html-文档网站",
-      "github-首页与-html-文档网站": "六github-首页与-html-文档网站",
-      "七将-github-文档入口切换到-html-网站": "七将-github-文档入口切换到-html-网站",
-      "将-github-文档入口切换到-html-网站": "七将-github-文档入口切换到-html-网站"
-    },
-    "docs/RELEASE_CONTENTS.md": {
-      "release-contents": "release-contents"
-    },
-    "docs/RELEASE_CONTENTS.zh-CN.md": {
-      "release-source-copy--发布源码副本": "release-source-copy--发布源码副本",
-      "release-source-copy-发布源码副本": "release-source-copy--发布源码副本"
-    },
-    "docs/RIGTORP_PERFORMANCE.md": {
+    "docs/reports/analysis/RIGTORP_PERFORMANCE.md": {
       "rigtorp-benchmark-regression": "rigtorp-benchmark-regression",
       "1-same-executable-control": "1-same-executable-control",
       "same-executable-control": "1-same-executable-control",
@@ -608,7 +694,7 @@
       "3-subsequent-complete-measurements": "3-subsequent-complete-measurements",
       "subsequent-complete-measurements": "3-subsequent-complete-measurements"
     },
-    "docs/RIGTORP_PERFORMANCE.zh-CN.md": {
+    "docs/reports/analysis/RIGTORP_PERFORMANCE.zh-CN.md": {
       "rigtorp-benchmark-regression--性能回退修正": "rigtorp-benchmark-regression--性能回退修正",
       "rigtorp-benchmark-regression-性能回退修正": "rigtorp-benchmark-regression--性能回退修正",
       "一same-executable-control--同一程序开关对照": "一same-executable-control--同一程序开关对照",
@@ -621,77 +707,285 @@
       "fresh-formal-reports--修正后的完整复测": "三fresh-formal-reports--修正后的完整复测",
       "fresh-formal-reports-修正后的完整复测": "三fresh-formal-reports--修正后的完整复测"
     },
-    "docs/TESTING.md": {
-      "testing-and-validation": "testing-and-validation",
-      "1-run-the-current-suite": "1-run-the-current-suite",
-      "run-the-current-suite": "1-run-the-current-suite",
-      "2-inspect-one-part": "2-inspect-one-part",
-      "inspect-one-part": "2-inspect-one-part",
-      "3-historical-evidence": "3-historical-evidence",
-      "historical-evidence": "3-historical-evidence"
+    "docs/reports/analysis/performance_8m_32b_latency.md": {
+      "8-mib-缓存32-b-消息p50-为什么偏高": "8-mib-缓存32-b-消息p50-为什么偏高",
+      "mib-缓存32-b-消息p50-为什么偏高": "8-mib-缓存32-b-消息p50-为什么偏高",
+      "mib-缓存-32-b-消息-p50-为什么偏高": "8-mib-缓存32-b-消息p50-为什么偏高",
+      "独立复测结果": "独立复测结果",
+      "确认了哪些原因": "确认了哪些原因",
+      "本次改动与适用范围": "本次改动与适用范围",
+      "已确认的完整构造参数": "已确认的完整构造参数",
+      "逐次-p50": "逐次-p50",
+      "数据校验与复现": "数据校验与复现"
     },
-    "docs/TESTING.zh-CN.md": {
-      "测试与验证": "测试与验证",
-      "一运行当前完整测试": "一运行当前完整测试",
-      "运行当前完整测试": "一运行当前完整测试",
-      "二单独检查一部分": "二单独检查一部分",
-      "单独检查一部分": "二单独检查一部分",
-      "三历史记录与平台范围": "三历史记录与平台范围",
-      "历史记录与平台范围": "三历史记录与平台范围"
+    "docs/reports/analysis/performance_hot_path_cache.md": {
+      "把积压留在后台--让写线程使用小数据池": "把积压留在后台--让写线程使用小数据池",
+      "把积压留在后台-让写线程使用小数据池": "把积压留在后台--让写线程使用小数据池",
+      "优势在哪里后台积压不要求扩大第一层": "优势在哪里后台积压不要求扩大第一层",
+      "优势在哪里-后台积压不要求扩大第一层": "优势在哪里后台积压不要求扩大第一层",
+      "主展示可控后台积压": "主展示可控后台积压",
+      "主展示-可控后台积压": "主展示可控后台积压",
+      "主场景的三次独立吞吐值": "主场景的三次独立吞吐值",
+      "补充对照真实慢回调": "补充对照真实慢回调",
+      "补充对照-真实慢回调": "补充对照真实慢回调",
+      "补充对照即时消费": "补充对照即时消费",
+      "补充对照-即时消费": "补充对照即时消费",
+      "第一层变化第二层保持-256-mib": "第一层变化第二层保持-256-mib",
+      "第一层变化-第二层保持-256-mib": "第一层变化第二层保持-256-mib",
+      "纯计算对照": "纯计算对照",
+      "纯计算的复制选项与初始化参数": "纯计算的复制选项与初始化参数",
+      "业务基线无队列--纯计算完整参数": "业务基线无队列--纯计算完整参数",
+      "业务基线-无队列-纯计算完整参数": "业务基线无队列--纯计算完整参数",
+      "twobufqueue--纯计算完整参数": "twobufqueue--纯计算完整参数",
+      "twobufqueue-纯计算完整参数": "twobufqueue--纯计算完整参数",
+      "readerwriterqueue--纯计算完整参数": "readerwriterqueue--纯计算完整参数",
+      "readerwriterqueue-纯计算完整参数": "readerwriterqueue--纯计算完整参数",
+      "rigtorpspscqueue--纯计算完整参数": "rigtorpspscqueue--纯计算完整参数",
+      "rigtorp-spscqueue-纯计算完整参数": "rigtorpspscqueue--纯计算完整参数",
+      "atomic_queue--纯计算完整参数": "atomic_queue--纯计算完整参数",
+      "atomic-queue-纯计算完整参数": "atomic_queue--纯计算完整参数",
+      "测试条件与初始化参数": "测试条件与初始化参数",
+      "机器编译器与电源记录": "机器编译器与电源记录",
+      "机器-编译器与电源记录": "机器编译器与电源记录",
+      "业务基线无队列--完整初始化参数": "业务基线无队列--完整初始化参数",
+      "业务基线-无队列-完整初始化参数": "业务基线无队列--完整初始化参数",
+      "twobufqueue--完整初始化参数": "twobufqueue--完整初始化参数",
+      "twobufqueue-完整初始化参数": "twobufqueue--完整初始化参数",
+      "readerwriterqueue--完整初始化参数": "readerwriterqueue--完整初始化参数",
+      "readerwriterqueue-完整初始化参数": "readerwriterqueue--完整初始化参数",
+      "rigtorpspscqueue--完整初始化参数": "rigtorpspscqueue--完整初始化参数",
+      "rigtorp-spscqueue-完整初始化参数": "rigtorpspscqueue--完整初始化参数",
+      "atomic_queue--完整初始化参数": "atomic_queue--完整初始化参数",
+      "atomic-queue-完整初始化参数": "atomic_queue--完整初始化参数",
+      "开源复制选项对照全部保留": "开源复制选项对照全部保留",
+      "开源复制选项对照-全部保留": "开源复制选项对照全部保留",
+      "数据与校验": "数据与校验"
     },
-    "docs/code/index.md": {
-      "source-browser": "source-browser",
-      "examples": "examples",
-      "components": "components",
-      "benchmark-scripts": "benchmark-scripts",
-      "assembly": "assembly",
-      "build-integration": "build-integration",
-      "technical-notes": "technical-notes",
-      "content": "source-browser",
-      "benchmarks": "benchmark-scripts",
-      "build": "build-integration",
-      "notes": "technical-notes"
+    "docs/reports/analysis/performance_optimal_ordinary_readback_reader2g_zero.md": {
+      "twobufqueue-各参数性能结果": "twobufqueue-各参数性能结果",
+      "测试条件与原始数据": "测试条件与原始数据",
+      "普通-write每条-publish": "普通-write每条-publish",
+      "普通-write-每条-publish": "普通-write每条-publish",
+      "普通-writepublish-max": "普通-writepublish-max",
+      "普通-write-publish-max": "普通-writepublish-max",
+      "length": "twobufqueue-各参数性能结果",
+      "mode": "twobufqueue-各参数性能结果"
     },
-    "docs/code/index.zh-CN.md": {
-      "代码阅读": "代码阅读",
-      "使用示例": "使用示例",
-      "组件实现": "组件实现",
-      "性能测试脚本": "性能测试脚本",
-      "汇编与指令记录": "汇编与指令记录",
-      "工程接入配置": "工程接入配置",
-      "技术记录": "技术记录",
-      "content": "代码阅读",
-      "examples": "使用示例",
-      "components": "组件实现",
-      "benchmarks": "性能测试脚本",
-      "assembly": "汇编与指令记录",
-      "build": "工程接入配置",
-      "notes": "技术记录"
+    "docs/reports/analysis/performance_optimal_three_modes_reader2g_zero.md": {
+      "twobufqueuesession逐条发布max-参数遍历": "twobufqueuesession逐条发布max-参数遍历",
+      "twobufqueue-session-逐条发布-max-参数遍历": "twobufqueuesession逐条发布max-参数遍历",
+      "独立复测后的最优参数六次正式运行均无-writer-背压": "独立复测后的最优参数六次正式运行均无-writer-背压",
+      "独立复测后的最优参数-六次正式运行均无-writer-背压": "独立复测后的最优参数六次正式运行均无-writer-背压",
+      "不限-writer-背压的速度最优观测": "不限-writer-背压的速度最优观测",
+      "全部候选含初筛与独立复测": "全部候选含初筛与独立复测",
+      "全部候选-含初筛与独立复测": "全部候选含初筛与独立复测",
+      "length": "twobufqueuesession逐条发布max-参数遍历",
+      "mode": "twobufqueuesession逐条发布max-参数遍历"
     },
-    "docs/index.md": {
-      "twobufqueue": "twobufqueue",
+    "docs/reports/block_size/test_per_write_block_size_only_writer_publish1.md": {
+      "单线程-writer块大小与发布策略": "单线程-writer块大小与发布策略",
+      "单线程-writer-块大小与发布策略": "单线程-writer块大小与发布策略",
+      "写入性能": "写入性能",
+      "取块换块与池深度": "取块换块与池深度",
+      "取块-换块与池深度": "取块换块与池深度",
+      "环境命令与源文件指纹": "环境命令与源文件指纹",
+      "环境-命令与源文件指纹": "环境命令与源文件指纹"
+    },
+    "docs/reports/block_size/test_per_write_block_size_only_writer_publish_max.md": {
+      "单线程-writer块大小与发布策略": "单线程-writer块大小与发布策略",
+      "单线程-writer-块大小与发布策略": "单线程-writer块大小与发布策略",
+      "写入性能": "写入性能",
+      "取块换块与池深度": "取块换块与池深度",
+      "取块-换块与池深度": "取块换块与池深度",
+      "环境命令与源文件指纹": "环境命令与源文件指纹",
+      "环境-命令与源文件指纹": "环境命令与源文件指纹"
+    },
+    "docs/reports/block_size/test_per_write_block_size_only_writer_reader80_3runs_publish1.md": {
+      "单线程-writer块大小与发布策略": "单线程-writer块大小与发布策略",
+      "单线程-writer-块大小与发布策略": "单线程-writer块大小与发布策略",
+      "写入性能": "写入性能",
+      "取块换块与池深度": "取块换块与池深度",
+      "取块-换块与池深度": "取块换块与池深度",
+      "环境命令与源文件指纹": "环境命令与源文件指纹",
+      "环境-命令与源文件指纹": "环境命令与源文件指纹"
+    },
+    "docs/reports/block_size/test_per_write_block_size_only_writer_reader80_3runs_publish_max.md": {
+      "单线程-writer块大小与发布策略": "单线程-writer块大小与发布策略",
+      "单线程-writer-块大小与发布策略": "单线程-writer块大小与发布策略",
+      "写入性能": "写入性能",
+      "取块换块与池深度": "取块换块与池深度",
+      "取块-换块与池深度": "取块换块与池深度",
+      "环境命令与源文件指纹": "环境命令与源文件指纹",
+      "环境-命令与源文件指纹": "环境命令与源文件指纹"
+    },
+    "docs/reports/block_size/test_per_write_block_size_readback_fixed_reader_3runs.md": {
+      "32-b-block-size写后读回对照": "32-b-block-size写后读回对照",
+      "b-block-size写后读回对照": "32-b-block-size写后读回对照",
+      "b-block-size-写后读回对照": "32-b-block-size写后读回对照",
+      "本次观察": "本次观察",
+      "每条-release-发布扫描当前块": "每条-release-发布扫描当前块",
+      "每条-release-发布-扫描当前块": "每条-release-发布扫描当前块",
+      "每次吞吐原始值背压与池深度": "每次吞吐原始值背压与池深度",
+      "每次吞吐原始值-背压与池深度": "每次吞吐原始值背压与池深度",
+      "发布次数-uint32_max关闭当前块扫描": "发布次数-uint32_max关闭当前块扫描",
+      "发布次数-uint32-max-关闭当前块扫描": "发布次数-uint32_max关闭当前块扫描",
+      "每次吞吐原始值背压与池深度-1": "每次吞吐原始值背压与池深度-1",
+      "每次吞吐原始值-背压与池深度-2": "每次吞吐原始值背压与池深度-1",
+      "同机器码对照每条-release-发布扫描当前块": "同机器码对照每条-release-发布扫描当前块",
+      "同机器码对照-每条-release-发布-扫描当前块": "同机器码对照每条-release-发布扫描当前块",
+      "每次吞吐原始值背压与池深度-2": "每次吞吐原始值背压与池深度-2",
+      "每次吞吐原始值-背压与池深度-3": "每次吞吐原始值背压与池深度-2",
+      "同机器码对照发布次数-uint32_max关闭当前块扫描": "同机器码对照发布次数-uint32_max关闭当前块扫描",
+      "同机器码对照-发布次数-uint32-max-关闭当前块扫描": "同机器码对照发布次数-uint32_max关闭当前块扫描",
+      "每次吞吐原始值背压与池深度-3": "每次吞吐原始值背压与池深度-3",
+      "每次吞吐原始值-背压与池深度-4": "每次吞吐原始值背压与池深度-3",
+      "设置与审计记录": "设置与审计记录"
+    },
+    "docs/reports/block_size/test_per_writer_block_size.md": {
+      "writer-块大小与热路径性能": "writer-块大小与热路径性能",
+      "写入性能": "写入性能",
+      "占用深度已借出尚未归还的块": "占用深度已借出尚未归还的块",
+      "占用深度-已借出-尚未归还的块": "占用深度已借出尚未归还的块",
+      "已分配块数与容量": "已分配块数与容量",
+      "环境二进制和源文件指纹": "环境二进制和源文件指纹",
+      "环境-二进制和源文件指纹": "环境二进制和源文件指纹",
+      "system-memory-note": "writer-块大小与热路径性能"
+    },
+    "docs/reports/block_size/test_per_writer_block_size_cache_hits.md": {
+      "两种发布策略下各-block-size-的-writer-l1d-缓存诊断": "两种发布策略下各-block-size-的-writer-l1d-缓存诊断",
+      "两种发布策略下-各-block-size-的-writer-l1d-缓存诊断": "两种发布策略下各-block-size-的-writer-l1d-缓存诊断",
+      "l1d-微操作归一化比例对照非精确命中率": "l1d-微操作归一化比例对照非精确命中率",
+      "l1d-微操作归一化比例对照-非精确命中率": "l1d-微操作归一化比例对照非精确命中率",
+      "同样消息量下的未命中次数": "同样消息量下的未命中次数",
+      "退休未命中l1-脏行回写与采集时吞吐": "退休未命中l1-脏行回写与采集时吞吐",
+      "退休未命中-l1-脏行回写与采集时吞吐": "退休未命中l1-脏行回写与采集时吞吐",
+      "独立汇编计数单位校验": "独立汇编计数单位校验",
+      "环境事件定义测量边界与文件指纹": "环境事件定义测量边界与文件指纹",
+      "环境-事件定义-测量边界与文件指纹": "环境事件定义测量边界与文件指纹"
+    },
+    "docs/reports/block_size/test_per_writer_block_size_max_comparison_3runs.md": {
+      "max-发布单线程与完整流水线对照": "max-发布单线程与完整流水线对照",
+      "max-发布-单线程与完整流水线对照": "max-发布单线程与完整流水线对照",
+      "性能对照": "性能对照",
+      "完整流水线池深度与背压": "完整流水线池深度与背压",
+      "完整流水线-池深度与背压": "完整流水线池深度与背压",
+      "每次运行的原始值": "每次运行的原始值",
+      "实际-reader-容量及分轮上限": "实际-reader-容量及分轮上限"
+    },
+    "docs/reports/block_size/test_per_writer_block_size_no_current.md": {
+      "writer-块大小与热路径性能": "writer-块大小与热路径性能",
+      "写入性能": "写入性能",
+      "占用深度已借出尚未归还的块": "占用深度已借出尚未归还的块",
+      "占用深度-已借出-尚未归还的块": "占用深度已借出尚未归还的块",
+      "已分配块数与容量": "已分配块数与容量",
+      "环境二进制和源文件指纹": "环境二进制和源文件指纹",
+      "环境-二进制和源文件指纹": "环境二进制和源文件指纹",
+      "system-memory-note": "writer-块大小与热路径性能"
+    },
+    "docs/reports/block_size/test_per_writer_block_size_no_current_publish1.md": {
+      "writer-块大小与热路径性能": "writer-块大小与热路径性能",
+      "写入性能": "写入性能",
+      "占用深度已借出尚未归还的块": "占用深度已借出尚未归还的块",
+      "占用深度-已借出-尚未归还的块": "占用深度已借出尚未归还的块",
+      "已分配块数与容量": "已分配块数与容量",
+      "环境二进制和源文件指纹": "环境二进制和源文件指纹",
+      "环境-二进制和源文件指纹": "环境二进制和源文件指纹"
+    },
+    "docs/reports/block_size/test_per_writer_block_size_reader80_3runs_max.md": {
+      "writer-块大小与热路径性能": "writer-块大小与热路径性能",
+      "写入性能": "写入性能",
+      "占用深度已借出尚未归还的块": "占用深度已借出尚未归还的块",
+      "占用深度-已借出-尚未归还的块": "占用深度已借出尚未归还的块",
+      "已分配块数与容量": "已分配块数与容量",
+      "环境二进制和源文件指纹": "环境二进制和源文件指纹",
+      "环境-二进制和源文件指纹": "环境二进制和源文件指纹"
+    },
+    "docs/reports/burst/performance_burst_business_sizes.md": {
+      "244896-kib哪个业务场景更能体现优势": "244896-kib哪个业务场景更能体现优势",
+      "24-48-96-kib-哪个业务场景更能体现优势": "244896-kib哪个业务场景更能体现优势",
+      "怎样选最优": "怎样选最优",
+      "全部参数的业务耗时": "全部参数的业务耗时",
+      "测试参数与原始数据": "测试参数与原始数据"
+    },
+    "docs/reports/burst/performance_burst_cache.md": {
+      "消息积压时热路径业务还能跑多快": "消息积压时热路径业务还能跑多快",
+      "消息积压时-热路径业务还能跑多快": "消息积压时热路径业务还能跑多快",
+      "模拟场景": "模拟场景",
+      "测试流程": "测试流程",
+      "基本参数": "基本参数",
+      "测试环境": "测试环境",
+      "性能测试": "性能测试",
+      "业务耗时对比表": "业务耗时对比表",
+      "参数明细与复现": "参数明细与复现",
+      "测量方法与队列设置": "测量方法与队列设置",
+      "复现命令与原始数据": "复现命令与原始数据",
+      "完整初始化参数与展示范围": "完整初始化参数与展示范围",
+      "test-environment": "测试环境",
+      "performance": "业务耗时对比表"
+    },
+    "docs/reports/burst/performance_burst_from_empty.md": {
       "how-does-a-continuous-message-batch-affect-business-performance": "how-does-a-continuous-message-batch-affect-business-performance",
-      "single-block-write-loop": "single-block-write-loop",
-      "ordinary-write-maximum-publication-count": "ordinary-write-maximum-publication-count",
-      "ordinary-write-publish-every-record": "ordinary-write-publish-every-record",
-      "business-performance-after-continuous-sending": "business-performance-after-continuous-sending",
-      "read-the-numbers-correctly": "read-the-numbers-correctly",
-      "additional-measurements-and-earlier-experiments-chinese-records": "additional-measurements-and-earlier-experiments-chinese-records"
+      "simulated-scenario": "simulated-scenario",
+      "test-procedure": "test-procedure",
+      "performance-results": "performance-results",
+      "conclusions": "conclusions",
+      "notes": "notes",
+      "basic-parameters": "basic-parameters",
+      "messages-still-pending": "messages-still-pending",
+      "test-environment": "test-environment",
+      "parameters-and-reproduction": "parameters-and-reproduction",
+      "measurement-definition-and-reproduction": "measurement-definition-and-reproduction",
+      "raw-samples": "raw-samples",
+      "all-parameters": "all-parameters",
+      "performance": "performance-results"
     },
-    "docs/index.zh-CN.md": {
-      "twobufqueue": "twobufqueue",
+    "docs/reports/burst/performance_burst_from_empty.zh-CN.md": {
       "连续发送一批消息对业务性能产生什么影响": "连续发送一批消息对业务性能产生什么影响",
       "连续发送一批消息-对业务性能产生什么影响": "连续发送一批消息对业务性能产生什么影响",
-      "单块循环写入": "单块循环写入",
-      "普通-write最大发布批次": "普通-write最大发布批次",
-      "普通-write-最大发布批次": "普通-write最大发布批次",
-      "普通-write每条发布": "普通-write每条发布",
-      "普通-write-每条发布": "普通-write每条发布",
-      "连续发送后的业务性能": "连续发送后的业务性能",
-      "指标怎么看": "指标怎么看",
-      "其他测量与历史实验": "其他测量与历史实验"
+      "模拟场景": "模拟场景",
+      "测试流程": "测试流程",
+      "性能测试": "性能测试",
+      "结论": "结论",
+      "注意": "注意",
+      "基本参数": "基本参数",
+      "实际剩余消息": "实际剩余消息",
+      "测试环境": "测试环境",
+      "参数明细与复现": "参数明细与复现",
+      "测量口径与复现命令": "测量口径与复现命令",
+      "原始样本": "原始样本",
+      "全部参数": "全部参数",
+      "performance-results": "性能测试",
+      "performance": "性能测试",
+      "basic-parameters": "基本参数",
+      "test-environment": "测试环境"
     },
-    "docs/performance_256m_callback.md": {
+    "docs/reports/burst/performance_burst_tail_1m.md": {
+      "发送1-mib业务尾部耗时能否降低": "发送1-mib业务尾部耗时能否降低",
+      "发送1-mib-业务尾部耗时能否降低": "发送1-mib业务尾部耗时能否降低",
+      "性能结果": "性能结果",
+      "三轮原值写入时间与验证": "三轮原值写入时间与验证",
+      "三轮原值-写入时间与验证": "三轮原值写入时间与验证",
+      "复现与参数明细": "复现与参数明细"
+    },
+    "docs/reports/burst/performance_burst_tail_instruction_1m.md": {
+      "1-mib-发送后业务尾延时为什么升高": "1-mib-发送后业务尾延时为什么升高",
+      "mib-发送后业务尾延时为什么升高": "1-mib-发送后业务尾延时为什么升高",
+      "mib-发送后-业务尾延时为什么升高": "1-mib-发送后业务尾延时为什么升高",
+      "测试条件": "测试条件",
+      "第一条证据慢样本集中在换核之后": "第一条证据慢样本集中在换核之后",
+      "第一条证据-慢样本集中在换核之后": "第一条证据慢样本集中在换核之后",
+      "查看每轮全体分位数与同核子样本": "查看每轮全体分位数与同核子样本",
+      "第二条证据用户态-l1-未命中与等待周期明显增加": "第二条证据用户态-l1-未命中与等待周期明显增加",
+      "第二条证据-用户态-l1-未命中与等待周期明显增加": "第二条证据用户态-l1-未命中与等待周期明显增加",
+      "第三条证据相同线程相同机器码仅改变预热数据归属": "第三条证据相同线程相同机器码仅改变预热数据归属",
+      "第三条证据-相同线程-相同机器码-仅改变预热数据归属": "第三条证据相同线程相同机器码仅改变预热数据归属",
+      "为什么几条访存指令能让尾延时差这么多": "为什么几条访存指令能让尾延时差这么多",
+      "已测试的改善方案": "已测试的改善方案",
+      "三轮单独结果改善并不保证每一轮": "三轮单独结果改善并不保证每一轮",
+      "三轮单独结果-改善并不保证每一轮": "三轮单独结果改善并不保证每一轮",
+      "数据与复核": "数据与复核"
+    },
+    "docs/reports/comparison/performance_256m_callback.md": {
       "256-mib-缓存--回调循环固定--普通-write": "256-mib-缓存--回调循环固定--普通-write",
       "mib-缓存--回调循环固定--普通-write": "256-mib-缓存--回调循环固定--普通-write",
       "mib-缓存-回调循环固定-普通-write": "256-mib-缓存--回调循环固定--普通-write",
@@ -726,7 +1020,7 @@
       "runs": "逐次测量值",
       "method": "测试口径与复现信息"
     },
-    "docs/performance_256m_callback_session.md": {
+    "docs/reports/comparison/performance_256m_callback_session.md": {
       "256-mib-缓存--回调时间校准--单块-session-双重循环": "256-mib-缓存--回调时间校准--单块-session-双重循环",
       "mib-缓存--回调时间校准--单块-session-双重循环": "256-mib-缓存--回调时间校准--单块-session-双重循环",
       "mib-缓存-回调时间校准-单块-session-双重循环": "256-mib-缓存--回调时间校准--单块-session-双重循环",
@@ -761,7 +1055,7 @@
       "runs": "逐次测量值",
       "method": "测试口径与复现信息"
     },
-    "docs/performance_256m_zero_publish1_plateau.md": {
+    "docs/reports/comparison/performance_256m_zero_publish1_plateau.md": {
       "256-mib-capacity--callback-iterations-0--ordinary-write--publish-every-record": "256-mib-capacity--callback-iterations-0--ordinary-write--publish-every-record",
       "mib-capacity--callback-iterations-0--ordinary-write--publish-every-record": "256-mib-capacity--callback-iterations-0--ordinary-write--publish-every-record",
       "mib-capacity-callback-iterations-0-ordinary-write-publish-every-record": "256-mib-capacity--callback-iterations-0--ordinary-write--publish-every-record",
@@ -811,7 +1105,7 @@
       "params-atomic_queue": "atomic_queue-initialization-shared-by-all-message-lengths",
       "method": "methodology-and-environment"
     },
-    "docs/performance_256m_zero_publish1_plateau.zh-CN.md": {
+    "docs/reports/comparison/performance_256m_zero_publish1_plateau.zh-CN.md": {
       "256-mib-缓存--回调循环为-0--普通-write--每条-publish": "256-mib-缓存--回调循环为-0--普通-write--每条-publish",
       "mib-缓存--回调循环为-0--普通-write--每条-publish": "256-mib-缓存--回调循环为-0--普通-write--每条-publish",
       "mib-缓存-回调循环为-0-普通-write-每条-publish": "256-mib-缓存--回调循环为-0--普通-write--每条-publish",
@@ -863,7 +1157,7 @@
       "params-atomic_queue": "atomic_queue所有消息长度共用的初始化参数",
       "method": "测试方法与环境"
     },
-    "docs/performance_256m_zero_publish_max_plateau.md": {
+    "docs/reports/comparison/performance_256m_zero_publish_max_plateau.md": {
       "256-mib-capacity--callback-iterations-0--ordinary-write--publish-max": "256-mib-capacity--callback-iterations-0--ordinary-write--publish-max",
       "mib-capacity--callback-iterations-0--ordinary-write--publish-max": "256-mib-capacity--callback-iterations-0--ordinary-write--publish-max",
       "mib-capacity-callback-iterations-0-ordinary-write-publish-max": "256-mib-capacity--callback-iterations-0--ordinary-write--publish-max",
@@ -913,7 +1207,7 @@
       "params-atomic_queue": "atomic_queue-initialization-shared-by-all-message-lengths",
       "method": "methodology-and-environment"
     },
-    "docs/performance_256m_zero_publish_max_plateau.zh-CN.md": {
+    "docs/reports/comparison/performance_256m_zero_publish_max_plateau.zh-CN.md": {
       "256-mib-缓存--回调循环为-0--普通-write--publish-max": "256-mib-缓存--回调循环为-0--普通-write--publish-max",
       "mib-缓存--回调循环为-0--普通-write--publish-max": "256-mib-缓存--回调循环为-0--普通-write--publish-max",
       "mib-缓存-回调循环为-0-普通-write-publish-max": "256-mib-缓存--回调循环为-0--普通-write--publish-max",
@@ -965,7 +1259,7 @@
       "params-atomic_queue": "atomic_queue所有消息长度共用的初始化参数",
       "method": "测试方法与环境"
     },
-    "docs/performance_256m_zero_session_plateau.md": {
+    "docs/reports/comparison/performance_256m_zero_session_plateau.md": {
       "256-mib-capacity--callback-iterations-0--writesession": "256-mib-capacity--callback-iterations-0--writesession",
       "mib-capacity--callback-iterations-0--writesession": "256-mib-capacity--callback-iterations-0--writesession",
       "mib-capacity-callback-iterations-0-writesession": "256-mib-capacity--callback-iterations-0--writesession",
@@ -1015,7 +1309,7 @@
       "params-atomic_queue": "atomic_queue-initialization-shared-by-all-message-lengths",
       "method": "methodology-and-environment"
     },
-    "docs/performance_256m_zero_session_plateau.zh-CN.md": {
+    "docs/reports/comparison/performance_256m_zero_session_plateau.zh-CN.md": {
       "256-mib-缓存--回调循环为-0--writesession": "256-mib-缓存--回调循环为-0--writesession",
       "mib-缓存--回调循环为-0--writesession": "256-mib-缓存--回调循环为-0--writesession",
       "mib-缓存-回调循环为-0-writesession": "256-mib-缓存--回调循环为-0--writesession",
@@ -1067,7 +1361,7 @@
       "params-atomic_queue": "atomic_queue所有消息长度共用的初始化参数",
       "method": "测试方法与环境"
     },
-    "docs/performance_8m_16b_32b_64b_tuned.md": {
+    "docs/reports/comparison/performance_8m_16b_32b_64b_tuned.md": {
       "8-mib-缓存--回调循环为-0": "8-mib-缓存--回调循环为-0",
       "mib-缓存--回调循环为-0": "8-mib-缓存--回调循环为-0",
       "mib-缓存-回调循环为-0": "8-mib-缓存--回调循环为-0",
@@ -1101,7 +1395,7 @@
       "diagnosis": "优化对照与尚未解决的差距",
       "method": "测试口径与复现信息"
     },
-    "docs/performance_8m_16b_32b_tuned.md": {
+    "docs/reports/comparison/performance_8m_16b_32b_tuned.md": {
       "8-mib-缓存--回调循环为-0": "8-mib-缓存--回调循环为-0",
       "mib-缓存--回调循环为-0": "8-mib-缓存--回调循环为-0",
       "mib-缓存-回调循环为-0": "8-mib-缓存--回调循环为-0",
@@ -1128,18 +1422,7 @@
       "runs": "逐次测量值",
       "method": "测试口径与复现信息"
     },
-    "docs/performance_8m_32b_latency.md": {
-      "8-mib-缓存32-b-消息p50-为什么偏高": "8-mib-缓存32-b-消息p50-为什么偏高",
-      "mib-缓存32-b-消息p50-为什么偏高": "8-mib-缓存32-b-消息p50-为什么偏高",
-      "mib-缓存-32-b-消息-p50-为什么偏高": "8-mib-缓存32-b-消息p50-为什么偏高",
-      "独立复测结果": "独立复测结果",
-      "确认了哪些原因": "确认了哪些原因",
-      "本次改动与适用范围": "本次改动与适用范围",
-      "已确认的完整构造参数": "已确认的完整构造参数",
-      "逐次-p50": "逐次-p50",
-      "数据校验与复现": "数据校验与复现"
-    },
-    "docs/performance_8m_zero.md": {
+    "docs/reports/comparison/performance_8m_zero.md": {
       "8-mib-缓存--回调循环为-0--普通-write": "8-mib-缓存--回调循环为-0--普通-write",
       "mib-缓存--回调循环为-0--普通-write": "8-mib-缓存--回调循环为-0--普通-write",
       "mib-缓存-回调循环为-0-普通-write": "8-mib-缓存--回调循环为-0--普通-write",
@@ -1172,7 +1455,7 @@
       "runs": "逐次测量值",
       "method": "测试口径与复现信息"
     },
-    "docs/performance_8m_zero_session.md": {
+    "docs/reports/comparison/performance_8m_zero_session.md": {
       "8-mib-缓存--回调循环为-0--单块-session-双重循环": "8-mib-缓存--回调循环为-0--单块-session-双重循环",
       "mib-缓存--回调循环为-0--单块-session-双重循环": "8-mib-缓存--回调循环为-0--单块-session-双重循环",
       "mib-缓存-回调循环为-0-单块-session-双重循环": "8-mib-缓存--回调循环为-0--单块-session-双重循环",
@@ -1205,285 +1488,28 @@
       "runs": "逐次测量值",
       "method": "测试口径与复现信息"
     },
-    "docs/performance_burst_business_sizes.md": {
-      "244896-kib哪个业务场景更能体现优势": "244896-kib哪个业务场景更能体现优势",
-      "24-48-96-kib-哪个业务场景更能体现优势": "244896-kib哪个业务场景更能体现优势",
-      "怎样选最优": "怎样选最优",
-      "全部参数的业务耗时": "全部参数的业务耗时",
-      "测试参数与原始数据": "测试参数与原始数据"
-    },
-    "docs/performance_burst_cache.md": {
-      "消息积压时热路径业务还能跑多快": "消息积压时热路径业务还能跑多快",
-      "消息积压时-热路径业务还能跑多快": "消息积压时热路径业务还能跑多快",
-      "模拟场景": "模拟场景",
-      "测试流程": "测试流程",
-      "基本参数": "基本参数",
-      "测试环境": "测试环境",
-      "性能测试": "性能测试",
-      "业务耗时对比表": "业务耗时对比表",
-      "参数明细与复现": "参数明细与复现",
-      "测量方法与队列设置": "测量方法与队列设置",
-      "复现命令与原始数据": "复现命令与原始数据",
-      "完整初始化参数与展示范围": "完整初始化参数与展示范围",
-      "test-environment": "测试环境",
-      "performance": "业务耗时对比表"
-    },
-    "docs/performance_burst_from_empty.md": {
+    "docs/reports/index.md": {
+      "twobufqueue": "twobufqueue",
       "how-does-a-continuous-message-batch-affect-business-performance": "how-does-a-continuous-message-batch-affect-business-performance",
-      "simulated-scenario": "simulated-scenario",
-      "test-procedure": "test-procedure",
-      "performance-results": "performance-results",
-      "conclusions": "conclusions",
-      "notes": "notes",
-      "basic-parameters": "basic-parameters",
-      "messages-still-pending": "messages-still-pending",
-      "test-environment": "test-environment",
-      "parameters-and-reproduction": "parameters-and-reproduction",
-      "measurement-definition-and-reproduction": "measurement-definition-and-reproduction",
-      "raw-samples": "raw-samples",
-      "all-parameters": "all-parameters",
-      "performance": "performance-results"
+      "single-block-write-loop": "single-block-write-loop",
+      "ordinary-write-maximum-publication-count": "ordinary-write-maximum-publication-count",
+      "ordinary-write-publish-every-record": "ordinary-write-publish-every-record",
+      "business-performance-after-continuous-sending": "business-performance-after-continuous-sending",
+      "read-the-numbers-correctly": "read-the-numbers-correctly",
+      "additional-measurements-and-earlier-experiments-chinese-records": "additional-measurements-and-earlier-experiments-chinese-records"
     },
-    "docs/performance_burst_from_empty.zh-CN.md": {
+    "docs/reports/index.zh-CN.md": {
+      "twobufqueue": "twobufqueue",
       "连续发送一批消息对业务性能产生什么影响": "连续发送一批消息对业务性能产生什么影响",
       "连续发送一批消息-对业务性能产生什么影响": "连续发送一批消息对业务性能产生什么影响",
-      "模拟场景": "模拟场景",
-      "测试流程": "测试流程",
-      "性能测试": "性能测试",
-      "结论": "结论",
-      "注意": "注意",
-      "基本参数": "基本参数",
-      "实际剩余消息": "实际剩余消息",
-      "测试环境": "测试环境",
-      "参数明细与复现": "参数明细与复现",
-      "测量口径与复现命令": "测量口径与复现命令",
-      "原始样本": "原始样本",
-      "全部参数": "全部参数",
-      "performance-results": "性能测试",
-      "performance": "性能测试",
-      "basic-parameters": "基本参数",
-      "test-environment": "测试环境"
-    },
-    "docs/performance_burst_tail_1m.md": {
-      "发送1-mib业务尾部耗时能否降低": "发送1-mib业务尾部耗时能否降低",
-      "发送1-mib-业务尾部耗时能否降低": "发送1-mib业务尾部耗时能否降低",
-      "性能结果": "性能结果",
-      "三轮原值写入时间与验证": "三轮原值写入时间与验证",
-      "三轮原值-写入时间与验证": "三轮原值写入时间与验证",
-      "复现与参数明细": "复现与参数明细"
-    },
-    "docs/performance_burst_tail_instruction_1m.md": {
-      "1-mib-发送后业务尾延时为什么升高": "1-mib-发送后业务尾延时为什么升高",
-      "mib-发送后业务尾延时为什么升高": "1-mib-发送后业务尾延时为什么升高",
-      "mib-发送后-业务尾延时为什么升高": "1-mib-发送后业务尾延时为什么升高",
-      "测试条件": "测试条件",
-      "第一条证据慢样本集中在换核之后": "第一条证据慢样本集中在换核之后",
-      "第一条证据-慢样本集中在换核之后": "第一条证据慢样本集中在换核之后",
-      "查看每轮全体分位数与同核子样本": "查看每轮全体分位数与同核子样本",
-      "第二条证据用户态-l1-未命中与等待周期明显增加": "第二条证据用户态-l1-未命中与等待周期明显增加",
-      "第二条证据-用户态-l1-未命中与等待周期明显增加": "第二条证据用户态-l1-未命中与等待周期明显增加",
-      "第三条证据相同线程相同机器码仅改变预热数据归属": "第三条证据相同线程相同机器码仅改变预热数据归属",
-      "第三条证据-相同线程-相同机器码-仅改变预热数据归属": "第三条证据相同线程相同机器码仅改变预热数据归属",
-      "为什么几条访存指令能让尾延时差这么多": "为什么几条访存指令能让尾延时差这么多",
-      "已测试的改善方案": "已测试的改善方案",
-      "三轮单独结果改善并不保证每一轮": "三轮单独结果改善并不保证每一轮",
-      "三轮单独结果-改善并不保证每一轮": "三轮单独结果改善并不保证每一轮",
-      "数据与复核": "数据与复核"
-    },
-    "docs/performance_data/ordinary_readback_optimal_20261011/report_full_details_before_compact_20261011.md": {
-      "twobufqueue普通-write每条-publish普通-writepublish-max-参数遍历": "twobufqueue普通-write每条-publish普通-writepublish-max-参数遍历",
-      "twobufqueue-普通-write-每条-publish-普通-write-publish-max-参数遍历": "twobufqueue普通-write每条-publish普通-writepublish-max-参数遍历",
-      "独立复测后的最优参数六次正式运行均无-writer-背压": "独立复测后的最优参数六次正式运行均无-writer-背压",
-      "独立复测后的最优参数-六次正式运行均无-writer-背压": "独立复测后的最优参数六次正式运行均无-writer-背压",
-      "不限-writer-背压的速度最优观测": "不限-writer-背压的速度最优观测",
-      "同参数交错对照只改变普通写入的读回操作": "同参数交错对照只改变普通写入的读回操作",
-      "同参数交错对照-只改变普通写入的读回操作": "同参数交错对照只改变普通写入的读回操作",
-      "全部候选含初筛与独立复测": "全部候选含初筛与独立复测",
-      "全部候选-含初筛与独立复测": "全部候选含初筛与独立复测",
-      "length": "twobufqueue普通-write每条-publish普通-writepublish-max-参数遍历",
-      "mode": "twobufqueue普通-write每条-publish普通-writepublish-max-参数遍历"
-    },
-    "docs/performance_hot_path_cache.md": {
-      "把积压留在后台--让写线程使用小数据池": "把积压留在后台--让写线程使用小数据池",
-      "把积压留在后台-让写线程使用小数据池": "把积压留在后台--让写线程使用小数据池",
-      "优势在哪里后台积压不要求扩大第一层": "优势在哪里后台积压不要求扩大第一层",
-      "优势在哪里-后台积压不要求扩大第一层": "优势在哪里后台积压不要求扩大第一层",
-      "主展示可控后台积压": "主展示可控后台积压",
-      "主展示-可控后台积压": "主展示可控后台积压",
-      "主场景的三次独立吞吐值": "主场景的三次独立吞吐值",
-      "补充对照真实慢回调": "补充对照真实慢回调",
-      "补充对照-真实慢回调": "补充对照真实慢回调",
-      "补充对照即时消费": "补充对照即时消费",
-      "补充对照-即时消费": "补充对照即时消费",
-      "第一层变化第二层保持-256-mib": "第一层变化第二层保持-256-mib",
-      "第一层变化-第二层保持-256-mib": "第一层变化第二层保持-256-mib",
-      "纯计算对照": "纯计算对照",
-      "纯计算的复制选项与初始化参数": "纯计算的复制选项与初始化参数",
-      "业务基线无队列--纯计算完整参数": "业务基线无队列--纯计算完整参数",
-      "业务基线-无队列-纯计算完整参数": "业务基线无队列--纯计算完整参数",
-      "twobufqueue--纯计算完整参数": "twobufqueue--纯计算完整参数",
-      "twobufqueue-纯计算完整参数": "twobufqueue--纯计算完整参数",
-      "readerwriterqueue--纯计算完整参数": "readerwriterqueue--纯计算完整参数",
-      "readerwriterqueue-纯计算完整参数": "readerwriterqueue--纯计算完整参数",
-      "rigtorpspscqueue--纯计算完整参数": "rigtorpspscqueue--纯计算完整参数",
-      "rigtorp-spscqueue-纯计算完整参数": "rigtorpspscqueue--纯计算完整参数",
-      "atomic_queue--纯计算完整参数": "atomic_queue--纯计算完整参数",
-      "atomic-queue-纯计算完整参数": "atomic_queue--纯计算完整参数",
-      "测试条件与初始化参数": "测试条件与初始化参数",
-      "机器编译器与电源记录": "机器编译器与电源记录",
-      "机器-编译器与电源记录": "机器编译器与电源记录",
-      "业务基线无队列--完整初始化参数": "业务基线无队列--完整初始化参数",
-      "业务基线-无队列-完整初始化参数": "业务基线无队列--完整初始化参数",
-      "twobufqueue--完整初始化参数": "twobufqueue--完整初始化参数",
-      "twobufqueue-完整初始化参数": "twobufqueue--完整初始化参数",
-      "readerwriterqueue--完整初始化参数": "readerwriterqueue--完整初始化参数",
-      "readerwriterqueue-完整初始化参数": "readerwriterqueue--完整初始化参数",
-      "rigtorpspscqueue--完整初始化参数": "rigtorpspscqueue--完整初始化参数",
-      "rigtorp-spscqueue-完整初始化参数": "rigtorpspscqueue--完整初始化参数",
-      "atomic_queue--完整初始化参数": "atomic_queue--完整初始化参数",
-      "atomic-queue-完整初始化参数": "atomic_queue--完整初始化参数",
-      "开源复制选项对照全部保留": "开源复制选项对照全部保留",
-      "开源复制选项对照-全部保留": "开源复制选项对照全部保留",
-      "数据与校验": "数据与校验"
-    },
-    "docs/performance_optimal_ordinary_readback_reader2g_zero.md": {
-      "twobufqueue-各参数性能结果": "twobufqueue-各参数性能结果",
-      "测试条件与原始数据": "测试条件与原始数据",
-      "普通-write每条-publish": "普通-write每条-publish",
-      "普通-write-每条-publish": "普通-write每条-publish",
-      "普通-writepublish-max": "普通-writepublish-max",
-      "普通-write-publish-max": "普通-writepublish-max",
-      "length": "twobufqueue-各参数性能结果",
-      "mode": "twobufqueue-各参数性能结果"
-    },
-    "docs/performance_optimal_three_modes_reader2g_zero.md": {
-      "twobufqueuesession逐条发布max-参数遍历": "twobufqueuesession逐条发布max-参数遍历",
-      "twobufqueue-session-逐条发布-max-参数遍历": "twobufqueuesession逐条发布max-参数遍历",
-      "独立复测后的最优参数六次正式运行均无-writer-背压": "独立复测后的最优参数六次正式运行均无-writer-背压",
-      "独立复测后的最优参数-六次正式运行均无-writer-背压": "独立复测后的最优参数六次正式运行均无-writer-背压",
-      "不限-writer-背压的速度最优观测": "不限-writer-背压的速度最优观测",
-      "全部候选含初筛与独立复测": "全部候选含初筛与独立复测",
-      "全部候选-含初筛与独立复测": "全部候选含初筛与独立复测",
-      "length": "twobufqueuesession逐条发布max-参数遍历",
-      "mode": "twobufqueuesession逐条发布max-参数遍历"
-    },
-    "docs/test_per_write_block_size_only_writer_publish1.md": {
-      "单线程-writer块大小与发布策略": "单线程-writer块大小与发布策略",
-      "单线程-writer-块大小与发布策略": "单线程-writer块大小与发布策略",
-      "写入性能": "写入性能",
-      "取块换块与池深度": "取块换块与池深度",
-      "取块-换块与池深度": "取块换块与池深度",
-      "环境命令与源文件指纹": "环境命令与源文件指纹",
-      "环境-命令与源文件指纹": "环境命令与源文件指纹"
-    },
-    "docs/test_per_write_block_size_only_writer_publish_max.md": {
-      "单线程-writer块大小与发布策略": "单线程-writer块大小与发布策略",
-      "单线程-writer-块大小与发布策略": "单线程-writer块大小与发布策略",
-      "写入性能": "写入性能",
-      "取块换块与池深度": "取块换块与池深度",
-      "取块-换块与池深度": "取块换块与池深度",
-      "环境命令与源文件指纹": "环境命令与源文件指纹",
-      "环境-命令与源文件指纹": "环境命令与源文件指纹"
-    },
-    "docs/test_per_write_block_size_only_writer_reader80_3runs_publish1.md": {
-      "单线程-writer块大小与发布策略": "单线程-writer块大小与发布策略",
-      "单线程-writer-块大小与发布策略": "单线程-writer块大小与发布策略",
-      "写入性能": "写入性能",
-      "取块换块与池深度": "取块换块与池深度",
-      "取块-换块与池深度": "取块换块与池深度",
-      "环境命令与源文件指纹": "环境命令与源文件指纹",
-      "环境-命令与源文件指纹": "环境命令与源文件指纹"
-    },
-    "docs/test_per_write_block_size_only_writer_reader80_3runs_publish_max.md": {
-      "单线程-writer块大小与发布策略": "单线程-writer块大小与发布策略",
-      "单线程-writer-块大小与发布策略": "单线程-writer块大小与发布策略",
-      "写入性能": "写入性能",
-      "取块换块与池深度": "取块换块与池深度",
-      "取块-换块与池深度": "取块换块与池深度",
-      "环境命令与源文件指纹": "环境命令与源文件指纹",
-      "环境-命令与源文件指纹": "环境命令与源文件指纹"
-    },
-    "docs/test_per_write_block_size_readback_fixed_reader_3runs.md": {
-      "32-b-block-size写后读回对照": "32-b-block-size写后读回对照",
-      "b-block-size写后读回对照": "32-b-block-size写后读回对照",
-      "b-block-size-写后读回对照": "32-b-block-size写后读回对照",
-      "本次观察": "本次观察",
-      "每条-release-发布扫描当前块": "每条-release-发布扫描当前块",
-      "每条-release-发布-扫描当前块": "每条-release-发布扫描当前块",
-      "每次吞吐原始值背压与池深度": "每次吞吐原始值背压与池深度",
-      "每次吞吐原始值-背压与池深度": "每次吞吐原始值背压与池深度",
-      "发布次数-uint32_max关闭当前块扫描": "发布次数-uint32_max关闭当前块扫描",
-      "发布次数-uint32-max-关闭当前块扫描": "发布次数-uint32_max关闭当前块扫描",
-      "每次吞吐原始值背压与池深度-1": "每次吞吐原始值背压与池深度-1",
-      "每次吞吐原始值-背压与池深度-2": "每次吞吐原始值背压与池深度-1",
-      "同机器码对照每条-release-发布扫描当前块": "同机器码对照每条-release-发布扫描当前块",
-      "同机器码对照-每条-release-发布-扫描当前块": "同机器码对照每条-release-发布扫描当前块",
-      "每次吞吐原始值背压与池深度-2": "每次吞吐原始值背压与池深度-2",
-      "每次吞吐原始值-背压与池深度-3": "每次吞吐原始值背压与池深度-2",
-      "同机器码对照发布次数-uint32_max关闭当前块扫描": "同机器码对照发布次数-uint32_max关闭当前块扫描",
-      "同机器码对照-发布次数-uint32-max-关闭当前块扫描": "同机器码对照发布次数-uint32_max关闭当前块扫描",
-      "每次吞吐原始值背压与池深度-3": "每次吞吐原始值背压与池深度-3",
-      "每次吞吐原始值-背压与池深度-4": "每次吞吐原始值背压与池深度-3",
-      "设置与审计记录": "设置与审计记录"
-    },
-    "docs/test_per_writer_block_size.md": {
-      "writer-块大小与热路径性能": "writer-块大小与热路径性能",
-      "写入性能": "写入性能",
-      "占用深度已借出尚未归还的块": "占用深度已借出尚未归还的块",
-      "占用深度-已借出-尚未归还的块": "占用深度已借出尚未归还的块",
-      "已分配块数与容量": "已分配块数与容量",
-      "环境二进制和源文件指纹": "环境二进制和源文件指纹",
-      "环境-二进制和源文件指纹": "环境二进制和源文件指纹",
-      "system-memory-note": "writer-块大小与热路径性能"
-    },
-    "docs/test_per_writer_block_size_cache_hits.md": {
-      "两种发布策略下各-block-size-的-writer-l1d-缓存诊断": "两种发布策略下各-block-size-的-writer-l1d-缓存诊断",
-      "两种发布策略下-各-block-size-的-writer-l1d-缓存诊断": "两种发布策略下各-block-size-的-writer-l1d-缓存诊断",
-      "l1d-微操作归一化比例对照非精确命中率": "l1d-微操作归一化比例对照非精确命中率",
-      "l1d-微操作归一化比例对照-非精确命中率": "l1d-微操作归一化比例对照非精确命中率",
-      "同样消息量下的未命中次数": "同样消息量下的未命中次数",
-      "退休未命中l1-脏行回写与采集时吞吐": "退休未命中l1-脏行回写与采集时吞吐",
-      "退休未命中-l1-脏行回写与采集时吞吐": "退休未命中l1-脏行回写与采集时吞吐",
-      "独立汇编计数单位校验": "独立汇编计数单位校验",
-      "环境事件定义测量边界与文件指纹": "环境事件定义测量边界与文件指纹",
-      "环境-事件定义-测量边界与文件指纹": "环境事件定义测量边界与文件指纹"
-    },
-    "docs/test_per_writer_block_size_max_comparison_3runs.md": {
-      "max-发布单线程与完整流水线对照": "max-发布单线程与完整流水线对照",
-      "max-发布-单线程与完整流水线对照": "max-发布单线程与完整流水线对照",
-      "性能对照": "性能对照",
-      "完整流水线池深度与背压": "完整流水线池深度与背压",
-      "完整流水线-池深度与背压": "完整流水线池深度与背压",
-      "每次运行的原始值": "每次运行的原始值",
-      "实际-reader-容量及分轮上限": "实际-reader-容量及分轮上限"
-    },
-    "docs/test_per_writer_block_size_no_current.md": {
-      "writer-块大小与热路径性能": "writer-块大小与热路径性能",
-      "写入性能": "写入性能",
-      "占用深度已借出尚未归还的块": "占用深度已借出尚未归还的块",
-      "占用深度-已借出-尚未归还的块": "占用深度已借出尚未归还的块",
-      "已分配块数与容量": "已分配块数与容量",
-      "环境二进制和源文件指纹": "环境二进制和源文件指纹",
-      "环境-二进制和源文件指纹": "环境二进制和源文件指纹",
-      "system-memory-note": "writer-块大小与热路径性能"
-    },
-    "docs/test_per_writer_block_size_no_current_publish1.md": {
-      "writer-块大小与热路径性能": "writer-块大小与热路径性能",
-      "写入性能": "写入性能",
-      "占用深度已借出尚未归还的块": "占用深度已借出尚未归还的块",
-      "占用深度-已借出-尚未归还的块": "占用深度已借出尚未归还的块",
-      "已分配块数与容量": "已分配块数与容量",
-      "环境二进制和源文件指纹": "环境二进制和源文件指纹",
-      "环境-二进制和源文件指纹": "环境二进制和源文件指纹"
-    },
-    "docs/test_per_writer_block_size_reader80_3runs_max.md": {
-      "writer-块大小与热路径性能": "writer-块大小与热路径性能",
-      "写入性能": "写入性能",
-      "占用深度已借出尚未归还的块": "占用深度已借出尚未归还的块",
-      "占用深度-已借出-尚未归还的块": "占用深度已借出尚未归还的块",
-      "已分配块数与容量": "已分配块数与容量",
-      "环境二进制和源文件指纹": "环境二进制和源文件指纹",
-      "环境-二进制和源文件指纹": "环境二进制和源文件指纹"
+      "单块循环写入": "单块循环写入",
+      "普通-write最大发布批次": "普通-write最大发布批次",
+      "普通-write-最大发布批次": "普通-write最大发布批次",
+      "普通-write每条发布": "普通-write每条发布",
+      "普通-write-每条发布": "普通-write每条发布",
+      "连续发送后的业务性能": "连续发送后的业务性能",
+      "指标怎么看": "指标怎么看",
+      "其他测量与历史实验": "其他测量与历史实验"
     },
     "examples/README.md": {
       "examples": "examples",
@@ -1507,17 +1533,19 @@
       "四运行与理解回调": "四运行与理解回调",
       "运行与理解回调": "四运行与理解回调"
     },
-    "test/READ_CTRL_TESTS.md": {
-      "read_ctrl-功能测试": "read_ctrl-功能测试",
-      "read-ctrl-功能测试": "read_ctrl-功能测试",
-      "直接-pop-改动验证2026-10-06": "直接-pop-改动验证2026-10-06",
-      "直接-pop-改动验证-2026-10-06": "直接-pop-改动验证2026-10-06",
-      "构建与运行": "构建与运行",
-      "本次结果2026-10-04": "本次结果2026-10-04",
-      "本次结果-2026-10-04": "本次结果2026-10-04",
-      "独立单-writer-实现验证2026-10-08": "独立单-writer-实现验证2026-10-08",
-      "独立单-writer-实现验证-2026-10-08": "独立单-writer-实现验证2026-10-08",
-      "当前接口的发布检查": "当前接口的发布检查"
+    "test/README.md": {
+      "tests": "tests",
+      "1-directory-guide": "1-directory-guide",
+      "directory-guide": "1-directory-guide",
+      "2-run-tests": "2-run-tests",
+      "run-tests": "2-run-tests"
+    },
+    "test/README.zh-CN.md": {
+      "测试导航": "测试导航",
+      "一目录说明": "一目录说明",
+      "目录说明": "一目录说明",
+      "二运行测试": "二运行测试",
+      "运行测试": "二运行测试"
     },
     "test/func/TEST_CASES.md": {
       "功能测试用例": "功能测试用例"
@@ -1574,6 +1602,18 @@
     },
     "test/func/warm_pool/TEST_POINTS.md": {
       "warmpool-测试点": "warmpool-测试点"
+    },
+    "test/reader/READ_CTRL_TESTS.md": {
+      "read_ctrl-功能测试": "read_ctrl-功能测试",
+      "read-ctrl-功能测试": "read_ctrl-功能测试",
+      "直接-pop-改动验证2026-10-06": "直接-pop-改动验证2026-10-06",
+      "直接-pop-改动验证-2026-10-06": "直接-pop-改动验证2026-10-06",
+      "构建与运行": "构建与运行",
+      "本次结果2026-10-04": "本次结果2026-10-04",
+      "本次结果-2026-10-04": "本次结果2026-10-04",
+      "独立单-writer-实现验证2026-10-08": "独立单-writer-实现验证2026-10-08",
+      "独立单-writer-实现验证-2026-10-08": "独立单-writer-实现验证2026-10-08",
+      "当前接口的发布检查": "当前接口的发布检查"
     }
   },
   "html_fragments": {
@@ -1727,14 +1767,24 @@
       "54-使用边界": "使用边界",
       "六后续计划": "后续计划"
     },
-    "benchmarks/BURST_CACHE.md": {
+    "benchmarks/README.md": {
+      "benchmark-entry-points": "benchmark-entry-points",
+      "1-choose-an-experiment": "choose-an-experiment",
+      "2-build-the-benchmark-tools": "build-the-benchmark-tools"
+    },
+    "benchmarks/README.zh-CN.md": {
+      "性能测试导航": "性能测试导航",
+      "一选择测试": "选择测试",
+      "二构建测试程序": "构建测试程序"
+    },
+    "benchmarks/guides/BURST_CACHE.md": {
       "business-performance-after-a-continuous-message-batch": "business-performance-after-a-continuous-message-batch",
       "1-reproduce-the-current-report-in-one-run": "reproduce-the-current-report-in-one-run",
       "2-historical-prepared-backlog-experiment": "historical-prepared-backlog-experiment",
       "3-independent-diagnostic-runner": "independent-diagnostic-runner",
       "4-tail-and-instruction-diagnostics": "tail-and-instruction-diagnostics"
     },
-    "benchmarks/BURST_CACHE.zh-CN.md": {
+    "benchmarks/guides/BURST_CACHE.zh-CN.md": {
       "连续发送一批消息对业务性能产生什么影响": "连续发送一批消息-对业务性能产生什么影响",
       "一一次运行得到当前报告": "一次运行得到当前报告",
       "二历史测试预填充大积压的一次运行": "历史测试-预填充大积压的一次运行",
@@ -1745,25 +1795,19 @@
       "七遍历业务工作集大小": "遍历业务工作集大小",
       "八只检查1-mib发送后的尾部": "只检查1-mib发送后的尾部"
     },
-    "benchmarks/HOT_PATH_CACHE.md": {
+    "benchmarks/guides/HOT_PATH_CACHE.md": {
       "small-producer-pools-and-background-pending-work": "small-producer-pools-and-background-pending-work",
       "1-build-and-reproduce": "build-and-reproduce",
       "2-workload-and-measurements": "workload-and-measurements",
       "3-selection-and-evidence": "selection-and-evidence"
     },
-    "benchmarks/HOT_PATH_CACHE.zh-CN.md": {
+    "benchmarks/guides/HOT_PATH_CACHE.zh-CN.md": {
       "热路径小数据池与后台积压测试": "热路径小数据池与后台积压测试",
       "一构建与复现": "构建与复现",
       "二结构": "结构",
       "三参数筛选与数据": "参数筛选与数据"
     },
-    "benchmarks/README.md": {
-      "benchmark-entry-points": "benchmark-entry-points"
-    },
-    "benchmarks/README.zh-CN.md": {
-      "当前性能测试入口": "当前性能测试入口"
-    },
-    "benchmarks/TUNABLE_SPSC.md": {
+    "benchmarks/guides/TUNABLE_SPSC.md": {
       "configurable-spsc-benchmarks": "configurable-spsc-benchmarks",
       "1-build-and-run": "build-and-run",
       "2-fixed-configuration-ordinary-write-and-session-runs": "fixed-configuration-ordinary-write-and-session-runs",
@@ -1773,7 +1817,7 @@
       "6-search-under-matching-budgets": "search-under-matching-budgets",
       "7-read-and-regenerate-reports": "read-and-regenerate-reports"
     },
-    "benchmarks/TUNABLE_SPSC.zh-CN.md": {
+    "benchmarks/guides/TUNABLE_SPSC.zh-CN.md": {
       "单-writer-参数搜索与-spsc-对比": "单-writer-参数搜索与-spsc-对比",
       "一构建与运行": "构建与运行",
       "11-正式的普通-write--writesession-对照": "正式的普通-write-writesession-对照",
@@ -1792,7 +1836,64 @@
       "十三单线程-writer-块大小对照": "单线程-writer-块大小对照",
       "十四固定第二层容量的三种-writer-模式寻优": "固定第二层容量的三种-writer-模式寻优"
     },
-    "docs/API.md": {
+    "docs/code/index.md": {
+      "source-browser": "content",
+      "examples": "examples",
+      "components": "components",
+      "benchmark-scripts": "benchmarks",
+      "assembly": "assembly",
+      "build-integration": "build",
+      "technical-notes": "notes"
+    },
+    "docs/code/index.zh-CN.md": {
+      "代码阅读": "content",
+      "使用示例": "examples",
+      "组件实现": "components",
+      "性能测试脚本": "benchmarks",
+      "汇编与指令记录": "assembly",
+      "工程接入配置": "build",
+      "技术记录": "notes"
+    },
+    "docs/development/PUBLISHING.md": {
+      "github-publication": "github-publication",
+      "1-validate-the-prepared-tree": "validate-the-prepared-tree",
+      "2-maintain-this-repository-directly": "maintain-this-repository-directly",
+      "3-create-and-connect-the-repository": "create-and-connect-the-repository",
+      "4-generate-all-html-documentation": "generate-all-html-documentation",
+      "5-show-the-html-overview-and-reports": "show-the-html-overview-and-reports",
+      "6-package-the-first-release": "package-the-first-release",
+      "7-repository-readme-and-the-html-documentation-site": "repository-readme-and-the-html-documentation-site",
+      "8-link-github-documentation-to-the-html-site": "link-github-documentation-to-the-html-site"
+    },
+    "docs/development/PUBLISHING.zh-CN.md": {
+      "github-publication--github-发布": "github-publication-github-发布",
+      "一validate-the-prepared-tree": "validate-the-prepared-tree",
+      "二create-and-connect-the-repository": "create-and-connect-the-repository",
+      "三generate-all-html-documentation": "generate-all-html-documentation",
+      "四show-the-html-overview-and-reports": "show-the-html-overview-and-reports",
+      "五package-the-first-release": "package-the-first-release",
+      "六github-首页与-html-文档网站": "github-首页与-html-文档网站",
+      "七将-github-文档入口切换到-html-网站": "将-github-文档入口切换到-html-网站"
+    },
+    "docs/development/RELEASE_CONTENTS.md": {
+      "release-contents": "release-contents"
+    },
+    "docs/development/RELEASE_CONTENTS.zh-CN.md": {
+      "release-source-copy--发布源码副本": "release-source-copy-发布源码副本"
+    },
+    "docs/development/TESTING.md": {
+      "testing-and-validation": "testing-and-validation",
+      "1-run-the-current-suite": "run-the-current-suite",
+      "2-inspect-one-part": "inspect-one-part",
+      "3-historical-evidence": "historical-evidence"
+    },
+    "docs/development/TESTING.zh-CN.md": {
+      "测试与验证": "测试与验证",
+      "一运行当前完整测试": "运行当前完整测试",
+      "二单独检查一部分": "单独检查一部分",
+      "三历史记录与平台范围": "历史记录与平台范围"
+    },
+    "docs/guides/API.md": {
       "api-usage-guide": "api-usage-guide",
       "1-choose-the-interface": "choose-the-interface",
       "2-a-complete-send-and-receive-example": "a-complete-send-and-receive-example",
@@ -1813,7 +1914,7 @@
       "11-end-production-safely": "end-production-safely",
       "12-composing-lower-level-components": "composing-lower-level-components"
     },
-    "docs/API.zh-CN.md": {
+    "docs/guides/API.zh-CN.md": {
       "接口使用指南": "接口使用指南",
       "一先选择需要的用法": "先选择需要的用法",
       "二一个完整的发送与接收例子": "一个完整的发送与接收例子",
@@ -1834,31 +1935,50 @@
       "十一正确结束程序": "正确结束程序",
       "十二需要自己组合底层组件时": "需要自己组合底层组件时"
     },
-    "docs/ASYNC_LOGGING.md": {
+    "docs/guides/ASYNC_LOGGING.md": {
       "asynchronous-logging": "asynchronous-logging",
       "1-flush-and-shutdown": "flush-and-shutdown"
     },
-    "docs/ASYNC_LOGGING.zh-CN.md": {
+    "docs/guides/ASYNC_LOGGING.zh-CN.md": {
       "异步日志示例怎么使用": "异步日志示例怎么使用",
       "一构建并运行": "构建并运行",
       "二三种运行方式": "三种运行方式",
       "三flush-与真正写完文件的区别": "flush-与真正写完文件的区别",
       "四用在业务中还需补什么": "用在业务中还需补什么"
     },
-    "docs/INTEGRATION.md": {
+    "docs/guides/INTEGRATION.md": {
       "cmake-integration": "cmake-integration",
       "1-vendored-source": "vendored-source",
       "2-fetchcontent": "fetchcontent",
       "3-installed-package": "installed-package"
     },
-    "docs/INTEGRATION.zh-CN.md": {
+    "docs/guides/INTEGRATION.zh-CN.md": {
       "把-twobufqueue-接入工程": "把-twobufqueue-接入工程",
       "一最简单源码放在工程里": "最简单-源码放在工程里",
       "二已安装使用-find_package": "已安装-使用-find-package",
       "三使用-fetchcontent-管理源码": "使用-fetchcontent-管理源码",
       "四常见问题": "常见问题"
     },
-    "docs/PERFORMANCE.md": {
+    "docs/index.md": {
+      "documentation-index": "documentation-index",
+      "1-usage-guides": "usage-guides",
+      "2-performance-reports": "performance-reports",
+      "3-development-and-publication": "development-and-publication"
+    },
+    "docs/index.zh-CN.md": {
+      "文档导航": "文档导航",
+      "一使用指南": "使用指南",
+      "二性能报告": "性能报告",
+      "三开发与发布": "开发与发布"
+    },
+    "docs/performance_data/ordinary_readback_optimal_20261011/report_full_details_before_compact_20261011.md": {
+      "twobufqueue普通-write每条-publish普通-writepublish-max-参数遍历": "mode",
+      "独立复测后的最优参数六次正式运行均无-writer-背压": "独立复测后的最优参数-六次正式运行均无-writer-背压",
+      "不限-writer-背压的速度最优观测": "不限-writer-背压的速度最优观测",
+      "同参数交错对照只改变普通写入的读回操作": "同参数交错对照-只改变普通写入的读回操作",
+      "全部候选含初筛与独立复测": "全部候选-含初筛与独立复测"
+    },
+    "docs/reports/PERFORMANCE.md": {
       "performance-evidence": "performance-evidence",
       "1-current-comparison-entry-points": "current-comparison-entry-points",
       "2-business-performance-after-continuous-sending": "business-performance-after-continuous-sending",
@@ -1870,7 +1990,7 @@
       "71-earlier-16-byte-follow-up-before-write-prefetch": "earlier-16-byte-follow-up-before-write-prefetch",
       "8-reproduce-and-inspect": "reproduce-and-inspect"
     },
-    "docs/PERFORMANCE.zh-CN.md": {
+    "docs/reports/PERFORMANCE.zh-CN.md": {
       "性能报告怎么看": "性能报告怎么看",
       "一想了解哪种性能": "想了解哪种性能",
       "二写入性能表中的数字": "写入性能表中的数字",
@@ -1878,96 +1998,212 @@
       "四参数与环境为什么要一起看": "参数与环境为什么要一起看",
       "五在自己的机器重现": "在自己的机器重现"
     },
-    "docs/PUBLISHING.md": {
-      "github-publication": "github-publication",
-      "1-validate-the-prepared-tree": "validate-the-prepared-tree",
-      "2-maintain-this-repository-directly": "maintain-this-repository-directly",
-      "3-create-and-connect-the-repository": "create-and-connect-the-repository",
-      "4-generate-all-html-documentation": "generate-all-html-documentation",
-      "5-show-the-html-overview-and-reports": "show-the-html-overview-and-reports",
-      "6-package-the-first-release": "package-the-first-release",
-      "7-repository-readme-and-the-html-documentation-site": "repository-readme-and-the-html-documentation-site",
-      "8-link-github-documentation-to-the-html-site": "link-github-documentation-to-the-html-site"
-    },
-    "docs/PUBLISHING.zh-CN.md": {
-      "github-publication--github-发布": "github-publication-github-发布",
-      "一validate-the-prepared-tree": "validate-the-prepared-tree",
-      "二create-and-connect-the-repository": "create-and-connect-the-repository",
-      "三generate-all-html-documentation": "generate-all-html-documentation",
-      "四show-the-html-overview-and-reports": "show-the-html-overview-and-reports",
-      "五package-the-first-release": "package-the-first-release",
-      "六github-首页与-html-文档网站": "github-首页与-html-文档网站",
-      "七将-github-文档入口切换到-html-网站": "将-github-文档入口切换到-html-网站"
-    },
-    "docs/RELEASE_CONTENTS.md": {
-      "release-contents": "release-contents"
-    },
-    "docs/RELEASE_CONTENTS.zh-CN.md": {
-      "release-source-copy--发布源码副本": "release-source-copy-发布源码副本"
-    },
-    "docs/RIGTORP_PERFORMANCE.md": {
+    "docs/reports/analysis/RIGTORP_PERFORMANCE.md": {
       "rigtorp-benchmark-regression": "rigtorp-benchmark-regression",
       "1-same-executable-control": "same-executable-control",
       "2-code-generation-and-limits": "code-generation-and-limits",
       "3-subsequent-complete-measurements": "subsequent-complete-measurements"
     },
-    "docs/RIGTORP_PERFORMANCE.zh-CN.md": {
+    "docs/reports/analysis/RIGTORP_PERFORMANCE.zh-CN.md": {
       "rigtorp-benchmark-regression--性能回退修正": "rigtorp-benchmark-regression-性能回退修正",
       "一same-executable-control--同一程序开关对照": "same-executable-control-同一程序开关对照",
       "二code-generation-and-limits--汇编与结论边界": "code-generation-and-limits-汇编与结论边界",
       "三fresh-formal-reports--修正后的完整复测": "fresh-formal-reports-修正后的完整复测"
     },
-    "docs/TESTING.md": {
-      "testing-and-validation": "testing-and-validation",
-      "1-run-the-current-suite": "run-the-current-suite",
-      "2-inspect-one-part": "inspect-one-part",
-      "3-historical-evidence": "historical-evidence"
+    "docs/reports/analysis/performance_8m_32b_latency.md": {
+      "8-mib-缓存32-b-消息p50-为什么偏高": "mib-缓存-32-b-消息-p50-为什么偏高",
+      "独立复测结果": "独立复测结果",
+      "确认了哪些原因": "确认了哪些原因",
+      "本次改动与适用范围": "本次改动与适用范围",
+      "已确认的完整构造参数": "已确认的完整构造参数",
+      "逐次-p50": "逐次-p50",
+      "数据校验与复现": "数据校验与复现"
     },
-    "docs/TESTING.zh-CN.md": {
-      "测试与验证": "测试与验证",
-      "一运行当前完整测试": "运行当前完整测试",
-      "二单独检查一部分": "单独检查一部分",
-      "三历史记录与平台范围": "历史记录与平台范围"
+    "docs/reports/analysis/performance_hot_path_cache.md": {
+      "把积压留在后台--让写线程使用小数据池": "把积压留在后台-让写线程使用小数据池",
+      "优势在哪里后台积压不要求扩大第一层": "优势在哪里-后台积压不要求扩大第一层",
+      "主展示可控后台积压": "主展示-可控后台积压",
+      "主场景的三次独立吞吐值": "主场景的三次独立吞吐值",
+      "补充对照真实慢回调": "补充对照-真实慢回调",
+      "补充对照即时消费": "补充对照-即时消费",
+      "第一层变化第二层保持-256-mib": "第一层变化-第二层保持-256-mib",
+      "纯计算对照": "纯计算对照",
+      "纯计算的复制选项与初始化参数": "纯计算的复制选项与初始化参数",
+      "业务基线无队列--纯计算完整参数": "业务基线-无队列-纯计算完整参数",
+      "twobufqueue--纯计算完整参数": "twobufqueue-纯计算完整参数",
+      "readerwriterqueue--纯计算完整参数": "readerwriterqueue-纯计算完整参数",
+      "rigtorpspscqueue--纯计算完整参数": "rigtorp-spscqueue-纯计算完整参数",
+      "atomic_queue--纯计算完整参数": "atomic-queue-纯计算完整参数",
+      "测试条件与初始化参数": "测试条件与初始化参数",
+      "机器编译器与电源记录": "机器-编译器与电源记录",
+      "业务基线无队列--完整初始化参数": "业务基线-无队列-完整初始化参数",
+      "twobufqueue--完整初始化参数": "twobufqueue-完整初始化参数",
+      "readerwriterqueue--完整初始化参数": "readerwriterqueue-完整初始化参数",
+      "rigtorpspscqueue--完整初始化参数": "rigtorp-spscqueue-完整初始化参数",
+      "atomic_queue--完整初始化参数": "atomic-queue-完整初始化参数",
+      "开源复制选项对照全部保留": "开源复制选项对照-全部保留",
+      "数据与校验": "数据与校验"
     },
-    "docs/code/index.md": {
-      "source-browser": "content",
-      "examples": "examples",
-      "components": "components",
-      "benchmark-scripts": "benchmarks",
-      "assembly": "assembly",
-      "build-integration": "build",
-      "technical-notes": "notes"
+    "docs/reports/analysis/performance_optimal_ordinary_readback_reader2g_zero.md": {
+      "twobufqueue-各参数性能结果": "mode",
+      "测试条件与原始数据": "测试条件与原始数据",
+      "普通-write每条-publish": "普通-write-每条-publish",
+      "普通-writepublish-max": "普通-write-publish-max"
     },
-    "docs/code/index.zh-CN.md": {
-      "代码阅读": "content",
-      "使用示例": "examples",
-      "组件实现": "components",
-      "性能测试脚本": "benchmarks",
-      "汇编与指令记录": "assembly",
-      "工程接入配置": "build",
-      "技术记录": "notes"
+    "docs/reports/analysis/performance_optimal_three_modes_reader2g_zero.md": {
+      "twobufqueuesession逐条发布max-参数遍历": "mode",
+      "独立复测后的最优参数六次正式运行均无-writer-背压": "独立复测后的最优参数-六次正式运行均无-writer-背压",
+      "不限-writer-背压的速度最优观测": "不限-writer-背压的速度最优观测",
+      "全部候选含初筛与独立复测": "全部候选-含初筛与独立复测"
     },
-    "docs/index.md": {
-      "twobufqueue": "twobufqueue",
+    "docs/reports/block_size/test_per_write_block_size_only_writer_publish1.md": {
+      "单线程-writer块大小与发布策略": "单线程-writer-块大小与发布策略",
+      "写入性能": "写入性能",
+      "取块换块与池深度": "取块-换块与池深度",
+      "环境命令与源文件指纹": "环境-命令与源文件指纹"
+    },
+    "docs/reports/block_size/test_per_write_block_size_only_writer_publish_max.md": {
+      "单线程-writer块大小与发布策略": "单线程-writer-块大小与发布策略",
+      "写入性能": "写入性能",
+      "取块换块与池深度": "取块-换块与池深度",
+      "环境命令与源文件指纹": "环境-命令与源文件指纹"
+    },
+    "docs/reports/block_size/test_per_write_block_size_only_writer_reader80_3runs_publish1.md": {
+      "单线程-writer块大小与发布策略": "单线程-writer-块大小与发布策略",
+      "写入性能": "写入性能",
+      "取块换块与池深度": "取块-换块与池深度",
+      "环境命令与源文件指纹": "环境-命令与源文件指纹"
+    },
+    "docs/reports/block_size/test_per_write_block_size_only_writer_reader80_3runs_publish_max.md": {
+      "单线程-writer块大小与发布策略": "单线程-writer-块大小与发布策略",
+      "写入性能": "写入性能",
+      "取块换块与池深度": "取块-换块与池深度",
+      "环境命令与源文件指纹": "环境-命令与源文件指纹"
+    },
+    "docs/reports/block_size/test_per_write_block_size_readback_fixed_reader_3runs.md": {
+      "32-b-block-size写后读回对照": "b-block-size-写后读回对照",
+      "本次观察": "本次观察",
+      "每条-release-发布扫描当前块": "每条-release-发布-扫描当前块",
+      "每次吞吐原始值背压与池深度": "每次吞吐原始值-背压与池深度",
+      "发布次数-uint32_max关闭当前块扫描": "发布次数-uint32-max-关闭当前块扫描",
+      "每次吞吐原始值背压与池深度-1": "每次吞吐原始值-背压与池深度-2",
+      "同机器码对照每条-release-发布扫描当前块": "同机器码对照-每条-release-发布-扫描当前块",
+      "每次吞吐原始值背压与池深度-2": "每次吞吐原始值-背压与池深度-3",
+      "同机器码对照发布次数-uint32_max关闭当前块扫描": "同机器码对照-发布次数-uint32-max-关闭当前块扫描",
+      "每次吞吐原始值背压与池深度-3": "每次吞吐原始值-背压与池深度-4",
+      "设置与审计记录": "设置与审计记录"
+    },
+    "docs/reports/block_size/test_per_writer_block_size.md": {
+      "writer-块大小与热路径性能": "system-memory-note",
+      "写入性能": "写入性能",
+      "占用深度已借出尚未归还的块": "占用深度-已借出-尚未归还的块",
+      "已分配块数与容量": "已分配块数与容量",
+      "环境二进制和源文件指纹": "环境-二进制和源文件指纹"
+    },
+    "docs/reports/block_size/test_per_writer_block_size_cache_hits.md": {
+      "两种发布策略下各-block-size-的-writer-l1d-缓存诊断": "两种发布策略下-各-block-size-的-writer-l1d-缓存诊断",
+      "l1d-微操作归一化比例对照非精确命中率": "l1d-微操作归一化比例对照-非精确命中率",
+      "同样消息量下的未命中次数": "同样消息量下的未命中次数",
+      "退休未命中l1-脏行回写与采集时吞吐": "退休未命中-l1-脏行回写与采集时吞吐",
+      "独立汇编计数单位校验": "独立汇编计数单位校验",
+      "环境事件定义测量边界与文件指纹": "环境-事件定义-测量边界与文件指纹"
+    },
+    "docs/reports/block_size/test_per_writer_block_size_max_comparison_3runs.md": {
+      "max-发布单线程与完整流水线对照": "max-发布-单线程与完整流水线对照",
+      "性能对照": "性能对照",
+      "完整流水线池深度与背压": "完整流水线-池深度与背压",
+      "每次运行的原始值": "每次运行的原始值",
+      "实际-reader-容量及分轮上限": "实际-reader-容量及分轮上限"
+    },
+    "docs/reports/block_size/test_per_writer_block_size_no_current.md": {
+      "writer-块大小与热路径性能": "system-memory-note",
+      "写入性能": "写入性能",
+      "占用深度已借出尚未归还的块": "占用深度-已借出-尚未归还的块",
+      "已分配块数与容量": "已分配块数与容量",
+      "环境二进制和源文件指纹": "环境-二进制和源文件指纹"
+    },
+    "docs/reports/block_size/test_per_writer_block_size_no_current_publish1.md": {
+      "writer-块大小与热路径性能": "writer-块大小与热路径性能",
+      "写入性能": "写入性能",
+      "占用深度已借出尚未归还的块": "占用深度-已借出-尚未归还的块",
+      "已分配块数与容量": "已分配块数与容量",
+      "环境二进制和源文件指纹": "环境-二进制和源文件指纹"
+    },
+    "docs/reports/block_size/test_per_writer_block_size_reader80_3runs_max.md": {
+      "writer-块大小与热路径性能": "writer-块大小与热路径性能",
+      "写入性能": "写入性能",
+      "占用深度已借出尚未归还的块": "占用深度-已借出-尚未归还的块",
+      "已分配块数与容量": "已分配块数与容量",
+      "环境二进制和源文件指纹": "环境-二进制和源文件指纹"
+    },
+    "docs/reports/burst/performance_burst_business_sizes.md": {
+      "244896-kib哪个业务场景更能体现优势": "24-48-96-kib-哪个业务场景更能体现优势",
+      "怎样选最优": "怎样选最优",
+      "全部参数的业务耗时": "全部参数的业务耗时",
+      "测试参数与原始数据": "测试参数与原始数据"
+    },
+    "docs/reports/burst/performance_burst_cache.md": {
+      "消息积压时热路径业务还能跑多快": "消息积压时-热路径业务还能跑多快",
+      "模拟场景": "模拟场景",
+      "测试流程": "测试流程",
+      "基本参数": "基本参数",
+      "测试环境": "test-environment",
+      "性能测试": "性能测试",
+      "业务耗时对比表": "performance",
+      "参数明细与复现": "参数明细与复现",
+      "测量方法与队列设置": "测量方法与队列设置",
+      "复现命令与原始数据": "复现命令与原始数据",
+      "完整初始化参数与展示范围": "完整初始化参数与展示范围"
+    },
+    "docs/reports/burst/performance_burst_from_empty.md": {
       "how-does-a-continuous-message-batch-affect-business-performance": "how-does-a-continuous-message-batch-affect-business-performance",
-      "single-block-write-loop": "single-block-write-loop",
-      "ordinary-write-maximum-publication-count": "ordinary-write-maximum-publication-count",
-      "ordinary-write-publish-every-record": "ordinary-write-publish-every-record",
-      "business-performance-after-continuous-sending": "business-performance-after-continuous-sending",
-      "read-the-numbers-correctly": "read-the-numbers-correctly",
-      "additional-measurements-and-earlier-experiments-chinese-records": "additional-measurements-and-earlier-experiments-chinese-records"
+      "simulated-scenario": "simulated-scenario",
+      "test-procedure": "test-procedure",
+      "performance-results": "performance",
+      "conclusions": "conclusions",
+      "notes": "notes",
+      "basic-parameters": "basic-parameters",
+      "messages-still-pending": "messages-still-pending",
+      "test-environment": "test-environment",
+      "parameters-and-reproduction": "parameters-and-reproduction",
+      "measurement-definition-and-reproduction": "measurement-definition-and-reproduction",
+      "raw-samples": "raw-samples",
+      "all-parameters": "all-parameters"
     },
-    "docs/index.zh-CN.md": {
-      "twobufqueue": "twobufqueue",
+    "docs/reports/burst/performance_burst_from_empty.zh-CN.md": {
       "连续发送一批消息对业务性能产生什么影响": "连续发送一批消息-对业务性能产生什么影响",
-      "单块循环写入": "单块循环写入",
-      "普通-write最大发布批次": "普通-write-最大发布批次",
-      "普通-write每条发布": "普通-write-每条发布",
-      "连续发送后的业务性能": "连续发送后的业务性能",
-      "指标怎么看": "指标怎么看",
-      "其他测量与历史实验": "其他测量与历史实验"
+      "模拟场景": "模拟场景",
+      "测试流程": "测试流程",
+      "性能测试": "performance",
+      "结论": "结论",
+      "注意": "注意",
+      "基本参数": "basic-parameters",
+      "实际剩余消息": "实际剩余消息",
+      "测试环境": "test-environment",
+      "参数明细与复现": "参数明细与复现",
+      "测量口径与复现命令": "测量口径与复现命令",
+      "原始样本": "原始样本",
+      "全部参数": "全部参数"
     },
-    "docs/performance_256m_callback.md": {
+    "docs/reports/burst/performance_burst_tail_1m.md": {
+      "发送1-mib业务尾部耗时能否降低": "发送1-mib-业务尾部耗时能否降低",
+      "性能结果": "性能结果",
+      "三轮原值写入时间与验证": "三轮原值-写入时间与验证",
+      "复现与参数明细": "复现与参数明细"
+    },
+    "docs/reports/burst/performance_burst_tail_instruction_1m.md": {
+      "1-mib-发送后业务尾延时为什么升高": "mib-发送后-业务尾延时为什么升高",
+      "测试条件": "测试条件",
+      "第一条证据慢样本集中在换核之后": "第一条证据-慢样本集中在换核之后",
+      "查看每轮全体分位数与同核子样本": "查看每轮全体分位数与同核子样本",
+      "第二条证据用户态-l1-未命中与等待周期明显增加": "第二条证据-用户态-l1-未命中与等待周期明显增加",
+      "第三条证据相同线程相同机器码仅改变预热数据归属": "第三条证据-相同线程-相同机器码-仅改变预热数据归属",
+      "为什么几条访存指令能让尾延时差这么多": "为什么几条访存指令能让尾延时差这么多",
+      "已测试的改善方案": "已测试的改善方案",
+      "三轮单独结果改善并不保证每一轮": "三轮单独结果-改善并不保证每一轮",
+      "数据与复核": "数据与复核"
+    },
+    "docs/reports/comparison/performance_256m_callback.md": {
       "256-mib-缓存--回调循环固定--普通-write": "mib-缓存-回调循环固定-普通-write",
       "先看负载复制的敏感性": "copy-sensitivity",
       "按消息长度查看吞吐": "overview",
@@ -1983,7 +2219,7 @@
       "时钟调度与限制": "时钟-调度与限制",
       "完整构造参数--每种长度--实现--优化指标": "完整构造参数-每种长度-实现-优化指标"
     },
-    "docs/performance_256m_callback_session.md": {
+    "docs/reports/comparison/performance_256m_callback_session.md": {
       "256-mib-缓存--回调时间校准--单块-session-双重循环": "mib-缓存-回调时间校准-单块-session-双重循环",
       "先看负载复制的敏感性": "copy-sensitivity",
       "按消息长度查看吞吐": "overview",
@@ -1999,7 +2235,7 @@
       "时钟调度与限制": "时钟-调度与限制",
       "完整构造参数--每种长度--实现--优化指标": "完整构造参数-每种长度-实现-优化指标"
     },
-    "docs/performance_256m_zero_publish1_plateau.md": {
+    "docs/reports/comparison/performance_256m_zero_publish1_plateau.md": {
       "256-mib-capacity--callback-iterations-0--ordinary-write--publish-every-record": "mib-capacity-callback-iterations-0-ordinary-write-publish-every-record",
       "what-does-this-report-measure": "measurement",
       "throughput-overview": "overview",
@@ -2028,7 +2264,7 @@
       "host-and-build": "host-and-build",
       "data-and-auditability": "data-and-auditability"
     },
-    "docs/performance_256m_zero_publish1_plateau.zh-CN.md": {
+    "docs/reports/comparison/performance_256m_zero_publish1_plateau.zh-CN.md": {
       "256-mib-缓存--回调循环为-0--普通-write--每条-publish": "mib-缓存-回调循环为-0-普通-write-每条-publish",
       "本报告测什么": "measurement",
       "吞吐概览": "overview",
@@ -2057,7 +2293,7 @@
       "本机与编译": "本机与编译",
       "数据与可复核性": "数据与可复核性"
     },
-    "docs/performance_256m_zero_publish_max_plateau.md": {
+    "docs/reports/comparison/performance_256m_zero_publish_max_plateau.md": {
       "256-mib-capacity--callback-iterations-0--ordinary-write--publish-max": "mib-capacity-callback-iterations-0-ordinary-write-publish-max",
       "what-does-this-report-measure": "measurement",
       "throughput-overview": "overview",
@@ -2086,7 +2322,7 @@
       "host-and-build": "host-and-build",
       "data-and-auditability": "data-and-auditability"
     },
-    "docs/performance_256m_zero_publish_max_plateau.zh-CN.md": {
+    "docs/reports/comparison/performance_256m_zero_publish_max_plateau.zh-CN.md": {
       "256-mib-缓存--回调循环为-0--普通-write--publish-max": "mib-缓存-回调循环为-0-普通-write-publish-max",
       "本报告测什么": "measurement",
       "吞吐概览": "overview",
@@ -2115,7 +2351,7 @@
       "本机与编译": "本机与编译",
       "数据与可复核性": "数据与可复核性"
     },
-    "docs/performance_256m_zero_session_plateau.md": {
+    "docs/reports/comparison/performance_256m_zero_session_plateau.md": {
       "256-mib-capacity--callback-iterations-0--writesession": "mib-capacity-callback-iterations-0-writesession",
       "what-does-this-report-measure": "measurement",
       "throughput-overview": "overview",
@@ -2144,7 +2380,7 @@
       "host-and-build": "host-and-build",
       "data-and-auditability": "data-and-auditability"
     },
-    "docs/performance_256m_zero_session_plateau.zh-CN.md": {
+    "docs/reports/comparison/performance_256m_zero_session_plateau.zh-CN.md": {
       "256-mib-缓存--回调循环为-0--writesession": "mib-缓存-回调循环为-0-writesession",
       "本报告测什么": "measurement",
       "吞吐概览": "overview",
@@ -2173,7 +2409,7 @@
       "本机与编译": "本机与编译",
       "数据与可复核性": "数据与可复核性"
     },
-    "docs/performance_8m_16b_32b_64b_tuned.md": {
+    "docs/reports/comparison/performance_8m_16b_32b_64b_tuned.md": {
       "8-mib-缓存--回调循环为-0": "mib-缓存-回调循环为-0",
       "按消息长度查看吞吐": "overview",
       "吞吐与写入耗时": "performance-table",
@@ -2190,7 +2426,7 @@
       "时钟调度与限制": "时钟-调度与限制",
       "完整构造参数--每种长度--实现--优化指标": "完整构造参数-每种长度-实现-优化指标"
     },
-    "docs/performance_8m_16b_32b_tuned.md": {
+    "docs/reports/comparison/performance_8m_16b_32b_tuned.md": {
       "8-mib-缓存--回调循环为-0": "mib-缓存-回调循环为-0",
       "按消息长度查看吞吐": "overview",
       "吞吐与写入耗时": "performance-table",
@@ -2203,16 +2439,7 @@
       "时钟调度与限制": "时钟-调度与限制",
       "完整构造参数--每种长度--实现--优化指标": "完整构造参数-每种长度-实现-优化指标"
     },
-    "docs/performance_8m_32b_latency.md": {
-      "8-mib-缓存32-b-消息p50-为什么偏高": "mib-缓存-32-b-消息-p50-为什么偏高",
-      "独立复测结果": "独立复测结果",
-      "确认了哪些原因": "确认了哪些原因",
-      "本次改动与适用范围": "本次改动与适用范围",
-      "已确认的完整构造参数": "已确认的完整构造参数",
-      "逐次-p50": "逐次-p50",
-      "数据校验与复现": "数据校验与复现"
-    },
-    "docs/performance_8m_zero.md": {
+    "docs/reports/comparison/performance_8m_zero.md": {
       "8-mib-缓存--回调循环为-0--普通-write": "mib-缓存-回调循环为-0-普通-write",
       "先看负载复制的敏感性": "copy-sensitivity",
       "按消息长度查看吞吐": "overview",
@@ -2228,7 +2455,7 @@
       "时钟调度与限制": "时钟-调度与限制",
       "完整构造参数--每种长度--实现--优化指标": "完整构造参数-每种长度-实现-优化指标"
     },
-    "docs/performance_8m_zero_session.md": {
+    "docs/reports/comparison/performance_8m_zero_session.md": {
       "8-mib-缓存--回调循环为-0--单块-session-双重循环": "mib-缓存-回调循环为-0-单块-session-双重循环",
       "先看负载复制的敏感性": "copy-sensitivity",
       "按消息长度查看吞吐": "overview",
@@ -2244,196 +2471,25 @@
       "时钟调度与限制": "时钟-调度与限制",
       "完整构造参数--每种长度--实现--优化指标": "完整构造参数-每种长度-实现-优化指标"
     },
-    "docs/performance_burst_business_sizes.md": {
-      "244896-kib哪个业务场景更能体现优势": "24-48-96-kib-哪个业务场景更能体现优势",
-      "怎样选最优": "怎样选最优",
-      "全部参数的业务耗时": "全部参数的业务耗时",
-      "测试参数与原始数据": "测试参数与原始数据"
-    },
-    "docs/performance_burst_cache.md": {
-      "消息积压时热路径业务还能跑多快": "消息积压时-热路径业务还能跑多快",
-      "模拟场景": "模拟场景",
-      "测试流程": "测试流程",
-      "基本参数": "基本参数",
-      "测试环境": "test-environment",
-      "性能测试": "性能测试",
-      "业务耗时对比表": "performance",
-      "参数明细与复现": "参数明细与复现",
-      "测量方法与队列设置": "测量方法与队列设置",
-      "复现命令与原始数据": "复现命令与原始数据",
-      "完整初始化参数与展示范围": "完整初始化参数与展示范围"
-    },
-    "docs/performance_burst_from_empty.md": {
+    "docs/reports/index.md": {
+      "twobufqueue": "twobufqueue",
       "how-does-a-continuous-message-batch-affect-business-performance": "how-does-a-continuous-message-batch-affect-business-performance",
-      "simulated-scenario": "simulated-scenario",
-      "test-procedure": "test-procedure",
-      "performance-results": "performance",
-      "conclusions": "conclusions",
-      "notes": "notes",
-      "basic-parameters": "basic-parameters",
-      "messages-still-pending": "messages-still-pending",
-      "test-environment": "test-environment",
-      "parameters-and-reproduction": "parameters-and-reproduction",
-      "measurement-definition-and-reproduction": "measurement-definition-and-reproduction",
-      "raw-samples": "raw-samples",
-      "all-parameters": "all-parameters"
+      "single-block-write-loop": "single-block-write-loop",
+      "ordinary-write-maximum-publication-count": "ordinary-write-maximum-publication-count",
+      "ordinary-write-publish-every-record": "ordinary-write-publish-every-record",
+      "business-performance-after-continuous-sending": "business-performance-after-continuous-sending",
+      "read-the-numbers-correctly": "read-the-numbers-correctly",
+      "additional-measurements-and-earlier-experiments-chinese-records": "additional-measurements-and-earlier-experiments-chinese-records"
     },
-    "docs/performance_burst_from_empty.zh-CN.md": {
+    "docs/reports/index.zh-CN.md": {
+      "twobufqueue": "twobufqueue",
       "连续发送一批消息对业务性能产生什么影响": "连续发送一批消息-对业务性能产生什么影响",
-      "模拟场景": "模拟场景",
-      "测试流程": "测试流程",
-      "性能测试": "performance",
-      "结论": "结论",
-      "注意": "注意",
-      "基本参数": "basic-parameters",
-      "实际剩余消息": "实际剩余消息",
-      "测试环境": "test-environment",
-      "参数明细与复现": "参数明细与复现",
-      "测量口径与复现命令": "测量口径与复现命令",
-      "原始样本": "原始样本",
-      "全部参数": "全部参数"
-    },
-    "docs/performance_burst_tail_1m.md": {
-      "发送1-mib业务尾部耗时能否降低": "发送1-mib-业务尾部耗时能否降低",
-      "性能结果": "性能结果",
-      "三轮原值写入时间与验证": "三轮原值-写入时间与验证",
-      "复现与参数明细": "复现与参数明细"
-    },
-    "docs/performance_burst_tail_instruction_1m.md": {
-      "1-mib-发送后业务尾延时为什么升高": "mib-发送后-业务尾延时为什么升高",
-      "测试条件": "测试条件",
-      "第一条证据慢样本集中在换核之后": "第一条证据-慢样本集中在换核之后",
-      "查看每轮全体分位数与同核子样本": "查看每轮全体分位数与同核子样本",
-      "第二条证据用户态-l1-未命中与等待周期明显增加": "第二条证据-用户态-l1-未命中与等待周期明显增加",
-      "第三条证据相同线程相同机器码仅改变预热数据归属": "第三条证据-相同线程-相同机器码-仅改变预热数据归属",
-      "为什么几条访存指令能让尾延时差这么多": "为什么几条访存指令能让尾延时差这么多",
-      "已测试的改善方案": "已测试的改善方案",
-      "三轮单独结果改善并不保证每一轮": "三轮单独结果-改善并不保证每一轮",
-      "数据与复核": "数据与复核"
-    },
-    "docs/performance_data/ordinary_readback_optimal_20261011/report_full_details_before_compact_20261011.md": {
-      "twobufqueue普通-write每条-publish普通-writepublish-max-参数遍历": "mode",
-      "独立复测后的最优参数六次正式运行均无-writer-背压": "独立复测后的最优参数-六次正式运行均无-writer-背压",
-      "不限-writer-背压的速度最优观测": "不限-writer-背压的速度最优观测",
-      "同参数交错对照只改变普通写入的读回操作": "同参数交错对照-只改变普通写入的读回操作",
-      "全部候选含初筛与独立复测": "全部候选-含初筛与独立复测"
-    },
-    "docs/performance_hot_path_cache.md": {
-      "把积压留在后台--让写线程使用小数据池": "把积压留在后台-让写线程使用小数据池",
-      "优势在哪里后台积压不要求扩大第一层": "优势在哪里-后台积压不要求扩大第一层",
-      "主展示可控后台积压": "主展示-可控后台积压",
-      "主场景的三次独立吞吐值": "主场景的三次独立吞吐值",
-      "补充对照真实慢回调": "补充对照-真实慢回调",
-      "补充对照即时消费": "补充对照-即时消费",
-      "第一层变化第二层保持-256-mib": "第一层变化-第二层保持-256-mib",
-      "纯计算对照": "纯计算对照",
-      "纯计算的复制选项与初始化参数": "纯计算的复制选项与初始化参数",
-      "业务基线无队列--纯计算完整参数": "业务基线-无队列-纯计算完整参数",
-      "twobufqueue--纯计算完整参数": "twobufqueue-纯计算完整参数",
-      "readerwriterqueue--纯计算完整参数": "readerwriterqueue-纯计算完整参数",
-      "rigtorpspscqueue--纯计算完整参数": "rigtorp-spscqueue-纯计算完整参数",
-      "atomic_queue--纯计算完整参数": "atomic-queue-纯计算完整参数",
-      "测试条件与初始化参数": "测试条件与初始化参数",
-      "机器编译器与电源记录": "机器-编译器与电源记录",
-      "业务基线无队列--完整初始化参数": "业务基线-无队列-完整初始化参数",
-      "twobufqueue--完整初始化参数": "twobufqueue-完整初始化参数",
-      "readerwriterqueue--完整初始化参数": "readerwriterqueue-完整初始化参数",
-      "rigtorpspscqueue--完整初始化参数": "rigtorp-spscqueue-完整初始化参数",
-      "atomic_queue--完整初始化参数": "atomic-queue-完整初始化参数",
-      "开源复制选项对照全部保留": "开源复制选项对照-全部保留",
-      "数据与校验": "数据与校验"
-    },
-    "docs/performance_optimal_ordinary_readback_reader2g_zero.md": {
-      "twobufqueue-各参数性能结果": "mode",
-      "测试条件与原始数据": "测试条件与原始数据",
-      "普通-write每条-publish": "普通-write-每条-publish",
-      "普通-writepublish-max": "普通-write-publish-max"
-    },
-    "docs/performance_optimal_three_modes_reader2g_zero.md": {
-      "twobufqueuesession逐条发布max-参数遍历": "mode",
-      "独立复测后的最优参数六次正式运行均无-writer-背压": "独立复测后的最优参数-六次正式运行均无-writer-背压",
-      "不限-writer-背压的速度最优观测": "不限-writer-背压的速度最优观测",
-      "全部候选含初筛与独立复测": "全部候选-含初筛与独立复测"
-    },
-    "docs/test_per_write_block_size_only_writer_publish1.md": {
-      "单线程-writer块大小与发布策略": "单线程-writer-块大小与发布策略",
-      "写入性能": "写入性能",
-      "取块换块与池深度": "取块-换块与池深度",
-      "环境命令与源文件指纹": "环境-命令与源文件指纹"
-    },
-    "docs/test_per_write_block_size_only_writer_publish_max.md": {
-      "单线程-writer块大小与发布策略": "单线程-writer-块大小与发布策略",
-      "写入性能": "写入性能",
-      "取块换块与池深度": "取块-换块与池深度",
-      "环境命令与源文件指纹": "环境-命令与源文件指纹"
-    },
-    "docs/test_per_write_block_size_only_writer_reader80_3runs_publish1.md": {
-      "单线程-writer块大小与发布策略": "单线程-writer-块大小与发布策略",
-      "写入性能": "写入性能",
-      "取块换块与池深度": "取块-换块与池深度",
-      "环境命令与源文件指纹": "环境-命令与源文件指纹"
-    },
-    "docs/test_per_write_block_size_only_writer_reader80_3runs_publish_max.md": {
-      "单线程-writer块大小与发布策略": "单线程-writer-块大小与发布策略",
-      "写入性能": "写入性能",
-      "取块换块与池深度": "取块-换块与池深度",
-      "环境命令与源文件指纹": "环境-命令与源文件指纹"
-    },
-    "docs/test_per_write_block_size_readback_fixed_reader_3runs.md": {
-      "32-b-block-size写后读回对照": "b-block-size-写后读回对照",
-      "本次观察": "本次观察",
-      "每条-release-发布扫描当前块": "每条-release-发布-扫描当前块",
-      "每次吞吐原始值背压与池深度": "每次吞吐原始值-背压与池深度",
-      "发布次数-uint32_max关闭当前块扫描": "发布次数-uint32-max-关闭当前块扫描",
-      "每次吞吐原始值背压与池深度-1": "每次吞吐原始值-背压与池深度-2",
-      "同机器码对照每条-release-发布扫描当前块": "同机器码对照-每条-release-发布-扫描当前块",
-      "每次吞吐原始值背压与池深度-2": "每次吞吐原始值-背压与池深度-3",
-      "同机器码对照发布次数-uint32_max关闭当前块扫描": "同机器码对照-发布次数-uint32-max-关闭当前块扫描",
-      "每次吞吐原始值背压与池深度-3": "每次吞吐原始值-背压与池深度-4",
-      "设置与审计记录": "设置与审计记录"
-    },
-    "docs/test_per_writer_block_size.md": {
-      "writer-块大小与热路径性能": "system-memory-note",
-      "写入性能": "写入性能",
-      "占用深度已借出尚未归还的块": "占用深度-已借出-尚未归还的块",
-      "已分配块数与容量": "已分配块数与容量",
-      "环境二进制和源文件指纹": "环境-二进制和源文件指纹"
-    },
-    "docs/test_per_writer_block_size_cache_hits.md": {
-      "两种发布策略下各-block-size-的-writer-l1d-缓存诊断": "两种发布策略下-各-block-size-的-writer-l1d-缓存诊断",
-      "l1d-微操作归一化比例对照非精确命中率": "l1d-微操作归一化比例对照-非精确命中率",
-      "同样消息量下的未命中次数": "同样消息量下的未命中次数",
-      "退休未命中l1-脏行回写与采集时吞吐": "退休未命中-l1-脏行回写与采集时吞吐",
-      "独立汇编计数单位校验": "独立汇编计数单位校验",
-      "环境事件定义测量边界与文件指纹": "环境-事件定义-测量边界与文件指纹"
-    },
-    "docs/test_per_writer_block_size_max_comparison_3runs.md": {
-      "max-发布单线程与完整流水线对照": "max-发布-单线程与完整流水线对照",
-      "性能对照": "性能对照",
-      "完整流水线池深度与背压": "完整流水线-池深度与背压",
-      "每次运行的原始值": "每次运行的原始值",
-      "实际-reader-容量及分轮上限": "实际-reader-容量及分轮上限"
-    },
-    "docs/test_per_writer_block_size_no_current.md": {
-      "writer-块大小与热路径性能": "system-memory-note",
-      "写入性能": "写入性能",
-      "占用深度已借出尚未归还的块": "占用深度-已借出-尚未归还的块",
-      "已分配块数与容量": "已分配块数与容量",
-      "环境二进制和源文件指纹": "环境-二进制和源文件指纹"
-    },
-    "docs/test_per_writer_block_size_no_current_publish1.md": {
-      "writer-块大小与热路径性能": "writer-块大小与热路径性能",
-      "写入性能": "写入性能",
-      "占用深度已借出尚未归还的块": "占用深度-已借出-尚未归还的块",
-      "已分配块数与容量": "已分配块数与容量",
-      "环境二进制和源文件指纹": "环境-二进制和源文件指纹"
-    },
-    "docs/test_per_writer_block_size_reader80_3runs_max.md": {
-      "writer-块大小与热路径性能": "writer-块大小与热路径性能",
-      "写入性能": "写入性能",
-      "占用深度已借出尚未归还的块": "占用深度-已借出-尚未归还的块",
-      "已分配块数与容量": "已分配块数与容量",
-      "环境二进制和源文件指纹": "环境-二进制和源文件指纹"
+      "单块循环写入": "单块循环写入",
+      "普通-write最大发布批次": "普通-write-最大发布批次",
+      "普通-write每条发布": "普通-write-每条发布",
+      "连续发送后的业务性能": "连续发送后的业务性能",
+      "指标怎么看": "指标怎么看",
+      "其他测量与历史实验": "其他测量与历史实验"
     },
     "examples/README.md": {
       "examples": "examples",
@@ -2449,13 +2505,15 @@
       "三单独使用组件": "单独使用组件",
       "四运行与理解回调": "运行与理解回调"
     },
-    "test/READ_CTRL_TESTS.md": {
-      "read_ctrl-功能测试": "read-ctrl-功能测试",
-      "直接-pop-改动验证2026-10-06": "直接-pop-改动验证-2026-10-06",
-      "构建与运行": "构建与运行",
-      "本次结果2026-10-04": "本次结果-2026-10-04",
-      "独立单-writer-实现验证2026-10-08": "独立单-writer-实现验证-2026-10-08",
-      "当前接口的发布检查": "当前接口的发布检查"
+    "test/README.md": {
+      "tests": "tests",
+      "1-directory-guide": "directory-guide",
+      "2-run-tests": "run-tests"
+    },
+    "test/README.zh-CN.md": {
+      "测试导航": "测试导航",
+      "一目录说明": "目录说明",
+      "二运行测试": "运行测试"
     },
     "test/func/TEST_CASES.md": {
       "功能测试用例": "功能测试用例"
@@ -2507,123 +2565,26 @@
     },
     "test/func/warm_pool/TEST_POINTS.md": {
       "warmpool-测试点": "warmpool-测试点"
+    },
+    "test/reader/READ_CTRL_TESTS.md": {
+      "read_ctrl-功能测试": "read-ctrl-功能测试",
+      "直接-pop-改动验证2026-10-06": "直接-pop-改动验证-2026-10-06",
+      "构建与运行": "构建与运行",
+      "本次结果2026-10-04": "本次结果-2026-10-04",
+      "独立单-writer-实现验证2026-10-08": "独立单-writer-实现验证-2026-10-08",
+      "当前接口的发布检查": "当前接口的发布检查"
     }
   },
   "pages": [
     {
       "markdown": "docs/code/index.md",
       "html": "docs/code/index.html",
-      "html_sha256": "fbef470674b6aad51bb220120c62bc1a72d3324eafa3ff49af9c8433f1c688f5"
+      "html_sha256": "113fd0461504001e591ae65413b2499b29f9e2219419f3fcb89fbcf5dd09f66f"
     },
     {
       "markdown": "docs/code/index.zh-CN.md",
       "html": "docs/code/index.zh-CN.html",
-      "html_sha256": "90f20a5b259217d4dea1587fa118ad32e9b2f9ecf30e18a0965c3ad41255c487"
-    },
-    {
-      "markdown": "docs/index.md",
-      "html": "docs/index.html",
-      "html_sha256": "88167ab05e43da3f336bb19259a2253b20a8d14ba46facc34cb6a32b39bed9ea"
-    },
-    {
-      "markdown": "docs/index.zh-CN.md",
-      "html": "docs/index.zh-CN.html",
-      "html_sha256": "3b7cc4f849b39aa2cb30bf48b7f331dad9d10aa15b6400641fecc6d41cae7503"
-    },
-    {
-      "markdown": "docs/performance_256m_callback.md",
-      "html": "docs/performance_256m_callback.html",
-      "html_sha256": "ecd7967ba8b3baf33d14927fd590e2dbab64dd659af78e26843bbfc3219ec471"
-    },
-    {
-      "markdown": "docs/performance_256m_callback_session.md",
-      "html": "docs/performance_256m_callback_session.html",
-      "html_sha256": "9259455fe3c6a900e50611108983112aeaaeb0d821d5d476a531d7ac50675339"
-    },
-    {
-      "markdown": "docs/performance_256m_zero_publish1_plateau.md",
-      "html": "docs/performance_256m_zero_publish1_plateau.html",
-      "html_sha256": "d5266ec0b3c8b0eebf407eb5b53dd3e2c0d9f4948bf885f7dc81335ea70ea38d"
-    },
-    {
-      "markdown": "docs/performance_256m_zero_publish1_plateau.zh-CN.md",
-      "html": "docs/performance_256m_zero_publish1_plateau.zh-CN.html",
-      "html_sha256": "42574eb1ced13ab0cf8cb6e05887dbc9d328f078b59ef730a4485218fa6606af"
-    },
-    {
-      "markdown": "docs/performance_256m_zero_publish_max_plateau.md",
-      "html": "docs/performance_256m_zero_publish_max_plateau.html",
-      "html_sha256": "9633b25c1f5951f72e5f5105177c1065aeaa5128738a1316b660292929bd8d94"
-    },
-    {
-      "markdown": "docs/performance_256m_zero_publish_max_plateau.zh-CN.md",
-      "html": "docs/performance_256m_zero_publish_max_plateau.zh-CN.html",
-      "html_sha256": "725d2207f5d35b57c5430e4b530b3331373f33c777be4a705ec08596ae7d5e2a"
-    },
-    {
-      "markdown": "docs/performance_256m_zero_session_plateau.md",
-      "html": "docs/performance_256m_zero_session_plateau.html",
-      "html_sha256": "0ea0698eb893ea609c6ed059c777f8922113233c792b87c856efbad36e34890f"
-    },
-    {
-      "markdown": "docs/performance_256m_zero_session_plateau.zh-CN.md",
-      "html": "docs/performance_256m_zero_session_plateau.zh-CN.html",
-      "html_sha256": "ca4eecc2637fbf32d2ee88f4588eb134d9207ce99c6581d570ce32c903a6bfa4"
-    },
-    {
-      "markdown": "docs/performance_8m_16b_32b_64b_tuned.md",
-      "html": "docs/performance_8m_16b_32b_64b_tuned.html",
-      "html_sha256": "b36951c0d6ab83914a6f170972557dbdc98209a08585a055cdc4188f7901cf5f"
-    },
-    {
-      "markdown": "docs/performance_8m_16b_32b_tuned.md",
-      "html": "docs/performance_8m_16b_32b_tuned.html",
-      "html_sha256": "bf490c8eede793b6a29897ee27715451280680346e8eff27a2c2d4abda1b3bfa"
-    },
-    {
-      "markdown": "docs/performance_8m_32b_latency.md",
-      "html": "docs/performance_8m_32b_latency.html",
-      "html_sha256": "b7a4e9fcc20ab025e50fb63335d89ea11dad82412bd5698003fd35cff24ea634"
-    },
-    {
-      "markdown": "docs/performance_8m_zero.md",
-      "html": "docs/performance_8m_zero.html",
-      "html_sha256": "3eec538f8a6c221ed08826d8bc9e478fec59f3b5381977208a8c4760f1f49c9e"
-    },
-    {
-      "markdown": "docs/performance_8m_zero_session.md",
-      "html": "docs/performance_8m_zero_session.html",
-      "html_sha256": "3138d72b750c7b816e96ab4502af05ba204155685b1f1ac894a8c5fae8b10106"
-    },
-    {
-      "markdown": "docs/performance_burst_business_sizes.md",
-      "html": "docs/performance_burst_business_sizes.html",
-      "html_sha256": "f4d9320cc04aa2094933fc8c212d256b0918c8af060d1a14b73339e28fd5ea66"
-    },
-    {
-      "markdown": "docs/performance_burst_cache.md",
-      "html": "docs/performance_burst_cache.html",
-      "html_sha256": "ecd647cced8b523a105aaa3350fb4158a6f6367f62353ebb35c915ea70a14fad"
-    },
-    {
-      "markdown": "docs/performance_burst_from_empty.md",
-      "html": "docs/performance_burst_from_empty.html",
-      "html_sha256": "b7ef9a7b2a60ba9d37faaa384fdebdd023f0175d1bb2f18af6c3b6d6d78c3680"
-    },
-    {
-      "markdown": "docs/performance_burst_from_empty.zh-CN.md",
-      "html": "docs/performance_burst_from_empty.zh-CN.html",
-      "html_sha256": "abbf098c8b799b18664fc0b1e3fd8c4325ff7e678fddd754c301647694bce54b"
-    },
-    {
-      "markdown": "docs/performance_burst_tail_1m.md",
-      "html": "docs/performance_burst_tail_1m.html",
-      "html_sha256": "0061d1a2f683393f9fdb7b87e01710a43ae41de3dbe40fac6532e271e969a55a"
-    },
-    {
-      "markdown": "docs/performance_burst_tail_instruction_1m.md",
-      "html": "docs/performance_burst_tail_instruction_1m.html",
-      "html_sha256": "b29c2581867bbe43b2ca9131ad2a8b7812c8a55eec80cf5c98f358da763e0d5c"
+      "html_sha256": "5fa048fb6bc248d5f30325934753d15e0de05cbd98824e67e7c8fdc9a028b4e2"
     },
     {
       "markdown": "docs/performance_data/ordinary_readback_optimal_20261011/report_full_details_before_compact_20261011.md",
@@ -2631,74 +2592,179 @@
       "html_sha256": "e53a0762fc5239297740ef4da31081acf0d1d437dd79c6684bad87a7d8ebe6dc"
     },
     {
-      "markdown": "docs/performance_hot_path_cache.md",
-      "html": "docs/performance_hot_path_cache.html",
-      "html_sha256": "29bfa4d8ed068b6cae8180920054f5f3a6779d8dae0cf19dfcae06f8c5f3f08a"
+      "markdown": "docs/reports/analysis/performance_8m_32b_latency.md",
+      "html": "docs/reports/analysis/performance_8m_32b_latency.html",
+      "html_sha256": "066d253029135f4f9428bae04a3497865d88ab635d0c63677905ac98a763bd04"
     },
     {
-      "markdown": "docs/performance_optimal_ordinary_readback_reader2g_zero.md",
-      "html": "docs/performance_optimal_ordinary_readback_reader2g_zero.html",
-      "html_sha256": "f142e53672674d3874e3397b44ec5c4df1dc4378f88e5abf6588fb356060c75f"
+      "markdown": "docs/reports/analysis/performance_hot_path_cache.md",
+      "html": "docs/reports/analysis/performance_hot_path_cache.html",
+      "html_sha256": "55e23da3f04e0889ad5ff0206f09024fff1b24ab4bc240a2a7b3a34fca715825"
     },
     {
-      "markdown": "docs/performance_optimal_three_modes_reader2g_zero.md",
-      "html": "docs/performance_optimal_three_modes_reader2g_zero.html",
-      "html_sha256": "b7dcccaf608ed28db48e935f888e28fed6aac336580df8aaa596dfad986bf75f"
+      "markdown": "docs/reports/analysis/performance_optimal_ordinary_readback_reader2g_zero.md",
+      "html": "docs/reports/analysis/performance_optimal_ordinary_readback_reader2g_zero.html",
+      "html_sha256": "df702f7c0a1c0b4c52d7dfbc5f1209c3fb3dd3926bde986c75a31a591fe1aa87"
     },
     {
-      "markdown": "docs/test_per_write_block_size_only_writer_publish1.md",
-      "html": "docs/test_per_write_block_size_only_writer_publish1.html",
-      "html_sha256": "3caf9682084e76f2c6df93c0e1d63479d5f68b250311ea26ea6a1fec42c64b57"
+      "markdown": "docs/reports/analysis/performance_optimal_three_modes_reader2g_zero.md",
+      "html": "docs/reports/analysis/performance_optimal_three_modes_reader2g_zero.html",
+      "html_sha256": "3bc5e71ac4d3a3ca8d9ba23cb556ccfdc3536f63492c2522a50ba80eae83caae"
     },
     {
-      "markdown": "docs/test_per_write_block_size_only_writer_publish_max.md",
-      "html": "docs/test_per_write_block_size_only_writer_publish_max.html",
-      "html_sha256": "34f441aa2d4aea336da75eb3bb605c0608a0380ca012eec278cb10fba08e449b"
+      "markdown": "docs/reports/block_size/test_per_write_block_size_only_writer_publish1.md",
+      "html": "docs/reports/block_size/test_per_write_block_size_only_writer_publish1.html",
+      "html_sha256": "1d4ec32bff3f379811e6ced2a72f50a4007e3213ec9d967d581ca3579b98abb5"
     },
     {
-      "markdown": "docs/test_per_write_block_size_only_writer_reader80_3runs_publish1.md",
-      "html": "docs/test_per_write_block_size_only_writer_reader80_3runs_publish1.html",
-      "html_sha256": "cbe749b32cc9b4aadfde42d9b55e1a0dab2726271d7a098e367a920f3dfd5309"
+      "markdown": "docs/reports/block_size/test_per_write_block_size_only_writer_publish_max.md",
+      "html": "docs/reports/block_size/test_per_write_block_size_only_writer_publish_max.html",
+      "html_sha256": "9decad43b010cb6e6a3908ed089bb535cefa2288d18662236be9d2a34607483d"
     },
     {
-      "markdown": "docs/test_per_write_block_size_only_writer_reader80_3runs_publish_max.md",
-      "html": "docs/test_per_write_block_size_only_writer_reader80_3runs_publish_max.html",
-      "html_sha256": "bf1f60031192c1156624e4d9417531c13eb30b302b5f692a122789a47731e2b6"
+      "markdown": "docs/reports/block_size/test_per_write_block_size_only_writer_reader80_3runs_publish1.md",
+      "html": "docs/reports/block_size/test_per_write_block_size_only_writer_reader80_3runs_publish1.html",
+      "html_sha256": "b5eee798990bd1874de3765ab015679947cc40c097cf5176fd424dc60f2d2ea5"
     },
     {
-      "markdown": "docs/test_per_write_block_size_readback_fixed_reader_3runs.md",
-      "html": "docs/test_per_write_block_size_readback_fixed_reader_3runs.html",
-      "html_sha256": "168c4cacff2ced2bc3a3d3aee79d85d0b37dafe627c035e5a16318de214ff77d"
+      "markdown": "docs/reports/block_size/test_per_write_block_size_only_writer_reader80_3runs_publish_max.md",
+      "html": "docs/reports/block_size/test_per_write_block_size_only_writer_reader80_3runs_publish_max.html",
+      "html_sha256": "539e3fe4ed501bcccddb0b1739e9152f67848204ada7fab2ef798650d1dd7437"
     },
     {
-      "markdown": "docs/test_per_writer_block_size.md",
-      "html": "docs/test_per_writer_block_size.html",
-      "html_sha256": "b36ee60419398c4ac9af15918080ae9885da8689e9db868057cc2d7bbf5b8bba"
+      "markdown": "docs/reports/block_size/test_per_write_block_size_readback_fixed_reader_3runs.md",
+      "html": "docs/reports/block_size/test_per_write_block_size_readback_fixed_reader_3runs.html",
+      "html_sha256": "81e9a9d250baa2f1d125b0eb4ff5323648043a770344a566928db0d772e4c3d9"
     },
     {
-      "markdown": "docs/test_per_writer_block_size_cache_hits.md",
-      "html": "docs/test_per_writer_block_size_cache_hits.html",
-      "html_sha256": "8a5e3c2eb36cba546a7329d7c6468c7f96e12b5b439d53d03a310516585c5eca"
+      "markdown": "docs/reports/block_size/test_per_writer_block_size.md",
+      "html": "docs/reports/block_size/test_per_writer_block_size.html",
+      "html_sha256": "b13d7abd6f24df2568d0459f1def9eb5c497d99c5eba281bbc346cdee9b821c5"
     },
     {
-      "markdown": "docs/test_per_writer_block_size_max_comparison_3runs.md",
-      "html": "docs/test_per_writer_block_size_max_comparison_3runs.html",
-      "html_sha256": "ac7099b38d2bc1154e4e1fb504b6a2345fedace7a52daf1f40fe76003f0ce121"
+      "markdown": "docs/reports/block_size/test_per_writer_block_size_cache_hits.md",
+      "html": "docs/reports/block_size/test_per_writer_block_size_cache_hits.html",
+      "html_sha256": "959c022079f1d35230fba6fb125cd98e7e2c372b3ccfb1a8dc4a19bb454ca9af"
     },
     {
-      "markdown": "docs/test_per_writer_block_size_no_current.md",
-      "html": "docs/test_per_writer_block_size_no_current.html",
-      "html_sha256": "aff57d44ed05f3536e094bce4275f0789bb6555a44a52b0b190ea717cd63c5d0"
+      "markdown": "docs/reports/block_size/test_per_writer_block_size_max_comparison_3runs.md",
+      "html": "docs/reports/block_size/test_per_writer_block_size_max_comparison_3runs.html",
+      "html_sha256": "2fdd106f1f49db138f51e8781dba25e93dc2c134a2bb7ed4077e5aa06b33a859"
     },
     {
-      "markdown": "docs/test_per_writer_block_size_no_current_publish1.md",
-      "html": "docs/test_per_writer_block_size_no_current_publish1.html",
-      "html_sha256": "360014b61782f536152e4f14afa509b2dd30dd10ce88404aa7171734db80ccaf"
+      "markdown": "docs/reports/block_size/test_per_writer_block_size_no_current.md",
+      "html": "docs/reports/block_size/test_per_writer_block_size_no_current.html",
+      "html_sha256": "20e7978194ae7d864219d03c99ad5617b1e532374175a8e7b16cb943a412eb4b"
     },
     {
-      "markdown": "docs/test_per_writer_block_size_reader80_3runs_max.md",
-      "html": "docs/test_per_writer_block_size_reader80_3runs_max.html",
-      "html_sha256": "30e27ff454b4f8451a9c81349f81845682e41570b0029b70ba133dfd6f289600"
+      "markdown": "docs/reports/block_size/test_per_writer_block_size_no_current_publish1.md",
+      "html": "docs/reports/block_size/test_per_writer_block_size_no_current_publish1.html",
+      "html_sha256": "79224381130e929363c7fbbc7a4025f1f4a36f307cd9f9105d2e3ef98bd7602a"
+    },
+    {
+      "markdown": "docs/reports/block_size/test_per_writer_block_size_reader80_3runs_max.md",
+      "html": "docs/reports/block_size/test_per_writer_block_size_reader80_3runs_max.html",
+      "html_sha256": "68247c3c13efe048854104e18ddc6d2b2f999b9ee8930990fcaee9f519db294c"
+    },
+    {
+      "markdown": "docs/reports/burst/performance_burst_business_sizes.md",
+      "html": "docs/reports/burst/performance_burst_business_sizes.html",
+      "html_sha256": "f835de84f255e59bdf8cf2a6b25fe354d1d736cae0aed7e25704c4548c280fae"
+    },
+    {
+      "markdown": "docs/reports/burst/performance_burst_cache.md",
+      "html": "docs/reports/burst/performance_burst_cache.html",
+      "html_sha256": "242e23cf2d180af79882c209cdcf05ff6fa47585e3974efa87b3dc8f35d762c6"
+    },
+    {
+      "markdown": "docs/reports/burst/performance_burst_from_empty.md",
+      "html": "docs/reports/burst/performance_burst_from_empty.html",
+      "html_sha256": "e1cefa98d914d1530d0be05e2a24e8c75cf3111a91cf16a9ee61a156371ab5d0"
+    },
+    {
+      "markdown": "docs/reports/burst/performance_burst_from_empty.zh-CN.md",
+      "html": "docs/reports/burst/performance_burst_from_empty.zh-CN.html",
+      "html_sha256": "6bff6cda511277edf472f392bf8f585233debb4fcf2bb201c4f11b84e9249946"
+    },
+    {
+      "markdown": "docs/reports/burst/performance_burst_tail_1m.md",
+      "html": "docs/reports/burst/performance_burst_tail_1m.html",
+      "html_sha256": "2fb31bd27fafe29f5bbb77bb137d47604241435203f0f11f6cfc5eee90215c60"
+    },
+    {
+      "markdown": "docs/reports/burst/performance_burst_tail_instruction_1m.md",
+      "html": "docs/reports/burst/performance_burst_tail_instruction_1m.html",
+      "html_sha256": "08765b84392c86aa449f3c624f5943d992b5ddebd791d85fd08f9726effc0579"
+    },
+    {
+      "markdown": "docs/reports/comparison/performance_256m_callback.md",
+      "html": "docs/reports/comparison/performance_256m_callback.html",
+      "html_sha256": "9abdb1246b0788922e174c5585ebabeb66fb2bc93359e8197b2a23b3dff7e4ba"
+    },
+    {
+      "markdown": "docs/reports/comparison/performance_256m_callback_session.md",
+      "html": "docs/reports/comparison/performance_256m_callback_session.html",
+      "html_sha256": "d695d5f066370ca6182c8502a6f1b59c9a243468b703d51b1ac3ebbf01162cf2"
+    },
+    {
+      "markdown": "docs/reports/comparison/performance_256m_zero_publish1_plateau.md",
+      "html": "docs/reports/comparison/performance_256m_zero_publish1_plateau.html",
+      "html_sha256": "9fb839ef960d6b2a0fc5a597ce85cc8ab4348bfd7f7a654dcd63e9ff0c2692d5"
+    },
+    {
+      "markdown": "docs/reports/comparison/performance_256m_zero_publish1_plateau.zh-CN.md",
+      "html": "docs/reports/comparison/performance_256m_zero_publish1_plateau.zh-CN.html",
+      "html_sha256": "69864d16ee13a99d8a591310f67d509700e13d9c9d4e61540d71f6b246c7e9f7"
+    },
+    {
+      "markdown": "docs/reports/comparison/performance_256m_zero_publish_max_plateau.md",
+      "html": "docs/reports/comparison/performance_256m_zero_publish_max_plateau.html",
+      "html_sha256": "2b243bbb18cb928d3542bc329d525dcf58f3f10534be020bfa02fdc033aa4be7"
+    },
+    {
+      "markdown": "docs/reports/comparison/performance_256m_zero_publish_max_plateau.zh-CN.md",
+      "html": "docs/reports/comparison/performance_256m_zero_publish_max_plateau.zh-CN.html",
+      "html_sha256": "a7627f42fad8987e762e25136c787fee429afcefd9a46e986bb9a552c905cb74"
+    },
+    {
+      "markdown": "docs/reports/comparison/performance_256m_zero_session_plateau.md",
+      "html": "docs/reports/comparison/performance_256m_zero_session_plateau.html",
+      "html_sha256": "214d39d34b01928795d7a11a1d16c6ee32d2bb6713031f9a5b01641316e72956"
+    },
+    {
+      "markdown": "docs/reports/comparison/performance_256m_zero_session_plateau.zh-CN.md",
+      "html": "docs/reports/comparison/performance_256m_zero_session_plateau.zh-CN.html",
+      "html_sha256": "38430b1cadc3e105d5a587749c6958fcb724f1e39cc7f8513a7180516af3b29e"
+    },
+    {
+      "markdown": "docs/reports/comparison/performance_8m_16b_32b_64b_tuned.md",
+      "html": "docs/reports/comparison/performance_8m_16b_32b_64b_tuned.html",
+      "html_sha256": "d93735181aafaebf40ea975e4b108a2ed3fae680e36d19c51952a7c3a6f32a71"
+    },
+    {
+      "markdown": "docs/reports/comparison/performance_8m_16b_32b_tuned.md",
+      "html": "docs/reports/comparison/performance_8m_16b_32b_tuned.html",
+      "html_sha256": "5738eac2d31f349e0a989838134e3d61fa238fc0e79d66dc2217c53d9fde0687"
+    },
+    {
+      "markdown": "docs/reports/comparison/performance_8m_zero.md",
+      "html": "docs/reports/comparison/performance_8m_zero.html",
+      "html_sha256": "6d34e82d4f02b548acaf199c8bdb21f3117f6144eb070c72afbb95060e2ce17a"
+    },
+    {
+      "markdown": "docs/reports/comparison/performance_8m_zero_session.md",
+      "html": "docs/reports/comparison/performance_8m_zero_session.html",
+      "html_sha256": "ee46a24a63a986f8dfe69638739379f207faa5a758b25a0cc9149876f2c8d9af"
+    },
+    {
+      "markdown": "docs/reports/index.md",
+      "html": "docs/reports/index.html",
+      "html_sha256": "ca818544d7ee93d36cd62f586b5c31b30373a67b3d6eec2ebe3e45d6fa62a2e1"
+    },
+    {
+      "markdown": "docs/reports/index.zh-CN.md",
+      "html": "docs/reports/index.zh-CN.html",
+      "html_sha256": "be56fce93620f676cfcd4086851ff4edc37e48c8979c6f97ee6c427e835ec003"
     }
   ],
   "assets": [

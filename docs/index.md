@@ -1,82 +1,39 @@
-[English](index.md) · [中文](index.zh-CN.md)
+# Documentation index
 
-# TwoBufQueue
+[English](index.md) · [简体中文](index.zh-CN.md) · [Project overview](../README.md)
 
-Small producer buffers. Batch copying. Independent callbacks. · Small producer buffers, with consumer capacity for pending work.
+Start with the API and integration guides. Performance reports, development instructions and source views have separate directories.
 
-[Project overview](../README.md) · [Chinese overview](../README.md)
+## 1. Usage guides
 
-C++20 Apache-2.0 Measured on Apple M3 Parameters and raw evidence included
+| Document | What it covers |
+|---|---|
+| [API guide](guides/API.md) | Initialization, writes, WriteSession, flush and receive callbacks |
+| [Integration](guides/INTEGRATION.md) | Local source, CMake and installed packages |
+| [Async logging example](guides/ASYNC_LOGGING.md) | Passing log records in an application |
+| [Example index](../examples/README.md) | Complete examples by use case |
+| [Detailed introduction](../README_DETAIL.md) | Performance questions, two-layer design and use cases |
 
-[Continuous sending · each batch starts empty
+## 2. Performance reports
 
-## How does a continuous message batch affect business performance?
+| Directory | Contents |
+|---|---|
+| [reports/](reports/index.md) | Report entry point and main comparisons |
+| `reports/comparison/` | Ordinary writes, WriteSession and upstream queue comparisons |
+| `reports/burst/` | Business performance after a continuous message batch |
+| `reports/block_size/` | Block-size sweeps and publication strategies |
+| `reports/analysis/` | Cache, latency and implementation investigations |
+| [Methodology](reports/PERFORMANCE.md) | Metrics, test conditions and reproduction |
 
-Normal business → send a batch → immediate business · 2–16 MiB
+Original measurements remain in `performance_data/`. Source views remain in [code/](code/index.md).
 
-**Open report →**](performance_burst_from_empty.html) · [WriteSession
+## 3. Development and publication
 
-## Single-block write loop
-
-256 MiB · empty callback · 3 independent runs
-
-**Open report →**](performance_256m_zero_session_plateau.html) · [Publication at block handoff
-
-## Ordinary write: maximum publication count
-
-256 MiB · empty callback · 3 independent runs
-
-**Open report →**](performance_256m_zero_publish_max_plateau.html) · [Publication every record
-
-## Ordinary write: publish every record
-
-256 MiB · empty callback · 3 independent runs
-
-**Open report →**](performance_256m_zero_publish1_plateau.html)
-
-## Business performance after continuous sending
-
-![Business group-average p50 after continuous 2,4,8,16 MiB batches, each starting empty, with normal business at 13 ns per call](assets/burst_business_cost.svg)
-
-Normal business → send a continuous message batch → immediately run the same business. Every batch starts with zero pending messages; consumers stay active and draining happens outside timing. Same 48 KiB business data set, 32 B messages and 64 callback iterations. TwoBufQueue uses 16 KiB of source buffers and 256 MiB of output storage; native SPSC queues use 256 MiB of slots.
-
-Normal business costs about 13 ns/call (dashed line). After 16 MiB: TwoBufQueue 18.2 ns/call (1.40×), ReaderWriterQueue 58.2 ns, rigtorp 42.5 ns, atomic_queue 99.8 ns. At 2 MiB, TwoBufQueue and rigtorp tie at 15.6 ns/call.
-
-p50 of 16-call business group means, averaged across three independent runs. High producer QoS; no hard CPU affinity. [Full results, ratios and initialization parameters](performance_burst_from_empty.md).
-
-## Read the numbers correctly
-
-Write reports measure producer submission cost in groups of 1,000 writes. The batch/business reports measure business execution in groups of 16 calls. Neither is individual-message or end-to-end latency. Thread counts, source/output pools and upstream payload construction choices are stated in each report; rankings apply to the recorded setup.
-
-[Methodology and reproduction](PERFORMANCE.md) · [Publication contents](RELEASE_CONTENTS.md) · [Publishing steps](PUBLISHING.md)
-
-### Additional measurements and earlier experiments (Chinese records)
-
-
-
-- [performance 256m callback](performance_256m_callback.md)
-- [performance 256m callback session](performance_256m_callback_session.md)
-- [performance 8m 16b 32b 64b tuned](performance_8m_16b_32b_64b_tuned.md)
-- [performance 8m 16b 32b tuned](performance_8m_16b_32b_tuned.md)
-- [performance 8m 32b latency](performance_8m_32b_latency.md)
-- [performance 8m zero](performance_8m_zero.md)
-- [performance 8m zero session](performance_8m_zero_session.md)
-- [performance burst business sizes](performance_burst_business_sizes.md)
-- [performance burst tail 1m](performance_burst_tail_1m.md)
-- [performance burst tail instruction 1m](performance_burst_tail_instruction_1m.md)
-- [performance hot path cache](performance_hot_path_cache.md)
-- [performance optimal ordinary readback reader2g zero](performance_optimal_ordinary_readback_reader2g_zero.md)
-- [performance optimal three modes reader2g zero](performance_optimal_three_modes_reader2g_zero.md)
-- [test per write block size only writer publish1](test_per_write_block_size_only_writer_publish1.md)
-- [test per write block size only writer publish max](test_per_write_block_size_only_writer_publish_max.md)
-- [test per write block size only writer reader80 3runs publish1](test_per_write_block_size_only_writer_reader80_3runs_publish1.md)
-- [test per write block size only writer reader80 3runs publish max](test_per_write_block_size_only_writer_reader80_3runs_publish_max.md)
-- [test per write block size readback fixed reader 3runs](test_per_write_block_size_readback_fixed_reader_3runs.md)
-- [test per writer block size](test_per_writer_block_size.md)
-- [test per writer block size cache hits](test_per_writer_block_size_cache_hits.md)
-- [test per writer block size max comparison 3runs](test_per_writer_block_size_max_comparison_3runs.md)
-- [test per writer block size no current](test_per_writer_block_size_no_current.md)
-- [test per writer block size no current publish1](test_per_writer_block_size_no_current_publish1.md)
-- [test per writer block size reader80 3runs max](test_per_writer_block_size_reader80_3runs_max.md)
-
-Prepared reports retain their original measurement dates. Packaging does not rerun or replace measurements.
+| Document | Contents |
+|---|---|
+| [Testing](development/TESTING.md) | Functional tests, benchmark contracts and integration checks |
+| [Publication contents](development/RELEASE_CONTENTS.md) | Files included in the publication tree |
+| [Publishing](development/PUBLISHING.md) | GitHub repository, Pages and bilingual packages |
+| [Contributing](../CONTRIBUTING.md) | Proposing code and documentation changes |
+| [Test index](../test/README.md) | Tests grouped by component |
+| [Benchmark index](../benchmarks/README.md) | Performance experiments and parameter searches |

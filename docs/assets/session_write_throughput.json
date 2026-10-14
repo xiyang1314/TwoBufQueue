@@ -1,5 +1,5 @@
 {
-  "source": "docs/performance_256m_zero_session_plateau.html",
+  "source": "docs/reports/comparison/performance_256m_zero_session_plateau.html",
   "report_data_sha256": "6c4cc4a4fc13794a08bc0d0ba3db50ed2e97575a8d18d664c4c13fd9c76c6e88",
   "metric": "producer sending throughput in million messages/s",
   "rows": [

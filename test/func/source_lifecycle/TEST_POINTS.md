@@ -11,7 +11,7 @@
 - 并发发布尾部/完成与 current 读取，400 代循环校验无漏读或重复。
 - 多个空/非空完成块穿插，统计准确；同块 1300 次增量读取不依赖 Slice 槽位。
 - 下游保存背压在没有释放通知时仍定时重试；停机可丢弃未读尾部。
-- test/live_handoff_tests.cpp 另覆盖重复 acquire、取消与过期凭证、独立容量/池上限、工厂/reset 失败、
+- test/handoff/live_handoff_tests.cpp 另覆盖重复 acquire、取消与过期凭证、独立容量/池上限、工厂/reset 失败、
   on_send 后入队前的暂停窗口、跨线程 FIFO，以及多 Writer 整批 current 拒绝期间追加数据。
 
 原先“注入任意 SourceBlockMgr::Entry”和“保留源 Slice 至池析构”的测试不再适用于新公开接口；

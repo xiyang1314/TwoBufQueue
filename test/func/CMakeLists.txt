@@ -31,5 +31,5 @@ add_subdirectory(spsc_blocks)
 
 # review_20260925 is a historical reproduction for removed callback/storage APIs.
 # Current equivalents run in read_ctrl_{item,service,worker,single}, source_lifecycle,
-# and test_writer; see test/READ_CTRL_TESTS.md for the coverage mapping.
+# and test_writer; see test/reader/READ_CTRL_TESTS.md for the coverage mapping.
 add_subdirectory(handoff_queue)

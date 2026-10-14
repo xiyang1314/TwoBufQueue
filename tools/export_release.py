@@ -41,7 +41,7 @@ CODE_HTML.update(record['html_path_zh_cn'] for record in CODE_FILES if record.ge
 
 def included(relative):
     parts=relative.parts; name=relative.name
-    if relative.as_posix() in DOC_HTML or relative.as_posix() in CODE_HTML: return True
+    if relative.as_posix() in DOC_SOURCES or relative.as_posix() in DOC_HTML or relative.as_posix() in CODE_HTML: return True
     if name=='.DS_Store' or '__pycache__' in parts or relative.suffix=='.pyc': return False
     if len(parts)==1: return name in ROOT_FILES
     if parts[0] in {'src','include','support','cmake'}:
@@ -54,10 +54,15 @@ def included(relative):
         return relative.suffix in {'.cpp','.hpp','.py','.json','.cmake','.md'} or name=='CMakeLists.txt'
     if parts[0]=='benchmarks':
         if len(parts)==2: return name in BENCHMARK_FILES
+        if parts[1] in {'spsc','burst','block_size','hot_path','common'}:
+            return len(parts)==3 and name in BENCHMARK_FILES
         if parts[1]=='tunable': return relative.suffix in {'.hpp','.cpp'}
         if parts[1]=='profiles': return relative.suffix=='.json'
     if parts[0]=='docs':
         if len(parts)==2: return relative.suffix in {'.md','.html'}
+        if parts[1]=='reports':
+            return relative.suffix in {'.md','.html'} and (len(parts)==3
+                or (len(parts)==4 and parts[2] in {'comparison','burst','block_size','analysis'}))
         if parts[1]=='assets': return relative.suffix in {'.svg','.png','.json','.css'} or name in {'code_view.js', 'readme_view.js'}
         if parts[1]=='release-checks': return relative.suffix in {'.json','.log'}
     return False

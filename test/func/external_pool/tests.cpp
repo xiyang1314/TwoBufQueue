@@ -1,5 +1,5 @@
 #include "../../../support/joining_thread.hpp"
-#include "../../warm_pool_test_support.hpp"
+#include "../../support/warm_pool_test_support.hpp"
 #include "../concurrent/common.hpp"
 #include <array>
 #include <memory>

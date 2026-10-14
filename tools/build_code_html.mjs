@@ -36,8 +36,8 @@ const descriptions = {
   'src/base_components/WarmPool/warm_pool.hpp': 'Resource creation, borrowing, return and capacity control. / 资源池实现：创建、借出、归还和容量控制。',
   'src/base_components/LiveHandoffQueue/spsc_live_handoff_queue.hpp': 'SPSC resource handoff with access to data still being produced. / 单生产者与单消费者之间交接资源，并支持读取正在生产的内容。',
   'src/base_components/HandoffQueue/handoff_queue.hpp': 'Resource handoff with multiple concurrency modes and consumer workers. / 资源交接队列实现，包含多种并发模式和消费工作线程。',
-  'benchmarks/run_release_benchmarks.py': 'Run configured measurements, validate payloads and save all records. / 按配置运行正式测试、校验负载，并保存环境和全部测量记录。',
-  'benchmarks/plot_release.py': 'Plot saved results without rerunning benchmarks. / 从保存的测量结果生成性能图表，不重新执行性能测试。',
+  'benchmarks/spsc/run_release_benchmarks.py': 'Run configured measurements, validate payloads and save all records. / 按配置运行正式测试、校验负载，并保存环境和全部测量记录。',
+  'benchmarks/spsc/plot_release.py': 'Plot saved results without rerunning benchmarks. / 从保存的测量结果生成性能图表，不重新执行性能测试。',
   'test/integration/CMakeLists.txt': 'Check vendored, FetchContent and installed-package integration. / 验证本地源码、FetchContent 和安装包三种工程接入方式。',
 };
 function categoryFor(path, language) {
@@ -69,6 +69,14 @@ export async function buildCodePages({ root }) {
   for (const entry of await readdir(resolve(root, 'docs'), { withFileTypes: true })) {
     if (entry.isFile() && entry.name.endsWith('.html')) documents.add('docs/' + entry.name);
   }
+  async function collectReports(dir) {
+    for (const entry of await readdir(resolve(root, dir), { withFileTypes: true })) {
+      const name = dir + '/' + entry.name;
+      if (entry.isDirectory()) await collectReports(name);
+      else if (entry.isFile() && entry.name.endsWith('.html')) documents.add(name);
+    }
+  }
+  await collectReports('docs/reports');
   const oldTargets = new Map();
   const manifestPath = resolve(root, 'docs/code/code-manifest.json');
   try {
@@ -117,7 +125,7 @@ export async function buildCodePages({ root }) {
   const header = output => '<header class="site-header"><div class="header-inner"><a class="brand" href="'
     + escape(urlFrom(output, 'README.html')) + '"><span class="brand-symbol" aria-hidden="true"><i></i><i></i></span>TwoBufQueue<span class="brand-version">C++</span></a>'
     + '<nav aria-label="Main navigation"><a href="' + escape(urlFrom(output, 'README.html')) + '">Overview / 首页</a><a href="'
-    + escape(urlFrom(output, 'docs/API.html')) + '">API / 接口</a><a href="' + escape(urlFrom(output, 'examples/README.html'))
+    + escape(urlFrom(output, 'docs/guides/API.html')) + '">API / 接口</a><a href="' + escape(urlFrom(output, 'examples/README.html'))
     + '">Examples / 使用示例</a><a href="' + escape(urlFrom(output, 'docs/code/index.html')) + '" aria-current="page">Source browser / 代码阅读</a></nav>'
     + '<div class="languages"><a href="' + escape(urlFrom(output, 'README.html')) + '">EN</a><a href="'
     + escape(urlFrom(output, 'README.zh-CN.html')) + '">中文</a></div></div></header>';
@@ -179,7 +187,7 @@ export async function buildCodePages({ root }) {
   const body = indexMarker + '<main id="content" class="code-index"><section class="code-index-hero"><div class="source-kicker">TWOBUFQUEUE · SOURCE BROWSER</div>'
     + '<h1>Source browser / 代码阅读</h1><p>Start with basic messaging, then choose grouped, concurrent or synchronous callbacks. Every view contains the complete source, syntax highlighting and line numbers. / 先看基础示例，再按需要阅读批量、并发与同步回调。每个文件都提供完整代码、语法高亮和行号。</p>'
     + '<div class="code-index-actions"><a class="button primary" href="' + escape(urlFrom(index, 'docs/code/examples/01_basic.cpp.html'))
-    + '">Start with the basic example / 基础示例 ↗</a><a class="button secondary" href="' + escape(urlFrom(index, 'docs/API.html'))
+    + '">Start with the basic example / 基础示例 ↗</a><a class="button secondary" href="' + escape(urlFrom(index, 'docs/guides/API.html'))
     + '">API guide / 接口使用指南</a></div></section><div class="code-filter"><label for="code-search">Find source / 搜索代码</label><input id="code-search" type="search" placeholder="File name or path / 文件名或路径…">'
     + '<span id="filter-count" role="status">' + files.length + ' files / 个文件</span></div><nav class="code-category-nav" aria-label="Source categories / 代码分类">'
     + categories.filter(group => files.some(file => file.category === group[0])).map(group => '<a href="#' + group[0] + '">' + group[1] + '</a>').join('')

@@ -22,7 +22,7 @@ option(BRQ_ENABLE_POOL_DEPTH_STATS "Instrument successful pool acquisitions for 
 option(BRQ_BUILD_COMPARISON "Deprecated historical comparisons" OFF)
 option(BRQ_DISABLE_TSC "Use the portable standard clock" OFF)
 if(BRQ_BUILD_BENCHMARKS OR BRQ_BUILD_COMPARISON)
-  message(FATAL_ERROR "Historical benchmark APIs are no longer supported. Use BRQ_BUILD_SPSC_BENCHMARKS=ON; see benchmarks/TUNABLE_SPSC.zh-CN.md")
+  message(FATAL_ERROR "Historical benchmark APIs are no longer supported. Use BRQ_BUILD_SPSC_BENCHMARKS=ON; see benchmarks/guides/TUNABLE_SPSC.zh-CN.md")
 endif()
 include(GNUInstallDirs)
 find_package(Threads REQUIRED)
@@ -91,22 +91,22 @@ if(BRQ_BUILD_TESTS OR BRQ_BUILD_EXAMPLES)
   enable_testing()
 endif()
 if(BRQ_BUILD_TESTS)
-  add_executable(test_scan_current test/test_scan_current.cpp)
+  add_executable(test_scan_current test/reader/test_scan_current.cpp)
   target_link_libraries(test_scan_current PRIVATE TwoBufQueue)
   brq_warnings(test_scan_current)
   add_test(NAME scan_current_options COMMAND test_scan_current)
   set_tests_properties(scan_current_options PROPERTIES TIMEOUT 30 LABELS "functional;integration;read_ctrl")
-  add_executable(test_sync_writer test/test_sync_writer.cpp)
+  add_executable(test_sync_writer test/writer/test_sync_writer.cpp)
   target_link_libraries(test_sync_writer PRIVATE TwoBufQueue)
   brq_warnings(test_sync_writer)
   add_test(NAME sync_writer_callbacks COMMAND test_sync_writer)
   set_tests_properties(sync_writer_callbacks PROPERTIES TIMEOUT 30 LABELS "functional;integration")
-  add_executable(test_two_buf_queue_options test/test_two_buf_queue_options.cpp)
+  add_executable(test_two_buf_queue_options test/queue/test_two_buf_queue_options.cpp)
   target_link_libraries(test_two_buf_queue_options PRIVATE TwoBufQueue)
   brq_warnings(test_two_buf_queue_options)
   add_test(NAME two_buf_queue_output_options COMMAND test_two_buf_queue_options)
   set_tests_properties(two_buf_queue_output_options PROPERTIES TIMEOUT 30 LABELS "functional;integration")
-  add_executable(brq_live_handoff_tests test/live_handoff_tests.cpp)
+  add_executable(brq_live_handoff_tests test/handoff/live_handoff_tests.cpp)
   target_link_libraries(brq_live_handoff_tests PRIVATE TwoBufQueue)
   brq_warnings(brq_live_handoff_tests)
   if(MSVC)
@@ -119,9 +119,24 @@ if(BRQ_BUILD_TESTS)
     set_tests_properties(live_handoff_${case} PROPERTIES TIMEOUT 60 LABELS "functional;live_handoff")
   endforeach()
   set(read_ctrl_targets test_read_item test_read_service test_read_active_completion test_reader_cohesion test_read_notifications test_single_reader)
-  foreach(name IN ITEMS writer_queue_tests test_writer test_write_session test_read_item test_read_service test_read_active_completion
-      test_reader_cohesion test_read_notifications test_single_reader test_unified_data test_fixed_slice_bitmap test_slice_pool test_slice_release_check)
-    add_executable(${name} "test/${name}.cpp")
+  set(brq_regression_sources
+    test/writer/writer_queue_tests.cpp
+    test/writer/test_writer.cpp
+    test/writer/test_write_session.cpp
+    test/reader/test_read_item.cpp
+    test/reader/test_read_service.cpp
+    test/reader/test_read_active_completion.cpp
+    test/reader/test_reader_cohesion.cpp
+    test/reader/test_read_notifications.cpp
+    test/reader/test_single_reader.cpp
+    test/queue/test_unified_data.cpp
+    test/pool/test_fixed_slice_bitmap.cpp
+    test/pool/test_slice_pool.cpp
+    test/pool/test_slice_release_check.cpp
+  )
+  foreach(source IN LISTS brq_regression_sources)
+    get_filename_component(name "${source}" NAME_WE)
+    add_executable(${name} "${source}")
     target_link_libraries(${name} PRIVATE TwoBufQueue)
     brq_warnings(${name})
     if(MSVC)
@@ -195,5 +210,5 @@ if(BRQ_BUILD_TESTS AND BRQ_BUILD_FUNCTIONAL_TESTS)
 endif()
 
 if(BRQ_BUILD_SPSC_BENCHMARKS)
-  include(benchmarks/spsc.cmake)
+  include(benchmarks/spsc/spsc.cmake)
 endif()

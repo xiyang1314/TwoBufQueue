@@ -1,6 +1,62 @@
 <!doctype html>
-<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>当前性能测试入口 · TwoBufQueue</title><link rel="stylesheet" href="../docs/assets/readme.css"></head><body><!-- Generated from benchmarks/README.zh-CN.md; SHA256 aa9cc19794a0ddfa482fc8e25514475b475b25835a27729cc347b0abcf5e105d. --><a class="skip-link" href="#content">跳到正文</a><header class="site-header"><div class="header-inner"><a class="brand" href="../README.zh-CN.html"><span class="brand-symbol" aria-hidden="true"><i></i><i></i></span>TwoBufQueue<span class="brand-version">C++</span></a><nav aria-label="主要导航"><a href="../README.zh-CN.html">项目首页</a><a href="../docs/API.zh-CN.html">接口指南</a><a href="../examples/README.zh-CN.html">使用示例</a><a href="../docs/code/index.zh-CN.html">代码阅读</a><a href="../docs/index.zh-CN.html">性能报告</a></nav><div class="languages"><a href="README.html">EN</a><a href="README.zh-CN.html" aria-current="page">中文</a></div></div></header><div class="page-layout guide-layout" id="top"><aside class="toc"><p class="toc-label">本页目录</p><nav aria-label="目录"></nav><div class="toc-footer"><a href="../README.zh-CN.html">回到首页</a></div></aside><main id="content" class="guide-main"><section class="guide-hero"><div class="eyebrow"><span></span>TWOBUFQUEUE · 文档</div><h1>当前性能测试入口</h1></section><details class="mobile-toc"><summary>本页目录</summary><nav></nav></details><article class="guide-content"><p><a href="../docs/PERFORMANCE.zh-CN.html">性能证据与四份报告</a> · <a href="TUNABLE_SPSC.zh-CN.html">详细参数和复现命令</a></p>
-<p>当前有效入口为 <code>BRQ_BUILD_SPSC_BENCHMARKS=ON</code>：TwoBufQueue 普通 write / WriteSession 与 ReaderWriterQueue、rigtorp/SPSCQueue、atomic_queue 同负载对照。依赖仅供性能测试使用，通过 <code>bootstrap_spsc.py</code> 显式下载、固定版本并校验哈希；默认构建和库运行不依赖它们。</p>
-<p><code>run_release_benchmarks.py</code> 执行固定参数对照并保存完整复现证据。<code>tune_spsc.py</code> 在用户指定的预算和平台条件下搜索参数。<code>plot_release.py</code> 从已保存的正式数据重新生成首页图，不运行测试。</p>
-<p><code>BRQ_BUILD_BENCHMARKS</code> 与 <code>BRQ_BUILD_COMPARISON</code> 属于旧接口，已明确弃用。历史实验保留在开发目录，不作为当前结果或发布副本的测试入口。</p>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>性能测试导航 · TwoBufQueue</title><link rel="stylesheet" href="../docs/assets/readme.css"></head><body><!-- Generated from benchmarks/README.zh-CN.md; SHA256 e1922caf8c7f58237ec04a5c99b3d5c4e3ca4ddec50ee061e89c6de1f5046cc5. --><a class="skip-link" href="#content">跳到正文</a><header class="site-header"><div class="header-inner"><a class="brand" href="../README.zh-CN.html"><span class="brand-symbol" aria-hidden="true"><i></i><i></i></span>TwoBufQueue<span class="brand-version">C++</span></a><nav aria-label="主要导航"><a href="../README.zh-CN.html">项目首页</a><a href="../docs/guides/API.zh-CN.html">接口指南</a><a href="../examples/README.zh-CN.html">使用示例</a><a href="../docs/code/index.zh-CN.html">代码阅读</a><a href="../docs/reports/index.zh-CN.html">性能报告</a></nav><div class="languages"><a href="README.html">EN</a><a href="README.zh-CN.html" aria-current="page">中文</a></div></div></header><div class="page-layout guide-layout" id="top"><aside class="toc"><p class="toc-label">本页目录</p><nav aria-label="目录"><a class="toc-depth-2" href="#选择测试">一、选择测试</a><a class="toc-depth-2" href="#构建测试程序">二、构建测试程序</a></nav><div class="toc-footer"><a href="../README.zh-CN.html">回到首页</a></div></aside><main id="content" class="guide-main"><section class="guide-hero"><div class="eyebrow"><span></span>TWOBUFQUEUE · 文档</div><h1>性能测试导航</h1><p><a href="README.html">English</a> · <a href="README.zh-CN.html">简体中文</a></p>
+<p>按测试场景选择子目录。库的默认构建不依赖性能测试组件。测试口径见<a href="../docs/reports/PERFORMANCE.zh-CN.html">性能测试说明</a>，参数见<a href="guides/TUNABLE_SPSC.zh-CN.html">可调整的对比测试</a>。</p>
+</section><details class="mobile-toc"><summary>本页目录</summary><nav><a class="toc-depth-2" href="#选择测试">一、选择测试</a><a class="toc-depth-2" href="#构建测试程序">二、构建测试程序</a></nav></details><article class="guide-content"><h2 id="选择测试">一、选择测试</h2>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>目录</th>
+<th>测什么</th>
+<th>从这里开始</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>spsc/</code></td>
+<td>普通 write、WriteSession 与开源 SPSC 队列对比</td>
+<td><a href="../docs/code/benchmarks/spsc/run_release_benchmarks.py.zh-CN.html">运行对比</a> · <a href="../docs/code/benchmarks/spsc/tune_spsc.py.zh-CN.html">遍历参数</a></td>
+</tr>
+<tr>
+<td><code>burst/</code></td>
+<td>连续发送一批消息后，业务执行受到什么影响</td>
+<td><a href="../docs/code/benchmarks/burst/run_burst_empty.py.zh-CN.html">运行实验</a> · <a href="guides/BURST_CACHE.zh-CN.html">测试说明</a></td>
+</tr>
+<tr>
+<td><code>block_size/</code></td>
+<td>遍历 writer 块大小，分别测试完整流水线和单独 writer</td>
+<td><a href="../docs/code/benchmarks/block_size/test_per_writer_block_size.py.zh-CN.html">完整流水线</a> · <a href="../docs/code/benchmarks/block_size/test_per_write_block_size_only_writer.py.zh-CN.html">单独 writer</a></td>
+</tr>
+<tr>
+<td><code>hot_path/</code></td>
+<td>生产者内存占用与业务热缓存实验</td>
+<td><a href="../docs/code/benchmarks/hot_path/test_hot_path_cache.py.zh-CN.html">运行实验</a> · <a href="guides/HOT_PATH_CACHE.zh-CN.html">测试说明</a></td>
+</tr>
+<tr>
+<td><code>tunable/</code></td>
+<td>共用的 C++ 负载、队列适配和参数处理</td>
+<td>供各测试程序使用</td>
+</tr>
+<tr>
+<td><code>common/</code></td>
+<td>共用的进程资源统计</td>
+<td>供 C++ 测试使用</td>
+</tr>
+<tr>
+<td><code>profiles/</code></td>
+<td>保存的负载与参数配置</td>
+<td>传给对应脚本</td>
+</tr>
+<tr>
+<td><code>guides/</code></td>
+<td>参数和实验说明</td>
+<td><a href="guides/TUNABLE_SPSC.zh-CN.html">SPSC 对比指南</a></td>
+</tr>
+</tbody></table></div>
+<h2 id="构建测试程序">二、构建测试程序</h2>
+<p>从项目根目录运行：</p>
+<div class="code-frame"><div class="code-label">Shell</div><pre tabindex="0"><code class="language-sh"><span class="syntax-keyword">python3</span> benchmarks/spsc/bootstrap_spsc.py
+<span class="syntax-keyword">cmake</span> -S . -B build-bench -DCMAKE_BUILD_TYPE=Release -DBRQ_BUILD_SPSC_BENCHMARKS=ON
+<span class="syntax-keyword">cmake</span> --build build-bench --parallel
+<span class="syntax-keyword">ctest</span> --test-dir build-bench --output-on-failure -L performance_harness</code></pre></div><p>依赖库需要明确下载，版本固定并校验哈希。<code>run_release_benchmarks.py</code> 运行对比并保存复现信息；<code>tune_spsc.py</code> 在给定内存预算中遍历参数；<a href="../docs/code/benchmarks/spsc/plot_release.py.zh-CN.html">plot_release.py</a> 只根据保存的数据画图，不重跑测试。</p>
+<p>统计内存池深度的块大小实验另需 <code>BRQ_ENABLE_POOL_DEPTH_STATS=ON</code>。正式性能对比使用默认未启用深度统计的构建。测试程序名称和命令行参数保持一致。</p>
+<p><code>BRQ_BUILD_BENCHMARKS</code> 和 <code>BRQ_BUILD_COMPARISON</code> 已停用；历史实验保留在原开发目录。</p>
 </article><footer class="site-footer"><span>TwoBufQueue · C++ · Apache-2.0</span><span><a href="../README.zh-CN.html">项目首页</a><a href="#top">回到顶部 ↑</a></span></footer></main></div></body></html>

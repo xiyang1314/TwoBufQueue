@@ -89,9 +89,9 @@ export async function buildDocuments({ root, Marked, highlight, escape, flow }) 
     const toc = headings.map(item => '<a class="toc-depth-' + item.depth + '" href="#' + escape(item.id)
       + '">' + markdown.parseInline(item.text) + '</a>').join('');
     const home = urlFrom(document, zh ? 'README.zh-CN.html' : 'README.html');
-    const api = urlFrom(document, zh ? 'docs/API.zh-CN.html' : 'docs/API.html');
+    const api = urlFrom(document, zh ? 'docs/guides/API.zh-CN.html' : 'docs/guides/API.html');
     const examples = urlFrom(document, zh ? 'examples/README.zh-CN.html' : 'examples/README.html');
-    const reports = urlFrom(document, 'docs/index.html');
+    const reports = urlFrom(document, 'docs/reports/index.html');
     const codeIndex = urlFrom(document, 'docs/code/index.html');
     const css = urlFrom(document, 'docs/assets/readme.css');
     const counterpartName = name.endsWith('.zh-CN.md') ? name.replace('.zh-CN.md', '.md') : name.replace('.md', '.zh-CN.md');
@@ -136,7 +136,15 @@ export async function buildDocuments({ root, Marked, highlight, escape, flow }) 
   // Keep existing report text and numbers. Only switch their document hyperlinks.
   let updated = 0;
   const { readdir } = await import('node:fs/promises');
-  for (const dir of ['', 'docs']) {
+  const linkDirectories = ['', 'docs'];
+  async function collectReportDirectories(dir) {
+    linkDirectories.push(dir);
+    for (const entry of await readdir(resolve(root, dir), { withFileTypes: true })) {
+      if (entry.isDirectory()) await collectReportDirectories(dir + '/' + entry.name);
+    }
+  }
+  await collectReportDirectories('docs/reports');
+  for (const dir of linkDirectories) {
     for (const entry of await readdir(resolve(root, dir), { withFileTypes: true })) {
       if (!entry.isFile() || !entry.name.endsWith('.html')) continue;
       const document = resolve(root, dir, entry.name);

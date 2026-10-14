@@ -1,0 +1,483 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>API usage guide · TwoBufQueue</title><link rel="stylesheet" href="../assets/readme.css"></head><body><!-- Generated from docs/guides/API.md; SHA256 a3adaaf49fb689df6aba88cc7e4072c8ae4581176fd0bed71103e772fae06ec7. --><a class="skip-link" href="#content">Skip to content</a><header class="site-header"><div class="header-inner"><a class="brand" href="../../README.html"><span class="brand-symbol" aria-hidden="true"><i></i><i></i></span>TwoBufQueue<span class="brand-version">C++</span></a><nav aria-label="Main navigation"><a href="../../README.html">Overview</a><a href="API.html">API guide</a><a href="../../examples/README.html">Examples</a><a href="../code/index.html">Source browser</a><a href="../reports/index.html">Reports</a></nav><div class="languages"><a href="API.html" aria-current="page">EN</a><a href="API.zh-CN.html">中文</a></div></div></header><div class="page-layout guide-layout" id="top"><aside class="toc"><p class="toc-label">ON THIS PAGE</p><nav aria-label="Table of contents"><a class="toc-depth-2" href="#choose-the-interface">1. Choose the interface</a><a class="toc-depth-2" href="#a-complete-send-and-receive-example">2. A complete send-and-receive example</a><a class="toc-depth-2" href="#sending-messages">3. Sending messages</a><a class="toc-depth-2" href="#the-receiving-callback">4. The receiving callback</a><a class="toc-depth-2" href="#publication-handoff-and-shutdown">5. Publication, handoff and shutdown</a><a class="toc-depth-2" href="#configure-the-two-capacities-separately">6. Configure the two capacities separately</a><a class="toc-depth-3" href="#on-demand-allocation-and-free-block-reclamation">6.1 On-demand allocation and free-block reclamation</a><a class="toc-depth-3" href="#source-writersourceconfig">6.2 Source: WriterSourceConfig</a><a class="toc-depth-3" href="#output-and-workers-twobufqueueoptions">6.3 Output and workers: TwoBufQueueOptions</a><a class="toc-depth-2" href="#reading-the-active-block">7. Reading the active block</a><a class="toc-depth-2" href="#consecutive-writes-writesession">8. Consecutive writes: WriteSession</a><a class="toc-depth-2" href="#multiple-producers-and-consumers">9. Multiple producers and consumers</a><a class="toc-depth-2" href="#synchronous-sequence-and-batch-callbacks">10. Synchronous, sequence and batch callbacks</a><a class="toc-depth-3" href="#execute-on-the-producer">10.1 Execute on the producer</a><a class="toc-depth-3" href="#add-a-sequence-number">10.2 Add a sequence number</a><a class="toc-depth-3" href="#process-a-batch-directly">10.3 Process a batch directly</a><a class="toc-depth-2" href="#end-production-safely">11. End production safely</a><a class="toc-depth-2" href="#composing-lower-level-components">12. Composing lower-level components</a></nav><div class="toc-footer"><a href="../../README.html">Overview</a></div></aside><main id="content" class="guide-main"><section class="guide-hero"><div class="eyebrow"><span></span>TWOBUFQUEUE · DOCUMENTATION</div><h1>API usage guide</h1><p>Create a producer&#39;s <code>writer</code>, then give the writer and a message-receiving callback to <code>TwoBufQueue</code>. Send through the writer. By default, the queue copies data and calls the callback in the background.</p>
+<p><a href="../../README.html">Project overview</a> · <a href="API.zh-CN.html">中文接口指南</a> · <a href="INTEGRATION.html">Integration</a> · <a href="../../examples/README.html">Runnable examples</a></p>
+</section><details class="mobile-toc"><summary>On this page</summary><nav><a class="toc-depth-2" href="#choose-the-interface">1. Choose the interface</a><a class="toc-depth-2" href="#a-complete-send-and-receive-example">2. A complete send-and-receive example</a><a class="toc-depth-2" href="#sending-messages">3. Sending messages</a><a class="toc-depth-2" href="#the-receiving-callback">4. The receiving callback</a><a class="toc-depth-2" href="#publication-handoff-and-shutdown">5. Publication, handoff and shutdown</a><a class="toc-depth-2" href="#configure-the-two-capacities-separately">6. Configure the two capacities separately</a><a class="toc-depth-3" href="#on-demand-allocation-and-free-block-reclamation">6.1 On-demand allocation and free-block reclamation</a><a class="toc-depth-3" href="#source-writersourceconfig">6.2 Source: WriterSourceConfig</a><a class="toc-depth-3" href="#output-and-workers-twobufqueueoptions">6.3 Output and workers: TwoBufQueueOptions</a><a class="toc-depth-2" href="#reading-the-active-block">7. Reading the active block</a><a class="toc-depth-2" href="#consecutive-writes-writesession">8. Consecutive writes: WriteSession</a><a class="toc-depth-2" href="#multiple-producers-and-consumers">9. Multiple producers and consumers</a><a class="toc-depth-2" href="#synchronous-sequence-and-batch-callbacks">10. Synchronous, sequence and batch callbacks</a><a class="toc-depth-3" href="#execute-on-the-producer">10.1 Execute on the producer</a><a class="toc-depth-3" href="#add-a-sequence-number">10.2 Add a sequence number</a><a class="toc-depth-3" href="#process-a-batch-directly">10.3 Process a batch directly</a><a class="toc-depth-2" href="#end-production-safely">11. End production safely</a><a class="toc-depth-2" href="#composing-lower-level-components">12. Composing lower-level components</a></nav></details><article class="guide-content"><h2 id="choose-the-interface">1. Choose the interface</h2>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>What you need</th>
+<th>Use</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Send and receive individual records</td>
+<td><code>Writer&lt;&gt;</code> + <code>TwoBufQueue</code></td>
+<td><a href="../code/examples/01_basic.cpp.html">Basic</a></td>
+</tr>
+<tr>
+<td>Submit many records in a loop</td>
+<td><code>Writer&lt;UINT32_MAX&gt;</code> + <code>WriteSession</code></td>
+<td><a href="../code/examples/two_buf_queue/07_quick_write_muti_msg.cpp.html">Loop</a></td>
+</tr>
+<tr>
+<td>Add a sequence number</td>
+<td><code>SeqWriter</code></td>
+<td><a href="../code/examples/two_buf_queue/05_seq_writer.cpp.html">Sequence</a></td>
+</tr>
+<tr>
+<td>Receive grouped data in one callback</td>
+<td><code>TwoBufQueueBatch</code></td>
+<td><a href="../code/examples/two_buf_queue/02_batch_callback.cpp.html">Grouped-data callback</a></td>
+</tr>
+<tr>
+<td>Execute the callback on the producer</td>
+<td>Non-void <code>SyncContext</code></td>
+<td><a href="../code/examples/two_buf_queue/06_sync_writer.cpp.html">Synchronous</a></td>
+</tr>
+<tr>
+<td>Read source blocks without layer-2 copying</td>
+<td>Compose <code>ReadWorker</code> and a source callback</td>
+<td><a href="../code/examples/two_buf_queue/04_layer1_callback.cpp.html">Direct read</a></td>
+</tr>
+</tbody></table></div>
+<p>Start with the complete example below; read configuration when you need to tune it.</p>
+<h2 id="a-complete-send-and-receive-example">2. A complete send-and-receive example</h2>
+<div class="code-frame"><div class="code-label">C++</div><pre tabindex="0"><code class="language-cpp"><span class="syntax-keyword">#include</span> &lt;<span class="syntax-type">TwoBufQueue</span>.hpp&gt;
+<span class="syntax-keyword">#include</span> &lt;cstdio&gt;
+
+<span class="syntax-keyword">int</span> main() {
+    <span class="syntax-comment">// Create the sending endpoint and its source pool.</span>
+    <span class="syntax-keyword">auto</span> writer = <span class="syntax-type">TwoBufQueue</span>::make_writer&lt;<span class="syntax-type">TwoBufQueue</span>::Writer&lt;&gt;&gt;();
+
+    <span class="syntax-comment">// Callback that receives each message; data and size describe its payload.</span>
+    <span class="syntax-keyword">auto</span> on_record = [](<span class="syntax-type">std</span>::int32_t source_id, <span class="syntax-keyword">const</span> <span class="syntax-type">std</span>::byte* data,
+                        <span class="syntax-type">std</span>::size_t size) <span class="syntax-keyword">noexcept</span> {
+        <span class="syntax-type">std</span>::printf(<span class="syntax-string">&quot;source=%d: %.*s\n&quot;</span>, <span class="syntax-keyword">static_cast</span>&lt;<span class="syntax-keyword">int</span>&gt;(source_id),
+                    <span class="syntax-keyword">static_cast</span>&lt;<span class="syntax-keyword">int</span>&gt;(size), reinterpret_cast&lt;<span class="syntax-keyword">const</span> char*&gt;(data));
+    };
+
+    <span class="syntax-comment">// Construction starts background processing. The writer outlives the queue.</span>
+    <span class="syntax-type">TwoBufQueue</span>::<span class="syntax-type">TwoBufQueue</span> queue(on_record, writer);
+    <span class="syntax-keyword">const</span> <span class="syntax-keyword">bool</span> ok = writer.write_mem(<span class="syntax-string">&quot;hello&quot;</span>, <span class="syntax-number">5</span>);
+    writer.finish(); <span class="syntax-comment">// End production and hand off the tail.</span>
+    queue.stop();    <span class="syntax-comment">// Finish background processing.</span>
+    <span class="syntax-keyword">return</span> ok &amp;&amp; queue.error_code() == <span class="syntax-type">TwoBufQueue</span>::ReadError::none ? <span class="syntax-number">0</span> : <span class="syntax-number">1</span>;
+}</code></pre></div><p>Successful submission does not mean the callback has already run. Initialization can throw for invalid configuration or allocation failure; handle this at the application&#39;s initialization boundary.</p>
+<h2 id="sending-messages">3. Sending messages</h2>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>Function</th>
+<th>Suitable input</th>
+<th>Result</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>writer.write(value...)</code></td>
+<td>Trivially copyable values, such as integers or simple structs</td>
+<td><code>true</code> submitted; <code>false</code> not written</td>
+</tr>
+<tr>
+<td><code>writer.write_mem(data, len)</code></td>
+<td>Strings, byte arrays or dynamically stored bytes</td>
+<td><code>true</code> submitted; <code>false</code> not written</td>
+</tr>
+</tbody></table></div>
+<p><code>write</code> tightly concatenates its arguments into one message. It does not accept pointers or native arrays as payload values. Use <code>write_mem</code> for the pointed-to contents, and for <code>std::string::data()</code> plus length rather than the <code>std::string</code> object itself.</p>
+<div class="code-frame"><div class="code-label">C++</div><pre tabindex="0"><code class="language-cpp"><span class="syntax-keyword">const</span> <span class="syntax-type">std</span>::uint64_t value = <span class="syntax-number">42</span>;
+<span class="syntax-keyword">const</span> <span class="syntax-keyword">bool</span> value_ok = writer.write(value);
+<span class="syntax-keyword">const</span> <span class="syntax-keyword">bool</span> text_ok = writer.write_mem(<span class="syntax-string">&quot;hello&quot;</span>, <span class="syntax-number">5</span>);
+<span class="syntax-comment">// Check each result; a failed message did not enter the queue.</span></code></pre></div><p>Asynchronous submission copies the input; reuse that input after the call returns. Source memory must be valid and must not overlap the destination.</p>
+<p>The default <code>Writer&lt;&gt;</code> stores a two-byte length prefix and accepts at most 65,535 payload bytes. The entire record must also fit one source block. Use a wider length type, such as <code>Writer&lt;1, true, std::uint32_t&gt;</code>, when needed. Ensure the length fits that type before calling <code>write_mem</code>; a narrowing cast can silently truncate it. Oversized records are not automatically split.</p>
+<p>Ordinary framed Writers allow empty messages; unframed Writers reject empty payloads. <strong>Session <code>write_mem</code> requires a positive length.</strong> Object bytes are an in-process representation, not a cross-machine serialization format.</p>
+<h2 id="the-receiving-callback">4. The receiving callback</h2>
+<div class="code-frame"><div class="code-label">C++</div><pre tabindex="0"><code class="language-cpp"><span class="syntax-keyword">auto</span> on_record = [](<span class="syntax-type">std</span>::int32_t source_id, <span class="syntax-keyword">const</span> <span class="syntax-type">std</span>::byte* data,
+                    <span class="syntax-type">std</span>::size_t size) <span class="syntax-keyword">noexcept</span> {
+    <span class="syntax-comment">// Process one message here.</span>
+};</code></pre></div><div class="table-scroll"><table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>source_id</code></td>
+<td>The configured Writer identifier, not an OS thread ID</td>
+</tr>
+<tr>
+<td><code>data</code></td>
+<td>This message&#39;s payload, without its length prefix</td>
+</tr>
+<tr>
+<td><code>size</code></td>
+<td>Payload byte count</td>
+</tr>
+</tbody></table></div>
+<p>The default is one background consumer worker. With multiple workers, callbacks can run concurrently; protect shared application state.</p>
+<p><strong>The pointer is borrowed only for this callback.</strong> Copy into application-owned storage before submitting work to an application thread pool. Do not leave borrowed <code>data</code> or <code>DataBatch</code> pointers with asynchronous tasks. The queue does not directly accept an external executor.</p>
+<p>Validate the length and use <code>std::memcpy</code> to decode a struct; callback addresses may be unaligned. Per-record callbacks return <code>void</code> and have no refusal/retry result. Handle errors inside the <code>noexcept</code> callback.</p>
+<h2 id="publication-handoff-and-shutdown">5. Publication, handoff and shutdown</h2>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>Operation</th>
+<th>What it does</th>
+<th>Can production continue?</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>writer.flush()</code></td>
+<td>Publishes written bytes and requests reading; keeps the current block active</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td><code>writer.finish_block()</code></td>
+<td>Hands off the current block; the next write acquires another</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td><code>writer.finish()</code></td>
+<td>Ends this Writer and hands off its tail</td>
+<td>No</td>
+</tr>
+<tr>
+<td><code>queue.stop()</code></td>
+<td>Finishes copying and consumption after production ends</td>
+<td>Do not write again</td>
+</tr>
+</tbody></table></div>
+<p>Flush neither waits for callbacks nor makes file data durable. With current-block scanning enabled, published portions can be read. With scanning disabled, a partial current block needs <code>finish_block()</code> or final <code>finish()</code> even if you flushed it.</p>
+<p>While a Session is active, use <code>session.flush()</code> rather than direct Writer operations. Release the Session before handing off or ending production.</p>
+<h2 id="configure-the-two-capacities-separately">6. Configure the two capacities separately</h2>
+<p>Each Writer owns a source pool. The queue owns a separate output pool.</p>
+<div class="code-frame"><div class="code-label">C++</div><pre tabindex="0"><code class="language-cpp"><span class="syntax-keyword">auto</span> writer = <span class="syntax-type">TwoBufQueue</span>::make_writer&lt;<span class="syntax-type">TwoBufQueue</span>::Writer&lt;&gt;&gt;({
+    .block_size = <span class="syntax-number">4096</span>,
+    .pool_min = <span class="syntax-number">4</span>,
+    .pool_max = <span class="syntax-number">4</span>, <span class="syntax-comment">// Source data budget: about 16 KiB.</span>
+});
+<span class="syntax-type">TwoBufQueue</span>::TwoBufQueueOptions options;
+options.output_block_size = <span class="syntax-number">64</span> * <span class="syntax-number">1024</span>;
+options.output_pool_min = <span class="syntax-number">2</span>;
+options.output_pool_max = <span class="syntax-number">16</span>; <span class="syntax-comment">// Output data budget: about 1 MiB.</span>
+<span class="syntax-comment">// TwoBufQueue::TwoBufQueue queue(on_record, writer, options);</span></code></pre></div><p>These budgets exclude metadata, queue slots and application inputs. An output block must hold the largest source range; normally make it at least as large as a source block.</p>
+<h3 id="on-demand-allocation-and-free-block-reclamation">6.1 On-demand allocation and free-block reclamation</h3>
+<p><code>pool_min</code> sets the initial count and <code>pool_max</code> the total limit. When no reusable block is available, the pool can allocate a new one as needed; it does not have to allocate its maximum capacity up front.</p>
+<p>The underlying <code>WarmPool</code> also accepts <code>max_free_count</code>, a free-block retention limit. On return, when the free count reaches that limit and the total count exceeds <code>min_count</code>, excess blocks enter reclamation. Borrowed blocks are not reclaimed.</p>
+<p>The <code>make_writer</code> and <code>TwoBufQueueOptions</code> convenience configurations retain free blocks by default and do not expose this retention limit. For source-pool reclamation, construct <code>WriterPool(min_count, max_count, factory, max_free_count)</code> manually, then connect a source queue and Writer. See <a href="../code/examples/two_buf_queue/08_all_parameters.cpp.html">all parameters</a>.</p>
+<h3 id="source-writersourceconfig">6.2 Source: WriterSourceConfig</h3>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Default</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>block_size</code></td>
+<td>64 KiB</td>
+<td>Bytes per source block, including record prefixes</td>
+</tr>
+<tr>
+<td><code>pool_min</code> / <code>pool_max</code></td>
+<td>2 / 8</td>
+<td>Initial and maximum block counts for this Writer</td>
+</tr>
+<tr>
+<td><code>thread_id</code></td>
+<td>0</td>
+<td>Unique source identifier within the queue</td>
+</tr>
+<tr>
+<td><code>queue_capacity</code></td>
+<td>256</td>
+<td>Block handoff record capacity, at least 2; not message count</td>
+</tr>
+<tr>
+<td><code>backpressure.mode</code></td>
+<td><code>Drop</code></td>
+<td>Fail immediately or wait when no block is available</td>
+</tr>
+<tr>
+<td><code>backpressure.spin_count</code></td>
+<td>1,000</td>
+<td>Short retries before waiting in Block mode</td>
+</tr>
+<tr>
+<td><code>backpressure.wait_get_timeout</code></td>
+<td>5 seconds</td>
+<td>Maximum Block wait, including short retries</td>
+</tr>
+</tbody></table></div>
+<p>Drop rejects this message; the application chooses retry or discard. Block can fail after its timeout. <code>writer.backpressure_stats()</code> reports pressure events, rejected records and blocking events. Add the source budgets of all Writers when calculating total memory.</p>
+<h3 id="output-and-workers-twobufqueueoptions">6.3 Output and workers: TwoBufQueueOptions</h3>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Default</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>output_block_size</code></td>
+<td>64 KiB</td>
+<td>Bytes per output block</td>
+</tr>
+<tr>
+<td><code>output_frame_capacity</code></td>
+<td>64</td>
+<td>Source ranges per output block; a range can contain many records</td>
+</tr>
+<tr>
+<td><code>output_pool_min</code> / <code>output_pool_max</code></td>
+<td>2 / 8</td>
+<td>Initial and maximum output block counts</td>
+</tr>
+<tr>
+<td><code>output_queue_capacity</code></td>
+<td>8</td>
+<td>Output handoff capacity, separate from pool capacity</td>
+</tr>
+<tr>
+<td><code>read_layer1_thread_count</code></td>
+<td>1</td>
+<td>Copy worker count, capped at the number of Writers</td>
+</tr>
+<tr>
+<td><code>output_mode</code></td>
+<td><code>MPSC</code></td>
+<td>Copy/consumer concurrency mode</td>
+</tr>
+<tr>
+<td><code>output_reader_count</code></td>
+<td>1</td>
+<td>Consumer worker count; multiple workers need SPMC/MPMC</td>
+</tr>
+<tr>
+<td><code>output_reader_mode</code></td>
+<td><code>WaitSignal</code></td>
+<td>Wait for notification; Polling repeatedly checks for work</td>
+</tr>
+<tr>
+<td><code>output_retry_wait</code></td>
+<td>1 ms</td>
+<td>Retry delay after a batch callback refuses data in wait mode</td>
+</tr>
+<tr>
+<td><code>cancel_claim_mode</code></td>
+<td><code>QueueTail</code></td>
+<td>Reclaim ordering after batch refusal</td>
+</tr>
+<tr>
+<td><code>output_enable_stats</code></td>
+<td><code>false</code></td>
+<td>Enable output handoff statistics</td>
+</tr>
+</tbody></table></div>
+<p>Maximum block counts must be positive; initial counts cannot exceed them. Worker counts must match the selected mode. See <a href="../code/examples/two_buf_queue/08_all_parameters.cpp.html">all parameters</a> for complete constraints.</p>
+<h2 id="reading-the-active-block">7. Reading the active block</h2>
+<p>The current block is the source block still being written. <code>options.read_config.is_scan_current</code> controls whether the background worker reads its published portion.</p>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>Setting</th>
+<th>Behavior</th>
+<th>Suitable goal</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>true</code>, default</td>
+<td>Read published current-block bytes and completed blocks</td>
+<td>Receive sparse messages even after the producer becomes idle</td>
+</tr>
+<tr>
+<td><code>false</code></td>
+<td>Read only handed-off blocks</td>
+<td>Accept batch arrival and prioritize submission performance</td>
+</tr>
+</tbody></table></div>
+<p>The first Writer template argument sets publication frequency: <code>Writer&lt;1&gt;</code> publishes every record; <code>Writer&lt;10&gt;</code> every ten; <code>Writer&lt;UINT32_MAX&gt;</code> only on flush, block switch or finish.</p>
+<p><strong>Publishing a position is different from waking a worker.</strong> Flush, block switches and finish request reading. A published position does not mean the consumer is scheduled immediately. Flush an unfinished publication batch before becoming idle; with scanning off, hand off the current block instead.</p>
+<p>Common <code>read_config</code> fields:</p>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Default</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>idle_rescan_interval</code></td>
+<td>5 ms</td>
+<td>Initial current-block scan interval</td>
+</tr>
+<tr>
+<td><code>idle_rescan_max_interval</code></td>
+<td>30 ms</td>
+<td>Maximum interval after consecutive empty scans</td>
+</tr>
+<tr>
+<td><code>idle_spin_count</code></td>
+<td>1,000</td>
+<td>Short polling before waiting</td>
+</tr>
+<tr>
+<td><code>work_wait_min_interval</code></td>
+<td>1 ms</td>
+<td>Minimum ordinary wait; notifications can wake it early</td>
+</tr>
+<tr>
+<td><code>worker_cpu</code></td>
+<td>-1</td>
+<td>OS scheduling by default; affinity availability is platform-specific</td>
+</tr>
+<tr>
+<td><code>finish_timeout</code></td>
+<td>5 seconds</td>
+<td>Total copy shutdown timeout; check errors on expiry</td>
+</tr>
+<tr>
+<td><code>finish_retry_interval</code></td>
+<td>1 ms</td>
+<td>Retry interval during unfinished shutdown</td>
+</tr>
+</tbody></table></div>
+<p>Data restores the initial scan interval; empty scans gradually increase it. Shorter intervals do not guarantee equally precise OS scheduling. A finish timeout cannot forcibly interrupt an application callback.</p>
+<h2 id="consecutive-writes-writesession">8. Consecutive writes: WriteSession</h2>
+<p>A Session writes one block. When space runs out, it returns a result and the application&#39;s outer loop chooses a new block. This interface is available for asynchronous <code>Writer&lt;UINT32_MAX&gt;</code> and corresponding SeqWriters, not other publication counts or synchronous Writers.</p>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>Interface</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>get_current_session(timeout)</code></td>
+<td>Reuse the current block, or try to acquire one</td>
+</tr>
+<tr>
+<td><code>get_next_session(timeout)</code></td>
+<td>Hand off the current block, then acquire the next</td>
+</tr>
+<tr>
+<td><code>session.write(...)</code> / <code>write_mem(...)</code></td>
+<td>Write one record without an implicit block switch</td>
+</tr>
+<tr>
+<td><code>session.flush()</code></td>
+<td>Publish and notify; keep the Session and block active</td>
+</tr>
+<tr>
+<td><code>session = {}</code> or scope exit</td>
+<td>Return the cursor to the Writer; no automatic flush</td>
+</tr>
+</tbody></table></div>
+<p>Timeout defaults to zero, one attempt. A positive timeout allows acquisition retries. Check <code>if (!session)</code> before writing. In the inner loop, advance the message index only on success. On insufficient space, leave that loop, release the old Session and acquire the next block outside it. See the <a href="../code/examples/two_buf_queue/07_quick_write_muti_msg.cpp.html">complete nested-loop example</a>.</p>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>SessionWriteResult</th>
+<th>Meaning</th>
+<th>Action</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>success</code></td>
+<td>Record written</td>
+<td>Advance message index</td>
+</tr>
+<tr>
+<td><code>insufficient_space</code></td>
+<td>Not enough room in this block</td>
+<td>Leave inner loop; switch outside it</td>
+</tr>
+<tr>
+<td><code>invalid_argument</code></td>
+<td>Zero length in <code>write_mem</code></td>
+<td>Fix the input; source address validity remains the caller&#39;s responsibility</td>
+</tr>
+<tr>
+<td><code>exceeds_block_capacity</code></td>
+<td>Complete record exceeds a whole block</td>
+<td>Change message or configuration; a fresh block will not fix it</td>
+</tr>
+<tr>
+<td><code>error</code></td>
+<td>Invalid Session or another error</td>
+<td>Stop this submission and handle it</td>
+</tr>
+</tbody></table></div>
+<p>One active Session per Writer. It must not outlive the Writer. Do not directly operate on the Writer while a Session is active. Release the Session before ending production; flush is the caller&#39;s choice.</p>
+<h2 id="multiple-producers-and-consumers">9. Multiple producers and consumers</h2>
+<p>One Writer per producer thread, with unique source IDs and the same Writer type. Supply every Writer at construction; the running queue does not accept additional Writers.</p>
+<div class="code-frame"><div class="code-label">C++</div><pre tabindex="0"><code class="language-cpp"><span class="syntax-keyword">auto</span> writer0 = <span class="syntax-type">TwoBufQueue</span>::make_writer&lt;<span class="syntax-type">TwoBufQueue</span>::Writer&lt;&gt;&gt;({.thread_id = <span class="syntax-number">0</span>});
+<span class="syntax-keyword">auto</span> writer1 = <span class="syntax-type">TwoBufQueue</span>::make_writer&lt;<span class="syntax-type">TwoBufQueue</span>::Writer&lt;&gt;&gt;({.thread_id = <span class="syntax-number">1</span>});
+<span class="syntax-type">TwoBufQueue</span>::<span class="syntax-type">TwoBufQueue</span> queue(on_record, {&amp;writer0, &amp;writer1});
+<span class="syntax-comment">// Thread 0 operates writer0 only; thread 1 operates writer1 only.</span></code></pre></div><p>There is no global order across producers, and parallel consumers need not complete callbacks in order. Multiple consumers share the work; they do not receive a broadcast copy of every message.</p>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>Output mode</th>
+<th>Copy workers, the output producers</th>
+<th>Consumer workers</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>SPSC</code></td>
+<td>1</td>
+<td>1</td>
+</tr>
+<tr>
+<td><code>MPSC</code></td>
+<td>One or more</td>
+<td>1</td>
+</tr>
+<tr>
+<td><code>SPMC</code></td>
+<td>1</td>
+<td>One or more</td>
+</tr>
+<tr>
+<td><code>MPMC</code></td>
+<td>One or more</td>
+<td>One or more</td>
+</tr>
+</tbody></table></div>
+<p>Use <code>read_layer1_thread_count</code> for copying and <code>output_reader_count</code> for consumption. Protect shared callback state. <a href="../code/examples/two_buf_queue/03_multi_thread_writer.cpp.html">Multiple producers</a> · <a href="../code/examples/two_buf_queue/08_all_parameters.cpp.html">Worker configuration</a>.</p>
+<h2 id="synchronous-sequence-and-batch-callbacks">10. Synchronous, sequence and batch callbacks</h2>
+<h3 id="execute-on-the-producer">10.1 Execute on the producer</h3>
+<p>Define the callback first and pass its concrete type through SyncContext:</p>
+<div class="code-frame"><div class="code-label">C++</div><pre tabindex="0"><code class="language-cpp"><span class="syntax-keyword">auto</span> on_record = [](<span class="syntax-type">std</span>::int32_t, <span class="syntax-keyword">const</span> <span class="syntax-type">std</span>::byte*, <span class="syntax-type">std</span>::size_t) <span class="syntax-keyword">noexcept</span> {
+    <span class="syntax-comment">// This message callback runs on the sending thread.</span>
+};
+using Context = <span class="syntax-type">TwoBufQueue</span>::SyncContext&lt;decltype(on_record)&gt;;
+<span class="syntax-keyword">auto</span> writer = <span class="syntax-type">TwoBufQueue</span>::make_writer&lt;
+    <span class="syntax-type">TwoBufQueue</span>::Writer&lt;<span class="syntax-number">1</span>, <span class="syntax-keyword">true</span>, <span class="syntax-type">std</span>::uint16_t, Context&gt;&gt;();
+<span class="syntax-type">TwoBufQueue</span>::<span class="syntax-type">TwoBufQueue</span> queue(on_record, writer);
+<span class="syntax-keyword">const</span> <span class="syntax-keyword">bool</span> ok = writer.write(<span class="syntax-type">std</span>::uint64_t{<span class="syntax-number">42</span>}); <span class="syntax-comment">// Callback completes before return.</span>
+writer.finish();
+queue.stop();</code></pre></div><p>The default <code>TSyncContext=void</code> selects asynchronous delivery; a concrete Context selects synchronous delivery. No output pool or reader workers are created for this synchronous path. One Writer needs no mutex; multiple Writers serialize callbacks through a shared mutex. A multi-Writer callback must not reenter the same queue. A slow callback directly delays the producer.</p>
+<p>An ordinary Writer with <code>output_mode=Sync</code> is rejected; it does not select this path. <code>TwoBufQueueBatch</code> has a separate Sync mode that executes a batch callback on the copy worker.</p>
+<h3 id="add-a-sequence-number">10.2 Add a sequence number</h3>
+<p>SeqWriter&#39;s callback adds a sequence: <code>void(source_id, sequence, data, size) noexcept</code>. Sequence allocation does not promise global callback order. Its final Context parameter selects synchronous delivery in the same way. See the <a href="../code/examples/two_buf_queue/05_seq_writer.cpp.html">sequence example</a>.</p>
+<h3 id="process-a-batch-directly">10.3 Process a batch directly</h3>
+<p>TwoBufQueueBatch passes a borrowed DataBatch. One DataFrame can hold several records. Return true to accept the batch or false to retain it for retry; never keep borrowed pointers outside the callback.</p>
+<p><code>Writer&lt;..., false&gt;</code> omits length prefixes and requires application-defined boundaries and a batch interface. A direct layer-1 callback also borrows a range: on acceptance the reader advances and returns completed blocks. Do not consume or return them yourself. <a href="../code/examples/two_buf_queue/02_batch_callback.cpp.html">Batch example</a> · <a href="../code/examples/two_buf_queue/04_layer1_callback.cpp.html">Direct read</a>.</p>
+<h2 id="end-production-safely">11. End production safely</h2>
+<ol>
+<li>Stop production and join producer threads.</li>
+<li>Release active Sessions.</li>
+<li>Call every Writer&#39;s finish.</li>
+<li>Call queue.stop and check queue.error_code.</li>
+<li>Wait for any tasks that the callback sent to an application pool using owned data.</li>
+</ol>
+<p>Keep Writers, callbacks and their resources alive for the work they serve. A timeout or error is not proof of complete delivery. File flush, closing and durable-storage confirmation are application responsibilities. The <a href="ASYNC_LOGGING.html">asynchronous logger</a> demonstrates shutdown.</p>
+<h2 id="composing-lower-level-components">12. Composing lower-level components</h2>
+<p>Normal use lets make_writer own source resources. For custom factories or statistics, explicitly create WriterPool, make_writer_queue(pool, capacity, enable_stats) and Writer(queue, id, backpressure). All dependencies must outlive the running pipeline.</p>
+<p>Each source queue has one read owner. Source ranges, output frames and records are different units. Let the matching reader manage confirmation, retries and return; do not return the same resource twice. See <a href="../../examples/README.html">component examples</a> and <a href="../code/examples/two_buf_queue/08_all_parameters.cpp.html">all parameters</a>.</p>
+</article><footer class="site-footer"><span>TwoBufQueue · C++ · Apache-2.0</span><span><a href="../../README.html">Overview</a><a href="#top">Back to top ↑</a></span></footer></main></div></body></html>

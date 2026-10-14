@@ -2,7 +2,7 @@
 
 [TwoBufQueue C++](../../README.zh-CN.md)
 
-[首页](../../README.zh-CN.md) · [接口](../API.zh-CN.md) · [使用示例](../../examples/README.zh-CN.md) · [代码阅读](index.zh-CN.md)
+[首页](../../README.zh-CN.md) · [接口](../guides/API.zh-CN.md) · [使用示例](../../examples/README.zh-CN.md) · [代码阅读](index.zh-CN.md)
 
 [English](index.md) · [中文](index.zh-CN.md)
 
@@ -12,7 +12,7 @@ TWOBUFQUEUE · SOURCE BROWSER
 
 先看基础示例，再按需要阅读批量、并发与同步回调。每个文件都提供完整代码、语法高亮和行号。
 
-[基础示例 ↗](../../examples/01_basic.cpp) · [接口使用指南](../API.zh-CN.md)
+[基础示例 ↗](../../examples/01_basic.cpp) · [接口使用指南](../guides/API.zh-CN.md)
 
 [使用示例](#使用示例) · [组件实现](#组件实现) · [性能测试脚本](#性能测试脚本) · [汇编与指令记录](#汇编与指令记录) · [工程接入配置](#工程接入配置) · [技术记录](#技术记录)
 
@@ -180,21 +180,69 @@ C++ · 375 行
 
 测试执行、参数选择与历史结果呈现。
 
-[plot_release.py](../../benchmarks/plot_release.py)
+[test_per_write_block_size_only_writer.py](../../benchmarks/block_size/test_per_write_block_size_only_writer.py)
+
+文档引用的完整源文件。
+
+benchmarks/block_size/test_per_write_block_size_only_writer.py
+
+Python · 254 行
+
+[test_per_writer_block_size.py](../../benchmarks/block_size/test_per_writer_block_size.py)
+
+文档引用的完整源文件。
+
+benchmarks/block_size/test_per_writer_block_size.py
+
+Python · 324 行
+
+[run_burst_empty.py](../../benchmarks/burst/run_burst_empty.py)
+
+文档引用的完整源文件。
+
+benchmarks/burst/run_burst_empty.py
+
+Python · 158 行
+
+[test_hot_path_cache.py](../../benchmarks/hot_path/test_hot_path_cache.py)
+
+文档引用的完整源文件。
+
+benchmarks/hot_path/test_hot_path_cache.py
+
+Python · 285 行
+
+[bootstrap_spsc.py](../../benchmarks/spsc/bootstrap_spsc.py)
+
+文档引用的完整源文件。
+
+benchmarks/spsc/bootstrap_spsc.py
+
+Python · 55 行
+
+[plot_release.py](../../benchmarks/spsc/plot_release.py)
 
 从保存的测量结果生成性能图表，不重新执行性能测试。
 
-benchmarks/plot_release.py
+benchmarks/spsc/plot_release.py
 
 Python · 70 行
 
-[run_release_benchmarks.py](../../benchmarks/run_release_benchmarks.py)
+[run_release_benchmarks.py](../../benchmarks/spsc/run_release_benchmarks.py)
 
 按配置运行正式测试、校验负载，并保存环境和全部测量记录。
 
-benchmarks/run_release_benchmarks.py
+benchmarks/spsc/run_release_benchmarks.py
 
-Python · 219 行
+Python · 220 行
+
+[tune_spsc.py](../../benchmarks/spsc/tune_spsc.py)
+
+文档引用的完整源文件。
+
+benchmarks/spsc/tune_spsc.py
+
+Python · 738 行
 
 [run.py](../performance_data/latency32_investigation_20261010/run.py)
 

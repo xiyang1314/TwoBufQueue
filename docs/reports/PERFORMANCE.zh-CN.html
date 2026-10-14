@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>性能报告怎么看 · TwoBufQueue</title><link rel="stylesheet" href="../assets/readme.css"></head><body><!-- Generated from docs/reports/PERFORMANCE.zh-CN.md; SHA256 a605a312091c4ad100cc0ff6bdc057999b7414fc707a3ee8280597670288b9d3. --><a class="skip-link" href="#content">跳到正文</a><header class="site-header"><div class="header-inner"><a class="brand" href="../../README.zh-CN.html"><span class="brand-symbol" aria-hidden="true"><i></i><i></i></span>TwoBufQueue<span class="brand-version">C++</span></a><nav aria-label="主要导航"><a href="../../README.zh-CN.html">项目首页</a><a href="../guides/API.zh-CN.html">接口指南</a><a href="../../examples/README.zh-CN.html">使用示例</a><a href="../code/index.zh-CN.html">代码阅读</a><a href="index.zh-CN.html">性能报告</a></nav><div class="languages"><a href="PERFORMANCE.html">EN</a><a href="PERFORMANCE.zh-CN.html" aria-current="page">中文</a></div></div></header><div class="page-layout guide-layout" id="top"><aside class="toc"><p class="toc-label">本页目录</p><nav aria-label="目录"><a class="toc-depth-2" href="#想了解哪种性能">一、想了解哪种性能</a><a class="toc-depth-2" href="#写入性能表中的数字">二、写入性能表中的数字</a><a class="toc-depth-2" href="#业务性能表中的数字">三、业务性能表中的数字</a><a class="toc-depth-2" href="#参数与环境为什么要一起看">四、参数与环境为什么要一起看</a><a class="toc-depth-2" href="#在自己的机器重现">五、在自己的机器重现</a></nav><div class="toc-footer"><a href="../../README.zh-CN.html">回到首页</a></div></aside><main id="content" class="guide-main"><section class="guide-hero"><div class="eyebrow"><span></span>TWOBUFQUEUE · 文档</div><h1>性能报告怎么看</h1><p>这里分别测两件事：生产者发送消息有多快，以及连续发送一批消息后，生产者自己的业务会被拖慢多少。两种结果回答不同问题，应分别阅读。</p>
+<p><a href="../../README.zh-CN.html">中文首页</a> · <a href="index.zh-CN.html">全部报告</a> · <a href="PERFORMANCE.zh-CN.html">完整测量证据</a></p>
+</section><details class="mobile-toc"><summary>本页目录</summary><nav><a class="toc-depth-2" href="#想了解哪种性能">一、想了解哪种性能</a><a class="toc-depth-2" href="#写入性能表中的数字">二、写入性能表中的数字</a><a class="toc-depth-2" href="#业务性能表中的数字">三、业务性能表中的数字</a><a class="toc-depth-2" href="#参数与环境为什么要一起看">四、参数与环境为什么要一起看</a><a class="toc-depth-2" href="#在自己的机器重现">五、在自己的机器重现</a></nav></details><article class="guide-content"><h2 id="想了解哪种性能">一、想了解哪种性能</h2>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>你关心什么</th>
+<th>看哪份报告</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>连续循环提交很多条消息</td>
+<td><a href="comparison/performance_256m_zero_session_plateau.zh-CN.html">WriteSession 与开源队列对比</a></td>
+</tr>
+<tr>
+<td>允许一批消息再发布</td>
+<td><a href="comparison/performance_256m_zero_publish_max_plateau.zh-CN.html">仅块交接发布的对比</a></td>
+</tr>
+<tr>
+<td>每条消息都发布写入位置</td>
+<td><a href="comparison/performance_256m_zero_publish1_plateau.zh-CN.html">每条发布的对比</a></td>
+</tr>
+<tr>
+<td>发送后，核心业务还能不能跑得快</td>
+<td><a href="burst/performance_burst_from_empty.zh-CN.html">连续发送对业务性能的影响</a></td>
+</tr>
+</tbody></table></div>
+<p>前三份使用 256 MiB 第二层／开源槽位容量、空回调、三次独立测量。每份报告给 8／16／32／64 B 消息选择同一组 TwoBufQueue 参数；不同报告之间参数可能不同，不能把差值看成仅改变一个开关的收益。</p>
+<h2 id="写入性能表中的数字">二、写入性能表中的数字</h2>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>指标</th>
+<th>表示什么</th>
+<th>怎么比较</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>吞吐 M条/s</td>
+<td>一秒可提交多少百万条消息</td>
+<td>越大越好</td>
+</tr>
+<tr>
+<td>p50 ns</td>
+<td>50% 的计时组，其平均每次写入耗时不超过此值</td>
+<td>越小越好，表示典型开销</td>
+</tr>
+<tr>
+<td>p99 / p999 ns</td>
+<td>99% / 99.9% 的计时组，其平均每次写入耗时不超过此值</td>
+<td>越小越好，观察慢组</td>
+</tr>
+<tr>
+<td>背压%</td>
+<td>被统计为遇到背压的消息数 ÷ 总消息数</td>
+<td>观察写入是否受到容量不足影响</td>
+</tr>
+</tbody></table></div>
+<p>每组计时 1,000 次写入，再除以 1,000。这些分位数属于“组平均写入开销”，不是单次调用的延时，也不是消息发送到回调之间的时间。三次独立测量各算指标，再取平均。</p>
+<p>写入计时包含申请块、换块，以及测量期间的等待；每轮发送后的排空在计时外。复制线程和消费线程在发送期间也在运行。</p>
+<h2 id="业务性能表中的数字">三、业务性能表中的数字</h2>
+<p>流程是：正常执行业务函数 → 连续发送一批消息 → 立刻执行同样的业务函数。每批从零积压开始，消费者持续运行，测量结束后才在计时外排空。</p>
+<p>固定使用 32 B 消息、48 KiB 业务数据、64 次回调循环。TwoBufQueue 第一层 16 KiB、第二层 256 MiB；开源队列的槽位容量为 256 MiB。每批发送 2／4／8／16 MiB。</p>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>表格列</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>耗时 ns/次</td>
+<td>发送后业务执行的组平均 p50，越低越好</td>
+</tr>
+<tr>
+<td>比值</td>
+<td>发送后业务耗时 ÷ 正常参考耗时 13 ns</td>
+</tr>
+</tbody></table></div>
+<p>业务每组调用 16 次；各轮计算 p50 后对三轮取平均。它说明队列发送对后续业务的影响，不是队列写入开销。旧的<a href="burst/performance_burst_cache.html">预填大积压实验</a>从约 198–205 MiB 积压开始，与当前报告起点不同。</p>
+<h2 id="参数与环境为什么要一起看">四、参数与环境为什么要一起看</h2>
+<p>第一层和第二层是两项独立容量。还应看消息长度、块大小、发布策略、当前块扫描、回调负载、线程数量和调度方式。它们都可能显著改变结果。</p>
+<p>保存的本机报告明确列出硬件、系统、编译器和完整初始化参数；本机用高 QoS，未硬绑核。不同机器需要自行测量，历史报告不能直接替换当前配置的结果。外部消息的复制方式也影响开源队列成绩，完整调用方式见<a href="PERFORMANCE.zh-CN.html">测量证据</a>。</p>
+<h2 id="在自己的机器重现">五、在自己的机器重现</h2>
+<p>业务影响测试可以从项目根目录一次运行：</p>
+<div class="code-frame"><div class="code-label">Shell</div><pre tabindex="0"><code class="language-sh"><span class="syntax-keyword">python3</span> benchmarks/burst/run_burst_empty.py --profile docs/performance_data/burst_from_empty_20261013/selected_config.json</code></pre></div><p>程序会运行测试并保存结果、参数与校验数据。它需要已准备的性能测试构建和固定版本依赖；安装、构建步骤见<a href="../../benchmarks/guides/BURST_CACHE.zh-CN.html">业务测试说明</a>。</p>
+<p>普通写入、Session 和参数遍历见<a href="../../benchmarks/guides/TUNABLE_SPSC.zh-CN.html">完整可调测试说明</a>。报告附带原始数据与源码哈希，压缩数据可以用 <code>python3 tools/unpack_performance_data.py</code> 还原。重新生成图表只读取保存的数据，不会重新做性能测试。</p>
+</article><footer class="site-footer"><span>TwoBufQueue · C++ · Apache-2.0</span><span><a href="../../README.zh-CN.html">项目首页</a><a href="#top">回到顶部 ↑</a></span></footer></main></div></body></html>

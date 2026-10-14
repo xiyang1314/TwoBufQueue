@@ -1,7 +1,7 @@
 #include "../../support/joining_thread.hpp"
-#include "../writer_fixture.hpp"
-#include "../warm_pool_test_support.hpp"
-#include "../block_test_support.hpp"
+#include "../support/writer_fixture.hpp"
+#include "../support/warm_pool_test_support.hpp"
+#include "../support/block_test_support.hpp"
 #include "TwoBufQueue/src/utils/no_lock.hpp"
 #include "TwoBufQueue/src/utils/spin_lock.hpp"
 #include <type_traits>

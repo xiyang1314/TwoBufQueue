@@ -4,7 +4,7 @@
 
 Its two-layer buffer design prioritizes producer hot-path performance. Batch publication and transfer let producers use small buffers while consumers use larger buffers for pending work, reducing the effect of message transfer on business execution.
 
-[Quick overview](README.md) · [Documentation index](docs/index.md) · [简体中文](README_DETAIL.zh-CN.md) · [API guide](docs/API.md) · [Benchmarks](docs/PERFORMANCE.md) · [Examples](examples/README.md) · [Source browser](docs/code/index.md)
+[Quick overview](README.md) · [Documentation index](docs/index.md) · [简体中文](README_DETAIL.zh-CN.md) · [API guide](docs/guides/API.md) · [Benchmarks](docs/reports/PERFORMANCE.md) · [Examples](examples/README.md) · [Source browser](docs/code/index.md)
 
 **Contents**
 
@@ -51,11 +51,11 @@ Only producer sending is timed, including block acquisition, switching and waits
 
 | Submission pattern | Full results |
 |---|---|
-| Write many messages within one block | [WriteSession](docs/performance_256m_zero_session_plateau.md) |
-| Ordinary write with publication at block handoff | [Batch publication](docs/performance_256m_zero_publish_max_plateau.md) |
-| Ordinary write with per-record progress publication | [Publish every record](docs/performance_256m_zero_publish1_plateau.md) |
+| Write many messages within one block | [WriteSession](docs/reports/comparison/performance_256m_zero_session_plateau.md) |
+| Ordinary write with publication at block handoff | [Batch publication](docs/reports/comparison/performance_256m_zero_publish_max_plateau.md) |
+| Ordinary write with per-record progress publication | [Publish every record](docs/reports/comparison/performance_256m_zero_publish1_plateau.md) |
 
-Reports include p50, p99, p999 and backpressure. Write-cost quantiles use **1,000-write group averages**, not individual-call or end-to-end latency. Submission modes are tuned separately. [Benchmark methodology](docs/PERFORMANCE.md) includes workloads, parameters, three-run data and reproduction commands.
+Reports include p50, p99, p999 and backpressure. Write-cost quantiles use **1,000-write group averages**, not individual-call or end-to-end latency. Submission modes are tuned separately. [Benchmark methodology](docs/reports/PERFORMANCE.md) includes workloads, parameters, three-run data and reproduction commands.
 
 ### 1.2 After a continuous message batch, how fast is business execution?
 
@@ -71,14 +71,14 @@ The values below mean **post-send business execution time ÷ normal business exe
 
 ### 1.3 Earlier matched producer-write experiment
 
-This chart compares the **same TwoBufQueue parameters**, ordinary `write` and single-block Session. Apple M3 / macOS 14.4.1 / Clang 18.1.8; 10 million messages per run, five runs; callback loop count 0; each layer's payload pool 8 MiB (16 MiB total). High QoS, **no hard CPU affinity**. p50 is the quantile of **1,000-write group averages**, not individual-call or end-to-end latency. Send timing excludes round draining, but includes block acquisition and switching. [Chart source and full measurement conditions](docs/PERFORMANCE.md).
+This chart compares the **same TwoBufQueue parameters**, ordinary `write` and single-block Session. Apple M3 / macOS 14.4.1 / Clang 18.1.8; 10 million messages per run, five runs; callback loop count 0; each layer's payload pool 8 MiB (16 MiB total). High QoS, **no hard CPU affinity**. p50 is the quantile of **1,000-write group averages**, not individual-call or end-to-end latency. Send timing excludes round draining, but includes block acquisition and switching. [Chart source and full measurement conditions](docs/reports/PERFORMANCE.md).
 
 | Condition | Ordinary write | WriteSession |
 |---|---|---|
-| 8 MiB per layer, callback loop count 0 | [Historical report (Chinese)](docs/performance_8m_zero.md) | [Historical report (Chinese)](docs/performance_8m_zero_session.md) |
-| 256 MiB per layer, calibrated callback work | [Historical report (Chinese)](docs/performance_256m_callback.md) | [Historical report (Chinese)](docs/performance_256m_callback_session.md) |
+| 8 MiB per layer, callback loop count 0 | [Historical report (Chinese)](docs/reports/comparison/performance_8m_zero.md) | [Historical report (Chinese)](docs/reports/comparison/performance_8m_zero_session.md) |
+| 256 MiB per layer, calibrated callback work | [Historical report (Chinese)](docs/reports/comparison/performance_256m_callback.md) | [Historical report (Chinese)](docs/reports/comparison/performance_256m_callback_session.md) |
 
-Reports also include ReaderWriterQueue, rigtorp/SPSCQueue and atomic_queue. All measured trials, parameters and commands are retained. An independent copy-constructor A/B shows large changes in some native queues even with identical payloads and valid data; these differences cannot all be attributed to queue algorithms. See [benchmark methodology](docs/PERFORMANCE.md) before interpreting the comparison.
+Reports also include ReaderWriterQueue, rigtorp/SPSCQueue and atomic_queue. All measured trials, parameters and commands are retained. An independent copy-constructor A/B shows large changes in some native queues even with identical payloads and valid data; these differences cannot all be attributed to queue algorithms. See [benchmark methodology](docs/reports/PERFORMANCE.md) before interpreting the comparison.
 
 ## 2. Problems and solutions
 
@@ -90,7 +90,7 @@ It is easy to assume that a queue with enough capacity leaves business performan
 
 Even without backpressure, business execution can slow down substantially after the producer sends a continuous batch. Sending many messages touches a large amount of memory and can displace the business thread's hot data from CPU caches.
 
-TwoBufQueue reuses a small producer message pool and leaves larger backlog storage to the consumer, aiming to reduce interference with subsequent business execution. The experiment above measures this effect: [post-send business performance](docs/performance_burst_from_empty.md).
+TwoBufQueue reuses a small producer message pool and leaves larger backlog storage to the consumer, aiming to reduce interference with subsequent business execution. The experiment above measures this effect: [post-send business performance](docs/reports/burst/performance_burst_from_empty.md).
 
 ### 2.2 How much faster is batch publication and handoff than per-record handoff?
 
@@ -98,7 +98,7 @@ How large can the gap be? The measured hot-path configurations differ by several
 
 For 8 B messages on this host, **Session loops reach about 2,306.5 million messages/s, ordinary-write batch publication about 1,022 million messages/s, and per-record publication about 490 million messages/s.** Relative to per-record publication, Session reaches about **4.7×**, and ordinary-write batch publication about **2.1×**.
 
-See [Session](docs/performance_256m_zero_session_plateau.md), [ordinary-write batch publication](docs/performance_256m_zero_publish_max_plateau.md), and [per-record publication](docs/performance_256m_zero_publish1_plateau.md). Each mode uses its tuned configuration; these numbers compare the complete measured configurations.
+See [Session](docs/reports/comparison/performance_256m_zero_session_plateau.md), [ordinary-write batch publication](docs/reports/comparison/performance_256m_zero_publish_max_plateau.md), and [per-record publication](docs/reports/comparison/performance_256m_zero_publish1_plateau.md). Each mode uses its tuned configuration; these numbers compare the complete measured configurations.
 
 ### 2.3 When message buffers are full, must the producer wait?
 
@@ -116,7 +116,7 @@ A small capacity may not cover bursts; a large one may retain memory for peaks t
 
 TwoBufQueue can use a generous memory limit while its pool allocates blocks as needed. With a configured free-block retention limit, surplus free blocks enter the reclamation path, adjusting allocation according to the preset parameters.
 
-Convenience construction retains free blocks by default. Configure a retention limit on a manually constructed source pool when automatic reclamation is needed. See [dynamic pool allocation and reclamation](docs/API.md#61-on-demand-allocation-and-free-block-reclamation).
+Convenience construction retains free blocks by default. Configure a retention limit on a manually constructed source pool when automatic reclamation is needed. See [dynamic pool allocation and reclamation](docs/guides/API.md#61-on-demand-allocation-and-free-block-reclamation).
 
 ### 2.5 How can large messages be sent more efficiently?
 
@@ -206,11 +206,11 @@ flowchart LR
     class H,I consumer;
 ```
 
-Consumers share the work; each message is not broadcast to every consumer. Thread counts are configurable. See [thread and output-mode configuration](docs/API.md#9-multiple-producers-and-consumers).
+Consumers share the work; each message is not broadcast to every consumer. Thread counts are configurable. See [thread and output-mode configuration](docs/guides/API.md#9-multiple-producers-and-consumers).
 
 ### 3.3 Design highlights
 
-Both TwoBufQueue diagrams show the two-layer asynchronous path. An optional direct read path skips layer-2 copying; a non-void `SyncContext` executes per-record callbacks on the producer thread. See [API contracts](docs/API.md) for configuration and data lifetimes.
+Both TwoBufQueue diagrams show the two-layer asynchronous path. An optional direct read path skips layer-2 copying; a non-void `SyncContext` executes per-record callbacks on the producer thread. See [API contracts](docs/guides/API.md) for configuration and data lifetimes.
 
 How the designs address the questions above:
 
@@ -233,7 +233,7 @@ How the designs address the questions above:
 
 **Benefit:** Consecutive submissions can have very low producer overhead. Compared with repeating a full submission path for every message, TwoBufQueue's batch-write option reduces repeated work so the business thread finishes the batch sooner.
 
-[Performance comparison](docs/performance_256m_zero_session_plateau.md) · [Usage example](examples/two_buf_queue/07_quick_write_muti_msg.cpp)
+[Performance comparison](docs/reports/comparison/performance_256m_zero_session_plateau.md) · [Usage example](examples/two_buf_queue/07_quick_write_muti_msg.cpp)
 
 #### 4.1.2 Batch notification and processing are acceptable
 
@@ -241,7 +241,7 @@ How the designs address the questions above:
 
 **Benefit:** Compared with sharing progress and handing off every record, submitting a batch reduces coordination between the producer and background workers. Applications that accept batch arrival can leave more CPU time for producer business work while maintaining high throughput.
 
-[Batch publication results](docs/performance_256m_zero_publish_max_plateau.md) · [Per-record publication results](docs/performance_256m_zero_publish1_plateau.md)
+[Batch publication results](docs/reports/comparison/performance_256m_zero_publish_max_plateau.md) · [Per-record publication results](docs/reports/comparison/performance_256m_zero_publish1_plateau.md)
 
 #### 4.1.3 Transferring larger messages or data blocks
 
@@ -249,7 +249,7 @@ How the designs address the questions above:
 
 **Benefit:** Submit the range as a message to reduce application-level per-record dispatch and leave expensive processing to background workers. Consumer capacity for pending work is configured independently. Planned splitting and reassembly will let messages larger than one source block travel through a smaller producer pool.
 
-[Usage and length limits](docs/API.md) · [Configuration example](examples/two_buf_queue/08_all_parameters.cpp). Each message currently must fit one source block; a dedicated large-message benchmark is planned.
+[Usage and length limits](docs/guides/API.md) · [Configuration example](examples/two_buf_queue/08_all_parameters.cpp). Each message currently must fit one source block; a dedicated large-message benchmark is planned.
 
 #### 4.1.4 Consumer speed varies
 
@@ -265,7 +265,7 @@ Capacity is finite; sustained overload or insufficient background copy progress 
 
 **Benefit:** Compared with writing through a large single-layer message area, a small producer pool can reduce interference with business data in CPU caches. The benefit includes keeping subsequent business execution fast, as well as submitting messages quickly.
 
-[Business-performance comparison](docs/performance_burst_from_empty.md): after a 16 MiB batch on this host, TwoBufQueue's business cost rises from about 13 ns/call to 18.2 ns/call. The report below states the conditions.
+[Business-performance comparison](docs/reports/burst/performance_burst_from_empty.md): after a 16 MiB batch on this host, TwoBufQueue's business cost rises from about 13 ns/call to 18.2 ns/call. The report below states the conditions.
 
 #### 4.1.6 Several producer–consumer combinations are needed
 
@@ -328,7 +328,7 @@ int main() {
 
 The [async logger](examples/two_buf_queue/09_async_logger.cpp) adds bounded buffers, pressure statistics, a slow-sink option and verification of the saved file. It distinguishes queue `flush()` from flushing the file.
 
-Currently requires **C++20**. See [build and integration](#53-build-and-integrate) below and the [API guide](docs/API.md) for parameters, message formats and lifetimes.
+Currently requires **C++20**. See [build and integration](#53-build-and-integrate) below and the [API guide](docs/guides/API.md) for parameters, message formats and lifetimes.
 
 ### 5.2 Choose a starting point
 
@@ -370,7 +370,7 @@ find_package(TwoBufQueue 0.1 CONFIG REQUIRED)
 target_link_libraries(your_app PRIVATE TwoBufQueue::TwoBufQueue)
 ```
 
-[Integration instructions](docs/INTEGRATION.md) cover installation, relocatable packages and `FetchContent`. The CMake package version is 0.1.0; no release tag is implied by that metadata.
+[Integration instructions](docs/guides/INTEGRATION.md) cover installation, relocatable packages and `FetchContent`. The CMake package version is 0.1.0; no release tag is implied by that metadata.
 
 ### 5.4 Usage boundaries
 
@@ -381,7 +381,7 @@ target_link_libraries(your_app PRIVATE TwoBufQueue::TwoBufQueue)
 - With current-block scanning disabled, `flush()` cannot deliver a partial current block. Use an explicit handoff or `finish()` for the tail. With scanning enabled, publishing and scheduling still affect delivery latency.
 - Stop and join producers, call each Writer's `finish()`, then `queue.stop()` and check its error. Queue flush does not wait for delivery or imply durable storage.
 
-See [API details](docs/API.md), [test evidence](docs/TESTING.md), and [contributing](CONTRIBUTING.md). Linux/Windows/macOS CI is configured; the saved local results identify which platforms actually ran.
+See [API details](docs/guides/API.md), [test evidence](docs/development/TESTING.md), and [contributing](CONTRIBUTING.md). Linux/Windows/macOS CI is configured; the saved local results identify which platforms actually ran.
 
 ## 6. Roadmap
 

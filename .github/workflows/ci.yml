@@ -85,7 +85,7 @@ jobs:
           key: brq-deps-${{ runner.os }}-spsc-pinned-v1-${{ hashFiles('**/spsc_dependencies.json') }}
       - name: Fetch verified benchmark-only dependencies
         shell: bash
-        run: python "$BRQ_SOURCE/benchmarks/bootstrap_spsc.py"
+        run: python "$BRQ_SOURCE/benchmarks/spsc/bootstrap_spsc.py"
       - name: Build and validate adapters
         shell: bash
         run: |
@@ -98,7 +98,7 @@ jobs:
           binary=build-compare/brq_tunable_benchmark
           if test -f build-compare/Release/brq_tunable_benchmark.exe; then binary=build-compare/Release/brq_tunable_benchmark.exe;
           elif test -f build-compare/brq_tunable_benchmark.exe; then binary=build-compare/brq_tunable_benchmark.exe; fi
-          python "$BRQ_SOURCE/benchmarks/run_release_benchmarks.py" --binary "$binary" --output benchmark-smoke --report-dir benchmark-smoke/reports --cache 8 --payload 8 16 32 64 --messages 10000 --repetitions 1 --producer-qos unchanged --timer steady
+          python "$BRQ_SOURCE/benchmarks/spsc/run_release_benchmarks.py" --binary "$binary" --output benchmark-smoke --report-dir benchmark-smoke/reports --cache 8 --payload 8 16 32 64 --messages 10000 --repetitions 1 --producer-qos unchanged --timer steady
       - name: Save benchmark smoke evidence
         uses: actions/upload-artifact@v4
         with:
@@ -116,7 +116,7 @@ jobs:
       - uses: actions/checkout@v4
       - name: Fetch verified benchmark headers
         shell: bash
-        run: python benchmarks/bootstrap_spsc.py
+        run: python benchmarks/spsc/bootstrap_spsc.py
       - name: Build instrumented pool contracts
         shell: bash
         run: |

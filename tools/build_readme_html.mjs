@@ -109,7 +109,7 @@ function flow(text, zh) {
     + '</ol></figure>';
 }
 
-const submissionSourceName = 'docs/performance_256m_zero_session_plateau.html';
+const submissionSourceName = 'docs/reports/comparison/performance_256m_zero_session_plateau.html';
 const submissionSource = await readFile(resolve(root, submissionSourceName), 'utf8');
 const submissionPacket = submissionSource.match(/<script[^>]+id="report-data"[^>]*>([\s\S]*?)<\/script>/)?.[1];
 if (!submissionPacket) throw new Error('Missing saved Session report data.');
@@ -167,7 +167,7 @@ function metricChart(zh, alt, kind) {
     }).join('') + '</div><figcaption>'
     + (isSubmission ? (zh ? '单位 M条/s，越高越好。' : 'Million messages/s, higher is better.')
       : (zh ? '比值 = 业务耗时 ÷ 13 ns，越低越好。1.00× 表示正常耗时。' : 'Ratio = business cost ÷ 13 ns; lower is better. 1.00× is normal cost.'))
-    + ' <a href="' + (isSubmission ? submissionSourceName : 'docs/performance_burst_from_empty.html') + '">'
+    + ' <a href="' + (isSubmission ? submissionSourceName : 'docs/reports/burst/performance_burst_from_empty.html') + '">'
     + (zh ? '完整报告与参数' : 'Full report and parameters') + '</a></figcaption></figure>';
 }
 
@@ -423,7 +423,7 @@ for (const zh of [false, true]) {
   const menu = '<a href="#' + escape(performanceGroup.id) + '">' + (zh ? '性能实测' : 'Performance') + '</a>'
     + '<a href="#' + escape(example.id) + '">' + (zh ? '开始使用' : 'Quick start') + '</a>'
     + '<a href="#' + escape(integration.id) + '">' + (zh ? '构建接入' : 'Integration') + '</a>'
-    + '<a href="docs/index.html">' + (zh ? '全部报告' : 'All reports') + '</a>';
+    + '<a href="docs/reports/index.html">' + (zh ? '全部报告' : 'All reports') + '</a>';
   const tocToggle = '<button class="toc-toggle" id="toc-toggle" type="button" aria-controls="overview-toc" aria-expanded="true"'
     + ' data-hide-label="' + (zh ? '隐藏目录' : 'Hide contents') + '" data-show-label="' + (zh ? '显示目录' : 'Show contents') + '">'
     + '<span aria-hidden="true">☰</span><span class="toc-toggle-label">' + (zh ? '隐藏目录' : 'Hide contents') + '</span></button>';
@@ -442,7 +442,7 @@ for (const zh of [false, true]) {
     + '<div class="page-layout overview-layout' + (detailed ? '' : ' quick-overview')
     + '" id="top"><aside class="toc overview-toc" id="overview-toc"><p class="toc-label">' + (zh ? '项目介绍' : 'ON THIS PAGE')
     + '</p><nav aria-label="' + (zh ? '目录' : 'Table of contents') + '">' + toc + '</nav><div class="toc-footer"><a href="'
-    + (zh ? 'docs/API.zh-CN.html' : 'docs/API.html') + '">' + (zh ? '接口指南' : 'API guide') + '</a><a href="LICENSE">Apache-2.0</a></div></aside>'
+    + (zh ? 'docs/guides/API.zh-CN.html' : 'docs/guides/API.html') + '">' + (zh ? '接口指南' : 'API guide') + '</a><a href="LICENSE">Apache-2.0</a></div></aside>'
     + '<main id="content"><section class="hero"><div class="eyebrow"><span></span>'
     + (zh ? '双层缓存 · 批量发布与传输 · 生产者热路径' : 'TWO-LAYER BUFFERS · BATCH PUBLICATION AND TRANSFER · PRODUCER HOT PATH')
     + '</div><h1>TwoBufQueue</h1><div class="hero-tagline">' + markdown.parseInline(tagline.text)
@@ -453,7 +453,7 @@ for (const zh of [false, true]) {
     + benefitTargets.map((target, index) => '<li><a href="#' + escape(target.id) + '">' + escape(benefitLabels[index]) + '</a></li>').join('') + '</ul>'
     + '<div class="resources">' + (navigation ? markdown.parse(navigation.raw) : '') + '</div></section>'
     + content + '<footer class="site-footer"><span>TwoBufQueue · C++ · Apache-2.0</span><span><a href="'
-    + (zh ? 'docs/API.zh-CN.html' : 'docs/API.html') + '">' + (zh ? '接口指南' : 'API guide') + '</a><a href="docs/index.html">' + (zh ? '性能报告' : 'Performance reports')
+    + (zh ? 'docs/guides/API.zh-CN.html' : 'docs/guides/API.html') + '">' + (zh ? '接口指南' : 'API guide') + '</a><a href="docs/reports/index.html">' + (zh ? '性能报告' : 'Performance reports')
     + '</a><a href="#top">' + (zh ? '回到顶部 ↑' : 'Back to top ↑') + '</a></span></footer></main></div></body></html>\n';
   await writeFile(resolve(root, outputName), html);
   console.log('Generated ' + outputName + ' from ' + sourceName);

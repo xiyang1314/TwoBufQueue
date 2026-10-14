@@ -1,7 +1,7 @@
 #include "../../support/joining_thread.hpp"
-#include "../writer_fixture.hpp"
-#include "../warm_pool_test_support.hpp"
-#include "../block_test_support.hpp"
+#include "../support/writer_fixture.hpp"
+#include "../support/warm_pool_test_support.hpp"
+#include "../support/block_test_support.hpp"
 #include "support.hpp"
 namespace ft {
 template <unsigned Pub> void pipeline(bool buffered, unsigned producers) {

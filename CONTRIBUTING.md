@@ -18,7 +18,7 @@ cmake --build build --config Release --parallel
 ctest --test-dir build -C Release --output-on-failure
 ```
 
-Run the current tests and examples before submitting. A behavior fix should include a focused regression test. State what you actually ran and any untested limits in the pull request. Performance thresholds on shared CI are not reliable regression gates. For an optimization, provide before/after commands, matching workloads and settings, environment information and all raw results; explain memory, thread and latency tradeoffs in the [benchmark methodology](docs/PERFORMANCE.md).
+Run the current tests and examples before submitting. A behavior fix should include a focused regression test. State what you actually ran and any untested limits in the pull request. Performance thresholds on shared CI are not reliable regression gates. For an optimization, provide before/after commands, matching workloads and settings, environment information and all raw results; explain memory, thread and latency tradeoffs in the [benchmark methodology](docs/reports/PERFORMANCE.md).
 
 ## 3. Code and language conventions
 
@@ -37,4 +37,4 @@ npm install --prefix .deps/readme marked@17.0.5
 node tools/build_readme_html.mjs
 ```
 
-This updates the overview, registered documentation and syntax-highlighted source views. Before packaging or deploying Pages, run `python3 tools/refresh_release_manifest.py` and `python3 tools/verify_release.py`. Original measurement data and measured source archives remain historical evidence and must not be rewritten as if they came from the current source tree. See [publication steps](docs/PUBLISHING.md) for manifest and packaging checks.
+This updates the overview, registered documentation and syntax-highlighted source views. Before packaging or deploying Pages, run `python3 tools/refresh_release_manifest.py` and `python3 tools/verify_release.py`. Original measurement data and measured source archives remain historical evidence and must not be rewritten as if they came from the current source tree. See [publication steps](docs/development/PUBLISHING.md) for manifest and packaging checks.

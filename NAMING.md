@@ -56,7 +56,7 @@ Review reports and recorded performance/test results are historical evidence. Th
 
 `MemRange` was renamed `WriterBlock` during the source-block migration; the historical files were `src/write/writer_block.hpp` and `.cpp`. The state enum was `SourceBlockState`, and writers exposed their source through `source_block()`. That class derived from `ReaderBlock<>`, adding publication/delivery cursors and writer-completion state without changing block lifetimes.
 
-The old source-block manager was removed. Writer references SpscLiveHandoffQueue directly and exposes it through `handoff_queue()`. `WriterPool` and `WriterQueue` are aliases for existing components rather than new manager classes. Use current headers and the [API guide](docs/API.md) for today's whole-block source types.
+The old source-block manager was removed. Writer references SpscLiveHandoffQueue directly and exposes it through `handoff_queue()`. `WriterPool` and `WriterQueue` are aliases for existing components rather than new manager classes. Use current headers and the [API guide](docs/guides/API.md) for today's whole-block source types.
 
 ## 3. Block resource factory naming
 

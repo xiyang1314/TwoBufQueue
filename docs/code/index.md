@@ -2,7 +2,7 @@
 
 [TwoBufQueue C++](../../README.md)
 
-[Overview](../../README.md) · [API](../API.md) · [Examples](../../examples/README.md) · [Source browser](index.md)
+[Overview](../../README.md) · [API](../guides/API.md) · [Examples](../../examples/README.md) · [Source browser](index.md)
 
 [English](index.md) · [中文](index.zh-CN.md)
 
@@ -12,7 +12,7 @@ TWOBUFQUEUE · SOURCE BROWSER
 
 Start with basic messaging, then choose grouped, concurrent or synchronous callbacks. Every view contains the complete source, syntax highlighting and line numbers.
 
-[Start with the basic example](../../examples/01_basic.cpp) · [API guide](../API.md)
+[Start with the basic example](../../examples/01_basic.cpp) · [API guide](../guides/API.md)
 
 [Examples](#examples) · [Components](#components) · [Benchmark scripts](#benchmark-scripts) · [Assembly](#assembly) · [Build integration](#build-integration) · [Technical notes](#technical-notes)
 
@@ -180,21 +180,69 @@ C++ · 375 lines
 
 Execution, parameter selection and saved results.
 
-[plot_release.py](../../benchmarks/plot_release.py)
+[test_per_write_block_size_only_writer.py](../../benchmarks/block_size/test_per_write_block_size_only_writer.py)
+
+Complete source referenced by the documentation.
+
+benchmarks/block_size/test_per_write_block_size_only_writer.py
+
+Python · 254 lines
+
+[test_per_writer_block_size.py](../../benchmarks/block_size/test_per_writer_block_size.py)
+
+Complete source referenced by the documentation.
+
+benchmarks/block_size/test_per_writer_block_size.py
+
+Python · 324 lines
+
+[run_burst_empty.py](../../benchmarks/burst/run_burst_empty.py)
+
+Complete source referenced by the documentation.
+
+benchmarks/burst/run_burst_empty.py
+
+Python · 158 lines
+
+[test_hot_path_cache.py](../../benchmarks/hot_path/test_hot_path_cache.py)
+
+Complete source referenced by the documentation.
+
+benchmarks/hot_path/test_hot_path_cache.py
+
+Python · 285 lines
+
+[bootstrap_spsc.py](../../benchmarks/spsc/bootstrap_spsc.py)
+
+Complete source referenced by the documentation.
+
+benchmarks/spsc/bootstrap_spsc.py
+
+Python · 55 lines
+
+[plot_release.py](../../benchmarks/spsc/plot_release.py)
 
 Plot saved results without rerunning benchmarks.
 
-benchmarks/plot_release.py
+benchmarks/spsc/plot_release.py
 
 Python · 70 lines
 
-[run_release_benchmarks.py](../../benchmarks/run_release_benchmarks.py)
+[run_release_benchmarks.py](../../benchmarks/spsc/run_release_benchmarks.py)
 
 Run configured measurements, validate payloads and save all records.
 
-benchmarks/run_release_benchmarks.py
+benchmarks/spsc/run_release_benchmarks.py
 
-Python · 219 lines
+Python · 220 lines
+
+[tune_spsc.py](../../benchmarks/spsc/tune_spsc.py)
+
+Complete source referenced by the documentation.
+
+benchmarks/spsc/tune_spsc.py
+
+Python · 738 lines
 
 [run.py](../performance_data/latency32_investigation_20261010/run.py)
 

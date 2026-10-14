@@ -4,7 +4,7 @@
 
 Its two-layer buffer design prioritizes producer hot-path performance. Batch publication and transfer let producers use small buffers while consumers use larger buffers, reducing the effect of message transfer on business execution. Supports single or multiple producers and consumers. Currently requires C++20.
 
-[简体中文](README.zh-CN.md) · [Full guide](README_DETAIL.md) · [API guide](docs/API.md) · [Examples](examples/README.md) · [Benchmarks](docs/PERFORMANCE.md)
+[简体中文](README.zh-CN.md) · [Full guide](README_DETAIL.md) · [API guide](docs/guides/API.md) · [Examples](examples/README.md) · [Benchmarks](docs/reports/PERFORMANCE.md)
 
 **Contents**
 
@@ -59,7 +59,7 @@ The four charts compare producer submission throughput in **million messages/s; 
 
 ![Producer submission throughput for 8, 16, 32 and 64 B messages](docs/assets/session_write_throughput.svg)
 
-[Full Session results](docs/performance_256m_zero_session_plateau.md) · [Ordinary write, batch publication](docs/performance_256m_zero_publish_max_plateau.md) · [Ordinary write, per-record publication](docs/performance_256m_zero_publish1_plateau.md)
+[Full Session results](docs/reports/comparison/performance_256m_zero_session_plateau.md) · [Ordinary write, batch publication](docs/reports/comparison/performance_256m_zero_publish_max_plateau.md) · [Ordinary write, per-record publication](docs/reports/comparison/performance_256m_zero_publish1_plateau.md)
 
 ### 2.2 Business performance after a continuous message batch
 
@@ -67,7 +67,7 @@ Every queue follows the same sequence: **normal business work → send a continu
 
 ![Post-send business cost relative to normal after 2, 4, 8 and 16 MiB batches](docs/assets/burst_business_ratio.svg)
 
-Normal business work costs about **13 ns/call** on this host. After a 16 MiB batch, TwoBufQueue costs **18.2 ns/call**, ReaderWriterQueue 58.2, rigtorp 42.5 and atomic_queue 99.8. [Full experiment and parameters](docs/performance_burst_from_empty.md)
+Normal business work costs about **13 ns/call** on this host. After a 16 MiB batch, TwoBufQueue costs **18.2 ns/call**, ReaderWriterQueue 58.2, rigtorp 42.5 and atomic_queue 99.8. [Full experiment and parameters](docs/reports/burst/performance_burst_from_empty.md)
 
 These are separate experiments on Apple M3. Submission uses 256 MiB per TwoBufQueue layer and callback loop count 0. Business impact uses a 16 KiB producer pool, a 256 MiB consumer pool and callback loop count 64. Native queues use 256 MiB of message storage. Three-run means, high QoS and no hard CPU affinity; see the reports for timing scope and limitations.
 
@@ -132,16 +132,16 @@ cmake --build build --config Release --parallel
 ctest --test-dir build -C Release --output-on-failure
 ```
 
-Link the CMake target `TwoBufQueue::TwoBufQueue`. [Installation and integration](docs/INTEGRATION.md) · [More examples](examples/README.md)
+Link the CMake target `TwoBufQueue::TwoBufQueue`. [Installation and integration](docs/guides/INTEGRATION.md) · [More examples](examples/README.md)
 
 ## 5. Full documentation
 
 | What you need | Start here |
 |---|---|
 | Two-layer design, use cases and roadmap | [Full guide README_DETAIL](README_DETAIL.md) |
-| Writing, publication, callbacks, threads and parameters | [API guide](docs/API.md) |
+| Writing, publication, callbacks, threads and parameters | [API guide](docs/guides/API.md) |
 | Session, multiple producers and synchronous callbacks | [Examples](examples/README.md) |
-| Measurement scope, parameters and reproduction | [Benchmark methodology](docs/PERFORMANCE.md) |
-| Application logging through the queue | [Async logging guide](docs/ASYNC_LOGGING.md) |
+| Measurement scope, parameters and reproduction | [Benchmark methodology](docs/reports/PERFORMANCE.md) |
+| Application logging through the queue | [Async logging guide](docs/guides/ASYNC_LOGGING.md) |
 
 Apache-2.0. [License](LICENSE) · [Contributing](CONTRIBUTING.md)

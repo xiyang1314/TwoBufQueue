@@ -34,9 +34,9 @@ class Translate(HTMLParser):
 
     def translated(self, text):
         index_translations = self.translations.get('_index_zh_cn', {})
-        if self.language == 'zh-CN' and self.name == 'docs/index.zh-CN.html':
+        if self.language == 'zh-CN' and self.name == 'docs/reports/index.zh-CN.html':
             return index_translations.get(text, text)
-        if self.language == 'en' and self.name == 'docs/index.html':
+        if self.language == 'en' and self.name == 'docs/reports/index.html':
             # Subsequent builds read the localized Chinese index as their input.
             reverse = {chinese: english for english, chinese in index_translations.items()}
             if text in reverse:
@@ -167,7 +167,7 @@ def run(root):
         # The Chinese input keeps its original report body and JSON packet.
         original = re.sub(r'<div class="reading-language-switch"[^>]*>[\s\S]*?</div>', '', original)
         english = Translate(original, root, name, 'en', pairs, translations).result()
-        if name == 'docs/index.html':
+        if name == 'docs/reports/index.html':
             english = english.replace('Additional measurements and earlier experiments', 'Additional measurements and earlier experiments (Chinese records)')
         chinese = Translate(original, root, chinese_name(name), 'zh-CN', pairs, translations).result()
         for target, text in ((en, english), (cn, chinese)):

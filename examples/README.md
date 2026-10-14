@@ -24,7 +24,7 @@ Start from the repository root. Run [01_basic.cpp](01_basic.cpp), then choose a 
 | [08_all_parameters.cpp](two_buf_queue/08_all_parameters.cpp) | Tune a working configuration | Every Writer template argument, source pool/backpressure setting, reader setting and TwoBufQueue constructor option. |
 | [09_async_logger.cpp](two_buf_queue/09_async_logger.cpp) | Send application logs to background file I/O | Independent copying/callbacks, bounded pools, Block/Drop pressure, flush, draining shutdown and complete file verification. |
 
-Suggested route: `01 → 02` for individual-record and grouped callbacks. Read `03` for concurrency or `04` for direct source access. `05` and `08` cover sequence numbers and configuration. Use `07` for repeated fast writes, `06` for producer-thread callbacks, and `09` for file logging. The [logging guide](../docs/ASYNC_LOGGING.md) explains queue flush versus file flush.
+Suggested route: `01 → 02` for individual-record and grouped callbacks. Read `03` for concurrency or `04` for direct source access. `05` and `08` cover sequence numbers and configuration. Use `07` for repeated fast writes, `06` for producer-thread callbacks, and `09` for file logging. The [logging guide](../docs/guides/ASYNC_LOGGING.md) explains queue flush versus file flush.
 
 ## 3. Use individual components
 

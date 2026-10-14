@@ -1,6 +1,6 @@
 #include "../../../support/joining_thread.hpp"
-#include "../../warm_pool_test_support.hpp"
-#include "../../block_test_support.hpp"
+#include "../../support/warm_pool_test_support.hpp"
+#include "../../support/block_test_support.hpp"
 #include "common.hpp"
 #include <array>
 #include <barrier>
