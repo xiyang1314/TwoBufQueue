@@ -1,6 +1,6 @@
 # TwoBufQueue
 
-**TwoBufQueue is a C++ producer–consumer message queue component for passing messages and data between threads.**
+**TwoBufQueue is a C++ producer–consumer message queue component for transferring data between threads at high speed.**
 
 Its two-layer buffer design prioritizes producer hot-path performance. Batch publication and transfer let producers use small buffers while consumers use larger buffers, reducing the effect of message transfer on business execution. Supports single or multiple producers and consumers. Currently requires C++20.
 
@@ -77,9 +77,9 @@ These are separate experiments on Apple M3. Submission uses 256 MiB per TwoBufQu
 
 If the questions in chapter 1 interest you, or you have encountered similar problems, consider TwoBufQueue.
 
-In practical terms: the producer runs on the hot-path thread and the consumer runs on a supporting thread. You want the hot path to remain stable and efficient while letting the producer send messages quickly, as in low-latency applications such as robotics and quantitative trading.
+In practical terms: the producer runs on the hot-path thread and the consumer runs on a supporting thread. You want the hot path to remain stable and efficient while letting the producer send messages at high speed, as in low-latency applications such as robotics, sensors and quantitative trading.
 
-I will continue improving this component. You are welcome to share related requirements and ideas at any time. I will do my best to implement requests that are broadly useful to the community.
+**I will continue improving this component. You are welcome to share related requirements and ideas at any time. I will do my best to implement requests that are broadly useful to the community.**
 
 ### 3.2 Tradeoffs to consider
 

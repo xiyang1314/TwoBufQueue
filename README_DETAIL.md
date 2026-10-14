@@ -1,6 +1,6 @@
 # TwoBufQueue
 
-**TwoBufQueue is a C++ producer–consumer message queue component for passing messages and data between threads.**
+**TwoBufQueue is a C++ producer–consumer message queue component for transferring data between threads at high speed.**
 
 Its two-layer buffer design prioritizes producer hot-path performance. Batch publication and transfer let producers use small buffers while consumers use larger buffers for pending work, reducing the effect of message transfer on business execution.
 

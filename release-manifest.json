@@ -4,7 +4,7 @@
   "source_tree_modified_by_export": false,
   "git_history_copied": false,
   "file_count": 804,
-  "total_bytes": 66917289,
+  "total_bytes": 66917910,
   "preserved_unselected_files": [
     ".DS_Store",
     ".github/.DS_Store",
@@ -1172,51 +1172,51 @@
     },
     {
       "path": "README.html",
-      "bytes": 30215,
-      "sha256": "21f28dcfc385fd0b4fff21321af2b2c275ed43f2147c39ce7e70faa10d132ce9",
+      "bytes": 30287,
+      "sha256": "fc38532bc3677dcb51e90e78b8d281571274fe076ba77deffc42733d6e49bfc3",
       "source_path": "README.html",
       "source_sha256": "11654733c104777e7609e19ec7befe248a0e8548a111a4aaa261b2a15fa856d8"
     },
     {
       "path": "README.md",
-      "bytes": 9094,
-      "sha256": "a90e5332fccd4d584cfea7397a337f65f000c8640b04f4c9555d55b40b64ffd8",
+      "bytes": 9119,
+      "sha256": "24a551354f08530cb2cb0bb4e03edfe09964d9a30202fdebf787be115777242e",
       "source_path": "README.md",
       "source_sha256": "e8f7460dd765d2d84b8866401b47012720c71fc26d2430daba2f744c84753be4"
     },
     {
       "path": "README.zh-CN.html",
-      "bytes": 29711,
-      "sha256": "389438cb6637a285d8e95fab2dd3069b7837c525be14f74063227d571ba823cb",
+      "bytes": 29765,
+      "sha256": "48ccc1b6d9beda83dbeceae3e01a06308131e6ff6166aa8a5dccb5af8bf6b84f",
       "source_path": "README.zh-CN.html",
       "source_sha256": "996674e7697dd5e4d7b971dbd250f2b779c9f776083f31dec7d635236f963362"
     },
     {
       "path": "README.zh-CN.md",
-      "bytes": 8733,
-      "sha256": "3bc50e9ef8388a9616a1fe7e0c8e52e35bbb28a83a07d1979310ef3565b1ee0b",
+      "bytes": 8749,
+      "sha256": "52bb7a751a9069bd7575f5ae653bb57a0803ed8c6c91509c8cd88e8237930702",
       "source_path": "README.zh-CN.md",
       "source_sha256": "663a8da5cbc706c83603d1ce2f77e321af4f7a42c1afa7d80b8df74d6f7a4dfa"
     },
     {
       "path": "README_DETAIL.html",
-      "bytes": 58342,
-      "sha256": "f76b24ffffd245141416adfaa9800eb042b6399dde3061ac76b5d1fce0445cb9"
+      "bytes": 58354,
+      "sha256": "aeac32b2fc90b8dc394786557c00eb7eed915bf7956dc9658af38c6486dde0b8"
     },
     {
       "path": "README_DETAIL.md",
-      "bytes": 29440,
-      "sha256": "c63884fed39a5dd0874ffdd0491d6e29f1a217700ccf8cb6db52b8284e95a0c4"
+      "bytes": 29446,
+      "sha256": "4cd4de3281edcb41a04cbf8d8923449b49617ca2207cc4c35e407f518e700516"
     },
     {
       "path": "README_DETAIL.zh-CN.html",
-      "bytes": 55408,
-      "sha256": "0df868f5e37dba24ca4f9818b04332be99137f3323e9680d7d2e71069d3fc209"
+      "bytes": 55402,
+      "sha256": "f96dbc580cb01da82ae3acb49843ce041f5357f2c94e5fff3bcd56504ae0c502"
     },
     {
       "path": "README_DETAIL.zh-CN.md",
-      "bytes": 27104,
-      "sha256": "b00ccee28f1e175e768a2ded6eee62e9a1427b5e7f29ffe9e7a8a284ac1cd684"
+      "bytes": 27101,
+      "sha256": "ebb427f93ab2b0277f7f6b46d3ec30f95632056029778d85387fc24e1964c337"
     },
     {
       "path": "START_HERE.html",
@@ -1783,8 +1783,8 @@
     },
     {
       "path": "docs/assets/readme.css",
-      "bytes": 22528,
-      "sha256": "ee69976ae1220f959b777b91d6df0e6ef3695b3a273ca78eba744389d1875495",
+      "bytes": 22650,
+      "sha256": "136b3dbba47cffcafe270f3456aaf01b0ed00f8406f74893ee5709e9e7f99f76",
       "source_path": "docs/assets/readme.css",
       "source_sha256": "da537276d6e5693a2b8d8fa757d64204495743750080a0ba9761e5d1a8ef5883"
     },
@@ -6288,8 +6288,8 @@
     },
     {
       "path": "tools/build_readme_html.mjs",
-      "bytes": 34950,
-      "sha256": "9d9fb9e68f8793678c78676f08e383d029d3e6ebc3125ebf97871e074341cd3b",
+      "bytes": 35273,
+      "sha256": "8666d6675e1af26a08cbb38b3b62771e7dbe6d317844df3eb349d76cdb0620f0",
       "source_path": "tools/build_readme_html.mjs",
       "source_sha256": "1b3e34ff0ebdad9b72d0441a6209edd8d20445dd7504e3c8752d276bdd8250d4"
     },
@@ -6390,6 +6390,6 @@
       "source_sha256": "a8f1af99e01b0e16ef09a6c5d6c4dbff1f5d5ff3ba7ffef601423bd68bf47164"
     }
   ],
-  "refreshed_at": "2026-10-14T22:20:15.481905+08:00",
+  "refreshed_at": "2026-10-14T23:01:38.504009+08:00",
   "refresh_policy": "bytes/sha256 describe current canonical files; source_path/source_sha256 retain original export provenance where present."
 }

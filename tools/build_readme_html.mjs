@@ -227,7 +227,11 @@ for (const zh of [false, true]) {
   markdown.use({ renderer: {
     paragraph({ tokens }) {
       const content = this.parser.parseInline(tokens);
-      return tokens.length === 1 && tokens[0].type === 'image' ? content : '<p>' + content + '</p>\n';
+      if (tokens.length === 1 && tokens[0].type === 'image') return content;
+      const paragraphText = tokens.map(token => token.text || '').join('');
+      const feedback = paragraphText.startsWith('同时，我会持续完善这个组件。')
+        || paragraphText.startsWith('I will continue improving this component.');
+      return '<p' + (feedback ? ' class="feedback-invitation"' : '') + '>' + content + '</p>\n';
     },
     code({ text, lang }) {
       const language = (lang || 'text').split(/\s/)[0];
