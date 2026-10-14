@@ -45,7 +45,7 @@ void append_record(std::vector<std::byte>& output, const std::vector<std::byte>&
             size /= 256;
         }
     }
-    output.insert(output.end(), payload.begin(), payload.end());
+    for (const auto byte : payload) output.push_back(byte);
 }
 
 template<unsigned Publish, bool WriteLen, class Len>
@@ -159,7 +159,9 @@ template<bool WriteLen, class Len> void slice_capacity() {
 
 template<class Len> void length_limits() {
     using RecordWriter = Writer<1, true, Len>;
-    const auto maximum = (std::numeric_limits<Len>::max)();
+    // Keep oversized input a runtime rejection test, not a compile-time
+    // out-of-bounds copy; no source byte may be read on this path.
+    const volatile Len maximum = (std::numeric_limits<Len>::max)();
     // Select a valid length that fits Len while leaving room to test exceeding block capacity.
     const std::size_t valid_size = sizeof(Len) == 1 ? 200u : sizeof(Len) == 2 ? 60000u : 100000u;
     WriterFixture pool(valid_size + sizeof(Len), 1, 1, {}, 0, sizeof(Len));
@@ -203,7 +205,8 @@ void empty_and_config() {
     const auto* before = writer.published_write_ptr();
     CHECK(!writer.write_mem(nullptr, std::uint16_t{0}));
     CHECK(!writer.write_mem(&value, std::uint16_t{0}));
-    CHECK(!writer.write_mem(&value, (std::numeric_limits<std::uint16_t>::max)()));
+    const volatile std::uint16_t oversized_length = (std::numeric_limits<std::uint16_t>::max)();
+    CHECK(!writer.write_mem(&value, oversized_length));
     CHECK(writer.published_write_ptr() == before);
     CHECK(writer.write(value)); // A one-byte block is valid without a prefix.
     RawReceiver receiver;

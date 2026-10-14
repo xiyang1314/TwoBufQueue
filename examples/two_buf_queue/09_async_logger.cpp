@@ -29,8 +29,9 @@ int main(int argc, char** argv) try {
 
     //---------------1. Initialization--------------------------------------
     // File lifetime covers the callback threads. Only the callback writes it.
-    using File = std::unique_ptr<std::FILE, decltype(&std::fclose)>;
-    File file(std::fopen(path, "wb"), &std::fclose);
+    const auto close_file = [](std::FILE* handle) noexcept { (void)std::fclose(handle); };
+    using File = std::unique_ptr<std::FILE, decltype(close_file)>;
+    File file(std::fopen(path, "wb"), close_file);
     example::require(static_cast<bool>(file), "cannot open log file");
     WriterSourceConfig source;
     source.block_size = 4096;

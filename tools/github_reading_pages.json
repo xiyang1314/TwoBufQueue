@@ -2579,12 +2579,12 @@
     {
       "markdown": "docs/code/index.md",
       "html": "docs/code/index.html",
-      "html_sha256": "113fd0461504001e591ae65413b2499b29f9e2219419f3fcb89fbcf5dd09f66f"
+      "html_sha256": "ac87d187a6f8198ace0233e9b8107a380d3016fa5c43271c086fd0c2178aaf8c"
     },
     {
       "markdown": "docs/code/index.zh-CN.md",
       "html": "docs/code/index.zh-CN.html",
-      "html_sha256": "5fa048fb6bc248d5f30325934753d15e0de05cbd98824e67e7c8fdc9a028b4e2"
+      "html_sha256": "22ab9b2d19120aaca9a011eddbec4c8c958f5a393f06a6eb010d73bc68ac1dfa"
     },
     {
       "markdown": "docs/performance_data/ordinary_readback_optimal_20261011/report_full_details_before_compact_20261011.md",

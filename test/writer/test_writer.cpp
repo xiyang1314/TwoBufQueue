@@ -38,7 +38,8 @@ template<unsigned Count> static void mixed_payloads() {
         if constexpr (Count == 1) assert(writer.published_write_ptr() == begin + expected.size());
         else assert(writer.published_write_ptr() == begin);
         assert(!writer.write_mem(nullptr, 1));
-        assert(!writer.write_mem(raw, (std::numeric_limits<std::uint16_t>::max)()));
+        const volatile std::uint16_t oversized_length = (std::numeric_limits<std::uint16_t>::max)();
+        assert(!writer.write_mem(raw, oversized_length));
         assert(writer.write_mem(nullptr, 0)); append(expected, std::uint16_t{0});
         assert(writer.write()); append(expected, std::uint16_t{0});
         assert(writer.write_mem(raw, sizeof(raw)));

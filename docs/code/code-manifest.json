@@ -482,9 +482,9 @@
       "html_path": "docs/code/examples/two_buf_queue/09_async_logger.cpp.html",
       "language": "cpp",
       "category": "examples",
-      "lines": 114,
-      "bytes": 6021,
-      "sha256": "e484ea34ec52f655b4a9c8c511c07ea569675482d67a428dde3d189d992d4b99",
+      "lines": 115,
+      "bytes": 6108,
+      "sha256": "fefc6a57355980d994958ebf02c48c12801833cddf924f67bc989412a672acc9",
       "description": "Background file logging, bounded-buffer pressure and draining shutdown. / 把业务日志交给后台写文件，演示缓存满时的处理与安全退出。",
       "referenced_by": [
         "README_DETAIL.html",

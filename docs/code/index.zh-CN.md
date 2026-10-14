@@ -90,7 +90,7 @@ C++ · 111 行
 
 examples/two_buf_queue/09_async_logger.cpp
 
-C++ · 114 行
+C++ · 115 行
 
 [11_warm_pool.cpp](https://xiyang1314.github.io/TwoBufQueue/docs/code/examples/components/11_warm_pool.cpp.zh-CN.html)
 

@@ -25,8 +25,11 @@ void write_read_cases(Cases &c) {
                          bool result = true;
                          if (k == "null")
                              result = d.writer.write_mem(nullptr, 4);
-                         if (k == "oversize")
-                             result = d.writer.write_mem(bytes.data(), (std::numeric_limits<std::uint16_t>::max)());
+                         if (k == "oversize") {
+                             // Test runtime rejection before touching the intentionally short source.
+                             const volatile std::uint16_t length = (std::numeric_limits<std::uint16_t>::max)();
+                             result = d.writer.write_mem(bytes.data(), length);
+                         }
                          if (k == "block")
                              result = d.writer.write_mem(bytes.data(), 32);
                          CHECK(!result);

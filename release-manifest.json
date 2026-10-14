@@ -4,7 +4,7 @@
   "source_tree_modified_by_export": false,
   "git_history_copied": false,
   "file_count": 804,
-  "total_bytes": 66953260,
+  "total_bytes": 66954842,
   "preserved_unselected_files": [
     ".DS_Store",
     ".github/.DS_Store",
@@ -1910,7 +1910,7 @@
     {
       "path": "docs/code/code-manifest.json",
       "bytes": 26200,
-      "sha256": "123263e0cd8e27c9eff4e6401a14825a417707973d9a358eed9d5848f271caaa",
+      "sha256": "be54e6c4f92680c4b36e7d0d0a6ae514e22fe17dcf948d31e677116203dde790",
       "source_path": "docs/code/code-manifest.json",
       "source_sha256": "2b92c7ae1bf98b27f056ec96cd99130b8ec7ceba606ca0859cd6d0824ffcbb86"
     },
@@ -2168,37 +2168,37 @@
     },
     {
       "path": "docs/code/examples/two_buf_queue/09_async_logger.cpp.html",
-      "bytes": 41549,
-      "sha256": "1fc4775ebf7e6fa3f181546679c02fae818bad13a7d0cf107b07ef40c7808197",
+      "bytes": 42049,
+      "sha256": "0b981a02501e5a8e11c1f45522398f7b35a340fcfd46e3ddfb9cd8b369a06794",
       "source_path": "docs/code/examples/two_buf_queue/09_async_logger.cpp.html",
       "source_sha256": "e3bd40f1d1029045ef6c60798b750a53adc29adede55f25a4c075bab052fef06"
     },
     {
       "path": "docs/code/examples/two_buf_queue/09_async_logger.cpp.zh-CN.html",
-      "bytes": 41625,
-      "sha256": "7d9c27fcde3bf78b25a12ff47ef1727cfcadc6a2ab5b81f25c82aa98ab5e9a30"
+      "bytes": 42125,
+      "sha256": "e9828c907cc6d62566b0cc6b9dfd8cc34609b480fa4923fcec7fcd09c0074dea"
     },
     {
       "path": "docs/code/index.html",
       "bytes": 18007,
-      "sha256": "113fd0461504001e591ae65413b2499b29f9e2219419f3fcb89fbcf5dd09f66f",
+      "sha256": "ac87d187a6f8198ace0233e9b8107a380d3016fa5c43271c086fd0c2178aaf8c",
       "source_path": "docs/code/index.html",
       "source_sha256": "df9d5ad9f5e5acb90976725fda0da7f7a27523bcb93d9cc1309f21d1b38908e5"
     },
     {
       "path": "docs/code/index.md",
       "bytes": 10437,
-      "sha256": "d7599955a901483c9c2fefa9fa1bb98a56bb2d3394e64cc62f9715e61590fa8d"
+      "sha256": "0f3aa4258acec8cfd4095e0c7daf9128caa698558799fb6d73f93403c7e5cb4e"
     },
     {
       "path": "docs/code/index.zh-CN.html",
       "bytes": 18507,
-      "sha256": "5fa048fb6bc248d5f30325934753d15e0de05cbd98824e67e7c8fdc9a028b4e2"
+      "sha256": "22ab9b2d19120aaca9a011eddbec4c8c958f5a393f06a6eb010d73bc68ac1dfa"
     },
     {
       "path": "docs/code/index.zh-CN.md",
       "bytes": 10894,
-      "sha256": "a3fce119e218748b47a917c21bf40742a67bb7e587381835200654b0366073d4"
+      "sha256": "5ef8170e6095b3a7142ecffdcd24e4f531547ea29faa8843753958c4cdee52d6"
     },
     {
       "path": "docs/code/src/base_components/HandoffQueue/handoff_queue.hpp.html",
@@ -5010,8 +5010,8 @@
     },
     {
       "path": "examples/two_buf_queue/09_async_logger.cpp",
-      "bytes": 6021,
-      "sha256": "e484ea34ec52f655b4a9c8c511c07ea569675482d67a428dde3d189d992d4b99",
+      "bytes": 6108,
+      "sha256": "fefc6a57355980d994958ebf02c48c12801833cddf924f67bc989412a672acc9",
       "source_path": "examples/two_buf_queue/09_async_logger.cpp",
       "source_sha256": "4ebeb34f63fa9b70c104a9c819d77093e33ab99324c95cfc940f2d31310313f5"
     },
@@ -6031,15 +6031,15 @@
     },
     {
       "path": "test/func/write_layout.cpp",
-      "bytes": 12966,
-      "sha256": "01695ace2118823519303b0cf30cf8c676cf474c6e59c353f254d6090564afdc",
+      "bytes": 13180,
+      "sha256": "e5c7f3728074c7cf8b64a7036c6d954f0b1a7d966bef3eff3b96ac02edf0ac1a",
       "source_path": "test/func/write_layout.cpp",
       "source_sha256": "28c073af729671917493451d71c1913268aa807bbd3281b4543ab3a6a7952785"
     },
     {
       "path": "test/func/write_read.cpp",
-      "bytes": 13454,
-      "sha256": "93afd7dbe9e4945b8223d1987dc844bbdcb8080df0a5d7be96708bbc78ec474d",
+      "bytes": 13661,
+      "sha256": "4951e987c5ede03a3b6a54b1f43d179f1a7113d5d4cd3471dc43944f339b08cb",
       "source_path": "test/func/write_read.cpp",
       "source_sha256": "7533946ebc4c73b9281d59749d3ace47dd11b0f996244df7e92a7e9e79883c9c"
     },
@@ -6248,8 +6248,8 @@
     },
     {
       "path": "test/writer/test_writer.cpp",
-      "bytes": 7846,
-      "sha256": "f1254adebb45704d1eee242c92a384a79341820b0e6e343f0ceefedafbaf62c4",
+      "bytes": 7920,
+      "sha256": "0e02c74bebfcf2aebc9b1919fba3d4e56d98627fe35611a8fa9239620d281349",
       "source_path": "test/test_writer.cpp",
       "source_sha256": "e9f2298c0e15a28e0fdafc95f705de7abab5cebf48d7984ad2b6ee114233652c"
     },
@@ -6346,7 +6346,7 @@
     {
       "path": "tools/github_reading_pages.json",
       "bytes": 184543,
-      "sha256": "a365c73ccdd2d3dcf02c5c262f9fc87f075f4242b737e2cc8251202daa21cea1"
+      "sha256": "d239878d088f30cd6c80fcdf1cc4289268f6ac9848a0b736cb25367f70b1da84"
     },
     {
       "path": "tools/localize_reading_pages.py",
@@ -6390,6 +6390,6 @@
       "source_sha256": "a8f1af99e01b0e16ef09a6c5d6c4dbff1f5d5ff3ba7ffef601423bd68bf47164"
     }
   ],
-  "refreshed_at": "2026-10-14T23:38:55.596027+08:00",
+  "refreshed_at": "2026-10-14T23:48:59.423739+08:00",
   "refresh_policy": "bytes/sha256 describe current canonical files; source_path/source_sha256 retain original export provenance where present."
 }
