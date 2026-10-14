@@ -2,8 +2,8 @@
 
 namespace TwoBufQueue {
 
-// 编译默认逐条发布实例；其他发布次数由使用处按需实例化。
-template class Writer<1, true>;   // 带长度前缀（默认 uint16_t）
-template class Writer<1, false>;  // 无长度前缀
+// Compile the default per-record publication instance; other counts instantiate where used.
+template class Writer<1, true>;   // With length prefixes (default uint16_t).
+template class Writer<1, false>;  // No length prefix.
 
 } // namespace TwoBufQueue

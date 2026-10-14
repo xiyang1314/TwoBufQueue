@@ -8,8 +8,8 @@
 
 namespace TwoBufQueue {
 
-// 整块借出、整块归还。只管理存储和 Loan，没有 Slice 或子分配器。
-// reset/finish 之前必须结束旧一代的数据访问；池必须活过全部借用。
+// Lend and return whole blocks; manages storage and Loan only, without Slice or suballocation.
+// Finish old-generation data access before reset/finish; the pool must outlive every loan.
 class alignas(64) SpscBasicBlock : public DefaultResource<> {
     const std::size_t capacity_;
 public:
@@ -22,13 +22,13 @@ public:
     SpscBasicBlock(const SpscBasicBlock&) = delete;
     SpscBasicBlock& operator=(const SpscBasicBlock&) = delete;
 
-    // 与 WriterBlock 的缓冲区字段一致；只允许写内容，不允许更换底层存储。
+    // Same buffer fields as WriterBlock; contents may be written, but the underlying storage must not be replaced.
     std::byte* const buf_;
     [[nodiscard]] std::byte* data() noexcept { return buf_; }
     [[nodiscard]] const std::byte* data() const noexcept { return buf_; }
     [[nodiscard]] std::size_t capacity() const noexcept { return capacity_; }
 
-    // 复用不清零缓冲区，调用方只读取本代已经写好并发布的字节。
+    // Reuse does not zero the buffer; read only bytes written and published during this generation.
     bool reset(std::uint64_t generation) noexcept { return DefaultResource<>::reset(generation); }
 
     static std::size_t checked_capacity(std::size_t capacity) {
@@ -39,7 +39,7 @@ public:
 
 };
 
-// 创建/销毁都在池锁外；工厂只保存尺寸，不维护额外的对象容器。
+// Create/destroy outside the pool lock; the Factory stores sizes without a separate object container.
 template<class TBlock>
 class SpscBlockFactory {
 public:

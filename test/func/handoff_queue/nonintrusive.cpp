@@ -22,7 +22,7 @@ struct Factory {
     std::atomic<unsigned>* disposed;
     Message* create() const { return new Message; }
     void dispose(Message* message) const noexcept { ++*disposed; delete message; }
-    bool reset(Message&) = delete; // reset 只能由资源自己实现。
+    bool reset(Message&) = delete; // Only the resource itself implements reset.
 };
 
 int main() {
@@ -55,7 +55,7 @@ int main() {
         assert(received && received->value == 17 && received.is_valid());
         assert(queue.state(received) == HandoffState::Received);
 
-        // 普通 receive 已释放 B 的唯一槽位，但原始借用还活着。
+        // Ordinary receive has released B's sole slot, but the original resource loan remains alive.
         auto next = queue.try_acquire();
         assert(next && queue.state(old_producer) == HandoffState::Invalid);
         next.loan->value = 23;
@@ -69,7 +69,7 @@ int main() {
         assert(queue.finish(claim));
         assert(queue.stats().received_count == 1 && received->value == 17);
 
-        // 同一个 receive Loan 的不同副本，从不同完成入口归还，恰好一个成功。
+        // Return copies of one receive Loan through different completion entries; exactly one succeeds.
         auto saved = received;
         Loan<void> erased = received;
         std::atomic<unsigned> won{0};
@@ -86,12 +86,12 @@ int main() {
             auto loan = queue.try_receive();
             assert(loan && loan.finish());
         }
-        // 对象已真正销毁/节点复用后，旧凭证仍只访问稳定节点。
+        // After object destruction/node reuse, stale tickets still touch stable nodes only.
         assert(disposed > 0 && !received.finish() && !erased.is_valid());
         assert(!queue.send(old_producer) && !queue.finish(stale_claim));
 
         auto raw = pool.get();
-        assert(raw && !queue.finish(raw)); // 普通池 Loan 不能冒充 receive Loan。
+        assert(raw && !queue.finish(raw)); // An ordinary pool Loan must not impersonate a receive Loan.
         assert(raw.finish());
         queue.close();
         assert(queue.is_drained() && pool.all_released());

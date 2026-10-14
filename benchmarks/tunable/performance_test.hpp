@@ -34,7 +34,7 @@ struct PerformanceResult {
     std::uint32_t producer_qos_actual = 0;
     double cpu_cores = 0, peak_rss_mib = 0;
     std::uint64_t consumed = 0, failed_write_calls = 0, callback_work_checksum = 0;
-    std::uint64_t session_block_exhaustions = 0; // 普通换块边界，不算背压或失败消息。
+    std::uint64_t session_block_exhaustions = 0; // A normal block boundary is neither backpressure nor a failed message.
     // Formal writes only; retry clocks run solely after a failed nonblocking push.
     std::uint64_t backpressured_messages = 0;
     double producer_retry_seconds = 0, producer_retry_max_seconds = 0;
@@ -63,7 +63,7 @@ FAST_LOG_ALWAYS_INLINE void retry_failed_write(PerformanceResult& result, TAttem
     result.producer_retry_seconds += elapsed;
     result.producer_retry_max_seconds = std::max(result.producer_retry_max_seconds,elapsed);
 }
-// 只在控制路径运行；避免坏配置或死锁让搜索永久卡住。
+// Control path only: prevent bad configurations or deadlocks from hanging the search indefinitely.
 class Watchdog {
     std::mutex mutex_;
     std::condition_variable event_;
@@ -122,7 +122,7 @@ public:
 #if defined(__APPLE__)
         if (pthread_get_qos_class_np(pthread_self(),&previous_,&priority_))
             throw std::runtime_error("cannot read producer QoS");
-        // macOS setter 不接受 UNSPECIFIED；此时结束后回到 DEFAULT，避免遗留高 QoS。
+        // The macOS setter rejects UNSPECIFIED; restore DEFAULT afterward to avoid retaining high QoS.
         if (previous_ == QOS_CLASS_UNSPECIFIED) { previous_ = QOS_CLASS_DEFAULT; priority_ = 0; }
         if (pthread_set_qos_class_self_np(QOS_CLASS_USER_INTERACTIVE,0))
             throw std::runtime_error("cannot set producer high QoS");
@@ -149,7 +149,7 @@ inline void observable(std::uint64_t& value) noexcept {
 #if defined(__GNUC__) || defined(__clang__)
     __asm__ __volatile__("" : "+r"(value) :: "memory");
 #else
-    // MSVC: volatile 防止消除模拟循环，不用于线程同步。
+    // MSVC: volatile preserves the simulated work; it does not provide thread synchronization.
     volatile std::uint64_t retained = value; value = retained;
 #endif
 }
@@ -197,7 +197,7 @@ template<std::size_t TBytes> struct Sink {
                 }
             } else for (std::size_t i=8; i<TBytes; ++i) valid &= ptr[i] == std::byte{0xa5};
         }
-        // 模拟业务循环每条消息执行一次；0 时跳过全部模拟计算。
+        // Run the simulated business loop once per message; zero skips all simulated computation.
         if (config.callback_iterations) {
             auto work = sequence ^ work_checksum;
             for (std::uint32_t i = 0; i < config.callback_iterations; ++i) {
@@ -208,7 +208,7 @@ template<std::size_t TBytes> struct Sink {
         }
         ++received;
         if (received == warmup) warmup_done.store(true,std::memory_order_release);
-        // 仅读线程维护 received/边界；每轮最后一条回调完成才发布一次，避免逐条原子写。
+        // Only the consumer updates received/boundaries; publish once after each round's final callback, avoiding per-record atomic stores.
         if (config.round_storage_bytes && received == next_round_end) {
             if (config.measure_callback_time) {
                 callback_processing_seconds += std::chrono::duration<double>(
@@ -229,8 +229,8 @@ inline std::uint64_t random_next(std::uint64_t& state) noexcept {
 }
 } // namespace detail
 
-// 可嵌入用户自己的程序；配置在构造函数传入，run 每次构造全新队列/线程。
-// 热路径使用模板分派，避免 std::function / 虚函数成为比较双方的共同瓶颈。
+// Embeddable in application code: pass configuration to the constructor; each run creates fresh queues/threads.
+// Use template dispatch on the hot path so std::function or virtual dispatch does not bottleneck either queue.
 class PerformanceTest {
 public:
     explicit PerformanceTest(PerformanceConfig config) : config_(std::move(config)) { config_.validate(); }
@@ -318,7 +318,7 @@ private:
             } else {
                 batch.resize(config_.call_batch_size);
                 for (auto& value : batch) value.bytes.fill(std::byte{0xa5});
-                // 同样的输入访问/分支循环参考值；不从单次调用分位数中相减。
+                // Reference loop with the same input accesses/branches; do not subtract it from single-call quantiles.
                 double elapsed = 0; std::uint64_t kept = 0;
                 for (unsigned repeat = 0; repeat < 1000; ++repeat) {
                     const auto begin = clock->read();
@@ -331,7 +331,7 @@ private:
             }
         }
         TChannel channel(config_,sink);
-        // 在消费/复制/看门狗线程创建后绑写线程，避免新线程继承写线程的亲和性。
+        // Bind the producer after creating consumer/copy/watchdog threads so they do not inherit its affinity.
         detail::ProducerAffinity affinity(config_.producer_cpu);
         detail::ProducerScheduling scheduling(config_.producer_qos,result);
         result.producer_hard_affinity = config_.producer_cpu >= 0;
@@ -361,9 +361,9 @@ private:
         channel.check();
         retry = 0;
         const auto pressure_start = channel.pressure_stats();
-        // 让编译器决定测试模式分派与整轮发送循环的内联边界。
-        // 强制展开会把普通写入、Session、计时逻辑并入大函数，改变热循环的生成代码。
-        // Writer::write 的内联属性保留；计时内仍逐条调用队列的写入接口。
+        // Let the compiler choose inlining boundaries between measurement dispatch and the full-round sending loop.
+        // Forced inlining merges ordinary writes, Session writes and timing into a large function, changing hot-loop code generation.
+        // Preserve Writer::write's inlining attributes; timed code still calls the queue's write interface for each record.
         const auto retry_until_accepted = [&](auto attempt) {
             detail::retry_failed_write(result,attempt,pause);
         };
@@ -421,7 +421,7 @@ private:
             };
             if constexpr (requires { channel.get_current_session(); }) {
                 if (config_.use_write_session) {
-                    // Session 跨计时组保留；组中遇到块满时，计时继续覆盖获取下一块。
+                    // Keep the Session across timing groups; acquiring the next block remains timed if a group fills the block.
                     auto* input = prepared.data();
                     const auto* finish = input + (round_end - round_begin);
                     const decltype(finish) no_group = nullptr;
@@ -436,7 +436,7 @@ private:
                         if (sampled) begin = clock->read();
                     };
                     while (input != finish) {
-                        if (!group_end) begin_group(); // 首次获取 Session 也包含在本组计时中。
+                        if (!group_end) begin_group(); // Include the first Session acquisition in this group's timing.
                         auto local = first ? channel.get_current_session() : channel.get_next_session();
                         first = false;
                         if (!local) throw std::runtime_error("session acquisition failed or timed out");
@@ -453,7 +453,7 @@ private:
                                 if (status != SessionWriteResult::success)
                                     throw std::runtime_error("session record write error");
                             }
-                            if (block_full) break; // 不推进 input；外层负责获取下一块。
+                            if (block_full) break; // Leave input unchanged; the outer loop acquires the next block.
                             if (sampled) {
                                 const auto end = clock->read();
                                 if (begin.cpu != end.cpu || end.ticks < begin.ticks) ++result.migrated_samples;
@@ -571,8 +571,8 @@ private:
         if (round_end == config_.messages) channel.finish();
         else if (publication_plan.finish_blocks) channel.finish_block();
         if (config_.round_storage_bytes) {
-            // 普通模式等待自然发布；完成块模式在计时外交接尾部，不添加虚假消息。
-            // 最后一轮统一 finish。原生 SPSC 每条发布，无需轮末额外操作。
+            // Ordinary mode waits for natural publication; completed-block mode hands off the tail outside timing without dummy records.
+            // Finish once after the last round. Native SPSC queues publish each record and need no round-end action.
             while (sink.completed_rounds.load(std::memory_order_acquire) < result.completed_rounds)
                 std::this_thread::yield();
             result.drain_seconds += std::chrono::duration<double>(std::chrono::steady_clock::now()-active_end).count();

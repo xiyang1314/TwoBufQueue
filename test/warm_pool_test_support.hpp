@@ -4,7 +4,7 @@
 #include "TwoBufQueue/src/utils/block_diagnostics.hpp"
 
 namespace TwoBufQueue {
-// 测试用类型别名和构造辅助；实际测试对象就是 WarmPool，没有包装层。
+// Test aliases and construction helpers; tests use WarmPool directly without a wrapper.
 template<class Block, bool concurrent = Block::concurrent>
 using TestBlockPool = WarmPool<Block, concurrent || Block::concurrent, BlockResourceFactory<Block>>;
 template<class Pool>

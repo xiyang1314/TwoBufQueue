@@ -12,10 +12,10 @@
 
 namespace TwoBufQueue {
 
-// 通用单生产者、单消费者 FIFO 队列，不依赖日志、WriterBlock<> 或回调。
-// 容量在构造时确定，运行中队列自身不分配内存；T 的构造/析构开销由 T 决定。
-// 元素入队时构造，pop 时析构；支持非默认构造类型和只能移动的类型。
-// 析构前必须停止生产者和消费者；front 返回的指针只在 pop 前有效。
+// General SPSC FIFO independent of logging, WriterBlock<> and callbacks.
+// Capacity is fixed at construction; the queue allocates nothing at runtime. T determines its own construction/destruction costs.
+// Construct elements on enqueue and destroy them on pop; supports non-default-constructible and move-only types.
+// Stop producer and consumer before destruction; front pointers are valid only until pop.
 template<class T>
 class SpscQueue {
     static_assert(std::atomic<std::size_t>::is_always_lock_free,
@@ -24,14 +24,14 @@ class SpscQueue {
                   "SpscQueue requires a non-throwing element destructor");
 
 public:
-    // capacity 为实际可容纳的元素数，额外一个槽位用于区分满和空。
-    // 允许零容量：始终为空，所有入队均返回 false。
+    // capacity is the usable element count; one extra slot distinguishes full from empty.
+    // Zero capacity is permitted: always empty and every enqueue returns false.
     explicit SpscQueue(std::size_t capacity)
         : slot_count_(checked_slot_count(capacity)),
           slots_(std::make_unique<Slot[]>(slot_count_)) {}
 
     ~SpscQueue() noexcept {
-        // 此时两端已经停止，仅销毁仍在队列中的对象。
+        // Both sides have stopped; destroy only elements still in the queue.
         auto read = read_.load(std::memory_order_relaxed);
         const auto write = write_.load(std::memory_order_relaxed);
         while (read != write) {
@@ -42,8 +42,8 @@ public:
     SpscQueue(const SpscQueue&) = delete;
     SpscQueue& operator=(const SpscQueue&) = delete;
 
-    // 仅生产者调用；满时不构造元素、不移动参数，也不改变队列状态。
-    // T 构造抛异常时写下标不发布，因此消费者不会看到未构造完的对象。
+    // Producer only; full queues neither construct elements, move arguments nor change state.
+    // If T's constructor throws, do not publish the write index, so the consumer never sees an unfinished object.
     template<class... Args>
     [[nodiscard]] bool try_emplace(Args&&... args)
         noexcept(std::is_nothrow_constructible_v<T, Args...>) {
@@ -65,7 +65,7 @@ public:
         return try_emplace(std::move(value));
     }
 
-    // 仅消费者调用；查看但不出队。即使 T 是空指针，槽位地址仍然非空。
+    // Consumer only; inspect without removing. A slot address remains non-null even when T itself is a null pointer.
     [[nodiscard]] const T* front() const noexcept {
         const auto read = read_.load(std::memory_order_relaxed);
         if (read == write_.load(std::memory_order_acquire)) return nullptr;
@@ -75,21 +75,21 @@ public:
         return const_cast<T*>(std::as_const(*this).front());
     }
 
-    // 仅消费者调用：查看距队首 offset 个位置的元素，不出队。
-    // 用于先收集一批再统一处理；消费者 pop 前，生产者不能覆盖这些活跃槽位。
-    // 越界返回 nullptr；调用方应先固定本轮数量，避免持续追逐生产者的新入队。
+    // Consumer only: inspect the element offset positions beyond the head without dequeueing.
+    // Collect a batch before processing it; the producer cannot overwrite these active slots until consumer pop.
+    // Out-of-range returns nullptr; fix this round's count first instead of continually chasing producer enqueues.
     [[nodiscard]] const T* front(std::size_t offset) const noexcept {
         const auto read = read_.load(std::memory_order_relaxed);
         const auto write = write_.load(std::memory_order_acquire);
         const auto count = write >= read ? write - read : slot_count_ - read + write;
         if (offset >= count) return nullptr;
-        // 不先做 read + offset，避免容量极大时无符号加法溢出。
+        // Avoid read + offset before checking to prevent unsigned overflow with very large capacities.
         const auto tail = slot_count_ - read;
         return element(offset < tail ? read + offset : offset - tail);
     }
 
-    // 仅消费者调用，且队列必须非空；业务处理成功后才调用。
-    // 先销毁旧元素，再发布读下标，生产者随后才能复用该槽位。
+    // Consumer only, on a nonempty queue; call after business processing succeeds.
+    // Destroy the old element before publishing the read index, then allow the producer to reuse its slot.
     void pop() noexcept {
         assert(!empty());
         const auto read = read_.load(std::memory_order_relaxed);
@@ -97,7 +97,7 @@ public:
         read_.store(next_index(read), std::memory_order_release);
     }
 
-    // empty 与 front 一样只供消费者判断；size 可供任意线程读取近似快照。
+    // Like front, empty is consumer-only; any thread may read size as an approximate snapshot.
     [[nodiscard]] bool empty() const noexcept { return front() == nullptr; }
     [[nodiscard]] std::size_t size() const noexcept {
         const auto read = read_.load(std::memory_order_acquire);
@@ -107,7 +107,7 @@ public:
     [[nodiscard]] std::size_t capacity() const noexcept { return slot_count_ - 1; }
 
 private:
-    // 只预留对齐的存储，不要求 T 默认构造；活跃对象的生命周期由队列显式管理。
+    // Reserve aligned storage without requiring default-constructible T; the queue explicitly manages active object lifetimes.
     struct Slot { alignas(T) std::byte storage[sizeof(T)]; };
 
     static std::size_t checked_slot_count(std::size_t capacity) {
@@ -119,7 +119,7 @@ private:
     [[nodiscard]] std::size_t next_index(std::size_t index) const noexcept {
         return (index + 1) % slot_count_;
     }
-    // 仅在槽位内已有完整 T 对象时调用。
+    // Call only when the slot contains a fully constructed T.
     [[nodiscard]] T* element(std::size_t index) noexcept {
         return std::launder(reinterpret_cast<T*>(slots_[index].storage));
     }
@@ -129,7 +129,7 @@ private:
 
     const std::size_t slot_count_;
     std::unique_ptr<Slot[]> slots_;
-    // 两端各自修改的下标分开缓存行，避免无谓的相互失效。
+    // Put each side's modified index on a separate cache line to avoid unnecessary mutual invalidation.
     alignas(64) std::atomic<std::size_t> read_{0};
     alignas(64) std::atomic<std::size_t> write_{0};
 };

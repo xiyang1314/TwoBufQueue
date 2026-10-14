@@ -45,7 +45,7 @@ void storage() {
     CHECK(next->finish());
 }
 
-// Writer 绕过 commit_write，直接操作 buf_ / write_ptr_；读端必须看到同一份进度。
+// Writer bypasses commit_write and updates buf_ / write_ptr_ directly; readers must see the same progress.
 void writer_fields() {
     using Block = SpscWriteBlock;
     using State = Block::State;
@@ -58,18 +58,18 @@ void writer_fields() {
     CHECK(block->sequence_ == loan.generation());
     CHECK(block->write_ptr_.load(std::memory_order_relaxed) == block->buf_);
     CHECK(block->read_pos() == 0 && block->read_size() == 0 && block->is_alloc_finish());
-    CHECK(!block->reset(loan.generation() + 1)); // 不能复位正在使用的一代。
+    CHECK(!block->reset(loan.generation() + 1)); // Do not reset a generation still in use.
     auto before = block->read_snapshot();
     CHECK(before.block_id == reinterpret_cast<std::uintptr_t>(block));
     CHECK(before.sequence == loan.generation() && before.read_size == 0 && before.published_size == 0);
 
-    // 模拟 Writer 批量路径的本地游标：复制本身不发布，store 才发布。
+    // Simulate Writer's batched local cursor: copying alone does not publish; the store does.
     std::memcpy(block->buf_, "12345678", 8);
     CHECK(block->readable().empty());
     block->write_ptr_.store(block->buf_ + 4, std::memory_order_release);
     CHECK(block->write_pos() == 4 && !block->is_alloc_finish());
     CHECK(block->writable().data() == block->buf_ + 4 && block->writable().size() == 4);
-    CHECK(block->commit_write(2)); // 包装接口也必须从 Writer 已发布的终点继续。
+    CHECK(block->commit_write(2)); // The wrapper must also resume from Writer's published end.
     CHECK(block->write_ptr_.load(std::memory_order_acquire) == block->buf_ + 6);
     CHECK(block->consume(3));
     Block::ReadSnapshot snapshot;
@@ -79,7 +79,7 @@ void writer_fields() {
     CHECK(bytes.size() == 3 && std::memcmp(bytes.data(), "456", 3) == 0);
     CHECK(block->read_pos() == 3 && block->read_size() == 3);
 
-    block->write_ptr_.store(block->buf_ + 8, std::memory_order_release); // flush 最终尾部。
+    block->write_ptr_.store(block->buf_ + 8, std::memory_order_release); // Flush the final tail.
     CHECK(block->to_write_finished() && !block->finish());
     CHECK(block->to_leave_writer() && !block->finish());
     CHECK(block->consume(5) && block->is_alloc_finish() && block->finish());
@@ -104,15 +104,15 @@ void streaming() {
     CHECK(block->readable().size() == 3 && std::memcmp(block->readable().data(), "123", 3) == 0);
     CHECK(!block->consume(4) && block->readable().size() == 3);
     CHECK(block->consume(2));
-    CHECK(block->writable().size() == 5); // 消费不会把空间变成循环缓冲。
+    CHECK(block->writable().size() == 5); // Consumption does not turn this into a circular buffer.
     CHECK(block->commit_write(5) && block->writable().empty());
     CHECK(block->readable().size() == 6);
     CHECK(std::memcmp(block->readable().data(), "345678", 6) == 0);
     CHECK(block->to_write_finished());
     CHECK(!block->commit_write(0) && !block->to_write_finished());
-    CHECK(!block->finish()); // 尚未退出写端，不能提前归还。
+    CHECK(!block->finish()); // The writer has not relinquished access; early return is forbidden.
     CHECK(block->to_leave_writer() && !block->to_leave_writer());
-    CHECK(!block->finish()); // 还有未读尾部。
+    CHECK(!block->finish()); // An unread tail remains.
     CHECK(block->consume(6) && block->finish());
     CHECK(!loan.is_valid() && !loan.recycle());
     auto empty = pool.get();
@@ -175,7 +175,7 @@ void concurrent_stream() {
                 auto loan = *active.front(); active.pop();
                 auto* block = loan.get();
                 std::size_t consumed = 0;
-                // 写端还在发布时即可读取前缀，但即使读完也不能提前归还。
+                // Read a published prefix while the writer continues, but never return early even if that prefix is consumed.
                 while (consumed != capacity) {
                     auto bytes = block->readable();
                     for (std::size_t i = 0; i < bytes.size(); ++i) CHECK(bytes[i] == pattern(round, consumed + i));
@@ -199,7 +199,7 @@ void concurrent_stream() {
                 const auto count = (std::min)(std::size_t{11}, capacity - written);
                 auto bytes = loan->writable();
                 for (std::size_t i = 0; i < count; ++i) bytes[i] = pattern(round, written + i);
-                if (round % 2 == 0) // Writer 实际使用的直接发布路径。
+                if (round % 2 == 0) // The direct-publication path actually used by Writer.
                     loan->write_ptr_.store(bytes.data() + count, std::memory_order_release);
                 else
                     CHECK(loan->commit_write(count));
@@ -207,7 +207,7 @@ void concurrent_stream() {
             }
             CHECK(loan->to_write_finished());
             while (!completed.try_push(loan)) std::this_thread::yield();
-            // 交接之后不再解引用旧 Loan。
+            // Do not dereference the old Loan after handoff.
         }
         reader.join();
         CHECK(pool.all_released() && active.empty() && completed.empty());
@@ -234,7 +234,7 @@ void concurrent_handoff() {
         while (!queue.try_push(loan)) std::this_thread::yield();
         const auto size = round % (capacity + 1);
         for (std::size_t i = 0; i < size; ++i) loan->data()[i] = pattern(round, i);
-        CHECK(loan->publish(size)); // release 发布后不再访问资源。
+        CHECK(loan->publish(size)); // Stop accessing the resource after release-publication.
     }
     reader.join();
     CHECK(pool.all_released() && queue.empty());

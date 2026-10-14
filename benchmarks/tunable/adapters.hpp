@@ -94,7 +94,7 @@ public:
     std::size_t capacity() const noexcept { return queue_.max_capacity(); }
 };
 template<class TPayload> class AtomicAdapter {
-    // 最后一个模板参数明确启用 SPSC；TPayload 为非原子完整消息。
+    // The final template argument explicitly selects SPSC; TPayload is a complete, non-atomic message.
     atomic_queue::AtomicQueueB2<TPayload,std::allocator<TPayload>,true,false,true> queue_;
 public:
     using Value = TPayload;
@@ -136,7 +136,7 @@ public:
     ~SpscChannel() { stop(); }
     template<class TPayload> bool push(const TPayload& payload) noexcept { return queue_.push(payload); }
     void finish() noexcept {}
-    void finish_block() noexcept {} // 原生 SPSC 每条已发布，轮末无需额外交接。
+    void finish_block() noexcept {} // Native SPSC queues publish every record and need no additional round-end handoff.
     void stop() noexcept {
         stop_.store(true,std::memory_order_release);
         if (reader_.joinable()) reader_.join();
@@ -176,7 +176,7 @@ class TwoBufChannel {
         if (config.payload_bytes != TBytes)
             throw std::invalid_argument("channel record size differs from configured payload size");
         if (config.prefault_producer_buffers) {
-            // 消费线程启动前，持有全部预分配块以避免 LIFO 池重复触碰同一块。
+            // Hold all preallocated blocks before starting consumers so the LIFO pool touches each block.
             std::vector<SpscWriteBlock*> blocks;
             blocks.reserve(config.source.pool_min);
             if (auto* current = writer.source_block()) std::memset(current->data(),0,current->capacity());
@@ -241,6 +241,6 @@ public:
                 pipeline_.end_output_pool_depth_stats()};
     }
 #endif
-    std::size_t capacity() const noexcept { return 0; } // 源块池及输出池分别报告，不伪装成单个环形队列容量。
+    std::size_t capacity() const noexcept { return 0; } // Report the source and output pools separately rather than presenting them as one ring-buffer capacity.
 };
 } // namespace TwoBufQueue::performance

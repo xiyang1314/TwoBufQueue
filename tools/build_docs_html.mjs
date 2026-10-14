@@ -2,18 +2,29 @@
 import { readFile, writeFile } from 'node:fs/promises';
 import { createHash } from 'node:crypto';
 import { dirname, resolve, relative, sep } from 'node:path';
+import { documentSite } from './document_site.mjs';
 
 const digest = value => createHash('sha256').update(value).digest('hex');
-const slug = value => value.toLowerCase().replace(/[^\p{L}\p{N}]+/gu, '-').replace(/^-|-$/g, '') || 'section';
+const plainTitle = value => value.replace(/^(?:[一二三四五六七八九十百]+、\s*|\d+(?:\.\d+)*[.)、]?\s+)/u, '');
+const slug = value => plainTitle(value).toLowerCase().replace(/[^\p{L}\p{N}]+/gu, '-').replace(/^-|-$/g, '') || 'section';
 
 export async function buildDocuments({ root, Marked, highlight, escape, flow }) {
+  const site = await documentSite(root);
   const manifest = JSON.parse(await readFile(resolve(root, 'tools/documentation_pages.json'), 'utf8'));
-  const pages = new Map(manifest.sources.map(name => [resolve(root, name), resolve(root, name.replace(/\.md$/, '.html'))]));
-  const overview = new Set(['README.md', 'README.zh-CN.md']);
+  let readingCopies = [];
+  try {
+    readingCopies = JSON.parse(await readFile(resolve(root, 'tools/github_reading_pages.json'), 'utf8')).pages;
+  } catch (error) { if (error.code !== 'ENOENT') throw error; }
+  const pages = new Map([
+    ...manifest.sources.map(name => [resolve(root, name), resolve(root, name.replace(/\.md$/, '.html'))]),
+    ...readingCopies.map(page => [resolve(root, page.markdown), resolve(root, page.html)]),
+  ]);
+  const overview = new Set(['README.md', 'README.zh-CN.md', 'README_DETAIL.md', 'README_DETAIL.zh-CN.md']);
   let generated = 0;
   const local = name => name.split(sep).join('/');
   const urlFrom = (document, target) => local(relative(dirname(document), resolve(root, target)));
   function rewriteLink(document, href) {
+    href = site.localHref(document, href);
     if (/^(?:[a-z][a-z\d+.-]*:|\/\/)/i.test(href)) return href;
     const match = href.match(/^([^?#]*)([?#].*)?$/);
     if (!match || !match[1].endsWith('.md')) return href;
@@ -63,7 +74,8 @@ export async function buildDocuments({ root, Marked, highlight, escape, flow }) 
           + highlight(text, language) + '</code></pre></div>';
       },
     } });
-    const tokens = markdown.lexer(source);
+    const bodySource = source.replace(/<a name="[^"]+"><\/a>\s*/g, '');
+    const tokens = markdown.lexer(bodySource);
     const firstHeading = tokens.find(token => token.type === 'heading' && token.depth === 1);
     const title = firstHeading?.text || name;
     const remaining = tokens.filter(token => token !== firstHeading);
@@ -78,7 +90,7 @@ export async function buildDocuments({ root, Marked, highlight, escape, flow }) 
       + '">' + markdown.parseInline(item.text) + '</a>').join('');
     const home = urlFrom(document, zh ? 'README.zh-CN.html' : 'README.html');
     const api = urlFrom(document, zh ? 'docs/API.zh-CN.html' : 'docs/API.html');
-    const examples = urlFrom(document, 'examples/README.html');
+    const examples = urlFrom(document, zh ? 'examples/README.zh-CN.html' : 'examples/README.html');
     const reports = urlFrom(document, 'docs/index.html');
     const codeIndex = urlFrom(document, 'docs/code/index.html');
     const css = urlFrom(document, 'docs/assets/readme.css');

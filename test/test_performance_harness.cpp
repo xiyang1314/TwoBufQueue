@@ -505,7 +505,7 @@ int main() {
 #endif
             }
         }
-        // 控制线程只能在整轮最后一条的业务循环执行完后观察到完成。
+        // The control thread must observe completion only after the final record's business loop finishes.
         {
             perf::PerformanceConfig x; x.messages = 5; x.warmup_messages = 0; x.round_storage_bytes = 24;
             x.measure_callback_time = true;

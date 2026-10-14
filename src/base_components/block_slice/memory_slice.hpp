@@ -13,9 +13,9 @@ namespace TwoBufQueue {
 
 template<class Block, bool is_n_alloc, bool is_n_use> class BasicBlockSlicesAllocator;
 
-// 一个独立释放的切片所有权句柄，按值返回，只能移动。
-// 保存池节点凭证和借出代号；Block 销毁后仍可安全拒绝旧切片的释放。
-// 仅并发 Block 策略允许将不同句柄交给不同线程；同一个句柄自身不支持并发访问。
+// Independently releasable slice ownership handle, returned by value and move-only.
+// Stores a pool-node ticket and loan generation; stale slice releases can still be rejected after Block destruction.
+// Only concurrent Block policies permit different handles on different threads; one handle itself is not thread-safe.
 template<class Block>
 class BasicMemorySlice {
 public:
@@ -30,9 +30,9 @@ public:
     [[nodiscard]] std::byte* data() noexcept { return data_; }
     [[nodiscard]] const std::byte* data() const noexcept { return data_; }
     [[nodiscard]] std::size_t size() const noexcept { return size_; }
-    // 明确释放后句柄变空；再次显式 release 属于非法操作并报告位置。
-    // 未显式释放的有效句柄在析构时登记释放；空句柄析构无动作。
-    // 更新切片释放记录；最后一个完成者可能立即归还整块。
+    // Explicit release empties the handle; a second explicit release is invalid and reports its source location.
+    // Destruction registers release for an unreleased valid handle; empty-handle destruction does nothing.
+    // Update slice-release accounting; the final completer may immediately return the whole block.
     void release(std::source_location location = std::source_location::current()) noexcept;
 
 private:
@@ -40,11 +40,11 @@ private:
     BasicMemorySlice(Block* block, std::byte* data, std::size_t size,
                 std::size_t index, bool check_release) noexcept;
     Block* block_ = nullptr;
-    Loan<void> loan_; // 内含稳定节点的锁指针和借出代号，不拥有 pool。
+    Loan<void> loan_; // Includes the stable node's lock pointer and loan generation, without owning the pool.
     std::byte* data_ = nullptr;
     std::size_t size_ = 0;
-    std::size_t index_ = 0; // 本次借用期间分配的切片编号。
-    bool check_release_ = true; // 对象销毁后仍能决定失效释放是报错还是忽略。
+    std::size_t index_ = 0; // Slice id allocated during this loan.
+    bool check_release_ = true; // Determines whether stale releases report errors or are ignored, even after object destruction.
 };
 
 template<class Block>
@@ -81,7 +81,7 @@ BasicMemorySlice<Block>& BasicMemorySlice<Block>::operator=(BasicMemorySlice&& o
 template<class Block>
 void BasicMemorySlice<Block>::release(std::source_location location) noexcept {
     if (!block_) BlockDiagnostics<Block>::report_invalid("cannot release an empty or already released slice", location);
-    // 先清空句柄；最后一次释放完成后池可能立即复用，返回后不访问源块。
+    // Clear the handle first; the final release may let the pool reuse the block immediately. Do not access the source afterward.
     auto* const block = std::exchange(block_, nullptr);
     const auto loan = std::exchange(loan_, {});
     const auto index = std::exchange(index_, 0);
@@ -89,7 +89,7 @@ void BasicMemorySlice<Block>::release(std::source_location location) noexcept {
     size_ = 0;
     bool finished = false;
     {
-        std::lock_guard guard(loan); // 直接使用 Loan 中的锁指针，不访问 Block。
+        std::lock_guard guard(loan); // Use the lock pointer stored in Loan directly without touching Block.
         if (!loan.is_valid()) {
             if (check_release_)
                 BlockDiagnostics<Block>::report_invalid("slice credential is no longer valid", location);
@@ -97,7 +97,7 @@ void BasicMemorySlice<Block>::release(std::source_location location) noexcept {
         }
         finished = block->release_slice(index, loan.generation(), location);
     }
-    // 节点操作已结束；归还时可能清理其他旧对象，不能继续持有节点锁。
+    // Node operations have finished; returning may destroy other old objects, so do not retain the node lock.
     if (finished) (void)loan.recycle();
 }
 

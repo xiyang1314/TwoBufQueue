@@ -10,22 +10,22 @@
 
 namespace TwoBufQueue {
 
-// 仅用于很短的临界区；锁内不得分配/释放内存、调用回调、执行 I/O 或等待线程。
-// 不可重入。持锁线程被调度出去时仍可能久等，不提供等待时间上界。
+// Very short critical sections only: no allocation/deallocation, callbacks, I/O or thread waits under the lock.
+// Nonrecursive. Descheduling the owner can still cause a long wait; there is no wait-time bound.
 class SpinLock {
 public:
     SpinLock() noexcept = default;
     SpinLock(const SpinLock&) = delete;
     SpinLock& operator=(const SpinLock&) = delete;
 
-    // 无竞争只做一次原子置位；竞争时先只读轮询，避免反复争抢缓存行写权限。
+    // One atomic test-and-set when uncontended; under contention poll reads first instead of repeatedly requesting exclusive cache-line ownership.
     void lock() noexcept {
         if (try_lock()) return;
         std::uint32_t spins = 0;
         for (;;) {
             while (locked_.test(std::memory_order_relaxed)) {
                 cpu_relax();
-                // 竞争持续时主动让出执行机会，降低持锁线程被抢占后的空转压力。
+                // Yield under sustained contention to reduce spinning while a lock owner is preempted.
                 if (++spins == 256) {
                     std::this_thread::yield();
                     spins = 0;
@@ -39,7 +39,7 @@ public:
         return !locked_.test_and_set(std::memory_order_acquire);
     }
 
-    // release 将临界区写入发布给下一个 acquire 成功的持锁线程。
+    // release publishes critical-section writes to the next owner that successfully acquires the lock.
     void unlock() noexcept { locked_.clear(std::memory_order_release); }
 
 private:
@@ -57,7 +57,7 @@ private:
 #endif
     }
 
-    // atomic_flag 保证无锁；true 表示已有线程持有本锁。
+    // atomic_flag is guaranteed lock-free; true means a thread holds the lock.
     std::atomic_flag locked_ = ATOMIC_FLAG_INIT;
 };
 

@@ -164,7 +164,7 @@ if(BRQ_BUILD_EXAMPLES)
     add_test(NAME example_${name} COMMAND brq_${name})
     set_tests_properties(example_${name} PROPERTIES TIMEOUT 30)
   endforeach()
-  # 子目录示例：components/ 为组件用法，two_buf_queue/ 为 TwoBufQueue 用法。
+  # Example groups: components/ covers individual components; two_buf_queue/ covers TwoBufQueue.
   foreach(name IN ITEMS 11_warm_pool 12_warm_pool_factory 13_spsc_live_handoff_queue 14_spsc_live_handoff_queue_claim 15_handoff_queue 16_handoff_queue_mpmc)
     add_executable(brq_component_${name} "examples/components/${name}.cpp")
     target_link_libraries(brq_component_${name} PRIVATE TwoBufQueue)

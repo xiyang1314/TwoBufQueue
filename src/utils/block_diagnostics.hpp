@@ -5,7 +5,7 @@
 #include <source_location>
 
 namespace TwoBufQueue {
-// 仅错误路径使用的静态诊断接口，不持有资源、不参与池归属或生命周期管理。
+// Static diagnostics for error paths only; owns no resources and manages neither pool identity nor lifetimes.
 template<class Block> struct BlockDiagnostics {
     struct ErrorInfo {
         const char* reason;

@@ -5,7 +5,7 @@
 
 namespace ft {
 namespace {
-// 不借用实现自身解码，只按来源编号拼接完整字节流与独立编码逐字节比对。
+// Do not reuse the implementation's decoder: concatenate each source's bytes and compare against independent bytewise encoding.
 struct RawReceiver {
     std::array<std::vector<std::byte>, 4> bytes;
     bool reject = false, good = true;
@@ -160,7 +160,7 @@ template<bool WriteLen, class Len> void slice_capacity() {
 template<class Len> void length_limits() {
     using RecordWriter = Writer<1, true, Len>;
     const auto maximum = (std::numeric_limits<Len>::max)();
-    // 选一个既容纳于 Len、又为“超出块容量”留出余量的有效长度。
+    // Select a valid length that fits Len while leaving room to test exceeding block capacity.
     const std::size_t valid_size = sizeof(Len) == 1 ? 200u : sizeof(Len) == 2 ? 60000u : 100000u;
     WriterFixture pool(valid_size + sizeof(Len), 1, 1, {}, 0, sizeof(Len));
     RecordWriter writer(&pool.queue, 0, pool.backpressure);
@@ -170,8 +170,8 @@ template<class Len> void length_limits() {
     CHECK(service.add_writer(&writer, false)); tick(service);
     const auto bytes = payload(valid_size);
     auto* before = writer.published_write_ptr();
-    CHECK(!writer.write_mem(nullptr, Len{1}));        // 空指针 + 正长度
-    CHECK(!writer.write_mem(bytes.data(), maximum));  // 超出块容量（u64 还触发前缀加法溢出）
+    CHECK(!writer.write_mem(nullptr, Len{1}));        // Null pointer with positive length.
+    CHECK(!writer.write_mem(bytes.data(), maximum));  // Exceeds block capacity; u64 also exercises prefix-addition overflow.
     CHECK(writer.published_write_ptr() == before);
     CHECK(writer.write_mem(bytes.data(), static_cast<Len>(valid_size)));
     writer.finish(); tick(service);

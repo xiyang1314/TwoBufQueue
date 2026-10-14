@@ -124,7 +124,7 @@ static void pressure_query() {
         assert(writer.usage_at_or_above(100));
         assert(writer.usage_at_or_above(255));
         drain(mgr, actual);
-        // 已完成的旧块立即归还，仅当前写入块仍占用。
+        // Return completed old blocks immediately; only the currently written block stays occupied.
         assert(!writer.usage_at_or_above(100) && mgr.in_use_count() == 1);
         assert(writer.backpressure_stats().dropped_records == 0);
     }
@@ -141,7 +141,7 @@ static void finish_block_and_continue() {
     for (unsigned i = 0; i != 20; ++i) {
         assert(writer.write(i));
         append(expected, std::uint16_t{sizeof(i)}); append(expected, i);
-        writer.finish_block(); writer.finish_block(); // 幂等；不结束 Writer。
+        writer.finish_block(); writer.finish_block(); // Idempotent; does not finish Writer.
         assert(writer.source_block() == nullptr);
         drain(source, actual);
         assert(actual == expected && source.all_released());

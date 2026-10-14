@@ -6,12 +6,12 @@
 
 namespace TwoBufQueue {
 
-// 单生产线程写入器；用 TIsWriteLen 决定是否写长度前缀：
-//   TIsWriteLen = true  → 先写 sizeof(TDataLen) 字节的小端负载长度，再按参数顺序紧密复制对象表示。
-//                         前缀使每条记录自描述边界，允许空负载。
-//   TIsWriteLen = false → 不写前缀，直接紧密复制；无自描述边界，故拒绝空负载。
-// 发布次数属于类型，构造函数不再接收次数，同一对象不会混用两种策略。
-// TSyncContext=void 使用异步缓存；非 void 时直接回调，不写上述前缀。
+// Single-producer writer; TIsWriteLen selects whether records include a length prefix:
+//   true: encode payload length in sizeof(TDataLen) little-endian bytes, then tightly copy object representations in argument order.
+//         The prefix makes record boundaries self-describing and permits empty payloads.
+//   false: tightly copy bytes without a prefix; boundaries are not self-describing, so empty payloads are rejected.
+// Publication count is part of the type, not a constructor argument; one object never mixes the two policies.
+// TSyncContext = void uses asynchronous buffers; non-void invokes the callback directly without these prefixes.
 template <std::uint32_t publish_write_ptr_count = 1,
           bool TIsWriteLen = true, typename TDataLen = std::uint16_t,
           class TSyncContext = void>
@@ -25,7 +25,7 @@ class Writer : public WriterBase<publish_write_ptr_count>,
     using Base = WriterBase<publish_write_ptr_count>;
 public:
     static constexpr bool is_sync = !std::is_void_v<TSyncContext>;
-    // 普通异步写入复制后读回首字节；Session 保持原来的纯写入路径。
+    // Ordinary asynchronous writes read back the first byte after copying; Session retains its write-only path.
     static constexpr bool ordinary_write_readback = !is_sync;
     using DataLen = TDataLen;
     static constexpr std::size_t message_prefix_size = TIsWriteLen ? sizeof(TDataLen) : 0;
@@ -34,9 +34,9 @@ public:
                     WriterBackpressureConfig backpressure = {})
         : Base(queue, thread_id, message_prefix_size, backpressure) {}
 
-    // 单块 Session：write 只检查容量、复制和推进；用户通过 get_next_session 换块。
-    // 空对象用 if (!session) 检查。置空/析构只同步游标，不隐式 flush 或交接。
-    // 生命周期必须短于 Writer；期间不得直接操作 Writer。
+    // Single-block Session: write checks capacity, copies and advances only; callers switch blocks with get_next_session.
+    // Check empty objects with if (!session). Clearing/destruction synchronizes cursors without implicit flush or handoff.
+    // Session lifetime must be shorter than Writer; do not operate Writer directly while Session is active.
     class WriteSession {
         typename Base::LocalWriteState state_;
         friend class Writer;
@@ -49,8 +49,8 @@ public:
         WriteSession(WriteSession&&) noexcept = default;
         WriteSession& operator=(WriteSession&&) noexcept = default;
         explicit operator bool() const noexcept { return static_cast<bool>(state_); }
-        // 发布当前块的位置并通知读端；不切换块。用户自行决定是否调用。
-        // is_scan_current=false 时，尾块还须 get_next_session/finish_block/finish 交接。
+        // Publish the current block's position and notify the reader without switching blocks; calling is optional.
+        // With is_scan_current = false, get_next_session / finish_block / finish must also hand off the tail.
         void flush() noexcept { state_.flush(); }
         template <typename... Args>
         [[nodiscard]] FAST_LOG_ALWAYS_INLINE SessionWriteResult write(const Args&... args) noexcept {
@@ -79,7 +79,7 @@ public:
         }
 
 
-        // 源内存必须有效且不与目标重叠。0 长度为参数错误；超出整块为专门的长度错误。
+        // Source memory must be valid and nonoverlapping. Zero length is invalid; exceeding the whole block has a separate length error.
         [[nodiscard]] FAST_LOG_ALWAYS_INLINE SessionWriteResult write_mem(const void* data, TDataLen len) noexcept {
             if (FAST_LOG_UNLIKELY(len == 0)) return SessionWriteResult::invalid_argument;
             const auto size = static_cast<std::size_t>(len);
@@ -87,7 +87,7 @@ public:
                 return SessionWriteResult::exceeds_block_capacity;
             const auto result = state_.prepare(size + message_prefix_size);
             if (FAST_LOG_UNLIKELY(result != SessionWriteResult::success)) return result;
-            assert(data != nullptr); // 与 memcpy 一样，有效源内存由调用方保证。
+            assert(data != nullptr); // As with memcpy, the caller must provide valid source memory.
             std::byte* const begin = state_.cursor();
             if constexpr (TIsWriteLen) write_length(begin, len);
             std::memcpy(begin + message_prefix_size, data, size);
@@ -95,18 +95,18 @@ public:
             return SessionWriteResult::success;
         }
     };
-    // 复用当前块；没有当前块时才等待取块。0 只尝试一次，正值重试到超时。
+    // Reuse current; wait for a block only when none exists. Zero tries once; positive timeouts retry until expiry.
     [[nodiscard]] WriteSession get_current_session(
         std::chrono::nanoseconds timeout = std::chrono::nanoseconds::zero()) noexcept
         requires (!is_sync && Base::session_enabled) { return WriteSession(*this, false, timeout); }
-    // 交接当前块（可未满），然后等待下一块。调用前须置空或销毁旧 Session。
-    // 复用变量时：session = {}; session = writer.get_next_session(timeout);
+    // Hand off current even if partially full, then wait for another block. Clear or destroy the old Session first.
+    // Reusing a variable: session = {}; session = writer.get_next_session(timeout);
     [[nodiscard]] WriteSession get_next_session(
         std::chrono::nanoseconds timeout = std::chrono::nanoseconds::zero()) noexcept
         requires (!is_sync && Base::session_enabled) { return WriteSession(*this, true, timeout); }
 
-    // 按参数顺序紧密复制对象表示；仅支持可平凡复制的非指针、非数组值。
-    // 有前缀时先写 sizeof(TDataLen) 字节的小端负载长度；无前缀时拒绝空负载。
+    // Tightly copy object representations in argument order; only trivially copyable nonpointer, nonarray values.
+    // With prefixes, encode the payload length in sizeof(TDataLen) little-endian bytes; without prefixes reject empty payloads.
     template <typename... Args>
     [[nodiscard]] FAST_LOG_ALWAYS_INLINE bool write(const Args&... args) noexcept {
         static_assert((std::is_trivially_copyable_v<Args> && ...),
@@ -134,16 +134,16 @@ public:
             if (FAST_LOG_UNLIKELY(begin == nullptr)) return false;
             if constexpr (TIsWriteLen) write_length(begin, static_cast<TDataLen>(size));
             this->copy_arguments(std::index_sequence_for<Args...>{}, begin + message_prefix_size, args...);
-            // 保留真实的首字节读回，随后仍由 commit_write 的 release 发布数据。
+            // Preserve an actual first-byte readback; commit_write subsequently publishes data with release semantics.
             (void)*reinterpret_cast<volatile std::byte*>(begin);
             this->commit_write(begin + message_prefix_size + size);
         }
         return true;
     }
 
-    // 异步复制 len 字节负载；同步在本次调用内直接借用，不保存 data 指针。
-    // 源内存必须有效；异步模式不得与目标重叠。
-    // 与 write 一样用 TIsWriteLen 决定是否写长度前缀；长度统一使用 TDataLen，避免窄化截断。
+    // Asynchronous mode copies len payload bytes; synchronous mode borrows them for this call without retaining data.
+    // Source memory must be valid and, in asynchronous mode, must not overlap destination storage.
+    // Like write, TIsWriteLen selects prefixes; TDataLen consistently represents lengths to prevent narrowing truncation.
     [[nodiscard]] FAST_LOG_ALWAYS_INLINE bool write_mem(const void* data, TDataLen len) noexcept {
         const auto size = static_cast<std::size_t>(len);
         if constexpr (is_sync) {
@@ -179,7 +179,7 @@ public:
 
 private:
     static void write_length(std::byte* target, TDataLen len) noexcept {
-        // 固定次数循环可展开；逐字节编码不依赖主机字节序或地址对齐。
+        // Fixed-count loops may unroll; bytewise encoding is independent of host endianness and alignment.
         for (std::size_t i = 0; i < sizeof(TDataLen); ++i)
             target[i] = static_cast<std::byte>((len >> (i * 8)) & 255);
     }

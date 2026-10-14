@@ -5,8 +5,8 @@
 
 namespace TwoBufQueue {
 
-// 保存具体回调类型；Writer 通过对象指针调用模板成员，允许内联用户回调。
-// 回调签名与普通 / SeqWriter 的逐条回调一致，不增加锁或 context 参数。
+// Retain the concrete callback type; Writer calls a templated member through the context pointer so user callbacks can inline.
+// Same per-record callback signatures as ordinary / SeqWriter; no extra lock or context argument.
 template<class Callback>
 class SyncContext {
 public:
@@ -17,7 +17,7 @@ public:
         else return std::is_same_v<std::invoke_result_t<Callback&, Args...>, void>;
     }();
 
-    // TwoBufQueue 构造时根据 Writer 数量决定；绑定后不再改变锁策略。
+    // TwoBufQueue selects this from Writer count during construction; the locking policy stays fixed after binding.
     explicit SyncContext(Callback callback, bool need_lock = false)
         : callback_(std::move(callback)), need_lock_(need_lock) {}
     SyncContext(const SyncContext&) = delete;
@@ -39,13 +39,13 @@ private:
 };
 
 namespace detail {
-// 异步 Writer 使用空基类，不携带同步指针，也不增加热路径分支。
+// Asynchronous Writer uses an empty base, with no sync pointer or extra hot-path branch.
 template<class Context>
 class SyncBinding {
 public:
     using SyncContextType = Context;
     [[nodiscard]] bool has_sync_callback() const noexcept { return sync_context_ != nullptr; }
-    // 仅在构造队列时绑定、停止所有写线程后解绑。
+    // Bind only at queue construction; unbind only after every producer thread has stopped.
     void set_sync_callback(Context& context) noexcept {
         assert(sync_context_ == nullptr);
         sync_context_ = &context;

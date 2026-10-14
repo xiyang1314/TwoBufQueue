@@ -23,7 +23,7 @@
 namespace TwoBufQueue {
 
 FastSteadyClock::time_point FastSteadyClock::now() noexcept {
-    // FastSteadyClock 只提供 chrono 接口；TSC 读取、校准和回退统一由 fast_time 管理。
+    // FastSteadyClock exposes chrono only; fast_time owns TSC reads, calibration and fallback.
     return time_point{duration{fast_steady_time_ns()}};
 }
 
@@ -49,7 +49,7 @@ const char* error_message(ReadError code) noexcept {
     return "ReadWorker unknown error";
 }
 
-// 判断候选指针是否位于指定块的闭区间内；块尾指针允许作为空区间终点。
+// Check the block's closed address interval; its end pointer is valid as an empty range endpoint.
 bool pointer_in_range(
     const WriterBlock<>* range, const std::byte* pointer,
     std::uint64_t block_size) noexcept {
@@ -57,7 +57,7 @@ bool pointer_in_range(
            pointer <= range->buf_ + block_size;
 }
 
-// 按配置把当前读取线程绑定到指定 CPU；负数表示不设置亲和性。
+// Bind the current reader to the configured CPU; negative leaves affinity unchanged.
 bool pin_current_thread(std::int32_t cpu) noexcept {
     if (cpu < 0) return true;
 #ifdef _WIN32
@@ -78,7 +78,7 @@ bool pin_current_thread(std::int32_t cpu) noexcept {
 #endif
 }
 
-// 在短暂空闲轮询中提示处理器降低流水线和超线程资源压力。
+// Hint during brief idle polling to reduce pipeline and simultaneous-multithreading resource pressure.
 void cpu_relax() noexcept {
 #ifdef _WIN32
     YieldProcessor();

@@ -13,47 +13,47 @@ enum class MeasureMode { throughput, write_latency, single_write_latency, call_b
 enum class TimerKind { automatic, steady };
 enum class ProducerQos { unchanged, user_interactive };
 
-// 同一轮对比固定 workload；搜索只改其余调优项。所有容量均为构造前分配。
+// Keep the workload fixed within a comparison; search only the other tuning parameters. Allocate all capacities before construction.
 struct PerformanceConfig {
     Transport transport = Transport::two_buf_queue;
     MeasureMode mode = MeasureMode::throughput;
-    std::size_t payload_bytes = 8;                 // 仅支持 8 / 16 / 32 / 64；不加计时元数据
-    std::uint64_t messages = 2'000'000;            // 正式成功写入/消费次数，各库完全相同
+    std::size_t payload_bytes = 8;                 // Supports only 8 / 16 / 32 / 64 B; no timing metadata is added.
+    std::uint64_t messages = 2'000'000;            // Successful production/consumption count, identical for every library.
     std::uint64_t warmup_messages = 50'000;
-    std::uint32_t callback_iterations = 0;        // 每条消息的模拟业务循环；0 不做模拟计算
-    bool measure_callback_time = false;           // 每轮首/末回调计时，包含轮内消息分发/等待
-    bool verify_payload = false;                  // true 检查全部字节；始终检查序号和条数
-    bool prepared_input = true;                   // 提前准备本轮完整负载，写入计时不含消息生成
-    bool variable_payload = true;                 // 首字为序号，其余每个字也随序号变化
-    std::size_t prepared_input_limit_bytes = 256 * 1024 * 1024; // 独立输入存储上限，不算队列容量
-    std::uint64_t producer_interval_ns = 0;       // 0 连续写；非 0 是固定工作负载，不参与调优
+    std::uint32_t callback_iterations = 0;        // Simulated business iterations per message; zero performs no simulated computation.
+    bool measure_callback_time = false;           // Time the first-to-last callback interval per round, including dispatch and waiting within the round.
+    bool verify_payload = false;                  // true verifies every payload byte; always verify sequence numbers and counts.
+    bool prepared_input = true;                   // Prepare the full round payload before timing writes; exclude message generation.
+    bool variable_payload = true;                 // The first word is the sequence; every other word also changes with that sequence.
+    std::size_t prepared_input_limit_bytes = 256 * 1024 * 1024; // Separate input-storage limit, excluded from queue capacity.
+    std::uint64_t producer_interval_ns = 0;       // Zero sends continuously; nonzero fixes the offered workload and is not tuned.
 
-    WriterSourceConfig source{.pool_min = 8, .pool_max = 8};                  // 块大小、池 min/max、交接容量、Writer 背压
-    TwoBufQueueOptions output{.output_pool_min = 2, .output_pool_max = 2};                  // 第二层复制、输出池/队列、ReadConfig
-    std::uint32_t publish_count = 1;              // 1..1024 的 2 次幂或 10；UINT32_MAX 仅在交接等冷路径发布
-    bool readerwriterqueue_copy_after_zero = false; // 队列槽位先清零再完整 memcpy；仅影响 ReaderWriterQueue
-    bool rigtorp_write_prefetch = true;           // 构造消息前提示目标写预取；只影响 rigtorp
-    bool use_write_session = false;               // 单块 Session 双重循环；保留普通 write 对照
-    std::size_t spsc_capacity = 0;                // 0 按源池可容纳记录数计算；第三方可单独搜索
+    WriterSourceConfig source{.pool_min = 8, .pool_max = 8};                  // Block size, pool min/max, handoff capacity and Writer backpressure.
+    TwoBufQueueOptions output{.output_pool_min = 2, .output_pool_max = 2};                  // Layer-2 copying, output pool/queue and ReadConfig.
+    std::uint32_t publish_count = 1;              // Powers of two from 1..1024, or 10; UINT32_MAX publishes only on cold handoff paths.
+    bool readerwriterqueue_copy_after_zero = false; // Zero the queue slot before full memcpy; affects ReaderWriterQueue only.
+    bool rigtorp_write_prefetch = true;           // Hint destination write-prefetch before constructing the message; affects rigtorp only.
+    bool use_write_session = false;               // Single-block Session nested loop; retain ordinary write for comparison.
+    std::size_t spsc_capacity = 0;                // Zero derives capacity from source-pool record capacity; native queues may be tuned independently.
     std::int32_t producer_cpu = -1;
-    ProducerQos producer_qos = ProducerQos::unchanged; // macOS 调度偏好，不能当作硬绑核
-    std::size_t round_storage_bytes = 0;           // 0=原端到端模式；非0按 payload 计算上限，再停在自然发布边界
-    bool fixed_round_boundaries = false;          // 分轮时精确按字节上限停写，计时外交接尾块；所有实现共用边界
-    std::size_t spsc_buffer_bytes = 0;             // capacity=0 时可按数据字节指定第三方容量
-    bool prefault_producer_buffers = false;       // 正式计时前触碰写端数据页
-    std::uint32_t retry_yield_every = 1024;        // 失败重试时多少次 pause 后 yield；0 始终 pause
+    ProducerQos producer_qos = ProducerQos::unchanged; // macOS scheduling preference, not hard CPU affinity.
+    std::size_t round_storage_bytes = 0;           // Zero uses the original end-to-end mode; otherwise derive a payload limit and stop at a natural publication boundary.
+    bool fixed_round_boundaries = false;          // Stop exactly at the round byte limit and hand off tails outside timing; all implementations share boundaries.
+    std::size_t spsc_buffer_bytes = 0;             // When capacity is zero, optionally derive native queue capacity from this data-byte budget.
+    bool prefault_producer_buffers = false;       // Touch producer data pages before formal timing.
+    std::uint32_t retry_yield_every = 1024;        // Failed-retry pause count before yield; zero always pauses.
     std::uint32_t spsc_idle_spins = 1000;
-    std::uint64_t spsc_idle_sleep_ns = 0;         // 自旋后 0=yield，非 0=sleep；CPU 成本单独报告
+    std::uint64_t spsc_idle_sleep_ns = 0;         // After spinning, zero yields and nonzero sleeps; report CPU cost separately.
 
-    TimerKind timer = TimerKind::automatic;       // x86 invariant TSC+RDTSCP；Mac 原生 ticks；其他 steady
-    std::uint32_t latency_batch_size = 1000;      // write_latency 每组成功写入次数，记录组耗时 / 次数
-    std::uint32_t sample_every = 32;              // 仅 single_write_latency：随机间隔采样
-    std::size_t max_samples = 1'000'000;           // 预留样本容量；计时区不扩容
+    TimerKind timer = TimerKind::automatic;       // x86 invariant TSC + RDTSCP; native ticks on macOS; steady_clock elsewhere.
+    std::uint32_t latency_batch_size = 1000;      // Successful writes per write_latency group; record group duration divided by its count.
+    std::uint32_t sample_every = 32;              // single_write_latency only: sample at randomized intervals.
+    std::size_t max_samples = 1'000'000;           // Reserve sample capacity; never grow it inside a timed region.
     std::uint32_t timer_calibration_samples = 16384;
-    std::uint32_t call_batch_size = 256;          // 批次均值补充，绝不当作单次调用分位数
+    std::uint32_t call_batch_size = 256;          // Supplementary batch mean; never interpret it as a single-call quantile.
     std::uint64_t random_seed = 42;
-    std::uint32_t timeout_seconds = 60;           // 超时终止该独立测试进程
-    std::size_t buffer_budget_bytes = 64 * 1024 * 1024; // 限制名义数据缓冲，不等于整个进程 RSS
+    std::uint32_t timeout_seconds = 60;           // Terminate this independent test process on timeout.
+    std::size_t buffer_budget_bytes = 64 * 1024 * 1024; // Limit nominal data-buffer storage, not the process's total RSS.
 
     void validate() const {
         const auto bad = [](const char* text) { throw std::invalid_argument(text); };

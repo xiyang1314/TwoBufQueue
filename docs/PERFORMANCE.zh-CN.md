@@ -2,20 +2,20 @@
 
 这里分别测两件事：生产者发送消息有多快，以及连续发送一批消息后，生产者自己的业务会被拖慢多少。两种结果回答不同问题，应分别阅读。
 
-[中文首页](../README.zh-CN.html) · [全部报告](index.html) · [完整测量证据](PERFORMANCE.html)
+[中文首页](../README.zh-CN.md) · [全部报告](index.zh-CN.md) · [完整测量证据](PERFORMANCE.zh-CN.md)
 
-## 想了解哪种性能
+## 一、想了解哪种性能
 
 | 你关心什么 | 看哪份报告 |
 |---|---|
-| 连续循环提交很多条消息 | [WriteSession 与开源队列对比](performance_256m_zero_session_plateau.html) |
-| 允许一批消息再发布 | [仅块交接发布的对比](performance_256m_zero_publish_max_plateau.html) |
-| 每条消息都发布写入位置 | [每条发布的对比](performance_256m_zero_publish1_plateau.html) |
-| 发送后，核心业务还能不能跑得快 | [连续发送对业务性能的影响](performance_burst_from_empty.html) |
+| 连续循环提交很多条消息 | [WriteSession 与开源队列对比](performance_256m_zero_session_plateau.zh-CN.md) |
+| 允许一批消息再发布 | [仅块交接发布的对比](performance_256m_zero_publish_max_plateau.zh-CN.md) |
+| 每条消息都发布写入位置 | [每条发布的对比](performance_256m_zero_publish1_plateau.zh-CN.md) |
+| 发送后，核心业务还能不能跑得快 | [连续发送对业务性能的影响](performance_burst_from_empty.zh-CN.md) |
 
 前三份使用 256 MiB 第二层／开源槽位容量、空回调、三次独立测量。每份报告给 8／16／32／64 B 消息选择同一组 TwoBufQueue 参数；不同报告之间参数可能不同，不能把差值看成仅改变一个开关的收益。
 
-## 写入性能表中的数字
+## 二、写入性能表中的数字
 
 | 指标 | 表示什么 | 怎么比较 |
 |---|---|---|
@@ -28,7 +28,7 @@
 
 写入计时包含申请块、换块，以及测量期间的等待；每轮发送后的排空在计时外。复制线程和消费线程在发送期间也在运行。
 
-## 业务性能表中的数字
+## 三、业务性能表中的数字
 
 流程是：正常执行业务函数 → 连续发送一批消息 → 立刻执行同样的业务函数。每批从零积压开始，消费者持续运行，测量结束后才在计时外排空。
 
@@ -39,15 +39,15 @@
 | 耗时 ns/次 | 发送后业务执行的组平均 p50，越低越好 |
 | 比值 | 发送后业务耗时 ÷ 正常参考耗时 13 ns |
 
-业务每组调用 16 次；各轮计算 p50 后对三轮取平均。它说明队列发送对后续业务的影响，不是队列写入开销。旧的[预填大积压实验](performance_burst_cache.html)从约 198–205 MiB 积压开始，与当前报告起点不同。
+业务每组调用 16 次；各轮计算 p50 后对三轮取平均。它说明队列发送对后续业务的影响，不是队列写入开销。旧的[预填大积压实验](performance_burst_cache.md)从约 198–205 MiB 积压开始，与当前报告起点不同。
 
-## 参数与环境为什么要一起看
+## 四、参数与环境为什么要一起看
 
 第一层和第二层是两项独立容量。还应看消息长度、块大小、发布策略、当前块扫描、回调负载、线程数量和调度方式。它们都可能显著改变结果。
 
-保存的本机报告明确列出硬件、系统、编译器和完整初始化参数；本机用高 QoS，未硬绑核。不同机器需要自行测量，历史报告不能直接替换当前配置的结果。外部消息的复制方式也影响开源队列成绩，完整调用方式见[测量证据](PERFORMANCE.html)。
+保存的本机报告明确列出硬件、系统、编译器和完整初始化参数；本机用高 QoS，未硬绑核。不同机器需要自行测量，历史报告不能直接替换当前配置的结果。外部消息的复制方式也影响开源队列成绩，完整调用方式见[测量证据](PERFORMANCE.zh-CN.md)。
 
-## 在自己的机器重现
+## 五、在自己的机器重现
 
 业务影响测试可以从项目根目录一次运行：
 
@@ -55,6 +55,6 @@
 python3 benchmarks/run_burst_empty.py --profile docs/performance_data/burst_from_empty_20261013/selected_config.json
 ```
 
-程序会运行测试并保存结果、参数与校验数据。它需要已准备的性能测试构建和固定版本依赖；安装、构建步骤见[业务测试说明](../benchmarks/BURST_CACHE.zh-CN.html)。
+程序会运行测试并保存结果、参数与校验数据。它需要已准备的性能测试构建和固定版本依赖；安装、构建步骤见[业务测试说明](../benchmarks/BURST_CACHE.zh-CN.md)。
 
-普通写入、Session 和参数遍历见[完整可调测试说明](../benchmarks/TUNABLE_SPSC.zh-CN.html)。报告附带原始数据与源码哈希，压缩数据可以用 `python3 tools/unpack_performance_data.py` 还原。重新生成图表只读取保存的数据，不会重新做性能测试。
+普通写入、Session 和参数遍历见[完整可调测试说明](../benchmarks/TUNABLE_SPSC.zh-CN.md)。报告附带原始数据与源码哈希，压缩数据可以用 `python3 tools/unpack_performance_data.py` 还原。重新生成图表只读取保存的数据，不会重新做性能测试。

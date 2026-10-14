@@ -6,8 +6,8 @@
 
 namespace TwoBufQueue {
 
-// 独立的有界领取队列；只保存凭证，不调用 Pool 或用户回调。
-// QueueTail 使用无锁索引；Keep 仅在取消发布时协调短出队操作，不等待业务处理。
+// Independent bounded claim queue: stores tickets only and invokes neither Pool nor user callbacks.
+// QueueTail uses lock-free indices; Keep briefly coordinates dequeue with cancelled-claim publication, never business processing.
 template<class Resource>
 class ClaimQueue {
     static_assert(PoolResource<Resource>);
@@ -36,7 +36,7 @@ public:
     ClaimQueue& operator=(const ClaimQueue&) = delete;
 
     [[nodiscard]] ReserveResult try_reserve() noexcept {
-        // 把 close 与进入中的 acquire 排序；is_drained 不能漏掉尚未取得槽位的 acquire。
+        // Order close against entering acquire calls; is_drained must include acquires that have not obtained a slot yet.
         if (is_closed()) return failure(AcquireStatus::Closed);
         const auto active = active_.fetch_add(1, std::memory_order_acquire);
         if (active & closed_bit) {
@@ -88,7 +88,7 @@ public:
         const auto id = slot.control.load(std::memory_order_relaxed) >> 4;
         auto loan = slot.loan;
         received_.fetch_add(1, std::memory_order_relaxed);
-        // receive 只释放 B 的名额；借用仍计入 active，直到 complete_received。
+        // receive releases only B's capacity reservation; the loan remains active until complete_received.
         release_slot(index, id);
         return loan;
     }
@@ -99,7 +99,7 @@ public:
         auto& slot = slots_[index];
         const auto id = next_id(slot.control.load(std::memory_order_relaxed));
         auto loan = slot.loan;
-        // 每次重新领取都换代：cancel 后同一资源的旧 Claim 也必须失效。
+        // Give every new claim a generation: cancelling must invalidate old Claims even for the same resource.
         slot.control.store(control(id, SlotState::Claimed), std::memory_order_release);
         return ticket<true>(index, id, loan);
     }
@@ -122,7 +122,7 @@ public:
         return result;
     }
     bool complete_finish(Completion& completion) noexcept {
-        // 只 CAS 稳定槽位的代号，不读取可能已销毁资源的 generation。
+        // CAS only the stable slot's generation; do not read the generation of a possibly destroyed resource.
         if (!transition(completion, SlotState::Finishing, SlotState::Releasing)) return false;
         free_slot(completion.index_, completion.id_);
         completion = {};
@@ -141,7 +141,7 @@ public:
     }
     [[nodiscard]] std::size_t capacity() const noexcept { return slots_.size(); }
     [[nodiscard]] bool has_ready() const noexcept { return ready_.has_ready(); }
-    // 只读稳定槽位；即使旧资源已销毁，也不解引用凭证中的资源地址。
+    // Read stable slots only; never dereference a ticket's resource address after that resource might have been destroyed.
     template<bool C> [[nodiscard]] HandoffState state(const Ticket<C>& value) const noexcept {
         if (value.owner_ != this || value.index_ >= slots_.size()) return HandoffState::Invalid;
         const auto current = slots_[value.index_].control.load(std::memory_order_acquire);
@@ -156,7 +156,7 @@ public:
         }
         return HandoffState::Invalid;
     }
-    // 并发时为观察快照，静止时精确。通过按需扫描，避免每次状态转换争抢全局计数。
+    // Concurrent observations are snapshots; quiescent counts are exact. Scan on demand to avoid global-counter contention on each transition.
     [[nodiscard]] HandoffStats stats() const noexcept {
         HandoffStats result;
         result.queue_capacity = capacity();
@@ -213,7 +213,7 @@ private:
     template<class T> bool transition(const T& value, SlotState from, SlotState to) noexcept {
         if (value.owner_ != this || value.index_ >= slots_.size()) return false;
         auto expected = control(value.id_, from);
-        // CAS 获胜前不能读取 slot.loan：旧凭证可能与另一个资源的 attach 并发。
+        // Do not read slot.loan before winning CAS: an old ticket may race with attachment of another resource.
         return slots_[value.index_].control.compare_exchange_strong(expected, control(value.id_, to),
             std::memory_order_acq_rel, std::memory_order_relaxed);
     }

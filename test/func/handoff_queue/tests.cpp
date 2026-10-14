@@ -51,7 +51,7 @@ void sync_retry() {
     assert(!pipeline.send(duplicate));
     assert(calls.size() == 1);
     assert(pipeline.send(second.loan));
-    assert(calls.size() == 2); // false 后没有再处理另一个元素。
+    assert(calls.size() == 2); // Rejection must not process another element afterward.
     assert(pipeline.send(third.loan));
     assert(calls.size() == 3);
     assert(pipeline.stats().ready_count == 3);
@@ -77,7 +77,7 @@ void limits() {
     pipeline.close();
     assert(pipeline.try_acquire().status == AcquireStatus::Closed);
     assert(!pipeline.is_drained());
-    assert(pipeline.send(reserved.loan)); // 关闭前已预留，关闭后仍可提交。
+    assert(pipeline.send(reserved.loan)); // A reservation made before close may still be sent after close.
     auto claim = pipeline.try_claim();
     assert(claim && pipeline.finish(claim));
     const auto stats = pipeline.stats();
@@ -111,7 +111,7 @@ void errors() {
 }
 
 void tickets() {
-    Pool pool(0, 4, {}, 0); // 强制退役对象，覆盖悬空资源地址的旧凭证。
+    Pool pool(0, 4, {}, 0); // Force retirement to exercise stale tickets containing dangling resource addresses.
     HandoffQueue pipeline(pool, synchronous(2), [](Item&) noexcept { return false; });
     auto acquired = pipeline.try_acquire();
     auto old_producer = acquired.loan;
@@ -149,13 +149,13 @@ void manual() {
     auto first = pipeline.try_acquire();
     auto second = pipeline.try_acquire();
     first.loan->value = 1; second.loan->value = 2;
-    assert(pipeline.send(second.loan)); // 晚 acquire 的资源可先发布，无头部阻塞。
+    assert(pipeline.send(second.loan)); // A later-acquired resource may publish first, without head-of-line blocking.
     auto claim = pipeline.try_claim();
     assert(claim && claim->value == 2);
     assert(pipeline.send(first.loan));
     assert(pipeline.try_acquire().status == AcquireStatus::QueueFull);
     auto received = pipeline.try_receive();
-    assert(received && received->value == 1); // receive 跳过已 claim 元素。
+    assert(received && received->value == 1); // receive skips already claimed elements.
     auto third = pipeline.try_acquire();
     assert(third && pipeline.discard(third.loan));
     assert(pipeline.finish(received));
@@ -178,7 +178,7 @@ void notify_retry(CancelClaimMode cancel_mode = CancelClaimMode::QueueTail) {
     });
     auto item = pipeline.try_acquire();
     assert(item && pipeline.send(item.loan));
-    until([&] { return calls.load() >= 3; }); // 不再 send，也会自动重试。
+    until([&] { return calls.load() >= 3; }); // Retry automatically even when no further send occurs.
     accept.store(true, std::memory_order_release);
     drain(pipeline);
     assert(pool.all_released());
@@ -200,12 +200,12 @@ void wake_readers(CancelClaimMode cancel_mode = CancelClaimMode::QueueTail) {
         while (!release.load(std::memory_order_acquire)) std::this_thread::yield();
         return true;
     });
-    std::this_thread::sleep_for(10ms); // 让所有 Reader 到达等待。
+    std::this_thread::sleep_for(10ms); // Let all Readers reach their wait state.
     for (int i = 0; i < 4; ++i) {
         auto item = pipeline.try_acquire();
         assert(item && pipeline.send(item.loan));
     }
-    until([&] { return entered.load() == 4; }); // 一批数据确实唤醒了多个消费者。
+    until([&] { return entered.load() == 4; }); // Verify one batch actually wakes multiple consumers.
     release.store(true, std::memory_order_release);
     drain(pipeline);
 }
@@ -226,7 +226,7 @@ void stress(HandoffMode mode, ReaderMode read_mode, CancelClaimMode cancel_mode 
     HandoffQueue pipeline(pool, options, [&](Item& item) noexcept {
         assert(item.value < count);
         const auto previous = seen[item.value].fetch_add(1);
-        // 每第七条拒绝一次；同一资源不应同时进入多个回调。
+        // Reject once per seventh record; one resource must never enter multiple callbacks concurrently.
         if (item.value % 7 == 0 && previous == 0) return false;
         assert(previous == (item.value % 7 == 0 ? 1u : 0u));
         return true;
@@ -361,7 +361,7 @@ void sync_concurrent(CancelClaimMode cancel_mode = CancelClaimMode::QueueTail) {
     std::thread first(produce), second(produce);
     first.join(); second.join();
     pipeline.close();
-    // 不额外 retry_pending：否则可能掩盖最后一条并发通知丢失。
+    // Do not call extra retry_pending; it could hide a lost final concurrent notification.
     assert(pipeline.is_drained() && calls == 16000);
 }
 

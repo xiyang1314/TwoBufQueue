@@ -1,6 +1,6 @@
 # 当前性能测试入口
 
-[性能证据与四份报告](../docs/PERFORMANCE.html) · [详细参数和复现命令](TUNABLE_SPSC.zh-CN.html)
+[性能证据与四份报告](../docs/PERFORMANCE.zh-CN.md) · [详细参数和复现命令](TUNABLE_SPSC.zh-CN.md)
 
 当前有效入口为 `BRQ_BUILD_SPSC_BENCHMARKS=ON`：TwoBufQueue 普通 write / WriteSession 与 ReaderWriterQueue、rigtorp/SPSCQueue、atomic_queue 同负载对照。依赖仅供性能测试使用，通过 `bootstrap_spsc.py` 显式下载、固定版本并校验哈希；默认构建和库运行不依赖它们。
 

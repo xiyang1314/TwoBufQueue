@@ -31,15 +31,15 @@ template<class TWriter> struct ReleaseOnExit {
 
 template<class TWriter> ReleaseOnExit(std::atomic<bool>&, TWriter&) -> ReleaseOnExit<TWriter>;
 
-// 挂起首条回调。只有复制与回调分线程，两个源块才能反复回收以完成整轮写入。
+// Suspend the first callback; only separate copy/callback threads allow two source blocks to be recycled repeatedly for the full send round.
 static void copied_while_callback_waits(bool list_constructor, HandoffMode mode, ReaderMode reader_mode) {
     WriterSourceConfig source;
     source.block_size = 64; source.pool_min = source.pool_max = 2;
     auto writer = make_writer<Writer<>>(source);
     TwoBufQueueOptions options;
     options.output_block_size = 64; options.output_frame_capacity = 1;
-    // frame_capacity=1 时最坏每条记录独占一个输出块。阻塞回调期间须容纳全部 100 条，
-    // 不能依赖复制线程总能一次读满源块，否则调度差异可能被误判为回调阻塞了复制线程。
+    // With frame_capacity = 1, each record may occupy an output block. Hold all 100 records while the callback blocks;
+    // never assume the copy thread always fills a source block in one read, or scheduling could look like callbacks blocked copying.
     options.output_pool_min = options.output_pool_max = 128;
     options.output_queue_capacity = 128;
     options.output_mode = mode; options.output_reader_mode = reader_mode;
@@ -61,7 +61,7 @@ static void copied_while_callback_waits(bool list_constructor, HandoffMode mode,
     std::unique_ptr<Queue> queue;
     if (list_constructor) queue = std::make_unique<Queue>(callback,std::initializer_list<decltype(writer)*>{&writer},options);
     else queue = std::make_unique<Queue>(callback,writer,options);
-    ReleaseOnExit release{released,writer}; // 发生异常时，先解除回调等待并结束生产，再析构队列。
+    ReleaseOnExit release{released,writer}; // On exception, release the callback wait and finish production before destroying the queue.
     require(queue->started(),"copy worker did not start");
     std::uint64_t sent = 0;
     require(writer.write(sent),"initial write failed"); ++sent; writer.flush();
@@ -84,7 +84,7 @@ static void copied_while_callback_waits(bool list_constructor, HandoffMode mode,
     require(copied,"asynchronous callback blocked copying");
 }
 
-// 两个输出工作线程同时进入回调，验证 output_reader_count 的实际传递。
+// Two output workers enter callbacks concurrently, verifying output_reader_count is forwarded correctly.
 static void parallel_batch_callbacks() {
     WriterSourceConfig source;
     source.block_size = 64; source.pool_min = source.pool_max = 4;

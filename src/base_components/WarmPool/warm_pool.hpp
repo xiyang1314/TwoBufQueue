@@ -22,22 +22,22 @@ namespace TwoBufQueue {
 
 enum class PoolGetStatus { Success, Limit, ResourceError };
 
-// 池锁保护容器和统计；Node 锁保护参与 Loan 同步的资源操作。
-// 使用者先锁 Loan、再检查有效性；普通裸指针访问仍由调用者保证寿命。
-// 创建、reset、Factory::dispose 在池锁外执行；工厂必须支持并发调用。
+// The pool lock protects containers/statistics; Node locks protect resource operations using Loan synchronization.
+// Lock a Loan before checking validity; callers using ordinary raw pointers remain responsible for lifetime.
+// Creation, reset and Factory::dispose run outside the pool lock; factories must support concurrent calls.
 template<PoolResource TResource, bool TIsConcurrent = true,
          class Factory = DefaultResourceFactory<TResource>>
 class WarmPool {
     using Lock = std::conditional_t<TIsConcurrent, SpinLock, NoLock>;
     struct Node;
-    // 随创建一起分配，登记销毁不再分配内存。旧记录与复用后的 Node::record 独立。
+    // Allocate alongside creation so destruction registration needs no allocation. Old records are independent of a reused Node::record.
     struct Record {
         Node* node;
         TResource* resource = nullptr;
         Record* next = nullptr;
     };
     struct Node {
-        Lock lock_; // 地址稳定，直到池析构；旧 Loan 也可以安全加锁。
+        Lock lock_; // Stable address until pool destruction, allowing old Loans to lock safely.
         Record* record = nullptr;
         Node* next = nullptr;
         std::uint64_t generation = 0;
@@ -64,31 +64,31 @@ public:
         try {
             if (!preallocate(min_count)) throw std::bad_alloc{};
         } catch (...) {
-            destroy_all(); // 裸指针成员不自动释放；构造失败不会调用本类析构函数。
+            destroy_all(); // Raw-pointer members do not clean themselves up; failed construction does not invoke this object's destructor.
             throw;
         }
     }
     WarmPool(const WarmPool&) = delete;
     WarmPool& operator=(const WarmPool&) = delete;
     ~WarmPool() noexcept {
-        // 所有调用/Loan 加锁操作已经停止，所有借用已归还，才允许析构池。
+        // Destroy the pool only after all calls/Loan-lock operations stop and every loan is returned.
         if (in_use_count_ || pending_count_) {
             std::fputs("destroying WarmPool while resources are still in use\n", stderr);
             std::terminate();
         }
-        destroy_all(); // 清空最后留下的待销毁对象，不再等待下一次登记。
+        destroy_all(); // Destroy the final pending objects now rather than waiting for another registration.
     }
 
     [[nodiscard]] Loan get() noexcept {
         PoolGetStatus ignored;
         return get(ignored);
     }
-    // 在失败发生的位置记录原因，不用事后读取计数猜测并发状态。
+    // Record the reason at the failure site instead of inferring concurrent state from counters afterward.
     [[nodiscard]] Loan get(PoolGetStatus& status) noexcept {
         status = PoolGetStatus::ResourceError;
         auto* node = reserve_node(true, &status);
         if (!node) return {};
-        // 等待上一代已进入的节点操作退出；不持池锁，也不在节点锁内分配内存。
+        // Wait for prior-generation node operations to leave, without holding the pool lock or allocating under the node lock.
         { std::lock_guard<Lock> guard(node->lock_); }
         if (!prepare(node)) return {};
         auto loan = make_loan(node, node->record->resource);
@@ -122,7 +122,7 @@ public:
         }
     }
 
-    // O(1) 瞬时检查，仅访问稳定节点；资源指针可以已经失效。
+    // O(1) snapshot check of stable nodes only; the resource pointer may already be stale.
     template<class U> [[nodiscard]] bool is_valid(const TwoBufQueue::Loan<U>& loan) const noexcept {
         if (!owns(loan)) return false;
         return is_valid_node(static_cast<const Node*>(loan.node_), loan.generation_);
@@ -133,8 +133,8 @@ public:
     [[nodiscard]] bool is_valid(const TResource* resource) const noexcept requires BoundResource<TResource> {
         return resource && is_valid(*resource);
     }
-    // 每代最多认领一次归还。调用后不得继续使用资源；普通访问由用户串行化。
-    // 持有旧 Loan 锁的线程可退出锁，get/销毁会等待或跳过它；新旧代不会交叉使用。
+    // Claim return at most once per generation. Stop using the resource afterward; ordinary accesses require caller serialization.
+    // A thread holding an old Loan lock may unlock it; get/destruction waits or skips the node so generations never overlap.
     template<class U> [[nodiscard]] bool recycle(const TwoBufQueue::Loan<U>& loan) noexcept {
         return owns(loan) && recycle_node(static_cast<Node*>(loan.node_), loan.generation_);
     }
@@ -145,7 +145,7 @@ public:
     [[nodiscard]] bool recycle(const TResource* resource) noexcept requires BoundResource<TResource> {
         return resource && recycle(*resource);
     }
-    // 初始化/静止时调用，count 为在池资源总数，不包含待销毁旧对象。
+    // Call during initialization/quiescence; count is the pool's total resource count, excluding old objects pending destruction.
     [[nodiscard]] bool preallocate(std::size_t count) noexcept {
         if (count > max_count_) return false;
         while (resource_count() < count) {
@@ -156,7 +156,7 @@ public:
         }
         return true;
     }
-    // 逻辑归还完成后通知一次，物理销毁可以延后。只查询池，不重入修改。
+    // Notify once after logical return; physical destruction may be deferred. Query only; do not reenter mutations.
     void set_release_callback(ReleaseCallback callback, void* context) noexcept {
         std::lock_guard<Lock> guard(lock_);
         release_callback_ = callback;
@@ -200,7 +200,7 @@ public:
     template<class U> [[nodiscard]] bool owns(const TwoBufQueue::Loan<U>& loan) const noexcept {
         return loan.owner_ == this && loan.node_ != nullptr;
     }
-    // 裸资源必须仍存活；不能用这个重载检测悬空指针。
+    // The raw resource must still be alive; this overload cannot detect dangling pointers.
     [[nodiscard]] bool owns(const TResource& resource) const noexcept requires BoundResource<TResource> {
         return owns(resource.loan());
     }
@@ -230,7 +230,7 @@ private:
             ++pending_count_;
             if (free_count_ >= max_free_count_ && resource_count_ > min_count_) {
                 retiring = std::exchange(node->record, nullptr);
-                --resource_count_; // 立即预留缩减，并发归还不会突破 min_count。
+                --resource_count_; // Reserve shrinking immediately so concurrent returns cannot go below min_count.
             } else {
                 put_free_without_lock(node);
             }
@@ -240,7 +240,7 @@ private:
         if (retiring) {
             register_dispose(retiring);
             std::lock_guard<Lock> guard(lock_);
-            dormant_.push(node); // 队列保存旧 Record，节点可以创建新资源。
+            dormant_.push(node); // The queue retains the old Record while the node may create a new resource.
             --pending_count_;
         }
         if (callback) callback(context);
@@ -275,7 +275,7 @@ private:
         --creating_count_;
         if (!node) { --pending_count_; return nullptr; }
         node->generation = generation;
-        nodes_.push_back(node); // 构造时 reserve(max_count)，此处不分配。
+        nodes_.push_back(node); // reserve(max_count) ran during construction; no allocation here.
         return node;
     }
     bool prepare(Node* node) noexcept {
@@ -313,15 +313,15 @@ private:
         Record* candidates[2]{};
         {
             std::lock_guard<Lock> guard(lock_);
-            // 一次取出两个不同的旧记录；忙记录重排后不能在本轮重复检查。
+            // Remove two distinct old records at once; do not recheck a busy, requeued record during the same pass.
             candidates[0] = will_dispose_qu_.pop();
             candidates[1] = will_dispose_qu_.pop();
         }
         for (auto* old : candidates) {
             if (!old) continue;
             if (old->node->lock_.try_lock()) {
-                // 旧代已失效且从节点摘下；取得稳定节点锁证明旧操作已经退出。
-                // 先解锁再销毁；后来的旧 Loan 会校验失败，不能再触及旧对象。
+                // The old generation is invalid and detached from its node; acquiring the stable node lock proves old operations have exited.
+                // Unlock before destruction. Later old Loans fail validation and cannot touch the old object.
                 old->node->lock_.unlock();
                 factory_.dispose(old->resource);
                 delete old;

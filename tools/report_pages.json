@@ -1,0 +1,10 @@
+{
+  "schema_version": 1,
+  "reports": [
+    "docs/index.html",
+    "docs/performance_burst_from_empty.html",
+    "docs/performance_256m_zero_session_plateau.html",
+    "docs/performance_256m_zero_publish_max_plateau.html",
+    "docs/performance_256m_zero_publish1_plateau.html"
+  ]
+}

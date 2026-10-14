@@ -48,7 +48,7 @@ struct Payload : ExampleResource<> {
         if (control->on_reset) control->on_reset();
         const auto mode = control->reset_mode.load();
         if (mode == 1) return false;
-        if (mode == 2) { (void)ExampleResource<>::reset(generation); return false; } // 部分准备失败。
+        if (mode == 2) { (void)ExampleResource<>::reset(generation); return false; } // Partial preparation failure.
         data.fill(0);
         return ExampleResource<>::reset(generation);
     }
@@ -72,7 +72,7 @@ struct Factory {
 };
 using Pool = WarmPool<Payload, true, Factory<Payload>>;
 
-// 持有大资源的具体类型，只要求准备与清理接口；淘汰后由工厂重建。
+// Concrete type owning a large resource; only preparation/cleanup are required. The Factory recreates it after eviction.
 struct Heavy : Payload {
     std::unique_ptr<int[]> storage = std::make_unique<int[]>(64);
     using Payload::Payload;
@@ -132,7 +132,7 @@ template<bool concurrent> void resource_one() {
     CHECK(!resource.end_work(0) && !resource.end_work(3));
     CHECK(resource.generation() == 4 && !resource.completed());
     CHECK(resource.end_work(4));
-    CHECK(!resource.end_work(4)); // 栈上独立对象，生命周期仍然有效。
+    CHECK(!resource.end_work(4)); // Independent stack object whose lifetime remains valid.
     CHECK(resource.reset(5));
     CHECK(!resource.end_work(4));
     CHECK(resource.generation() == 5);
@@ -168,11 +168,11 @@ void ownership_checks() {
         CHECK(!other.owns(first) && !other.owns(handle) && !other.owns(*first));
         CHECK(pool.is_valid(first) && !other.is_valid(first));
         CHECK(first->finish());
-        // 以下只访问稳定节点与借出时的凭证。
+        // Below, access stable nodes and loan-time tickets only.
         CHECK(pool.resource_count() == cached);
         CHECK(pool.owns(first) && pool.owns(handle) && !pool.is_valid(first));
         auto next = pool.get();
-        if (cached) CHECK(next.get() == first.get()); // 确定复用同一地址。
+        if (cached) CHECK(next.get() == first.get()); // Ensure the same address is reused.
         CHECK(next.generation() != first.generation());
         CHECK(pool.owns(first) && !pool.is_valid(first) && !pool.recycle(first));
         CHECK(pool.is_valid(next) && next->finish());
@@ -195,9 +195,9 @@ void lifecycle() {
     auto* old_address = b.get();
     const auto old_generation = b.generation();
     finish(b);
-    CHECK(pool.is_valid(b)); // 已结束但尚未归还，凭证仍有效。
+    CHECK(pool.is_valid(b)); // Business work ended but the loan has not returned; the ticket remains valid.
     CHECK(pool.in_use_count() == 3 && pool.free_resource_count() == 0);
-    CHECK(!pool.all_released()); // 仅结束模拟业务，不代表已经归还。
+    CHECK(!pool.all_released()); // Only simulated business work ends here; the resource is not returned yet.
     std::size_t notifications = 0;
     pool.set_release_callback([](void* value) noexcept { ++*static_cast<std::size_t*>(value); }, &notifications);
     CHECK(pool.recycle(b) && notifications == 1);
@@ -206,7 +206,7 @@ void lifecycle() {
     CHECK(again.get() == old_address && again.generation() > old_generation);
     CHECK(!pool.is_valid(b) && pool.is_valid(again));
     CHECK(!pool.recycle(b));
-    finish(again); // 新借用已经完成，旧凭证也不能将它归还。
+    finish(again); // The new loan has completed; an old ticket must not return it either.
     CHECK(!pool.recycle(b) && pool.in_use_count() == 3);
     release(pool, a); release(pool, c);
     CHECK(pool.recycle(again) && notifications == 4);
@@ -264,7 +264,7 @@ void failures() {
 }
 
 void factory_dispose() {
-    // 工厂拥有完整销毁逻辑；池不会在 dispose 之后再 delete。
+    // The Factory owns complete destruction; the pool must not delete again after dispose.
     struct CustomFactory {
         Control* control;
         Payload* create() const { return new Payload(control); }
@@ -297,11 +297,11 @@ void trim_destroy() {
     for (std::size_t i = 0; i < 5; ++i) release(pool, values[i]);
     CHECK(pool.free_resource_count() == 2 && pool.resource_count() == 3 && control.destroys == 2);
     auto hot = pool.get();
-    CHECK(hot.get() == latest_cached); // 栈仍为 LIFO；超过缓存上限时销毁本次归还的对象。
+    CHECK(hot.get() == latest_cached); // Preserve LIFO reuse; exceeding the free-cache limit destroys the object being returned.
     release(pool, hot); release(pool, values[5]);
     CHECK(pool.resource_count() == 2 && pool.free_resource_count() == 2);
     CHECK(pool.preallocate(6) && pool.resource_count() == 6);
-    // 不再有全池扫描；显式预热的资源在借用归还时逐个缩减。
+    // No whole-pool scan; explicitly warmed resources are trimmed individually as they are borrowed/returned.
     for (auto& value : values) value = pool.get();
     for (const auto& value : values) release(pool, value);
     CHECK(pool.resource_count() == 2 && pool.free_resource_count() == 2);
@@ -359,11 +359,11 @@ void trim_overlap() {
     control.on_dispose = [&] {
         if (first.exchange(false)) { entered.count_down(); resume.wait(); }
     };
-    release(pool, values[1]); // 第一次登记，不销毁自己。
+    release(pool, values[1]); // First registration must not destroy itself.
     finish(values[2]);
     std::thread one([&] { CHECK(pool.recycle(values[2])); });
     entered.wait();
-    CHECK(!pool.recycle(values[1])); // 另一线程正在销毁该对象，也必须安全拒绝。
+    CHECK(!pool.recycle(values[1])); // Safely reject while another thread is destroying this object as well.
     for (std::size_t i = 3; i < 6; ++i) release(pool, values[i]);
     CHECK(pool.free_resource_count() == 3 && control.disposes == 0);
     resume.count_down();
@@ -510,11 +510,11 @@ struct RawMemory : ExampleResource<> {
         ++control->creates;
     }
     ~RawMemory() noexcept {
-        free_bytes(); // Factory::dispose 调用析构释放全部资源。
+        free_bytes(); // Factory::dispose invokes destruction and releases every resource.
         ++control->destroys;
     }
     bool reset(std::uint64_t generation) noexcept {
-        // 模拟在借出前重建内部数据，以及部分准备成功后返回失败。
+        // Simulate rebuilding internal data before lending and failing after partial preparation.
         if (control->reset_mode != 0) {
             free_bytes();
             try { allocate_bytes(); } catch (...) { return false; }
@@ -556,7 +556,7 @@ void dispose_raw_memory() {
         }
         control.create_mode = 0;
         control.reset_mode = 1;
-        CHECK(!pool.get()); // 部分 reset 失败的对象仍交给 Factory 销毁。
+        CHECK(!pool.get()); // Factory still destroys an object whose reset partially fails.
         CHECK(control.creates == 3 && control.destroys == 2);
         CHECK(control.allocations == control.frees + 1);
         control.reset_mode = 0;
@@ -592,7 +592,7 @@ void dispose_ctor_failure() {
 }
 
 void duplicate_recycle() {
-    // 覆盖保留对象与每次销毁两种路径；两个归还线程都只使用凭证，不碰资源。
+    // Cover retained-object and destroy-on-return paths; both returner threads use tickets without touching resources.
     for (const std::size_t cap : {0u, 1u}) {
         Control control;
         Pool pool(0, 1, {&control}, cap);
@@ -613,7 +613,7 @@ void duplicate_recycle() {
             loan = pool.get();
             CHECK(loan);
             finish(loan);
-            CHECK(!pool.recycle(old)); // 新一轮已结束，旧代号仍不能归还它。
+            CHECK(!pool.recycle(old)); // A newer round has ended; an old generation must still not return it.
             barrier.arrive_and_wait();
             barrier.arrive_and_wait();
             CHECK(successes == i + 1 && control.recycles == static_cast<int>(i + 1));
@@ -662,7 +662,7 @@ void factory_loan() {
     CHECK(pool.is_valid(a));
     CHECK(!other.is_valid(*a));
     CHECK(pool.is_valid(*a) && pool.is_valid(a.get()));
-    release(pool, a); // 销毁资源对象后，句柄校验不访问已释放内存。
+    release(pool, a); // Handle validation must not access freed memory after resource destruction.
     CHECK(control.disposes == 0 && !pool.is_valid(a));
     auto b = pool.get();
     CHECK(!pool.is_valid(a));
@@ -685,7 +685,7 @@ template<bool concurrent> void default_finish_one() {
             CHECK(loan && pool.is_valid(*loan) && pool.is_valid(loan.get()));
             CHECK(!other.is_valid(*loan) && !other.recycle(*loan));
             CHECK(!pool.is_valid(old) && !pool.recycle(old));
-            CHECK(loan->finish()); // cap=0 时登记待销毁，归还后不访问对象。
+            CHECK(loan->finish()); // cap = 0 registers deferred destruction; never access the object after returning it.
             CHECK(pool.all_released() && pool.free_resource_count() == cap);
             CHECK(!pool.is_valid(loan) && !pool.recycle(loan));
             old = loan;
@@ -747,7 +747,7 @@ void node_lifetime() {
 }
 
 void node_concurrent() {
-    // 旧一代的已进入操作未退出时，get 不能 reset 同一节点中的对象。
+    // get must not reset an object while entered operations from its old generation remain active.
     for (std::size_t cache : {0u, 1u}) {
         Control control;
         Pool pool(0, 2, {&control}, cache);
@@ -767,7 +767,7 @@ void node_concurrent() {
         const auto deadline = std::chrono::steady_clock::now() + 5s;
         while (!pool.pending_count() && std::chrono::steady_clock::now() < deadline) std::this_thread::yield();
         CHECK(pool.pending_count() == 1 && !returned);
-        CHECK(pool.is_valid(unrelated)); // 等节点锁期间不占池锁。
+        CHECK(pool.is_valid(unrelated)); // Do not hold the pool lock while waiting for a Node lock.
         leave.count_down(); worker.join(); borrower.join();
         CHECK(next && next.generation() != loan.generation());
         { std::lock_guard guard(loan); CHECK(!loan.is_valid()); }
@@ -788,12 +788,12 @@ void deferred_two_candidates() {
         });
         entered.wait();
         release(pool, a); // [a]
-        release(pool, b); // a 忙，只尝试一次；[a,b]
+        release(pool, b); // a is busy; try it once only: [a, b].
         CHECK(control.destroys == 0 && pool.will_dispose_count() == 2);
-        release(pool, c); // a 忙，第二个不同的 b 可销毁；[a,c]
+        release(pool, c); // a is busy, but distinct second record b can be destroyed: [a, c].
         CHECK(control.destroys == 1 && pool.will_dispose_count() == 2);
         leave.count_down(); busy.join();
-        release(pool, d); // 本轮销毁两个旧记录 a,c；[d]
+        release(pool, d); // Destroy old records a and c during this round: [d].
         CHECK(control.destroys == 3 && pool.will_dispose_count() == 1);
         CHECK(pool.resource_count() == 0 && pool.all_released());
     }
@@ -806,11 +806,11 @@ void retired_record_reuse() {
         Pool pool(0, 1, {&control}, 0);
         auto old = pool.get();
         release(pool, old);
-        auto current = pool.get(); // max_count=1，旧对象仍在队列但槽位可以复用。
+        auto current = pool.get(); // max_count = 1: the old object remains queued while its slot is reusable.
         CHECK(current && current.get() != old.get() && control.destroys == 0);
         current->data[0] = 42;
         { std::lock_guard guard(old); CHECK(!old.is_valid()); }
-        release(pool, current); // 必须销毁 old 的指针，不能销毁 Node 当前指针两次。
+        release(pool, current); // Destroy old's pointer, not Node's current pointer twice.
         CHECK(control.destroys == 1 && pool.will_dispose_count() == 1);
         auto last = pool.get();
         CHECK(last && last->data[0] == 0);

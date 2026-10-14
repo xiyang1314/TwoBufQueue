@@ -7,7 +7,7 @@
 #include <type_traits>
 
 namespace TwoBufQueue::performance {
-// 单一字段表用于 CLI、默认参数和结果 JSON，避免参数添加后漏记复现信息。
+// One field table drives the CLI, defaults and result JSON so new parameters remain reproducible.
 template<class TConfig, class TFunction> void for_each_parameter(TConfig& c, TFunction function) {
 #define BRQ_PARAMETER(label, member) function(label,c.member)
     BRQ_PARAMETER("transport",transport); BRQ_PARAMETER("mode",mode); BRQ_PARAMETER("payload_bytes",payload_bytes);

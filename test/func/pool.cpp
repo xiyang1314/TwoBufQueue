@@ -74,7 +74,7 @@ void pool_cases(Cases &c) {
                          invalid([&] {
                              if (k == "storequeue") {
                                  ReadBlockPool pool(1, 2, ReadBlockFactory{64, 8});
-                                 OutputQueue q(pool, 0); // 队列容量为 0 非法。
+                                 OutputQueue q(pool, 0); // Zero queue capacity is invalid.
                              } else {
                                  AllocNReleaseNSlicePool p(
                                      k == "bytes" ? 0 : 64, k == "initial" ? 2 : 0,

@@ -5,7 +5,7 @@
 
 namespace TwoBufQueue {
 
-// 可独立使用的池化资源队列，没有回调或线程；Queue 参数允许替换槽位/领取实现。
+// Standalone pooled-resource queue without callbacks or threads; Queue permits alternate slot/claim implementations.
 template<class Pool, class Queue = ClaimQueue<typename Pool::ResourceType>>
 class PooledResourceQueue {
 public:
@@ -54,7 +54,7 @@ public:
     bool discard(ProducerLoan& loan) noexcept { return finish_ticket(loan); }
     [[nodiscard]] Loan try_receive() noexcept {
         auto loan = queue_.try_receive();
-        // 凭证保留原来的池身份和代号，仅切换完成入口；Loan 本身不增加字段。
+        // Preserve pool identity and generation in the ticket, replacing only its completion entry point; Loan gains no fields.
         if (loan) loan.operations_ = &received_operations_;
         return loan;
     }
@@ -90,7 +90,7 @@ private:
         if (!queue_.complete_finish(completed)) std::terminate();
         return true;
     }
-    // 只构造节点凭证供池校验，不需要已经可能失效的资源指针。
+    // Construct a node ticket for pool validation without requiring a possibly stale resource pointer.
     static Loan identity(void* owner, void* node, std::uint64_t generation) noexcept {
         return Loan(owner, node, nullptr, generation, nullptr, nullptr);
     }
@@ -102,8 +102,8 @@ private:
     static bool recycle_received(const LoanOperations& operations, void* owner, void* node,
                                  std::uint64_t generation) noexcept {
         auto& self = *static_cast<PooledResourceQueue*>(operations.context);
-        // 池在稳定 Node 上按代号串行判定，只有归还成功者更新 received 计数。
-        // 不访问资源内容，也不依赖已经释放/复用的队列槽位。
+        // The pool validates generations serially on a stable Node; only the successful return updates received counts.
+        // Do not access resource data or depend on an already released/reused queue slot.
         if (!self.pool_.recycle(identity(owner, node, generation))) return false;
         self.queue_.complete_received();
         return true;

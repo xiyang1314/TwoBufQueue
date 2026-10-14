@@ -12,12 +12,12 @@
 
 namespace TwoBufQueue {
 
-// 每个物理块一个管理器：固定容量的切片释放位图、切片计数及借用代号。
-// 两个参数描述分配/释放并发；任一为 true 时启用跨线程元数据同步。
-// 持有统一的分配游标；调用方指定可分配终点（容量或已发布数据终点）。
-// 不操作写指针、不判断 Writer 状态；关闭且全部释放后调用块的完成回调。
-// 位图在构造时分配并初始化，运行中不扩容；分配锁和释放锁相互独立。
-// 释放锁保护位图、释放计数快照与复用重置。
+// One manager per physical block: fixed-capacity slice-release bitmap, slice counts and loan generation.
+// The two parameters describe allocation/release concurrency; either true enables cross-thread metadata synchronization.
+// Owns the common allocation cursor; callers supply the allocation limit, either capacity or the published-data end.
+// Does not update write pointers or inspect Writer state; invokes the block completion callback once closed and fully released.
+// Allocate and initialize the bitmap at construction, never grow it at runtime; allocation and release locks are independent.
+// The release lock protects the bitmap, released-count snapshots and reuse reset.
 template<class Block, bool is_n_alloc, bool is_n_use>
 class BasicBlockSlicesAllocator {
 public:
@@ -28,7 +28,7 @@ public:
 
 private:
     using AllocateLock = std::conditional_t<is_n_alloc, SpinLock, NoLock>;
-    // 单释放者也可能与分配者、池查询并行；只在完全单线程策略中去掉释放锁。
+    // A single releaser may still overlap allocation/pool queries; omit the release lock only for the fully single-threaded policy.
     using ReleaseLock = std::conditional_t<is_n_alloc || is_n_use, SpinLock, NoLock>;
     friend Block;
     friend class BlockSlicesAllocatorForTest;
@@ -44,22 +44,22 @@ private:
     void invalidate() noexcept;
     bool close(bool force) noexcept;
     template<class Predicate> bool close_when(Predicate predicate, bool force = false) noexcept;
-    void reset(std::uint64_t sequence) noexcept; // Free 且 get 线程独占。
-    void prepare_storage(); // 新块或已缩减的 Free 块在借出前确保位图存在。
-    void release_storage() noexcept; // 销毁前释放位图；失效切片由池节点拒绝访问。
+    void reset(std::uint64_t sequence) noexcept; // Free and exclusively owned by the get thread.
+    void prepare_storage(); // Ensure a bitmap exists before lending a new or previously trimmed Free block.
+    void release_storage() noexcept; // Free the bitmap before destruction; pool-node validation rejects stale slices.
     [[nodiscard]] bool is_all_released() const noexcept;
     [[nodiscard]] std::size_t outstanding_count() const noexcept;
 
     Block& block_;
-    // 先发布切片编号，再发布游标；池 acquire 游标后才检查是否全部释放。
+    // Publish the slice id before its cursor; pool acquire of the cursor precedes the all-released check.
     std::conditional_t<Block::concurrent, std::atomic<std::size_t>, PlainValue<std::size_t>> next_offset_{0};
-    // 构造后不变；false 时仅忽略 release 的无效状态，不更改当前借用的元数据。
+    // Immutable after construction; false suppresses invalid-release reporting without changing current-loan metadata.
     const bool is_check_slice_release;
-    const std::size_t max_slices_per_block_; // 每次借用的累计分配上限，释放不复用槽位。
-    std::unique_ptr<std::uint64_t[]> released_; // 每个切片一位，1 表示已释放。
-    [[no_unique_address]] mutable AllocateLock allocate_lock_; // 串行化完整分配过程，不只保护编号。
-    [[no_unique_address]] mutable ReleaseLock lock_; // 保护 release/reset 及计数查询。
-    std::conditional_t<is_n_alloc || is_n_use, std::atomic<std::size_t>, PlainValue<std::size_t>> allocated_count_{0}; // 串行化的分配端写入，释放端读取。
+    const std::size_t max_slices_per_block_; // Cumulative allocation limit per loan; released slots are not reused during that loan.
+    std::unique_ptr<std::uint64_t[]> released_; // One bit per slice; 1 means released.
+    [[no_unique_address]] mutable AllocateLock allocate_lock_; // Serialize the entire allocation, not just id assignment.
+    [[no_unique_address]] mutable ReleaseLock lock_; // Protect release/reset and count queries.
+    std::conditional_t<is_n_alloc || is_n_use, std::atomic<std::size_t>, PlainValue<std::size_t>> allocated_count_{0}; // Written by the serialized allocation side and read by the release side.
     std::size_t released_count_ = 0;
     std::uint64_t sequence_ = 0;
     bool closed_ = false;
@@ -68,7 +68,7 @@ private:
 
 inline std::size_t bitmap_words(std::size_t count) {
     if (count == 0) throw std::invalid_argument("max_slices_per_block must be positive");
-    return (count >> 6) + ((count & 63) != 0); // 不使用 count + 63，避免溢出。
+    return (count >> 6) + ((count & 63) != 0); // Avoid count + 63, which could overflow.
 }
 
 
@@ -94,7 +94,7 @@ void BasicBlockSlicesAllocator<Block, is_n_alloc, is_n_use>::release_storage() n
 template<class Block, bool is_n_alloc, bool is_n_use>
 void BasicBlockSlicesAllocator<Block, is_n_alloc, is_n_use>::invalidate() noexcept {
     std::lock_guard<ReleaseLock> lock(lock_);
-    sequence_ = 0; // 0 永不用于借出代号，无需复制派生块的业务状态。
+    sequence_ = 0; // Zero is never a loan generation; derived-block business state need not be copied.
 }
 
 template<class Block, bool is_n_alloc, bool is_n_use>
@@ -105,7 +105,7 @@ void BasicBlockSlicesAllocator<Block, is_n_alloc, is_n_use>::reset(std::uint64_t
     sequence_ = sequence;
     closed_ = false;
     next_offset_.store(0, std::memory_order_relaxed);
-    // 保留已申请容量；每个 word 在本代首个切片发布前重置，无需清空整个数组。
+    // Retain allocated capacity; reset each word before publishing its first slice this generation, without clearing the entire array.
 }
 
 template<class Block, bool is_n_alloc, bool is_n_use>
@@ -130,7 +130,7 @@ BasicMemorySlice<Block> BasicBlockSlicesAllocator<Block, is_n_alloc, is_n_use>::
 
     const auto index = allocated_count_.load(std::memory_order_relaxed);
     if (index == max_slices_per_block_) return {};
-    // 本代每个 word 的首个切片发布前清零，此时尚不存在该 word 的释放者。
+    // Clear a word before publishing its first slice this generation, when no releaser for that word can exist yet.
     if ((index & 63) == 0) released_[index >> 6] = 0;
     allocated_count_.store(index + 1, std::memory_order_release);
     next_offset_.store(start + size, std::memory_order_release);
@@ -159,8 +159,8 @@ bool BasicBlockSlicesAllocator<Block, is_n_alloc, is_n_use>::release(std::size_t
             }
         }
     }
-    // 锁内认领最后完成者；调用者退出 Node 锁后再归还。
-    // 无效释放不触碰新代计数或位图；默认仍按原逻辑报告错误。
+    // Claim final completion under the lock; the caller returns the block after leaving the Node lock.
+    // Invalid release leaves the new generation's count/bitmap untouched; default behavior still reports the error.
     if (inactive) {
         if (is_check_slice_release) block->report_inactive_slice(location);
         return false;
@@ -196,8 +196,8 @@ bool BasicBlockSlicesAllocator<Block, is_n_alloc, is_n_use>::close_when(Predicat
     bool finished = false;
     {
         std::lock_guard<ReleaseLock> guard(lock_);
-        // 状态交接与最后一次登记均进入同一临界区，不能在锁外分别判断，
-        // 否则双方都可能读到旧状态并漏掉完成通知。
+        // State handoff and final registration must share one critical section rather than checking separately outside the lock;
+        // otherwise both sides could observe old state and miss completion notification.
         if (sequence_ && predicate()) {
             closed_ = true;
             if (force || released_count_ == allocated_count_.load(std::memory_order_acquire)) {

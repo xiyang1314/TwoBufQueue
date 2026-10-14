@@ -2,7 +2,7 @@
 #include "TwoBufQueue/src/base_components/WarmPool/warm_pool.hpp"
 
 namespace TwoBufQueue {
-// 只保存创建参数；对象及其内存由 WarmPool 持有和销毁。
+// Stores creation parameters only; WarmPool owns and destroys objects and their storage.
 template<class Block> class BlockResourceFactory {
 public:
     explicit BlockResourceFactory(std::uint64_t size, typename Block::Config config = {})

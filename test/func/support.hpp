@@ -64,8 +64,8 @@ struct Message {
     std::vector<std::byte> bytes;
     bool operator==(const Message &) const = default;
 };
-// 实现 ReadWriterDataCallback 的六个方法；read_complete / read_current 逐块解析长度前缀。
-// 每次 read_once 后 end_read 都会被调用，成功与否都可能出现。
+// Implement all six ReadWriterDataCallback methods; read_complete / read_current parse length-prefixed records block by block.
+// end_read follows every read_once, whether that round succeeds or fails.
 struct Receiver {
     std::atomic<bool> reject{false};
     bool good = true;
@@ -158,7 +158,7 @@ inline std::vector<std::byte> framed(unsigned value) {
     std::memcpy(v.data() + 2, &value, 4);
     return v;
 }
-// ── 缓冲读取链路（Writer → ReadService → ToReadBlock → PooledResourceQueue）──
+// Buffered read pipeline: Writer -> ReadService -> ToReadBlock -> PooledResourceQueue.
 struct CollectedFrame {
     std::int32_t thread_id = -1;
     std::vector<std::byte> bytes;

@@ -12,9 +12,9 @@ namespace TwoBufQueue {
 
 enum class ToReadBlockError { none, invalid_source, range_too_large };
 
-// ReadWriterDataCallback 的普通模板实现，无需继承。
-// 每个 read_ctrl 独占一个实例；多个实例可以引用同一个 MPSC 输出队列。
-// queue 必须活过本对象，所有源范围按整段复制；目标不足时绝不部分确认。
+// Ordinary template implementation of ReadWriterDataCallback; no inheritance required.
+// Each read_ctrl exclusively owns one instance; multiple instances may reference one MPSC output queue.
+// queue must outlive this object. Copy each source range completely; never partially acknowledge insufficient destination capacity.
 template<class Queue>
 class ToReadBlock {
     static_assert(std::is_same_v<typename Queue::Resource, ReadBlock>);
@@ -37,10 +37,10 @@ public:
         if (!block) return fail(ToReadBlockError::invalid_source);
         return append(block->source_id(), read_ptr, read_size);
     }
-    // 每轮失败后也提交此前已接受的数据；不把源确认与下游回调成功绑定。
+    // Submit previously accepted data even when this round later fails; source acknowledgement does not depend on downstream callback success.
     void end_read() noexcept { flush(); }
 
-    // 永久错误保留到对象销毁；普通池/队列背压使用 AcquireStatus，区分原因。
+    // Retain permanent errors for this object's lifetime. Ordinary pool/queue backpressure reports its reason through AcquireStatus.
     [[nodiscard]] ToReadBlockError error_code() const noexcept { return error_.load(std::memory_order_relaxed); }
     [[nodiscard]] AcquireStatus last_acquire_status() const noexcept {
         return last_acquire_status_.load(std::memory_order_relaxed);
@@ -54,7 +54,7 @@ private:
         if (current_) {
             if (size > current_->capacity()) return fail(ToReadBlockError::range_too_large);
             if (current_->append(writer_id, data, size, read_time_ns_)) return true;
-            flush(); // 字节空间或 frame 名额不足，先提交之前已确认的范围。
+            flush(); // Insufficient bytes or frame slots: submit the previously acknowledged ranges first.
         }
         auto acquired = queue_.try_acquire();
         last_acquire_status_.store(acquired.status, std::memory_order_relaxed);
@@ -65,15 +65,15 @@ private:
             if (!queue_.discard(unused)) std::terminate();
             return fail(ToReadBlockError::range_too_large);
         }
-        // 新块容量已检查，frame_capacity > 0；失败说明违反了资源复用契约。
+        // The new block's capacity was checked and frame_capacity is positive; failure violates the resource-reuse contract.
         if (!current_->append(writer_id, data, size, read_time_ns_)) std::terminate();
         return true;
     }
     void flush() noexcept {
         if (!current_) return;
-        // Sync 模式 send 内可能调用业务并归还/复用资源，先清空本地凭证。
+        // Sync send may invoke business code and return/reuse the resource; clear the local ticket first.
         auto sending = std::exchange(current_, {});
-        // try_acquire 已预留队列槽位；有效凭证的 send 不会因为容量满而失败。
+        // try_acquire reserved a queue slot, so send with a valid ticket cannot fail due to full capacity.
         if (!queue_.send(sending)) std::terminate();
     }
     bool fail(ToReadBlockError error) noexcept {

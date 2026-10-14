@@ -65,7 +65,7 @@ static void lifecycle() {
         assert(hot.write_mem("abc", 3) == Result::success);
         for (char c : {'a','b','c'}) expected.push_back(static_cast<std::byte>(c));
     }
-    // 析构没有发布尾部；get_current_session 复用同一块/同一游标。
+    // Destruction does not publish the tail; get_current_session reuses the same block/cursor.
     assert(writer.published_write_ptr() == begin + 4);
     {
         auto hot = writer.get_current_session(); assert(hot);
@@ -105,7 +105,7 @@ static void bounds_and_single_pool() {
         auto full = writer.get_current_session(); assert(full);
         assert(full.write(std::uint8_t{1}) == Result::insufficient_space);
     }
-    // 默认 Drop 也可传入正超时等待；0 只尝试一次，旧块已交出。
+    // Default Drop may still use a positive acquisition timeout; zero tries once and old is already handed off.
     const auto start = std::chrono::steady_clock::now();
     { auto empty = writer.get_next_session(2ms); assert(!empty); }
     assert(std::chrono::steady_clock::now() - start >= 2ms);
@@ -119,7 +119,7 @@ static void bounds_and_single_pool() {
     writer.finish(); drain(source, actual);
     assert(actual == expected && source.all_released());
     assert(writer.backpressure_stats().blocked_events == 1);
-    assert(writer.backpressure_stats().dropped_records == 0); // 取块失败不是丢消息。
+    assert(writer.backpressure_stats().dropped_records == 0); // Acquisition failure is not a dropped message.
 }
 static void waiting_overrides_drop() {
     WriterFixture source(64, 1, 1);
@@ -209,22 +209,22 @@ template<class W> static void move_ownership() {
     write_record(original, expected_a, 11);
     auto moved = std::move(original);
     assert(!original && moved && try_write(original, 99) == Result::error);
-    original = {}; original.flush(); // 移出对象不能解除新对象的独占状态。
+    original = {}; original.flush(); // A moved-from object must not release the destination's exclusive state.
     { auto duplicate = first_writer.get_current_session(); assert(!duplicate); }
 
     auto destination = second_writer.get_current_session(); assert(destination);
     write_record(destination, expected_b, 22);
-    destination = std::move(moved); // 归还第二个 Writer 的游标，接管第一个 Writer。
+    destination = std::move(moved); // Return the second Writer's cursor and adopt the first Writer.
     assert(!moved && destination && try_write(moved, 99) == Result::error);
     moved = {}; moved.flush();
     { auto duplicate = first_writer.get_current_session(); assert(!duplicate); }
     {
         auto second = second_writer.get_current_session(); assert(second);
-        write_record(second, expected_b, 33); // 必须接在赋值前的 22 后面。
+        write_record(second, expected_b, 33); // Must follow value 22 written before assignment.
     }
     write_record(destination, expected_a, 44);
     auto* same = &destination;
-    destination = std::move(*same); // 自移动不丢失当前 Session。
+    destination = std::move(*same); // Self-move must preserve the current Session.
     assert(destination);
     assert(first_writer.published_write_ptr() == first_writer.source_block()->data());
     assert(second_writer.published_write_ptr() == second_writer.source_block()->data());
@@ -234,7 +234,7 @@ template<class W> static void move_ownership() {
     write_record(destination, expected_a, 66);
     auto empty = first_writer.get_current_session(); assert(!empty);
     auto moved_empty = std::move(empty); assert(!empty && !moved_empty);
-    destination = std::move(moved_empty); // 空对象赋值也必须归还已有游标。
+    destination = std::move(moved_empty); // Assigning an empty object must still return the existing cursor.
     assert(!destination);
     {
         auto resumed = first_writer.get_current_session(); assert(resumed);
@@ -251,7 +251,7 @@ static void double_loop() {
     std::uint64_t i = 0;
     auto session = writer.get_current_session(); assert(session);
     while (i != 100) {
-        // Fixture 没有后台消费者：测试控制路径先归还上一轮交接的块。
+        // No background consumer in Fixture; the control path returns previously handed-off blocks first.
         drain(source, actual);
         while (i != 100) {
             const auto status = session.write(i);

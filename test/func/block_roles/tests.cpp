@@ -86,7 +86,7 @@ static void writer_publish() {
     auto pool = make_block_pool<TestBlockPool<WriterBlock<>>>(128, 1, 1, {.max_slices_per_block = 2});
     auto* b = pool.get().get();
     CHECK(!b->allocate_read_slice() && b->outstanding_count() == 0);
-    std::memset(b->buf_, 0x33, 128); // 尚未发布，不得生成切片。
+    std::memset(b->buf_, 0x33, 128); // Unpublished data must not produce slices.
     CHECK(!b->allocate_read_slice() && b->read_pos() == 0);
     publish(b, 0, 17, 3);
     auto first = b->allocate_read_slice();
@@ -96,9 +96,9 @@ static void writer_publish() {
     publish(b, 17, 128, 3);
     b->to_write_finished();
     first.release();
-    CHECK(!pool.get().get()); // 完成记录尚未离开 Writer。
+    CHECK(!pool.get().get()); // The completion record has not left Writer yet.
     b->to_leave_writer();
-    CHECK(!pool.get().get()); // 已出队，但还有未登记的尾部。
+    CHECK(!pool.get().get()); // Dequeued, but a tail remains unregistered.
     auto tail = b->allocate_read_slice();
     CHECK(tail && tail.size() == 111 && b->is_alloc_finish() && !pool.get().get());
     verify(tail.data(), tail.size(), 17, 3);
@@ -122,7 +122,7 @@ static void writer_trim_restore() {
         slice.release();
         CHECK(pool.all_released() && pool.resource_count() == 0);
         CHECK(!pool.is_valid(loan) && pool.will_dispose_count() == 1);
-        old = loan; // 归还后只保存凭证，不解引用可能已销毁的对象。
+        old = loan; // After return retain only the ticket; do not dereference an object that may have been destroyed.
     }
 }
 
@@ -150,7 +150,7 @@ static void writer_scan_release() {
                 read += slice.size();
                 while (!queue.try_push(std::move(slice))) std::this_thread::yield();
             }
-            // 最后一个句柄交出后不再访问 b，池可能立刻复用。
+            // Do not access b after handing off the final handle; the pool may reuse it immediately.
         });
         brq_support::JoiningThread consumer([&] {
             start.arrive_and_wait();
@@ -170,7 +170,7 @@ static void writer_scan_release() {
         WriterBlock<>* reused = nullptr;
         while (!(reused = pool.get().get())) std::this_thread::yield();
         CHECK(reused == b && reused->read_pos() == 0 && reused->write_pos() == 0);
-        std::memset(reused->buf_, 0xfa, bytes); // 提前复用会破坏消费线程的数据验证。
+        std::memset(reused->buf_, 0xfa, bytes); // Premature reuse would corrupt consumer-side data verification.
         writer.join(); reader.join(); consumer.join();
         finish(reused);
         CHECK(pool.all_released());

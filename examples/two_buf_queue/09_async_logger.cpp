@@ -27,7 +27,7 @@ int main(int argc, char** argv) try {
         std::array<char, 80> text;
     };
 
-    //---------------1.初始化-----------------------------------------------
+    //---------------1. Initialization--------------------------------------
     // File lifetime covers the callback threads. Only the callback writes it.
     using File = std::unique_ptr<std::FILE, decltype(&std::fclose)>;
     File file(std::fopen(path, "wb"), &std::fclose);
@@ -66,7 +66,7 @@ int main(int argc, char** argv) try {
     options.read_config.is_scan_current = true; // flush can expose a partial block.
     ::TwoBufQueue::TwoBufQueue queue(rcvCallback, writer, options);
 
-    //---------------2.生产者写数据------------------------------------------
+    //---------------2. Producer writes-------------------------------------
     // Business work and record construction stay on the application thread.
     // File I/O runs on the independent callback thread, after layer-2 copying.
     std::vector<std::uint64_t> accepted;
@@ -83,14 +83,14 @@ int main(int argc, char** argv) try {
     }
     writer.flush(); // Publish + notify; does not wait for callbacks or flush the file.
 
-    //---------------3.结束-------------------------------------------------
+    //---------------3. Finish----------------------------------------------
     writer.finish(); // Stop producing and hand off the final source block.
     queue.stop();    // Drain copying and callbacks before closing the file.
     const auto pressure = writer.backpressure_stats();
     const bool flush_ok = std::fflush(file.get()) == 0;
     const bool close_ok = std::fclose(file.release()) == 0;
 
-    //---------------4.校验测试结果------------------------------------------
+    //---------------4. Check the result------------------------------------
     example::require(queue.error_code() == ReadError::none, "queue did not drain cleanly");
     example::require(!sink_error && flush_ok && close_ok, "file I/O failed");
     example::require(written == accepted.size() && callback_thread != producer_thread,

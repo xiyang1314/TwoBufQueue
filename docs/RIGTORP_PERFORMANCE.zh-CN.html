@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>rigtorp benchmark regression / 性能回退修正 · TwoBufQueue</title><link rel="stylesheet" href="assets/readme.css"></head><body><!-- Generated from docs/RIGTORP_PERFORMANCE.zh-CN.md; SHA256 ea0a6a9b43093a61b0643a2d17318e283e5e419908986e60e142c2ca8fa3595e. --><a class="skip-link" href="#content">跳到正文</a><header class="site-header"><div class="header-inner"><a class="brand" href="../README.zh-CN.html"><span class="brand-symbol" aria-hidden="true"><i></i><i></i></span>TwoBufQueue<span class="brand-version">C++</span></a><nav aria-label="主要导航"><a href="../README.zh-CN.html">项目首页</a><a href="API.zh-CN.html">接口指南</a><a href="../examples/README.zh-CN.html">使用示例</a><a href="code/index.zh-CN.html">代码阅读</a><a href="index.zh-CN.html">性能报告</a></nav><div class="languages"><a href="RIGTORP_PERFORMANCE.html">EN</a><a href="RIGTORP_PERFORMANCE.zh-CN.html" aria-current="page">中文</a></div></div></header><div class="page-layout guide-layout" id="top"><aside class="toc"><p class="toc-label">本页目录</p><nav aria-label="目录"><a class="toc-depth-2" href="#same-executable-control-同一程序开关对照">一、Same-executable control / 同一程序开关对照</a><a class="toc-depth-2" href="#code-generation-and-limits-汇编与结论边界">二、Code generation and limits / 汇编与结论边界</a><a class="toc-depth-2" href="#fresh-formal-reports-修正后的完整复测">三、Fresh formal reports / 修正后的完整复测</a></nav><div class="toc-footer"><a href="../README.zh-CN.html">回到首页</a></div></aside><main id="content" class="guide-main"><section class="guide-hero"><div class="eyebrow"><span></span>TWOBUFQUEUE · 文档</div><h1>rigtorp benchmark regression / 性能回退修正</h1><p><a href="RIGTORP_PERFORMANCE.html">English</a> · <a href="RIGTORP_PERFORMANCE.zh-CN.html">简体中文</a></p>
+<p>本次修正的是测试调用端。rigtorp、ReaderWriterQueue 和 atomic_queue 的原始头文件均保持固定版本与原始 SHA-256。</p>
+<p>普通 Payload 复制构造保持 <code>bytes(other.bytes)</code>。新增带 <code>DestinationWritePrefetch</code> 标签的构造，先提示目标地址将被写入，再进行同样的一次完整成员复制。rigtorp 适配器通过原始 <code>try_emplace</code> API 请求它；没有增加写零、减少消息字节或更改 release/acquire 发布。</p>
+<p><code>PerformanceConfig::rigtorp_write_prefetch</code> 默认为 true，CLI 可设 <code>--rigtorp_write_prefetch false</code>。测试开始前选择 <code>RigtorpAdapter&lt;Payload, true/false&gt;</code> 模板，写循环中没有这个开关的运行时判断。ReaderWriterQueue、atomic_queue 和 TwoBufQueue 的原有调用不变。</p>
+</section><details class="mobile-toc"><summary>本页目录</summary><nav><a class="toc-depth-2" href="#same-executable-control-同一程序开关对照">一、Same-executable control / 同一程序开关对照</a><a class="toc-depth-2" href="#code-generation-and-limits-汇编与结论边界">二、Code generation and limits / 汇编与结论边界</a><a class="toc-depth-2" href="#fresh-formal-reports-修正后的完整复测">三、Fresh formal reports / 修正后的完整复测</a></nav></details><article class="guide-content"><h2 id="same-executable-control-同一程序开关对照">一、Same-executable control / 同一程序开关对照</h2>
+<p>同一个优化程序、相同完整变化负载、每次 1,000 万条，吞吐和每组 1,000 次写入的平均耗时分位数各测 5 次；两种开关状态各做完整负载/FIFO 校验。8 MiB 回调循环为 0；256 MiB 按长度固定为 1/1/3/5 次，与修正前那轮校准保持一致。正式四份报告再次独立校准，并保留各次结果。写线程高 QoS，未硬绑核，接电源。</p>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>缓存</th>
+<th>消息</th>
+<th align="right">关闭吞吐 M条/s</th>
+<th align="right">开启吞吐 M条/s</th>
+<th align="right">关闭 p50 ns</th>
+<th align="right">开启 p50 ns</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>8 MiB</td>
+<td>8 B</td>
+<td align="right">44.51</td>
+<td align="right">345.24</td>
+<td align="right">22.083</td>
+<td align="right">2.758</td>
+</tr>
+<tr>
+<td>8 MiB</td>
+<td>16 B</td>
+<td align="right">43.48</td>
+<td align="right">349.74</td>
+<td align="right">23.192</td>
+<td align="right">2.800</td>
+</tr>
+<tr>
+<td>8 MiB</td>
+<td>32 B</td>
+<td align="right">43.90</td>
+<td align="right">303.25</td>
+<td align="right">22.625</td>
+<td align="right">3.142</td>
+</tr>
+<tr>
+<td>8 MiB</td>
+<td>64 B</td>
+<td align="right">50.90</td>
+<td align="right">221.58</td>
+<td align="right">19.242</td>
+<td align="right">4.283</td>
+</tr>
+<tr>
+<td>256 MiB</td>
+<td>8 B</td>
+<td align="right">47.97</td>
+<td align="right">313.66</td>
+<td align="right">19.475</td>
+<td align="right">3.067</td>
+</tr>
+<tr>
+<td>256 MiB</td>
+<td>16 B</td>
+<td align="right">44.70</td>
+<td align="right">266.82</td>
+<td align="right">21.492</td>
+<td align="right">3.783</td>
+</tr>
+<tr>
+<td>256 MiB</td>
+<td>32 B</td>
+<td align="right">39.36</td>
+<td align="right">162.59</td>
+<td align="right">25.683</td>
+<td align="right">6.000</td>
+</tr>
+<tr>
+<td>256 MiB</td>
+<td>64 B</td>
+<td align="right">39.84</td>
+<td align="right">98.23</td>
+<td align="right">24.717</td>
+<td align="right">9.883</td>
+</tr>
+</tbody></table></div>
+<p>全部 160 次正式测量和 16 次完整校验通过。<a href="performance_data/rigtorp_prefetch_20261011/selective-control/summary.json">汇总</a> · <a href="performance_data/rigtorp_prefetch_20261011/selective-control/raw.jsonl">原始记录</a> · <a href="performance_data/rigtorp_prefetch_20261011/selective-control/source.tar.gz">源码和复现脚本</a>。</p>
+<h2 id="code-generation-and-limits-汇编与结论边界">二、Code generation and limits / 汇编与结论边界</h2>
+<p>保存的 16 B 推送汇编中，两个路径均为一条 <code>ldr q0</code>、一条 <code>str q0</code> 和相同的 <code>stlur</code> 发布；开启路径在复制前增加 <code>prfm pstl1keep</code>，没有额外清零存储。<a href="code/docs/performance_data/rigtorp_prefetch_20261011/push_codegen.s.zh-CN.html">汇编</a>。</p>
+<p><code>__builtin_prefetch(destination, 1, 3)</code> 表示为写操作给出高时间局部性的预取提示，它不写入消息内容；这是性能提示，不保证每个平台都会提速。<a href="https://gcc.gnu.org/onlinedocs/gcc/Other-Builtins.html#index-__builtin_prefetch">GCC 官方说明</a>。不支持该内建函数的编译器使用普通完整复制。</p>
+<p>对照可以确认：本机此调用路径的回退能够通过目标写预取消除，不需要恢复函数体 memcpy 的额外写零。具体 M3 内部流水线或缓存所有权机制尚未由硬件计数器证实，不据此推断所有队列或平台的通用排名。</p>
+<p>固定队列对象偏移 0/64（mod 128）的对照均没有改善该回退，因此未采用对齐改动。<a href="performance_data/rigtorp_prefetch_20261011/placement-control/summary.json">排除布局假设的记录</a>。</p>
+<p>前期把预取统一加入普通 Payload 复制时，rigtorp 提升，但 8 B ReaderWriterQueue 吞吐从约 766 降到 481 M条/s，因此未采用这个版本。<a href="performance_data/rigtorp_prefetch_20261011/fix-control/summary.json">统一添加提示的对照</a>。该修正只在 rigtorp 适配器显式请求提示。后续 ReaderWriterQueue 16/32 B 的调用端复制调整单独披露于 <a href="PERFORMANCE.zh-CN.html">性能口径</a>，不属于这次预取开关对照。</p>
+<h2 id="fresh-formal-reports-修正后的完整复测">三、Fresh formal reports / 修正后的完整复测</h2>
+<p>最新四份报告用提交 <code>f698f25</code> 重新测量：400 次独立正式测量、40 次完整负载/FIFO 校验、45 次回调校准全部完成。8 MiB / 16 B 的 rigtorp 五次平均为 317.500 M条/s，分组平均写入 p50 为 3.017 ns。256 MiB 的回调循环按 8/16/32/64 B 固定为 1/1/2/4；校准时间比约 3.09/2.17/1.95/2.38，其中 8 B 与 32 B 略超出目标。此次改动是取消测试框架 lambda 的强制内联，没有再次修改 rigtorp 预取或第三方头文件。同缓存普通 write / Session 共享新测的开源结果；上方历史开关对照仍保留，不能把不同轮次的全部差异归因于预取。</p>
+<p><a href="performance_8m_zero.html">8 MiB 普通 write</a> · <a href="performance_8m_zero_session.html">8 MiB Session</a> · <a href="performance_256m_callback.html">256 MiB 普通 write</a> · <a href="performance_256m_callback_session.html">256 MiB Session</a> · <a href="performance_data/release_20261011_inline_fixed_110024/raw.jsonl.gz">全部原始记录</a> · <a href="performance_data/release_20261011_inline_fixed_110024/manifest.json">运行清单</a>。</p>
+</article><footer class="site-footer"><span>TwoBufQueue · C++ · Apache-2.0</span><span><a href="../README.zh-CN.html">项目首页</a><a href="#top">回到顶部 ↑</a></span></footer></main></div></body></html>

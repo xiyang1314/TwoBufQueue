@@ -24,7 +24,7 @@ static void await_pause() {
         std::this_thread::yield();
     }
 }
-// 真实暂停在算法内部，其他线程必须能完成，不只是检查有没有 lock 关键字。
+// Pause inside the algorithm and require other threads to finish, rather than merely searching for a lock keyword.
 static void stalled(int point) {
     LockFreeIndexQueue queue(3);
     paused = false; resume = false;
@@ -39,7 +39,7 @@ static void stalled(int point) {
     await_pause();
     std::uint32_t value;
     if (point == 2 || point == 4) { assert(queue.try_pop(value)); assert(value == 11); }
-    // cap=3，循环强制反复复用节点，检测旧 head / 旧 next 的 ABA 防护。
+    // cap = 3; repeated node reuse exercises ABA protection for old head / next observations.
     for (std::uint32_t i = 20; i < 30020; ++i) {
         assert(queue.try_push(i));
         assert(queue.try_pop(value));
@@ -98,11 +98,11 @@ static void held_slot() {
             assert(queue.finish(claim));
         }
     };
-    progress(); // 一个生产者暂停，其他已就绪资源仍能前进。
+    progress(); // One paused producer must not prevent other ready resources from progressing.
     assert(queue.send(held.loan));
     auto claim = queue.try_claim();
     assert(claim);
-    progress(); // 一个消费者暂停，不阻塞其他槽位。
+    progress(); // One paused consumer must not block other slots.
     assert(queue.cancel_claim(claim));
     claim = queue.try_claim();
     assert(queue.finish(claim));

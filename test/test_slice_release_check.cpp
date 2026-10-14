@@ -118,7 +118,7 @@ static void seal_release_race(bool check) {
         assert(pool.in_use_count() == 0);
         assert(recycled.load() == i + 1);
     }
-    // 空块交出后无需占位切片，扫描即回收。
+    // An empty handed-off block needs no placeholder slice; scanning reclaims it.
     finish_block(pool.get().get());
     assert(pool.all_released());
     assert(recycled.load() == 201);

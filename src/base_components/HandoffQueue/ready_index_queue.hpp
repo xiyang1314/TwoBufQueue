@@ -11,10 +11,10 @@
 
 namespace TwoBufQueue {
 
-// 就绪索引调度：新任务走 FIFO，Keep 取消任务单独按首次出队顺序排序。
-// 每个 index 必须在 [0, capacity)，成功 pop 后才能 requeue，一次只属于一个调用方。
-// QueueTail 直接使用原无锁 FIFO；Keep 不扫描处理中任务，无重试时仍为 O(1) 结构操作。
-// Keep 的取消发布需等待正在执行的短出队操作，因而不承诺 lock-free；不等待业务处理。
+// Ready-index scheduling: new work is FIFO; Keep cancellations are ordered separately by original dequeue order.
+// Every index is in [0, capacity); requeue only after successful pop. Exactly one caller owns it at a time.
+// QueueTail uses the original lock-free FIFO; Keep avoids scanning running tasks and remains O(1) without retries.
+// Keep cancellation publication waits for short dequeues in progress, not business processing, so it is not guaranteed lock-free.
 class ReadyIndexQueue {
     static constexpr std::uint64_t retry_bit = std::uint64_t{1} << 63;
     static constexpr std::uint64_t writer_bit = std::uint64_t{1} << 62;
@@ -35,7 +35,7 @@ public:
         if (mode_ == CancelClaimMode::QueueTail) return fifo_.try_pop(index);
         auto phase = phase_.load(std::memory_order_acquire);
         for (;;) {
-            // 有取消发布/重试出队正在操作索引，允许本次 try 暂时失败，不越过旧任务。
+            // A cancellation/retry dequeue is modifying the indices; allow this try to fail temporarily rather than bypass old work.
             if (phase & writer_bit) return false;
             if (phase & retry_bit) {
                 assert((phase & readers_mask) == 0);
@@ -71,7 +71,7 @@ public:
             phase = phase_.load(std::memory_order_acquire);
         }
 #ifdef BRQ_READY_QUEUE_TEST_HOOK
-        BRQ_READY_QUEUE_TEST_HOOK(1); // 已封闭新领取，等待正在执行的 FIFO 出队完成。
+        BRQ_READY_QUEUE_TEST_HOOK(1); // New claims are blocked; wait for FIFO dequeues already in progress.
 #endif
         while (phase_.load(std::memory_order_acquire) & readers_mask) pause_cpu();
         assert(index < orders_.size() && retry_count_ < retries_.size());
@@ -98,10 +98,10 @@ private:
     }
     const CancelClaimMode mode_;
     LockFreeIndexQueue fifo_;
-    // 仅 Keep 分配；一个在途槽位最多对应一个重试项，运行时不分配内存。
+    // Allocated only for Keep; each in-flight slot has at most one retry entry. No runtime allocation.
     std::vector<std::uint64_t> orders_;
     std::vector<Retry> retries_;
-    std::size_t retry_count_ = 0; // 仅 writer_bit 持有者访问。
+    std::size_t retry_count_ = 0; // Accessed only by the writer_bit owner.
     alignas(64) std::atomic<std::uint64_t> phase_{0};
 };
 

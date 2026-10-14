@@ -101,7 +101,7 @@ template<bool release_many> static void writer_parallel() {
         auto* b = pool.get().get();
         publish(b, 0, 1);
         auto anchor = b->allocate_read_slice();
-        // 分配者持有裸块指针期间保留一个切片，避免其空扫描与整块复用竞争。
+        // Hold one slice while the allocator retains a raw block pointer, preventing its empty scan from racing with whole-block reuse.
         Channel<typename B::Slice> queue(8);
         std::array<std::atomic<unsigned>, records> seen{};
         std::atomic<bool> stop_scan{false};
@@ -145,7 +145,7 @@ template<bool release_many> static void writer_parallel() {
         for (auto& thread : allocators) thread.join();
         verify(anchor, 0);
         CHECK(pool.free_resource_count() == 0);
-        // 单释放者策略下，anchor 也交给同一个释放者。
+        // Under a single-releaser policy, hand anchor to the same releaser too.
         stop_scan.store(true, std::memory_order_release); scanner.join();
         while (!queue.push(anchor)) std::this_thread::yield();
         queue.close();
@@ -187,7 +187,7 @@ template<class B> static void death_state() {
         const char* expected;
         typename B::State value;
         if constexpr (requires(B& b) { b.to_alloc_finished(); }) {
-            // 已归还的 Loan 不能安全读取旧资源状态。
+            // A returned Loan cannot safely inspect old resource state.
             if (!info.has_actual_state && std::strcmp(info.reason, "expected Allocating block") == 0) {
                 std::fputs("EXPECTED_STATE unavailable\n", stderr);
                 std::fflush(stderr); std::_Exit(91);

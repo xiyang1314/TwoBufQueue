@@ -1,11 +1,11 @@
 <!doctype html>
-<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>异步日志示例怎么使用 · TwoBufQueue</title><link rel="stylesheet" href="assets/readme.css"></head><body><!-- Generated from docs/ASYNC_LOGGING.zh-CN.md; SHA256 303afd08b65b6ab30a8314c127488ee2ae3b28108aee36db2b52812045429853. --><a class="skip-link" href="#content">跳到正文</a><header class="site-header"><div class="header-inner"><a class="brand" href="../README.zh-CN.html"><span class="brand-symbol" aria-hidden="true"><i></i><i></i></span>TwoBufQueue<span class="brand-version">C++</span></a><nav aria-label="主要导航"><a href="../README.zh-CN.html">项目首页</a><a href="API.zh-CN.html">接口指南</a><a href="../examples/README.html">使用示例</a><a href="code/index.html">代码阅读</a><a href="index.html">性能报告</a></nav><div class="languages"><a href="ASYNC_LOGGING.html">EN</a><a href="ASYNC_LOGGING.zh-CN.html" aria-current="page">中文</a></div></div></header><div class="page-layout guide-layout" id="top"><aside class="toc"><p class="toc-label">本页目录</p><nav aria-label="目录"><a class="toc-depth-2" href="#构建并运行">构建并运行</a><a class="toc-depth-2" href="#三种运行方式">三种运行方式</a><a class="toc-depth-2" href="#flush-与真正写完文件的区别">flush 与真正写完文件的区别</a><a class="toc-depth-2" href="#用在业务中还需补什么">用在业务中还需补什么</a></nav><div class="toc-footer"><a href="../README.zh-CN.html">回到首页</a></div></aside><main id="content" class="guide-main"><section class="guide-hero"><div class="eyebrow"><span></span>TWOBUFQUEUE · 文档</div><h1>异步日志示例怎么使用</h1><p>生产者把日志内容提交给队列，后台回调负责写文件。这让业务线程不用在每次记日志时等待文件操作。示例会校验最终文件中每条已接受记录的内容、顺序和数量。</p>
-<p><a href="code/examples/two_buf_queue/09_async_logger.cpp.html">示例源码</a> · <a href="API.zh-CN.html">接口指南</a> · <a href="ASYNC_LOGGING.html">English explanation</a></p>
-</section><details class="mobile-toc"><summary>本页目录</summary><nav><a class="toc-depth-2" href="#构建并运行">构建并运行</a><a class="toc-depth-2" href="#三种运行方式">三种运行方式</a><a class="toc-depth-2" href="#flush-与真正写完文件的区别">flush 与真正写完文件的区别</a><a class="toc-depth-2" href="#用在业务中还需补什么">用在业务中还需补什么</a></nav></details><article class="guide-content"><h2 id="构建并运行">构建并运行</h2>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>异步日志示例怎么使用 · TwoBufQueue</title><link rel="stylesheet" href="assets/readme.css"></head><body><!-- Generated from docs/ASYNC_LOGGING.zh-CN.md; SHA256 d7cd52b13a91b6a1cdc2876839e1885db2dbaa0b899dbf5d3469e0df90398e95. --><a class="skip-link" href="#content">跳到正文</a><header class="site-header"><div class="header-inner"><a class="brand" href="../README.zh-CN.html"><span class="brand-symbol" aria-hidden="true"><i></i><i></i></span>TwoBufQueue<span class="brand-version">C++</span></a><nav aria-label="主要导航"><a href="../README.zh-CN.html">项目首页</a><a href="API.zh-CN.html">接口指南</a><a href="../examples/README.zh-CN.html">使用示例</a><a href="code/index.zh-CN.html">代码阅读</a><a href="index.zh-CN.html">性能报告</a></nav><div class="languages"><a href="ASYNC_LOGGING.html">EN</a><a href="ASYNC_LOGGING.zh-CN.html" aria-current="page">中文</a></div></div></header><div class="page-layout guide-layout" id="top"><aside class="toc"><p class="toc-label">本页目录</p><nav aria-label="目录"><a class="toc-depth-2" href="#构建并运行">一、构建并运行</a><a class="toc-depth-2" href="#三种运行方式">二、三种运行方式</a><a class="toc-depth-2" href="#flush-与真正写完文件的区别">三、flush 与真正写完文件的区别</a><a class="toc-depth-2" href="#用在业务中还需补什么">四、用在业务中还需补什么</a></nav><div class="toc-footer"><a href="../README.zh-CN.html">回到首页</a></div></aside><main id="content" class="guide-main"><section class="guide-hero"><div class="eyebrow"><span></span>TWOBUFQUEUE · 文档</div><h1>异步日志示例怎么使用</h1><p>生产者把日志内容提交给队列，后台回调负责写文件。这让业务线程不用在每次记日志时等待文件操作。示例会校验最终文件中每条已接受记录的内容、顺序和数量。</p>
+<p><a href="code/examples/two_buf_queue/09_async_logger.cpp.zh-CN.html">示例源码</a> · <a href="API.zh-CN.html">接口指南</a> · <a href="ASYNC_LOGGING.zh-CN.html">English explanation</a></p>
+</section><details class="mobile-toc"><summary>本页目录</summary><nav><a class="toc-depth-2" href="#构建并运行">一、构建并运行</a><a class="toc-depth-2" href="#三种运行方式">二、三种运行方式</a><a class="toc-depth-2" href="#flush-与真正写完文件的区别">三、flush 与真正写完文件的区别</a><a class="toc-depth-2" href="#用在业务中还需补什么">四、用在业务中还需补什么</a></nav></details><article class="guide-content"><h2 id="构建并运行">一、构建并运行</h2>
 <div class="code-frame"><div class="code-label">Shell</div><pre tabindex="0"><code class="language-sh"><span class="syntax-keyword">cmake</span> -S . -B build -DCMAKE_BUILD_TYPE=Release
 <span class="syntax-keyword">cmake</span> --build build --config Release --target brq_tbq_09_async_logger
 ./build/brq_tbq_09_async_logger ./application.log</code></pre></div><p>Visual Studio 构建使用 <code>build/Release/brq_tbq_09_async_logger.exe</code>。程序会覆盖选定日志文件；不传路径时，默认写当前目录下的 <code>twobufqueue-example.log</code>。</p>
-<h2 id="三种运行方式">三种运行方式</h2>
+<h2 id="三种运行方式">二、三种运行方式</h2>
 <div class="table-scroll"><table>
 <thead>
 <tr>
@@ -29,7 +29,7 @@
 <div class="code-frame"><div class="code-label">Shell</div><pre tabindex="0"><code class="language-sh">./build/brq_tbq_09_async_logger ./slow.log --slow-sink
 ./build/brq_tbq_09_async_logger ./drop.log --slow-sink --drop</code></pre></div><p>示例默认使用 Block，缓存满时最多等待 2 秒；仍失败则记录拒绝并以非零结束。Drop 模式立即拒绝本次消息并继续，拒绝的消息不会被算作已经保存。具体压力次数受线程调度影响。</p>
 <p>为了容易观察缓存满，示例两层各设两个 4 KiB 块。这个配置用于演示行为，不是最快参数或纯写入性能测试。</p>
-<h2 id="flush-与真正写完文件的区别">flush 与真正写完文件的区别</h2>
+<h2 id="flush-与真正写完文件的区别">三、flush 与真正写完文件的区别</h2>
 <ol>
 <li><code>writer.flush()</code> 发布已写消息并请求后台读取，不等待文件回调。</li>
 <li><code>writer.finish()</code> 结束发送并交接最后一块。</li>
@@ -37,6 +37,6 @@
 <li>应用再执行文件 flush、关闭并检查 I/O 错误。</li>
 </ol>
 <p>关闭当前块扫描时，flush 不能代替尾块交接。文件 flush 也不等于断电后仍保证保存的持久化确认。逐条回调返回 void，文件错误由示例记录并在收尾时检查。</p>
-<h2 id="用在业务中还需补什么">用在业务中还需补什么</h2>
+<h2 id="用在业务中还需补什么">四、用在业务中还需补什么</h2>
 <p>文件轮转、时间戳格式、崩溃恢复、持久化与 I/O 重试属于日志系统策略，示例没有自动实现。回调接收到的结构体可能没有对齐，先检查长度，再复制到本地对象。更完整的记录与所有权约定见<a href="API.zh-CN.html">接口指南</a>。</p>
 </article><footer class="site-footer"><span>TwoBufQueue · C++ · Apache-2.0</span><span><a href="../README.zh-CN.html">项目首页</a><a href="#top">回到顶部 ↑</a></span></footer></main></div></body></html>

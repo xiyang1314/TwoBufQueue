@@ -12,7 +12,7 @@ public:
     const std::uint64_t messages, target_records, records_per_block;
     std::uint32_t alignment = 1;
     std::uint64_t warmup = 0;
-    // 所有实现使用相同轮边界；TwoBufQueue 在计时外交接当前块，再等待本轮排空。
+    // All implementations use identical round boundaries; TwoBufQueue hands off the current block outside timing, then drains the round.
     const bool finish_blocks;
 
     PublicationPlan(const PerformanceConfig& config)

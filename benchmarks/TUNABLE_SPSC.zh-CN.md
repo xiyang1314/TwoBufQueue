@@ -6,7 +6,7 @@
 
 `payload_bytes` 是业务负载净长度，序号占用其中前 8 字节。本基准统一使用 `Writer<publish_count, false>`，不写长度前缀；批次回调按编译期固定的 8/16/32/64 字节拆包，再逐条调用同一个 Sink。只统计这个固定长度版本，包含第二层复制与独立回调线程。外部负载默认对象保留 `bytes{}` 初始化，普通拷贝构造使用 `bytes(other.bytes)` 复制全部字节；rigtorp 可通过原始 `try_emplace` 请求目标写预取，ReaderWriterQueue 可请求先清零再完整 memcpy。发布配置仅为 ReaderWriterQueue 16/32 B 开启 `readerwriterqueue_copy_after_zero`，8/64 B 保留成员复制，额外清零也计入写入时间；三个开源队列的原文件保持不变。消息的每个 8 字节字都随序号变化，避免常量尾部让测试过度依赖编译器的常量传播。
 
-## 构建与运行
+## 一、构建与运行
 
 需要 Python 3.9+、CMake 3.20+ 和 C++20 编译器。第三方代码只用于此可选基准，普通库构建不下载、不依赖它们。固定 commit、文件 SHA-256 和许可证记录在 `spsc_dependencies.json`；下载器仅取所需头文件与许可证，不执行第三方构建脚本。
 
@@ -22,7 +22,7 @@ Windows Visual Studio 的程序路径为 `build-spsc/Release/brq_tunable_benchma
 
 macOS 需要 14.4+ SDK/系统。默认 Apple Clang 构建不需要额外关闭告警或替换 libc++；也可以显式指定自己的 C++20 编译器。
 
-### 正式的普通 write / WriteSession 对照
+### 1.1 正式的普通 write / WriteSession 对照
 
 构建优化、未启用 sanitizer 的基准后执行：
 
@@ -50,7 +50,7 @@ python3 benchmarks/run_release_benchmarks.py --binary ./build-spsc/brq_tunable_b
 
 离线环境可在联网机器下载依赖，再通过 `-DBRQ_SPSC_DEPS=/absolute/path/to/deps` 指向同一目录。每次 CMake 配置均校验文件哈希。
 
-## 在自己的程序中使用测试类
+## 二、在自己的程序中使用测试类
 
 头文件在 `benchmarks/tunable/`，不是库热路径的一部分。链接 CMake 的 `brq_performance_support` 目标即可获得库和三方头文件路径。
 
@@ -82,7 +82,7 @@ int main() {
 
 吞吐循环在进入每轮时缓存输入地址、循环边界和目标队列。连续发送与限速发送通过模板在循环外选择；提前准备输入的连续吞吐循环直接迭代输入指针，失败重试按值保存队列和消息地址，避免每条消息从栈上重新加载队列地址。连续模式不逐条判断限速设置；只有单次延时采样和失败重试路径读其所需时钟。循环与正常 write/try 接口自身的判断仍计入发送时间。
 
-## 参数
+## 三、参数
 
 `--defaults` 输出完整默认结构体的扁平 JSON。所有字段都可通过 `--字段 值` 传入 CLI。C++ 中使用嵌套的 `source`、`output`、`output.read_config`；字段映射集中在 `parameters.hpp`。
 
@@ -118,7 +118,7 @@ int main() {
 
 默认源池/输出池 min=max，避免正式测试中增长；可显式搜索增长策略。预算约束的是名义数据缓冲：源块池加输出块池，或 SPSC 实际槽数乘负载字节数，不含所有元数据、线程栈和框架样本数组。另报整个进程 peak RSS，不能将两者混同。`source.thread_id=0`、`read_layer1_thread_count=1` 固定，本测试只有一个生产者。
 
-## 测量边界与很短的 write
+## 四、测量边界与很短的 write
 
 1. **吞吐**独立运行。`round_storage_bytes=0` 时，从正式生产开始到最后一条回调完成且生产者 finish 完成，包含写入、失败重试和排空。分轮时只累计各轮正式发送区间，轮末排空与最终 finish 在区间外。复制与回调始终在后台并发运行。默认 `prepared_input=true`：整轮输入在发送计时之前准备，输入生成不计入写端吞吐，时间另报 `input_preparation_seconds`。`prepared_input=false` 只用于诊断旧方式，吞吐会包含生成负载的开销，不能与默认口径混合比较。吞吐不逐条读时钟。
 2. **write_latency**默认按组计时，`latency_batch_size=1000`。默认模式与吞吐共享整轮提前准备的同一输入数组，从中取每组连续记录，然后开始计时、循环成功写入 1000 条、结束计时，用总耗时除以 1000，作为一个样本。组内循环、失败重试及等待都在区间内；失败次数单独报告，不改变成功写入/消费总数。该模式只接受连续输入。
@@ -138,7 +138,7 @@ int main() {
 
 这里没有测消息从生产到回调的传递延时。最小 write 延时配置可能积压更久、吞吐更低，需要结合吞吐、失败次数和资源使用选择。SPSC 用其原生非分配 try 接口和轮询消费；TwoBufQueue 用自身的事件/自旋策略，包含第二层复制，当前包装器默认使用独立输出回调线程：TwoBufQueue 为一个写线程、一个复制线程、一个回调线程；三个 SPSC 对照为一个写线程和一个消费线程，各实现另有一个不参与消息处理的测试看门狗线程。`output_mode=sync` 可显式选择复制线程同步回调；输出模式会写入完整参数，不能混同为等线程数比较。它们的缓冲组织不同，不能解释成严格等内存的算法对比。每行同时保留 CPU 核数（CPU 秒/墙钟秒）、请求/实际容量、名义缓冲与 RSS。
 
-## 搜索与复现
+## 五、搜索与复现
 
 三个 profile：`spsc_smoke.json` 验证流程；`spsc_quick.json` 有限候选快速搜索；`spsc_full.json` 扩大预算与复测次数。全部默认搜索 8/16/32/64 字节，回调循环为 0。若要测回调负载，可将顶层 `callback_iterations` 改成 `[0, 10, 100]`，每个值是独立工作负载，不混在一起选最优。
 
@@ -180,7 +180,7 @@ int main() {
 
 复现某个优胜者时，从 best.json 的 `parameters` 取参数，设定与正式阶段相同的 messages/mode；或直接执行 raw.jsonl 中对应正式轮次的 command。发布成绩时补充 CPU 型号、功耗策略和后台负载，测试时关闭编译和其他压测任务。不应根据 smoke 的短样本宣布最快 SPSC。
 
-## 功能检查
+## 六、功能检查
 
 ```sh
 cmake -S . -B build-spsc -DBRQ_BUILD_TESTS=ON -DBRQ_BUILD_FUNCTIONAL_TESTS=OFF
@@ -191,7 +191,7 @@ python3 benchmarks/tune_spsc.py ./build-spsc/brq_tunable_benchmark --profile ben
 
 契约检查覆盖不同负载长度、四个实现、四种测量模式、逐条回调循环 checksum、不同 Writer 发布策略和尾部收尾、参数验证、抽样上限，以及独立指标选优与工作负载冻结。不设机器相关的性能通过阈值。
 
-## 大缓冲分轮测写线程
+## 七、大缓冲分轮测写线程
 
 `profiles/spsc_burst.json` 提供异步分轮方案：源池与输出池各为 256 MiB，输出使用 SPSC 队列，复制线程和回调线程各自独立。源池也足以暂存整轮，减少复制跟不上时对写线程的背压；源交接/输出队列容量各为 512。第三方请求 256 MiB 原生消息槽容量，仍记录各库实际取整容量与 RSS。这不是严格等内存测试。
 
@@ -211,7 +211,7 @@ python3 benchmarks/tune_spsc.py ./build-spsc/brq_tunable_benchmark --profile ben
 
 Linux/Windows 可在 profile 的 base 中设置 `producer_cpu`，macOS 则设置 `producer_qos: "user_interactive"` 并保留 `producer_cpu: -1`。写线程的亲和性/QoS 在后台线程启动后设置；原设置在 run 结束时恢复；原 QoS 为 UNSPECIFIED 时设回 DEFAULT，避免留下高 QoS（macOS 不允许 setter 传入 UNSPECIFIED）。结果分别记录 `producer_hard_affinity`、`producer_qos_applied`、`producer_qos_actual`；本机高 QoS 数据必须注明“未硬绑核”。不支持的绑核/QoS 请求明确报错，不能静默回退。分轮模式拒绝 Sync 输出模式。
 
-## 校准较慢回调并对比
+## 八、校准较慢回调并对比
 
 `profiles/spsc_callback.json` 使用 256 MiB 池/队列预算，与分轮 profile 相同，启用 `measure_callback_time=true`。回调仍对每条消息运行同一个 xorshift 循环；不同库共用 Sink，且按长度使用相同 callback_iterations，绝不为慢的开源写入接口单独减少循环。
 
@@ -226,7 +226,7 @@ python3 benchmarks/tune_spsc.py ./build-spsc/brq_tunable_benchmark --profile ben
 callback_calibration 可配置 target_ratio/min_ratio/max_ratio（默认 2.5/2/3）、repetitions（3）、messages（100 万）、min_rounds（2）、max_iterations（1024）、max_candidates（10）、reference_publish_count（16）。本机在 base 设置 producer_qos=user_interactive，仍注明未硬绑核。每个正式进程至少写入 100,100,000 条；组大小 1000，各指标独立选择，3 次算术平均。原生队列的保留槽、取整与元数据不同，名义数据容量统一为 256 MiB，但不能承诺 RSS 完全相同；TwoBufQueue 有两层数据池，合计 512 MiB。
 
 
-## 背压统计与回调时间比
+## 九、背压统计与回调时间比
 
 所有实现报告 `failed_write_calls`（失败尝试数）、`backpressured_messages`（至少有一次非阻塞写失败的消息数）、`producer_retry_seconds`（第一次失败返回后至该消息重试成功的累计时间）及 `producer_retry_max_seconds`（最长一次重试区间）。重试时间包含 pause/yield、重试调用与测量开销；成功写入不读重试时钟。失败消息持续重试直至成功，计数不代表最终丢失业务消息。Block 模式的 Writer 内部等待另看库内统计，不能仅凭 `failed_write_calls=0` 判断没有内部阻塞。
 
@@ -237,7 +237,7 @@ TwoBufQueue 的 `library_backpressure` 同时记录 Writer 的 `writer_pressure_
 `callback_to_producer_ratio` 是逐次“回调处理区间 / 写入发送区间”的三次算术平均，不是两个平均时间相除。回调处理区间从每轮首条回调入口到末条业务结束，包含消息分发、轮内等待和调度，不是纯回调函数 CPU 时间之和。大于 1 不自动等于写端发生背压，须结合失败/内部阻塞计数；零背压也不能排除缓存或带宽竞争。
 
 
-## 保存离线 HTML 对比报告
+## 十、保存离线 HTML 对比报告
 
 需要先修正测试口径、再选参数时，使用下面的搜索及导出入口。8 MiB 场景固定空业务循环；256 MiB 场景按长度校准正整数循环次数。两个场景均为一千万条正式消息、三次独立复测，各指标分别选择配置。输入提前准备、全负载内容变化、缓存数据字节预算及消息长度都被冻结；`cache_block_bytes` 改块大小时保持两层池各自的字节预算不变。
 
@@ -265,7 +265,7 @@ python3 benchmarks/report_spsc.py ./build-spsc/brq_tunable_benchmark --profile b
 
 本机 profile 使用高 QoS、未硬绑核。其他平台应调整 `base.producer_qos` 与 `base.producer_cpu`，可以继续使用同一测试程序。输出目录必须不存在，避免覆盖已有测量。HTML 同目录保留 `performance_data` 后，页面中的原始日志链接也可离线使用。每次一千万条、组大小 1000 时约有一万个延时样本；少于框架建议的十万个样本，报告会明确提示 p999 的限制。
 
-### 完成块模式与时间比
+### 10.1 完成块模式与时间比
 
 CLI 使用 `--is_scan_current false --publish_count 4294967295`。参数会进入结果 JSON；此前的完成块报告 profile 和对应调优 profile 使用此策略。当前发布 profile 中仅 Session 保留它，普通 write 改为扫描 current、每 10 次发布。
 
@@ -273,11 +273,11 @@ CLI 使用 `--is_scan_current false --publish_count 4294967295`。参数会进�
 
 表中“回调区间 / 写入墙钟时间比”按每次运行计算：各轮从首条回调开始到末条回调完成的墙钟耗时之和，除以各轮写线程发送耗时之和，再取三次运行的算术平均。回调区间包含消息分发、业务循环、等待数据与线程调度，不能当作逐条回调函数 CPU 耗时之和。比如写线程累计 10 ms、回调区间累计 25 ms，比例就是 2.5 倍；业务循环为 0 时，比例仍可能大于 1。比例大于 1 不等于写线程受背压，背压须看失败尝试和库内压力统计。
 
-## rigtorp 目标写预取
+## 十一、rigtorp 目标写预取
 
-`rigtorp_write_prefetch` 为调用端的可调布尔参数，默认 true。可用 `--rigtorp_write_prefetch false` 复现关闭提示的路径，也可在 `spaces.rigtorp` 中遍历 `[false, true]`。开关在计时前选择模板，写循环不增加动态判断。只使用 rigtorp 原始 `try_emplace` API，数据仍进行一次完整成员复制，其他队列的调用保持现状。提示不是额外写零，不保证所有平台提速。[同一程序对照与汇编](../docs/RIGTORP_PERFORMANCE.html)。
+`rigtorp_write_prefetch` 为调用端的可调布尔参数，默认 true。可用 `--rigtorp_write_prefetch false` 复现关闭提示的路径，也可在 `spaces.rigtorp` 中遍历 `[false, true]`。开关在计时前选择模板，写循环不增加动态判断。只使用 rigtorp 原始 `try_emplace` API，数据仍进行一次完整成员复制，其他队列的调用保持现状。提示不是额外写零，不保证所有平台提速。[同一程序对照与汇编](../docs/RIGTORP_PERFORMANCE.zh-CN.md)。
 
-## writer 块大小遍历
+## 十二、writer 块大小遍历
 
 `test_per_writer_block_size` 使用同一个 `PerformanceTest` 测量循环，只实例化 32 B、普通 `write` 的路径；支持发布次数 1 和 UINT32_MAX，默认每条 `release` 发布并扫描当前块。入口默认回调循环 0、读取间隔 1 ms、每项 1 千万条；Python 驱动按 1 KiB、2 KiB、4 KiB……1 GiB 遍历，每项独立进程做完整数据校验，再分别跑 3 次吞吐和分组延时。输入准备、分轮排空、回调时间比、背压统计和现有测试一致，轮容量按 reader 实际总容量的 80% 计算。
 
@@ -303,7 +303,7 @@ reader 单块按 writer 的倍率倍数计算，默认倍率 10；可用 `--read
 
 块大小遍历也支持 `--is-scan-current false`：只读完成块，未显式指定发布次数时会同时选择 `publish_count=UINT32_MAX`，平时只更新本地游标，交接块时发布，其他默认值相同。每轮计时结束后按现有框架调用 `finish_block()` 交接尾块并排空；交接与排空不计入写入时间，下一轮取块仍计时。传入独立的 `--output` 和 `--report` 路径即可保存另一份报告。C++ 单项入口对应 `--is_scan_current false`，也默认选择 UINT32_MAX。需要单独诊断两个开关时，可显式传入 `--publish-count 1`（C++ 为 `--publish_count 1`）。
 
-## 单线程 Writer 块大小对照
+## 十三、单线程 Writer 块大小对照
 
 `test_per_write_block_size_only_writer` 去掉读线程、第二层复制和业务回调，只构造真实 `Writer`、`WriterPool` 及 Writer 必需的交接队列。现有换块通知在写线程中立即领取完成记录，登记已消费字节，并通过原有生命周期回调归还旧块；不读取当前块，不在逐条发送循环中增加换块检查。自然换块、发布、取块、归还和深度统计均计入写入时间，库实现保持原样。
 
@@ -339,7 +339,7 @@ python3 -B benchmarks/test_per_write_block_size_only_writer.py \
 固定 reader 总量的读回对照：`docs/test_per_write_block_size_readback_fixed_reader_3runs.html`。reader 上限固定 2 GiB，单块按上述倍率并截断；普通 write 的实验版本在完整复制后读回目标首字节，分别测每条发布和 UINT32_MAX。读回只在报告保存的实验源副本中通过 `BRQ_DIAGNOSTIC_READBACK` 编译宏启用。主库热路径未默认启用此实验。
 
 
-## 固定第二层容量的三种 Writer 模式寻优
+## 十四、固定第二层容量的三种 Writer 模式寻优
 
 `benchmarks/tune_three_writer_modes.py` 使用上述同一个 `PerformanceTest` 和 `ParameterSearch.evaluate`，分别测试 Session、普通 write 每条发布、普通 write UINT32_MAX。默认 8/16/32/64 B、回调循环 0、每项 1,000 万条、三次吞吐与三次分组延时取算术平均；每个候选另做一次全部字节和 FIFO 校验。当前普通异步 Writer 包含复制后的 volatile 首字节读回，Session 不包含；报告依据二进制构建信息标记这一区别。当前默认 QoS 为 macOS 的 user_interactive，未硬绑核。
 

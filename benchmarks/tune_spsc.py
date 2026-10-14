@@ -168,8 +168,8 @@ def validate_space(space, defaults, transport):
 
 
 def validate_length_reference(changes, defaults):
-    # 每个长度的参考配置可同时指定块参数和原生队列容量。
-    # 分开校验保持各参数的归属约束及块别名的重叠检查。
+    # A reference configuration can specify block sizes and native queue capacity for each payload length.
+    # Validate them separately to preserve ownership constraints and detect overlapping block aliases.
     validate_space({k: [v] for k, v in changes.items() if not k.startswith("spsc_") and k not in {"rigtorp_write_prefetch","readerwriterqueue_copy_after_zero"}},
                    defaults, "two_buf_queue")
     validate_space({k: [v] for k, v in changes.items() if k.startswith("spsc_")},

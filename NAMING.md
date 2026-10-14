@@ -1,18 +1,20 @@
-# 命名规范
+# Naming conventions
 
-- 类、结构体、枚举类型、自定义类型别名：`PascalCase`，例如 `WriterQueue`、`DataFrame`、`ReadConfig`。现有类名已符合，保持原名。
-- 函数与成员函数：`snake_case`，例如 `allocate()`、`try_read()`、`add_writer()`。构造/析构函数遵循 C++ 规则，与类同名；运算符保留语言规定名称。
-- 类的内部状态成员：`snake_case_`，例如 `write_ptr_`、`current_range_`。
-- 配置、统计、记录等结构体的公开数据字段：`snake_case`，例如 `block_size`、`frames`、`finish_mem`；不使用尾下划线。内部嵌套记录结构体也遵循此规则。
-- 普通变量和常量：`snake_case`。
-- 模板参数统一使用 `T` 前缀加 `PascalCase`：类型模板参数如 `TResource`、`TBlock`；值模板参数（`bool` 及其他非类型参数）如 `TIsConcurrent`、`TMaxCount`。详见「模板参数命名」。
-- 宏保持 `UPPER_SNAKE_CASE`。标准库协议名称（如 Clock 的 `rep`、`period`、`duration`、`time_point`、`is_steady`）和系统/第三方 API 不改名。
+[English](NAMING.md) · [简体中文](NAMING.zh-CN.md)
 
-## 本次 API 迁移
+- Classes, structs, enums and custom type aliases use `PascalCase`, such as `WriterQueue`, `DataFrame` and `ReadConfig`. Preserve existing compliant class names.
+- Functions and members use `snake_case`, such as `allocate()`, `try_read()` and `add_writer()`. Constructors, destructors and operators keep their C++ language-defined names.
+- Private/internal state members use `snake_case_`, such as `write_ptr_` and `current_range_`.
+- Public fields in configuration, statistics and record structs use `snake_case` without a trailing underscore, including internal nested record structs.
+- Ordinary variables and constants use `snake_case`.
+- Template parameters use `T` followed by `PascalCase`: `TResource`, `TBlock`, `TIsConcurrent`, `TMaxCount`. This applies to type and non-type parameters.
+- Macros use `UPPER_SNAKE_CASE`. Preserve standard-library protocol names such as Clock's `rep`, `period`, `duration`, `time_point` and `is_steady`, and preserve OS/third-party API names.
 
-本次只统一命名，不保留大写函数别名，不改变消息布局、所有权、同步或错误处理。外部调用需要同步更新。
+## 1. Historical API-name migration
 
-| 原名称 | 新名称 |
+This migration standardized names without retaining uppercase function aliases. It did not change message layout, ownership, synchronization or error handling; external callers needed to update their spelling.
+
+| Previous name | Current name |
 |---|---|
 | `AddWriter()` | `add_writer()` |
 | `Allocate()` | `allocate()` |
@@ -46,36 +48,24 @@
 | `WaitFor()` | `wait_for()` |
 | `WaitUntil()` | `wait_until()` |
 
-公开字段 `Entry::finishMem/nextMem` 改为 `finish_mem/next_mem`；`BlockPool::kBlockAlignment` 改为 `block_alignment`。
-为避免重名，`QueueReader` 的内部 `poll()` 改为 `poll_once()`，`ReadService` 的内部注册模板改为 `register_writer()`。
+Public `Entry::finishMem/nextMem` fields became `finish_mem/next_mem`; `BlockPool::kBlockAlignment` became `block_alignment`. To avoid collisions, the internal `QueueReader::poll()` became `poll_once()`, and ReadService's registration template became `register_writer()`.
 
-审查报告及既有性能/测试结果是历史记录，其中的旧符号不作为当前 API 示例；当前示例、测试源码与基准源码随接口更新。
+Review reports and recorded performance/test results are historical evidence. Their old symbols are not current API examples. Current runnable examples, tests and benchmark sources track the actual interfaces.
 
-## 源数据块命名
+## 2. Historical source-block naming
 
-`MemRange` 改为 `WriterBlock`，对应文件为 `src/write/writer_block.hpp` 和 `.cpp`；
-状态枚举为 `SourceBlockState`，写入器通过 `source_block()` 取得当前源块。
-该类继承 `ReaderBlock<>`，增加源端发布/交付游标和写入完成状态；命名调整不改变块的生命周期。
+`MemRange` was renamed `WriterBlock` during the source-block migration; the historical files were `src/write/writer_block.hpp` and `.cpp`. The state enum was `SourceBlockState`, and writers exposed their source through `source_block()`. That class derived from `ReaderBlock<>`, adding publication/delivery cursors and writer-completion state without changing block lifetimes.
 
-旧源块管理器已删除。Writer 直接引用 SpscLiveHandoffQueue，通过 handoff_queue() 提供给读端；
-WriterPool/WriterQueue 仅是现有组件的类型别名，不是新增管理类。
+The old source-block manager was removed. Writer references SpscLiveHandoffQueue directly and exposes it through `handoff_queue()`. `WriterPool` and `WriterQueue` are aliases for existing components rather than new manager classes. Use current headers and the [API guide](docs/API.md) for today's whole-block source types.
 
-## 块资源工厂命名
+## 3. Block resource factory naming
 
-`MemoryResourceFactory` 改为 `BlockResourceFactory`，对应文件为 `src/base_components/block_slice/block_resource_factory.hpp`；
-该类只创建 Block，不负责内存归还，名称与 `WarmPool` 的资源语义对齐。
-前置声明、友元声明、`SlicePool` 的 `Factory` 别名、测试辅助类及文档同步改名，构造签名不变。
+`MemoryResourceFactory` became `BlockResourceFactory`, in `src/base_components/block_slice/block_resource_factory.hpp`. It creates Blocks without owning their return policy, matching WarmPool resource terminology. Forward declarations, friends, SlicePool's Factory alias, test helpers and documentation changed together; constructor signatures stayed the same.
 
-## 模板参数命名
+## 4. Template parameter naming
 
-模板参数统一使用 `T` 前缀加 `PascalCase`，类型参数和值参数（`bool` 及其他非类型参数）均适用：
-`TResource`、`TBlock`、`TIsConcurrent`、`TMaxCount`。`T` 表示模板参数，不区分类型与值。
+Use `T` plus `PascalCase` for both type and value parameters: `TResource`, `TBlock`, `TIsConcurrent`, `TMaxCount`. The prefix indicates a template parameter, not whether it is a type or a value.
 
-`WarmPool` 的资源类型参数由 `T` 改为 `TResource`；池锁策略参数由 `is_n_alloc` 改为 `TIsConcurrent`。
-后者原名沿自 `BasicBlockSlicesAllocator`，在分配器中与 `is_n_use` 成对表示「N 个分配者 / N 个释放者」，
-但该参数在池内只决定 `Lock = std::conditional_t<TIsConcurrent, SpinLock, NoLock>`，覆盖全部池操作（借出、归还、
-受保护访问、预分配、计数查询、回调注册），与「分配」无对应关系，故改名。两个参数均为位置传参，调用点无需修改。
+WarmPool's resource parameter changed from `T` to `TResource`, and its locking-policy parameter from `is_n_alloc` to `TIsConcurrent`. The old name originated in BasicBlockSlicesAllocator, paired with `is_n_use` to mean multiple allocators/releasers. In the pool it instead selects `Lock = std::conditional_t<TIsConcurrent, SpinLock, NoLock>` for all pool operations: borrowing, returning, protected access, preallocation, counts and callback registration. The new name reflects that broader scope. Both parameters are positional, so call sites did not change.
 
-`BasicBlock`、`ReaderBlock`、`WriterBlock` 与 `BasicBlockSlicesAllocator` 保留 `is_n_alloc`，
-第二个参数已按接口约定改为 `is_n_use`，表示块由多个线程使用，包括切片释放和强制回收。
-两个参数任一为 true 时启用跨线程元数据及 Node 锁；此处暂未统一成 T 前缀命名。
+BasicBlock, ReaderBlock, WriterBlock and BasicBlockSlicesAllocator retain the existing `is_n_alloc` parameter. Their second parameter is `is_n_use`, covering multithreaded block use, slice release and forced recycling. Either true enables cross-thread metadata and Node locking. These legacy parameters have not yet adopted the `T` prefix.

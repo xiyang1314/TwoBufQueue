@@ -7,8 +7,8 @@
 
 namespace TwoBufQueue {
 
-// 单线程侵入式 LIFO 栈：节点通过 next_member 提供链接字段。
-// 不拥有节点；节点在栈中时必须保持有效。跨线程使用时，所有访问须由同一把外部锁保护。
+// Single-threaded intrusive LIFO: nodes supply a link through next_member.
+// Does not own nodes; nodes must stay valid while stacked. Protect every cross-thread access with the same external lock.
 template<class Node, Node* Node::*next_member>
 class SingleThreadStack {
 public:
@@ -32,29 +32,29 @@ private:
     Node* head_ = nullptr;
 };
 
-// 压栈端、弹栈端各自串行的原子侵入式 LIFO 栈，两端之间允许并发。
-// 每端可以是唯一线程，也可以是由共同外部锁串行化并建立 happens-before 的多个线程。
-// Node 的生命周期必须覆盖其入栈时间，并通过 next_member 提供一个非原子链接字段。
-// 本类不能直接供多个 push 或多个 pop 并发调用：节点必须先被取出并经外部所有权链路交还，
-// 压栈端才能再次压入；每端串行及节点所有权约束排除了有害的 ABA/链接并发读写。
+// Atomic intrusive LIFO with separately serialized push/pop sides; the two sides may run concurrently.
+// Each side may be one thread or several threads serialized by a common external lock that establishes happens-before.
+// Nodes must live throughout their time in the stack and supply a non-atomic next_member link.
+// Multiple concurrent pushes or concurrent pops are unsupported. Remove a node and return ownership externally
+// before pushing it again; per-side serialization and ownership constraints exclude harmful ABA/link races.
 template <typename Node, Node* Node::*next_member>
 class alignas(64) SpscIntrusiveStack {
 public:
-    // 栈顶使用单指针原子操作；项目要求目标平台上的原子指针真正无锁。
+    // The head uses a single atomic pointer; target platforms must provide genuinely lock-free atomic pointers.
     static_assert(std::is_object_v<Node>,
                   "SpscIntrusiveStack Node must be an object type");
     static_assert(std::atomic<Node*>::is_always_lock_free,
                   "SpscIntrusiveStack requires lock-free atomic pointers");
 
-    // 创建空栈；本类不拥有节点，也不负责节点的创建和销毁。
+    // Create an empty stack; node allocation and destruction belong to the caller.
     constexpr SpscIntrusiveStack() noexcept = default;
 
-    // 并发状态不能复制，否则两个栈会同时持有同一节点链。
+    // Concurrent state is not copyable: two stacks must not own the same node chain.
     SpscIntrusiveStack(const SpscIntrusiveStack&) = delete;
-    // 禁止复制赋值，保持每个节点在任意时刻只属于一个栈。
+    // Disable copy assignment to keep every node in exactly one stack at any time.
     SpscIntrusiveStack& operator=(const SpscIntrusiveStack&) = delete;
 
-    // 由串行压栈端把非空节点发布到栈顶；节点入栈前必须由调用者独占。
+    // The serialized push side publishes a non-null, exclusively owned node to the head.
     void push(Node* node) noexcept {
         Node* observed = head_.load(std::memory_order_relaxed);
         do {
@@ -64,7 +64,7 @@ public:
             std::memory_order_relaxed));
     }
 
-    // 由串行弹栈端取得最近压入的节点；空栈立即返回 nullptr。
+    // The serialized pop side acquires the most recently pushed node; an empty stack returns nullptr immediately.
     [[nodiscard]] Node* pop() noexcept {
         Node* observed = head_.load(std::memory_order_acquire);
         while (observed != nullptr) {
@@ -72,7 +72,7 @@ public:
             if (head_.compare_exchange_weak(
                     observed, next, std::memory_order_acquire,
                     std::memory_order_acquire)) {
-                // 弹出后清除侵入链接，便于诊断并明确节点已脱离栈。
+                // Clear the intrusive link after pop to aid diagnostics and mark the node as detached.
                 observed->*next_member = nullptr;
                 return observed;
             }
@@ -80,13 +80,13 @@ public:
         return nullptr;
     }
 
-    // 只提供瞬时诊断结果；并发 push/pop 时返回值可能立即变化。
+    // Diagnostic snapshot only; concurrent push/pop can invalidate the observation immediately.
     [[nodiscard]] bool empty() const noexcept {
         return head_.load(std::memory_order_acquire) == nullptr;
     }
 
 private:
-    // 两个线程共同修改栈顶，独占缓存行避免污染包含本栈的其他控制字段。
+    // Both sides modify the head; dedicate a cache line to avoid disturbing other control fields around this stack.
     alignas(64) std::atomic<Node*> head_{nullptr};
 };
 

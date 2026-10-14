@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>示例 · TwoBufQueue</title><link rel="stylesheet" href="../docs/assets/readme.css"></head><body><!-- Generated from examples/README.zh-CN.md; SHA256 7f30303096751361a344a21db58c94394933b87406abc0c84024dd9d5afc9d60. --><a class="skip-link" href="#content">跳到正文</a><header class="site-header"><div class="header-inner"><a class="brand" href="../README.zh-CN.html"><span class="brand-symbol" aria-hidden="true"><i></i><i></i></span>TwoBufQueue<span class="brand-version">C++</span></a><nav aria-label="主要导航"><a href="../README.zh-CN.html">项目首页</a><a href="../docs/API.zh-CN.html">接口指南</a><a href="README.zh-CN.html">使用示例</a><a href="../docs/code/index.zh-CN.html">代码阅读</a><a href="../docs/index.zh-CN.html">性能报告</a></nav><div class="languages"><a href="README.html">EN</a><a href="README.zh-CN.html" aria-current="page">中文</a></div></div></header><div class="page-layout guide-layout" id="top"><aside class="toc"><p class="toc-label">本页目录</p><nav aria-label="目录"><a class="toc-depth-2" href="#先看入门示例">一、先看入门示例</a><a class="toc-depth-2" href="#使用完整的-twobufqueue">二、使用完整的 TwoBufQueue</a><a class="toc-depth-2" href="#单独使用组件">三、单独使用组件</a><a class="toc-depth-2" href="#运行与理解回调">四、运行与理解回调</a></nav><div class="toc-footer"><a href="../README.zh-CN.html">回到首页</a></div></aside><main id="content" class="guide-main"><section class="guide-hero"><div class="eyebrow"><span></span>TWOBUFQUEUE · 文档</div><h1>示例</h1><p><a href="README.html">English</a> · <a href="README.zh-CN.html">简体中文</a></p>
+<p>从仓库根目录开始阅读。先运行 <a href="../docs/code/examples/01_basic.cpp.zh-CN.html">01_basic.cpp</a>，再按需要选择下面两条路线；编号表示各目录中的阅读顺序，不要求把所有示例依次读完。</p>
+<ul>
+<li><a href="two_buf_queue/"><code>two_buf_queue/</code></a>：完整的 Writer → 读取 → 用户回调流程。只想在应用中使用 TwoBufQueue，先看这一组。</li>
+<li><a href="components/"><code>components/</code></a>：单独使用 WarmPool、SpscLiveHandoffQueue 或 HandoffQueue。只有需要自己组合这些组件时才看这一组。</li>
+</ul>
+</section><details class="mobile-toc"><summary>本页目录</summary><nav><a class="toc-depth-2" href="#先看入门示例">一、先看入门示例</a><a class="toc-depth-2" href="#使用完整的-twobufqueue">二、使用完整的 TwoBufQueue</a><a class="toc-depth-2" href="#单独使用组件">三、单独使用组件</a><a class="toc-depth-2" href="#运行与理解回调">四、运行与理解回调</a></nav></details><article class="guide-content"><h2 id="先看入门示例">一、先看入门示例</h2>
+<p><a href="../docs/code/examples/01_basic.cpp.zh-CN.html">01_basic.cpp</a> 是最短的完整流程：创建 Writer 和 TwoBufQueue，写入消息，在回调中读取，最后调用 <code>writer.finish()</code> 和 <code>queue.stop()</code>。<code>Writer</code> 在调用者线程写入；读取和回调由队列的读取线程执行。读完它，再选择下表中的专题。</p>
+<h2 id="使用完整的-twobufqueue">二、使用完整的 TwoBufQueue</h2>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>示例</th>
+<th>何时看</th>
+<th>重点</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><a href="../docs/code/examples/two_buf_queue/02_batch_callback.cpp.zh-CN.html">02_batch_callback.cpp</a></td>
+<td>想一次回调接收一组数据</td>
+<td><code>TwoBufQueueBatch</code> 把 <code>DataBatch</code> 交给回调；示例自行计算每个 frame 中的记录数。</td>
+</tr>
+<tr>
+<td><a href="../docs/code/examples/two_buf_queue/03_multi_thread_writer.cpp.zh-CN.html">03_multi_thread_writer.cpp</a></td>
+<td>多个生产线程写入</td>
+<td>每个线程使用自己的 Writer；用 <code>thread_id</code> 区分来源，并设置多个第一层读取线程。</td>
+</tr>
+<tr>
+<td><a href="../docs/code/examples/two_buf_queue/04_layer1_callback.cpp.zh-CN.html">04_layer1_callback.cpp</a></td>
+<td>想直接处理源块，跳过输出块</td>
+<td>自己实现 <code>ReadWriterDataCallback</code>，将回调交给 <code>ReadWorker</code>，读取已完成块与当前块。</td>
+</tr>
+<tr>
+<td><a href="../docs/code/examples/two_buf_queue/05_seq_writer.cpp.zh-CN.html">05_seq_writer.cpp</a></td>
+<td>每条记录需要序号</td>
+<td>多个 <code>SeqWriter</code> 共用原子计数器，通过 <code>fetch_add</code> 分配序号；示例校验每个 Writer 的写入顺序。</td>
+</tr>
+<tr>
+<td><a href="../docs/code/examples/two_buf_queue/06_sync_writer.cpp.zh-CN.html">06_sync_writer.cpp</a></td>
+<td>要在写线程立即执行逐条回调</td>
+<td>沿用 <code>01_basic</code> 的格式与回调，给 Writer 传入 <code>SyncContext&lt;decltype(rcvCallback)&gt;</code> 类型参数；<code>write</code> 返回时回调已完成。</td>
+</tr>
+<tr>
+<td><a href="../docs/code/examples/two_buf_queue/07_quick_write_muti_msg.cpp.zh-CN.html">07_quick_write_muti_msg.cpp</a></td>
+<td>连续写入多条记录</td>
+<td>取得单块 Session，双重循环写入；空间不足时由外层取得下一块，显式选择 flush。</td>
+</tr>
+<tr>
+<td><a href="../docs/code/examples/two_buf_queue/08_all_parameters.cpp.zh-CN.html">08_all_parameters.cpp</a></td>
+<td>已了解基本用法，准备调配置</td>
+<td>逐项展示 Writer 模板参数、源池与背压、读取线程和 TwoBufQueue 构造参数。</td>
+</tr>
+<tr>
+<td><a href="../docs/code/examples/two_buf_queue/09_async_logger.cpp.zh-CN.html">09_async_logger.cpp</a></td>
+<td>要把业务日志交给后台写文件</td>
+<td>两层池与独立回调线程；小缓存的 Block / Drop、flush、排空退出和完整文件校验。</td>
+</tr>
+</tbody></table></div>
+<p>推荐路线：<code>01 → 02</code> 了解逐条消息回调与数据分组回调；需要并发时看 <code>03</code>，需要直接读源块时看 <code>04</code>。<code>05</code> 和 <code>08</code> 分别是序号与参数专题；连续写入看 <code>07</code>。
+写线程内同步回调看 <code>06</code>，回调签名与 <code>01</code> 相同。
+实际文件写入看 <code>09</code>；<a href="../docs/ASYNC_LOGGING.zh-CN.html">运行说明</a>解释队列 flush 与文件 flush 的区别。</p>
+<h2 id="单独使用组件">三、单独使用组件</h2>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>示例</th>
+<th>何时看</th>
+<th>重点</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><a href="../docs/code/examples/components/11_warm_pool.cpp.zh-CN.html">11_warm_pool.cpp</a></td>
+<td>内存池的使用</td>
+<td>实现 <code>reset()</code>，借出 <code>Loan</code>，调用 <code>finish()</code> 归还。</td>
+</tr>
+<tr>
+<td><a href="../docs/code/examples/components/12_warm_pool_factory.cpp.zh-CN.html">12_warm_pool_factory.cpp</a></td>
+<td>内存池的对象要自定义创建或销毁</td>
+<td>在 <code>11</code> 的基础上提供 Factory 的 <code>create()</code> 与 <code>dispose()</code>。</td>
+</tr>
+<tr>
+<td><a href="../docs/code/examples/components/13_spsc_live_handoff_queue.cpp.zh-CN.html">13_spsc_live_handoff_queue.cpp</a></td>
+<td>结合内存池（资源池）的spsc生产者消费者队列。消费者能访问还未完成正在生产的产品</td>
+<td><code>try_pop()</code> 出队；暂时无法处理时，消费者自己保存 pending 记录。</td>
+</tr>
+<tr>
+<td><a href="../docs/code/examples/components/14_spsc_live_handoff_queue_claim.cpp.zh-CN.html">14_spsc_live_handoff_queue_claim.cpp</a></td>
+<td>同上，claim/cancel代替pop</td>
+<td>与 <code>13</code> 对照：<code>try_claim()</code> 领取，处理失败时 <code>cancel_claim()</code> 保留队首。</td>
+</tr>
+<tr>
+<td><a href="../docs/code/examples/components/15_handoff_queue.cpp.zh-CN.html">15_handoff_queue.cpp</a></td>
+<td>结合内存池（资源池）的spsc生产者消费者队列</td>
+<td>SPSC 模式；队列内置 Reader 调用 <code>bool(Message&amp;)</code> 回调，返回 <code>false</code> 后重试。</td>
+</tr>
+<tr>
+<td><a href="../docs/code/examples/components/16_handoff_queue_mpmc.cpp.zh-CN.html">16_handoff_queue_mpmc.cpp</a></td>
+<td>同上，多生产者、多消费者</td>
+<td>MPMC 模式；多个生产线程发送，多个内置 Reader 并发执行回调。</td>
+</tr>
+</tbody></table></div>
+<p>推荐路线：先看 <code>11</code>；要自定义对象生命周期再看 <code>12</code>。如果需要读取<strong>尚在生产中的</strong>资源，看 <code>13 → 14</code>；如果只在 <code>send()</code> 后交给消费者处理，看 <code>15</code>，需要多线程消费再看 <code>16</code>。<code>13/14</code> 自己管理消费者线程，<code>15/16</code> 由 HandoffQueue 管理 Reader 线程。</p>
+<h2 id="运行与理解回调">四、运行与理解回调</h2>
+<p>在仓库根目录构建并运行全部示例：</p>
+<div class="code-frame"><div class="code-label">Shell</div><pre tabindex="0"><code class="language-sh"><span class="syntax-keyword">cmake</span> -S . -B build -DBRQ_BUILD_TESTS=OFF -DBRQ_BUILD_EXAMPLES=ON -DBRQ_BUILD_BENCHMARKS=OFF
+<span class="syntax-keyword">cmake</span> --build build --config Release --parallel
+<span class="syntax-keyword">ctest</span> --test-dir build -C Release -R &#39;^example_&#39; --output-on-failure</code></pre></div><p>只想运行一个例子，可先构建对应目标，例如 <code>cmake --build build --config Release --target brq_component_15_handoff_queue</code>。在 Ninja/MinGW 的 Windows 构建中运行 <code>build/brq_component_15_handoff_queue.exe</code>；Visual Studio 构建在 <code>build/Release/</code> 下。所有示例都是独立程序，正常结束返回 0，失败返回非零值。</p>
+<p>阅读代码时留意三个边界：<code>finish()</code> 或归还后不能再访问资源；<code>DataBatch</code>、源块数据等借用视图只能按回调约定使用，不能在回调返回后保存指针；停止时先结束生产，再等待读取和队列排空。回调返回 <code>false</code> 的含义随接口而定，具体以各例注释为准。</p>
+<p><a href="../docs/code/examples/example_support.hpp.zh-CN.html">example_support.hpp</a> 只提供示例共用的检查与解析辅助函数，并引入 <code>&lt;TwoBufQueue.hpp&gt;</code>；它不是用户必须依赖的 API。组件接口可从 <a href="../docs/code/src/base_components/WarmPool/warm_pool.hpp.zh-CN.html">WarmPool</a>、<a href="../docs/code/src/base_components/LiveHandoffQueue/spsc_live_handoff_queue.hpp.zh-CN.html">SpscLiveHandoffQueue</a> 和 <a href="../docs/code/src/base_components/HandoffQueue/handoff_queue.hpp.zh-CN.html">HandoffQueue</a> 的头文件继续阅读。</p>
+</article><footer class="site-footer"><span>TwoBufQueue · C++ · Apache-2.0</span><span><a href="../README.zh-CN.html">项目首页</a><a href="#top">回到顶部 ↑</a></span></footer></main></div></body></html>

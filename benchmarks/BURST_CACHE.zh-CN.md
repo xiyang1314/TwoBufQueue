@@ -1,8 +1,8 @@
 # 连续发送一批消息，对业务性能产生什么影响
 
-当前[正式报告](../docs/performance_burst_from_empty.html)比较几种队列在突发连续发送后，对生产者热路径业务的影响。此前预填充大积压的实验与报告保留在后面的历史章节。
+当前[正式报告](../docs/performance_burst_from_empty.zh-CN.md)比较几种队列在突发连续发送后，对生产者热路径业务的影响。此前预填充大积压的实验与报告保留在后面的历史章节。
 
-## 一次运行得到当前报告
+## 一、一次运行得到当前报告
 
 从项目根目录执行：
 
@@ -34,7 +34,7 @@ python3 benchmarks/run_burst_empty.py --render-only \
 
 单独关闭 `prefill` 只会取消准备消息，后续连续窗口仍可能积压；每批从零开始还需要 `drain_before_burst=true`。历史实验的约 200 MiB 初始积压与 80% 规则不适用于当前报告。
 
-## 历史测试：预填充大积压的一次运行
+## 二、历史测试：预填充大积压的一次运行
 
 从项目根目录执行：
 
@@ -66,13 +66,13 @@ python3 benchmarks/run_burst_showcase.py --replay docs/performance_data/本次�
 
 可调 --business-kib、--bursts-mib、--runs、--selection-repeats、--samples-per-run、--callback-candidates；正式模式至少 10,000 组/轮、三轮。--callback-iterations 可固定统一回调；--executable 可复用已构建程序，否则自动构建；--deps 指定固定依赖目录。
 
-## 原独立诊断方式（少量样本，不替代完整分位数测试）
+## 三、原独立诊断方式（少量样本，不替代完整分位数测试）
 
 `test_burst_cache` 是独立的32 B突发测试。所有队列的回调始终运行同一段计算，没有人为暂停或睡眠；TwoBufQueue仍使用独立复制线程和回调线程。
 
 测试针对积压较大时的写侧小数据池：写线程先把业务表变热（默认48 KiB，可配置），连续发送一批消息，再立即执行业务。业务表采用打乱顺序的依赖链，每次访问并更新8个节点，所有实现使用同一个不可内联的业务函数。
 
-## 历史诊断的参数与流程
+## 四、历史诊断的参数与流程
 
 - 第一层**总数据池**默认遍历2、4、8、16、32、64、128 KiB，固定4块，所以最小单块512 B。第二层总容量始终256 MiB，Reader单块与Writer单块相同。
 - 每次突发默认遍历16 KiB到128 MiB的14档2次幂；全部固定32 B消息，不带长度前缀，所有32 B随序号变化。
@@ -86,7 +86,7 @@ python3 benchmarks/run_burst_showcase.py --replay docs/performance_data/本次�
 
 回调循环先统一校准。默认在真实128 MiB突发下测试128/256/512次循环，对两种ReaderWriterQueue复制选项、两种rigtorp预取选项和atomic_queue均检查积压。试跑要求至少75%以留出波动余量，正式结果保留真实占用率。可以通过`--callback-iterations`固定统一循环次数。
 
-## 历史诊断的指标
+## 五、历史诊断的指标
 
 - **突发写入M条/s**：计时区的成功条数/耗时，包含32 B消息生成、正常写入及失败重试。
 - **突发前业务ns/次**：热身后的16次业务平均耗时。
@@ -97,7 +97,7 @@ python3 benchmarks/run_burst_showcase.py --replay docs/performance_data/本次�
 
 只有3个独立突发样本，不生成p99/p999；16次业务组均值也不冒充单次调用延时。核心迁移、后台竞争、元数据、写入持续时间均可能影响业务恢复，不能只根据这些耗时断言L1未命中率或精确微观原因。
 
-## 历史诊断的编译与运行
+## 六、历史诊断的编译与运行
 
 ```sh
 cmake -S . -B build-burst -DCMAKE_BUILD_TYPE=Release \
@@ -126,7 +126,7 @@ build-burst/test_burst_cache --transport two_buf_queue \
 
 macOS使用写线程高QoS调度偏好，不能保证固定核心或禁止迁移；Linux可通过producer_cpu参数绑核。2 KiB等极小块会增加Reader对象和元数据数量，进程RSS与数据池容量分开记录。
 
-## 遍历业务工作集大小
+## 七、遍历业务工作集大小
 
 业务表大小由 `Config::business_bytes` / `--business_bytes` 控制。
 默认值根据本机24、48、96 KiB对照遍历选为48 KiB。这个参数是所有队列共用的业务负载，不为不同队列设置不同大小。
@@ -145,7 +145,7 @@ python3 benchmarks/tune_burst_business.py \
 
 测试程序也支持 `--burst_sizes 1048576,2097152,4194304,8388608,16777216` 一次指定发送量列表。
 
-## 只检查1 MiB发送后的尾部
+## 八、只检查1 MiB发送后的尾部
 
 ```sh
 python3 benchmarks/run_burst_tail_1m.py

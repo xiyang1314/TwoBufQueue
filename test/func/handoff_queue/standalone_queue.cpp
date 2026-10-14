@@ -1,4 +1,4 @@
-// 不包含 handoff_queue.hpp 或 handoff_reader.hpp。
+// Do not include handoff_queue.hpp or handoff_reader.hpp.
 #include "TwoBufQueue/src/base_components/HandoffQueue/pooled_resource_queue.hpp"
 #include <cassert>
 #include <iostream>
@@ -49,7 +49,7 @@ int main() {
         assert(queue.send(acquired.loan));
         auto received = queue.try_receive();
         assert(received && received->value == 42);
-        assert(received.finish()); // finish 绑定独立队列，不依赖 HandoffQueue。
+        assert(received.finish()); // finish binds the standalone queue, independently of HandoffQueue.
         assert(!queue.finish(received));
         acquired = queue.try_acquire();
         assert(acquired && queue.send(acquired.loan));

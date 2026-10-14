@@ -9,7 +9,7 @@ namespace TwoBufQueue {
 
 enum class HandoffMode { Sync, SPSC, MPSC, SPMC, MPMC };
 enum class ReaderMode { Polling, WaitSignal };
-// Keep 按原入队顺序选择当前可领取任务；已领取任务可以并行处理，不保证完成顺序。
+// Keep selects eligible tasks in original enqueue order; claimed tasks may run in parallel and complete out of order.
 enum class CancelClaimMode { Keep, QueueTail };
 enum class HandoffState { Free, Producing, Ready, Claimed, Received, Recycling, Invalid };
 enum class AcquireStatus { Success, QueueFull, PoolLimit, ResourceError, Closed };
@@ -18,7 +18,7 @@ struct HandoffOptions {
     HandoffMode mode = HandoffMode::SPSC;
     std::size_t queue_capacity = 256;
     ReaderMode reader_mode = ReaderMode::WaitSignal;
-    std::size_t reader_count = 1; // Sync 忽略；SPMC/MPMC 支持 1..64。
+    std::size_t reader_count = 1; // Ignored by Sync; SPMC/MPMC support 1..64.
     std::chrono::microseconds retry_wait{1000};
     bool enable_stats = false;
     CancelClaimMode cancel_claim_mode = CancelClaimMode::QueueTail;

@@ -1,0 +1,80 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1060" height="510" viewBox="0 0 1060 510">
+<title>Producer submission throughput · million messages/s · higher is better</title>
+<desc>Saved report-data SHA256 abce8a78661ac5cc97794ad3ed0ab716bf75b32063a4ba4f5e88a1494d9b5086</desc>
+<rect width="1060" height="510" fill="white"/>
+<g font-family="Arial, sans-serif">
+<text x="24" y="32" font-size="20" fill="#163044">Producer submission throughput · million messages/s · higher is better</text>
+<rect x="20" y="66" width="500" height="192" rx="10" fill="#f0f5fa" stroke="#d4e2ed"/>
+<text x="36" y="94" font-size="14" fill="#315b73">8 B</text>
+<text x="36" y="127" font-size="11" fill="#087f6e">TwoBufQueue</text>
+<rect x="174" y="118" width="245" height="9" rx="3" fill="white"/>
+<rect x="174" y="118" width="149.737" height="9" rx="3" fill="#087f6e"/>
+<text x="498" y="127" text-anchor="end" font-size="12" fill="#087f6e">489.5</text>
+<text x="36" y="158" font-size="11" fill="#8ea6b8">ReaderWriterQueue</text>
+<rect x="174" y="149" width="245" height="9" rx="3" fill="white"/>
+<rect x="174" y="149" width="245.000" height="9" rx="3" fill="#8ea6b8"/>
+<text x="498" y="158" text-anchor="end" font-size="12" fill="#8ea6b8">801.0</text>
+<text x="36" y="189" font-size="11" fill="#8ea6b8">rigtorp::SPSCQueue</text>
+<rect x="174" y="180" width="245" height="9" rx="3" fill="white"/>
+<rect x="174" y="180" width="99.745" height="9" rx="3" fill="#8ea6b8"/>
+<text x="498" y="189" text-anchor="end" font-size="12" fill="#8ea6b8">326.1</text>
+<text x="36" y="220" font-size="11" fill="#8ea6b8">atomic_queue</text>
+<rect x="174" y="211" width="245" height="9" rx="3" fill="white"/>
+<rect x="174" y="211" width="56.982" height="9" rx="3" fill="#8ea6b8"/>
+<text x="498" y="220" text-anchor="end" font-size="12" fill="#8ea6b8">186.3</text>
+<rect x="540" y="66" width="500" height="192" rx="10" fill="#f4f1fa" stroke="#d4e2ed"/>
+<text x="556" y="94" font-size="14" fill="#315b73">16 B</text>
+<text x="556" y="127" font-size="11" fill="#087f6e">TwoBufQueue</text>
+<rect x="694" y="118" width="245" height="9" rx="3" fill="white"/>
+<rect x="694" y="118" width="143.514" height="9" rx="3" fill="#087f6e"/>
+<text x="1018" y="127" text-anchor="end" font-size="12" fill="#087f6e">449.5</text>
+<text x="556" y="158" font-size="11" fill="#8ea6b8">ReaderWriterQueue</text>
+<rect x="694" y="149" width="245" height="9" rx="3" fill="white"/>
+<rect x="694" y="149" width="245.000" height="9" rx="3" fill="#8ea6b8"/>
+<text x="1018" y="158" text-anchor="end" font-size="12" fill="#8ea6b8">767.4</text>
+<text x="556" y="189" font-size="11" fill="#8ea6b8">rigtorp::SPSCQueue</text>
+<rect x="694" y="180" width="245" height="9" rx="3" fill="white"/>
+<rect x="694" y="180" width="85.399" height="9" rx="3" fill="#8ea6b8"/>
+<text x="1018" y="189" text-anchor="end" font-size="12" fill="#8ea6b8">267.5</text>
+<text x="556" y="220" font-size="11" fill="#8ea6b8">atomic_queue</text>
+<rect x="694" y="211" width="245" height="9" rx="3" fill="white"/>
+<rect x="694" y="211" width="15.534" height="9" rx="3" fill="#8ea6b8"/>
+<text x="1018" y="220" text-anchor="end" font-size="12" fill="#8ea6b8">48.7</text>
+<rect x="20" y="278" width="500" height="192" rx="10" fill="#eff6f1" stroke="#d4e2ed"/>
+<text x="36" y="306" font-size="14" fill="#315b73">32 B</text>
+<text x="36" y="339" font-size="11" fill="#087f6e">TwoBufQueue</text>
+<rect x="174" y="330" width="245" height="9" rx="3" fill="white"/>
+<rect x="174" y="330" width="219.504" height="9" rx="3" fill="#087f6e"/>
+<text x="498" y="339" text-anchor="end" font-size="12" fill="#087f6e">378.6</text>
+<text x="36" y="370" font-size="11" fill="#8ea6b8">ReaderWriterQueue</text>
+<rect x="174" y="361" width="245" height="9" rx="3" fill="white"/>
+<rect x="174" y="361" width="245.000" height="9" rx="3" fill="#8ea6b8"/>
+<text x="498" y="370" text-anchor="end" font-size="12" fill="#8ea6b8">422.6</text>
+<text x="36" y="401" font-size="11" fill="#8ea6b8">rigtorp::SPSCQueue</text>
+<rect x="174" y="392" width="245" height="9" rx="3" fill="white"/>
+<rect x="174" y="392" width="127.930" height="9" rx="3" fill="#8ea6b8"/>
+<text x="498" y="401" text-anchor="end" font-size="12" fill="#8ea6b8">220.7</text>
+<text x="36" y="432" font-size="11" fill="#8ea6b8">atomic_queue</text>
+<rect x="174" y="423" width="245" height="9" rx="3" fill="white"/>
+<rect x="174" y="423" width="17.509" height="9" rx="3" fill="#8ea6b8"/>
+<text x="498" y="432" text-anchor="end" font-size="12" fill="#8ea6b8">30.2</text>
+<rect x="540" y="278" width="500" height="192" rx="10" fill="#fcf5e9" stroke="#d4e2ed"/>
+<text x="556" y="306" font-size="14" fill="#315b73">64 B</text>
+<text x="556" y="339" font-size="11" fill="#087f6e">TwoBufQueue</text>
+<rect x="694" y="330" width="245" height="9" rx="3" fill="white"/>
+<rect x="694" y="330" width="245.000" height="9" rx="3" fill="#087f6e"/>
+<text x="1018" y="339" text-anchor="end" font-size="12" fill="#087f6e">277.9</text>
+<text x="556" y="370" font-size="11" fill="#8ea6b8">ReaderWriterQueue</text>
+<rect x="694" y="361" width="245" height="9" rx="3" fill="white"/>
+<rect x="694" y="361" width="180.097" height="9" rx="3" fill="#8ea6b8"/>
+<text x="1018" y="370" text-anchor="end" font-size="12" fill="#8ea6b8">204.3</text>
+<text x="556" y="401" font-size="11" fill="#8ea6b8">rigtorp::SPSCQueue</text>
+<rect x="694" y="392" width="245" height="9" rx="3" fill="white"/>
+<rect x="694" y="392" width="87.657" height="9" rx="3" fill="#8ea6b8"/>
+<text x="1018" y="401" text-anchor="end" font-size="12" fill="#8ea6b8">99.4</text>
+<text x="556" y="432" font-size="11" fill="#8ea6b8">atomic_queue</text>
+<rect x="694" y="423" width="245" height="9" rx="3" fill="white"/>
+<rect x="694" y="423" width="39.847" height="9" rx="3" fill="#8ea6b8"/>
+<text x="1018" y="432" text-anchor="end" font-size="12" fill="#8ea6b8">45.2</text>
+<text x="24" y="500" font-size="10" fill="#647586">Each panel uses its own scale. Complete parameters are listed below.</text>
+</g></svg>

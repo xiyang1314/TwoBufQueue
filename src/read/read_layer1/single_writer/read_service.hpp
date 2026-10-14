@@ -8,8 +8,8 @@
 
 namespace TwoBufQueue {
 
-// 独立的单来源读取服务；构造时绑定，运行期间不注册或切换 Writer。
-// Callback / queue / event 的寿命须覆盖本对象；只有一个线程调用 read_once。
+// Independent single-source service; bind at construction without registering/switching Writers at runtime.
+// Callback / queue / event must outlive this object; only one thread calls read_once.
 template<class TCallback>
 class SingleReadService {
 public:
@@ -46,8 +46,8 @@ public:
     SingleReadService(const SingleReadService&) = delete;
     SingleReadService& operator=(const SingleReadService&) = delete;
 
-    // 固定交接前缀，先处理完成块，再按 is_scan_current 选择是否读取 current。
-    // force_current 只绕过时间间隔，不绕过 is_scan_current；新通知保留在 event 中。
+    // Fix the handoff prefix, process completed blocks first, then consult is_scan_current before reading current.
+    // force_current bypasses timing only, not is_scan_current; new notifications remain in the event.
     [[nodiscard]] ReadResult read_once(bool force_current, const std::atomic<bool>& cancel,
                                        Deadline deadline = Deadline::max()) noexcept {
         ReadResult result;
@@ -75,7 +75,7 @@ public:
             valid_wait(config_.finish_timeout) && valid_wait(config_.work_wait_min_interval) &&
             valid_wait(config_.finish_retry_interval);
     }
-    // 安装/解除回调时生产者须静止，与多 Writer 的生命周期约束相同。
+    // Producers must be quiescent while installing/removing callbacks, matching multi-Writer lifecycle constraints.
     void prepare_start() noexcept {
         queue_.set_read_available_callback(&read_available, &event_);
         attached_ = true;
@@ -164,7 +164,7 @@ private:
                 block->read_pos_ = static_cast<std::size_t>(bytes.data() + bytes.size() - block->buf_);
                 record_saved(bytes.size(), false);
             }
-            finish_pending(); // block 可立即复用，之后不再访问它。
+            finish_pending(); // The block may be reused immediately; do not access it afterward.
             increment(saved_finished_ranges_);
             result.progressed = true;
         }
@@ -201,7 +201,7 @@ private:
         result.progressed = true;
         return true;
     }
-    // 这些计数只有读线程写；原子 load/store 允许控制线程查询，避免不必要的 RMW。
+    // Reader-only writes; atomic load/store support control-thread queries without unnecessary RMW operations.
     static void increment(std::atomic<std::uint64_t>& counter, std::uint64_t amount = 1) noexcept {
         counter.store(counter.load(std::memory_order_relaxed) + amount, std::memory_order_relaxed);
     }

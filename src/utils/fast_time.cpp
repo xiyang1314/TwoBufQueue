@@ -24,7 +24,7 @@ std::int64_t system_epoch_time_ns() noexcept {
 #if defined(_MSC_VER) && (defined(_M_X64) || defined(_M_IX86))
 std::uint64_t read_tsc() noexcept { return __rdtsc(); }
 
-// 扫描时序先完成此前的读取，再取得 TSC；日志热路径保持原来的读取方式。
+// Complete preceding reads before sampling scan TSC; keep the original read method on the logging hot path.
 std::uint64_t read_ordered_tsc() noexcept {
     _mm_lfence();
     const auto value = __rdtsc();
@@ -47,7 +47,7 @@ std::uint64_t read_tsc() noexcept {
     return (static_cast<std::uint64_t>(high) << 32) | low;
 }
 
-// LFENCE 在这里仅用于约束扫描时间的读取顺序，不负责发布日志字节。
+// LFENCE orders scan-clock reads here; it does not publish log bytes.
 std::uint64_t read_ordered_tsc() noexcept {
     std::uint32_t low = 0;
     std::uint32_t high = 0;
@@ -80,13 +80,13 @@ struct FastEpochClock {
     std::uint64_t reference_tsc = 0;
     std::int64_t reference_epoch_ns = 0;
     double ticks_per_ns = 1.0;
-    // 扫描时间的独立锚点；频率共用 ticks_per_ns，绝不把 Unix 时间当成扫描期限。
+    // Independent scan anchor sharing ticks_per_ns; never use Unix time as a scan deadline.
     std::uint64_t reference_steady_tsc = 0;
     std::int64_t reference_steady_ns = 0;
 
     FastEpochClock() noexcept {
 #if defined(FAST_LOG_DISABLE_TSC)
-        // 测试/构建选项：强制走标准时钟，验证不支持 TSC 的平台回退路径。
+        // Test/build option: force the standard clock to validate fallback on platforms without TSC support.
         return;
 #endif
 #if (defined(_MSC_VER) && (defined(_M_X64) || defined(_M_IX86))) || \
@@ -116,7 +116,7 @@ struct FastEpochClock {
             anchor_before + ((anchor_after - anchor_before) / 2u);
         reference_epoch_ns = epoch_ns;
         ticks_per_ns = calibrated;
-        // 保留原有日志时间锚点，再取得扫描专用的 steady_clock 锚点。
+        // Preserve the logging-time anchor, then obtain an independent steady_clock anchor for scans.
         const auto steady_before = read_ordered_tsc();
         reference_steady_ns = system_steady_time_ns();
         const auto steady_after = read_ordered_tsc();
@@ -154,7 +154,7 @@ void initialize_fast_epoch_clock() noexcept { (void)fast_clock(); }
 std::int64_t fast_epoch_time_ns() noexcept { return fast_clock().now_ns(); }
 
 std::int64_t fast_steady_time_ns() noexcept {
-    // 共用日志时间的频率校准；扫描只使用独立的 steady_clock 锚点。
+    // Share logging-time frequency calibration; scans use only their independent steady_clock anchor.
     const FastEpochClock& clock = fast_clock();
 #if (defined(_MSC_VER) && (defined(_M_X64) || defined(_M_IX86))) || \
     ((defined(__x86_64__) || defined(__i386__)) && defined(__GNUC__))
@@ -169,7 +169,7 @@ std::int64_t fast_steady_time_ns() noexcept {
 #else
     (void)clock;
 #endif
-    // 频率校准失败、不支持恒定 TSC，或计数器早于锚点时，使用标准单调时钟。
+    // Use the standard monotonic clock if calibration fails, invariant TSC is unavailable or the counter predates its anchor.
     return system_steady_time_ns();
 }
 

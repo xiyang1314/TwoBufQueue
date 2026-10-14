@@ -30,7 +30,7 @@ void held() {
     CHECK(pool.resource_count() == 1 && pool.in_use_count() == 1);
     CHECK(slice.data()[0] == std::byte{42}); slice.release();
     CHECK(pool.resource_count() == 0 && pool.all_released());
-    // 最后一个切片退出受保护的释放操作后，Block 对象也可以销毁。
+    // Once the last slice exits its protected release operation, the Block object may also be destroyed.
 }
 void preallocate() {
     auto pool = make_block_pool<TestBlockPool<ReaderBlock<>>>(64, 1, 4, {}, 1);
@@ -103,12 +103,12 @@ void actual_destroy() {
         CHECK(CountedBlock::destroys == 0 && !pool.is_valid(first));
         auto moved = std::move(old);
         auto next = pool.get(); CHECK(next);
-        next->to_alloc_finished(); // 本次登记触发旧对象的真正销毁。
+        next->to_alloc_finished(); // This registration triggers physical destruction of the old object.
         CHECK(CountedBlock::destroys == 1);
         auto fresh_loan = pool.get(); CHECK(fresh_loan);
         auto fresh = fresh_loan->allocate(16);
         fresh.data()[0] = std::byte{91};
-        moved.release(); // 已 delete 的 Block，必须只检查保存的凭证。
+        moved.release(); // Block was deleted; validate only the retained ticket.
         CHECK(fresh_loan->outstanding_count() == 1 && fresh.data()[0] == std::byte{91});
         fresh_loan->to_alloc_finished(); fresh.release();
         CHECK(CountedBlock::destroys == 2 && pool.all_released());
@@ -131,9 +131,9 @@ void slice_access_overlap() {
         a.release();
     });
     entered.wait();
-    // force_recycle 与 Slice 共用 Node 锁；手工持锁时不能递归调用它。
+    // force_recycle shares the Node lock with Slice; do not call it recursively while holding that lock manually.
     std::thread force([&] { loan->force_recycle(); });
-    auto unrelated = pool.get(); CHECK(unrelated); // Node 锁不阻塞其他节点。
+    auto unrelated = pool.get(); CHECK(unrelated); // A Node lock must not block other nodes.
     unrelated->to_alloc_finished();
     CHECK(CountedBlock::destroys == 0);
     resume.count_down(); worker.join(); force.join();

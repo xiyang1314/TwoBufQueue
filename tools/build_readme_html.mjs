@@ -11,6 +11,7 @@ import { dirname, resolve } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { buildDocuments } from './build_docs_html.mjs';
 import { buildCodePages } from './build_code_html.mjs';
+import { documentSite } from './document_site.mjs';
 
 const args = process.argv.slice(2);
 let root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
@@ -30,7 +31,10 @@ if (!modulePath) {
     throw new Error('Install the optional documentation parser: npm install --prefix .deps/readme marked@17.0.5');
   }
 }
+let site;
 const { Marked } = await import(pathToFileURL(modulePath).href);
+const plainTitle = text => text.replace(/^(?:[一二三四五六七八九十百]+、\s*|\d+(?:\.\d+)*[.)、]?\s+)/u, '');
+const titlePrefix = text => text.slice(0, text.length - plainTitle(text).length);
 const hash = text => createHash('sha256').update(text).digest('hex');
 const escape = text => String(text).replace(/[&<>"']/g, ch => ({
   '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;',
@@ -212,9 +216,12 @@ async function buildOverviewFigures() {
 
 
 async function buildOverviews() {
+for (const detailed of [true, false]) {
 for (const zh of [false, true]) {
-  const sourceName = zh ? 'README.zh-CN.md' : 'README.md';
-  const outputName = zh ? 'README.zh-CN.html' : 'README.html';
+  const stem = detailed ? 'README_DETAIL' : 'README';
+  const sourceName = stem + (zh ? '.zh-CN' : '') + '.md';
+  const outputName = stem + (zh ? '.zh-CN' : '') + '.html';
+  const englishOverview = stem + '.html', chineseOverview = stem + '.zh-CN.html';
   const source = await readFile(resolve(root, sourceName), 'utf8');
   const markdown = new Marked({ gfm: true, breaks: false });
   markdown.use({ renderer: {
@@ -249,6 +256,7 @@ for (const zh of [false, true]) {
       return '<blockquote class="overview-note">' + this.parser.parse(tokens) + '</blockquote>';
     },
     link({ href, title, tokens }) {
+      href = site.localHref(resolve(root, sourceName), href);
       const target = /^(?:[a-z][a-z\d+.-]*:|\/\/)/i.test(href) ? href : href.replace(/\.md(?=[?#]|$)/, '.html');
       return '<a href="' + escape(target) + '"' + (title ? ' title="' + escape(title) + '"' : '')
         + '>' + this.parser.parseInline(tokens) + '</a>';
@@ -256,7 +264,8 @@ for (const zh of [false, true]) {
   } });
   const intro = [], sections = [];
   let current, child;
-  for (const token of markdown.lexer(source)) {
+  const bodySource = source.replace(/<!-- README_TOC:START -->[\s\S]*?<!-- README_TOC:END -->\s*/g, '').replace(/^\*\*(?:目录|Contents)\*\*\n\n(?:[ \t]*- \[[^\n]+\]\(#[^\n]+\)\n)+\n---\n*/gm, '').replace(/<a name="[^"]+"><\/a>\s*/g, '');
+  for (const token of markdown.lexer(bodySource)) {
     if (token.type === 'heading' && token.depth === 1) continue;
     if (token.type === 'heading' && token.depth === 2) {
       current = { title: token.text, tokens: [], children: [] };
@@ -267,15 +276,17 @@ for (const zh of [false, true]) {
     else if (current) current.tokens.push(token);
     else intro.push(token);
   }
-  const schema = zh ? [
+  let schema = zh ? [
     { label: '有多快？', children: [
       { label: '消息提交速度', aliases: ['当前生产者写入性能对比'] },
       { label: '发送后的业务性能', aliases: ['连续发送一批消息-对业务性能产生什么影响'] },
       { label: '历史实验', hidden: true },
     ] },
     { label: '问题与解决', questions: true, children: [
-      { label: '无背压为何变慢' }, { label: '批量交接能快多少' }, { label: '消费变慢怎么办' },
-      { label: '容量该设多大' }, { label: '大消息的影响', planned: true }, { label: '优先复用有用吗' },
+      { label: '无背压为何变慢' }, { label: '批量交接能快多少' },
+      { label: '缓存满了怎么办', planned: true, aliases: ['消费者偶尔慢一下-生产者也必须跟着等吗'] },
+      { label: '容量该设多大', aliases: ['队列到底应该预留多少内存'] },
+      { label: '大消息怎么发送', planned: true, aliases: ['消息大小不一会影响性能吗'] }, { label: '优先复用有用吗' },
     ] },
     { label: '与常规单层缓存队列对比', aliases: ['单层缓存与双层缓存', '单层与双层的设计对比'], children: [{ label: 'SPSC' }, { label: 'MPMC' }, { label: '设计要点' }] },
     { label: '使用场景', children: [{ label: '优势场景', scenarios: 6 }, { label: '劣势场景', scenarios: 2 }] },
@@ -290,8 +301,10 @@ for (const zh of [false, true]) {
       { label: 'Earlier experiments', hidden: true },
     ] },
     { label: 'Problems & solutions', questions: true, children: [
-      { label: 'No wait, still slow' }, { label: 'Batch handoff' }, { label: 'Slow consumers' },
-      { label: 'Capacity choice' }, { label: 'Large messages', planned: true }, { label: 'Reuse recent blocks' },
+      { label: 'No wait, still slow' }, { label: 'Batch handoff' },
+      { label: 'Full buffers', planned: true, aliases: ['must-a-brief-consumer-slowdown-make-the-producer-wait-too'] },
+      { label: 'Capacity choice', aliases: ['how-much-queue-memory-should-be-reserved'] },
+      { label: 'Large messages', planned: true, aliases: ['do-varying-message-sizes-affect-performance'] }, { label: 'Reuse recent blocks' },
     ] },
     { label: 'Comparison with typical single-layer queues', aliases: ['single-layer-and-two-layer-buffers', 'single-layer-and-two-layer-designs'], children: [{ label: 'SPSC' }, { label: 'MPMC' }, { label: 'Design highlights' }] },
     { label: 'Use cases', children: [{ label: 'Benefits', scenarios: 6 }, { label: 'Tradeoffs', scenarios: 2 }] },
@@ -300,10 +313,35 @@ for (const zh of [false, true]) {
     ] },
     { label: 'Roadmap', aliases: ['planned-improvements'], children: [] },
   ];
+  if (!detailed) schema = zh ? [
+    { label: '几个问题', questions: true, closingNote: true, aliases: ['为什么选择-twobufqueue'], children: [
+      { label: '发送后为何变慢', aliases: ['发送完后-业务还能保持快', '发送完后业务还能保持快'] },
+      { label: '批量提交快多少', aliases: ['批量发送更快'] },
+      { label: '缓存满了怎么办', aliases: ['消费者偶尔慢一下-生产者也必须跟着等吗', '为消费者的临时波动留出余量'] },
+      { label: '大消息怎么发送' },
+      { label: '容量该设多大' },
+    ] },
+    { label: '有多快？', children: [{ label: '消息提交速度' }, { label: '发送后的业务性能' }] },
+    { label: '适用与取舍', children: [{ label: '适合的场景' }, { label: '需要考虑的取舍' }] },
+    { label: '如何开始', children: [{ label: '最小使用示例' }, { label: '构建与接入' }] },
+    { label: '完整文档', children: [] },
+  ] : [
+    { label: 'A few questions', questions: true, closingNote: true, aliases: ['why-choose-twobufqueue'], children: [
+      { label: 'Business-cache interference', aliases: ['keep-subsequent-business-work-fast'] },
+      { label: 'Batch submission', aliases: ['submit-prepared-batches-quickly'] },
+      { label: 'Full buffers', aliases: ['must-a-brief-consumer-slowdown-make-the-producer-wait-too', 'allow-for-temporary-consumer-slowdowns'] },
+      { label: 'Large messages' },
+      { label: 'Capacity choice' },
+    ] },
+    { label: 'How fast?', children: [{ label: 'Submission throughput' }, { label: 'Business impact' }] },
+    { label: 'Fit and tradeoffs', children: [{ label: 'Useful scenarios' }, { label: 'Tradeoffs' }] },
+    { label: 'Get started', children: [{ label: 'Minimal example' }, { label: 'Build and integrate' }] },
+    { label: 'Full documentation', children: [] },
+  ];
   if (sections.length !== schema.length) throw new Error('Expected ' + schema.length + ' README groups.');
   const ids = new Set();
   const uniqueId = title => {
-    const base = title.toLowerCase().replace(/[^\p{L}\p{N}]+/gu, '-').replace(/^-|-$/g, '') || 'section';
+    const base = plainTitle(title).toLowerCase().replace(/[^\p{L}\p{N}]+/gu, '-').replace(/^-|-$/g, '') || 'section';
     let id = base, suffix = 2;
     while (ids.has(id)) id = base + '-' + suffix++;
     ids.add(id); return id;
@@ -314,22 +352,29 @@ for (const zh of [false, true]) {
     section.label = metadata.label; section.questions = metadata.questions; section.aliases = metadata.aliases;
     section.id = uniqueId(section.title);
     section.children = section.children.map((item, j) => ({ ...item, ...metadata.children[j], id: uniqueId(item.title) }));
+    if (metadata.closingNote) {
+      // The shared invitation follows all questions, rather than belonging to the last one.
+      const last = section.children.at(-1);
+      const note = last.tokens.findLastIndex(token => token.type !== 'space');
+      if (last.tokens[note]?.type !== 'blockquote') throw new Error('Missing question-chapter closing note.');
+      section.closingTokens = last.tokens.splice(note);
+    }
   }
   const tagline = intro.find(token => token.type === 'paragraph' && /^\*\*/.test(token.text));
   if (!tagline) throw new Error('Missing README tagline.');
-  const navigation = intro.find(token => token.type === 'paragraph' && token.text.includes('README.'));
+  const navigation = intro.find(token => token.type === 'paragraph' && token.text.includes('README'));
   const introduction = intro.filter(token => token !== tagline && token !== navigation);
   const toHtml = input => markdown.parse(input.map(token => token.raw).join(''));
   const aliasHtml = item => (item.aliases || []).filter(id => id !== item.id).map(id => {
     if (ids.has(id)) throw new Error('Duplicate anchor alias: ' + id);
     ids.add(id); return '<span class="anchor-alias" id="' + escape(id) + '"></span>';
   }).join('');
-  const tocText = title => ['有多快？', 'How fast is it?'].includes(title) ? title : title.replace(/[?？]/g, '');
+  const tocText = title => ['有多快？', 'How fast is it?'].includes(plainTitle(title)) ? title : title.replace(/[?？]/g, '');
   const toc = sections.map((section, index) => '<div class="toc-group"><a class="toc-group-link" href="#' + escape(section.id)
     + '" title="' + escape(section.title) + '">' + escape(tocText(section.title)) + '</a>'
     + (section.children.some(item => !item.hidden) ? '<ul class="toc-children">' + section.children.filter(item => !item.hidden)
       .map(item => '<li><a href="#' + escape(item.id) + '" title="' + escape(item.title) + '" aria-label="'
-        + escape(item.title) + '">' + escape(tocText(index < 2 ? item.title : item.label)) + '</a></li>').join('') + '</ul>' : '') + '</div>').join('');
+        + escape(item.title) + '">' + escape(tocText(index < 2 ? item.title : titlePrefix(item.title) + item.label)) + '</a></li>').join('') + '</ul>' : '') + '</div>').join('');
   function scenarioCards(item) {
     const lead = [], cards = []; let card;
     for (const token of item.tokens) {
@@ -340,13 +385,14 @@ for (const zh of [false, true]) {
     }
     if (cards.length !== item.scenarios) throw new Error('Unexpected scenario count: ' + item.title);
     return toHtml(lead) + '<div class="scenario-grid">' + cards.map((card, index) => {
-      const title = card.title.replace(/^\d+\.\s*/, '');
+      const title = plainTitle(card.title);
+      const number = titlePrefix(card.title).trim().replace(/[.)、]$/, '');
       const body = toHtml(card.tokens);
       const labels = zh ? ['场景', item.scenarios === 6 ? '优势' : '劣势'] : ['Scenario', item.scenarios === 6 ? 'Benefit' : 'Drawback'];
       if (!labels.every(label => body.includes('<strong>' + label + ':') || body.includes('<strong>' + label + '：'))) {
         throw new Error('Missing scenario/benefit labels: ' + card.title);
       }
-      return '<article class="scenario-card"><h4 class="scenario-title"><span class="scenario-number">' + (index + 1)
+      return '<article class="scenario-card"><h4 class="scenario-title"><span class="scenario-number">' + (number || index + 1)
         + '</span><span>' + markdown.parseInline(title) + '</span></h4><div class="scenario-body">' + body + '</div></article>';
     }).join('') + '</div>';
   }
@@ -359,17 +405,22 @@ for (const zh of [false, true]) {
       const question = section.questions && j < 6;
       return '<article class="readme-subsection' + (question ? ' question-subsection' : '') + '" id="' + escape(item.id)
         + '">' + aliases + '<h3 class="subsection-title">'
-        + (question ? '<span class="question-index" aria-hidden="true">' + (j + 1) + '</span>' : '') + '<span>' + heading + '</span>'
+        + '<span>' + heading + '</span>'
         + (item.planned ? '<span class="planned-badge">' + (zh ? '计划中' : 'Planned') + '</span>' : '')
         + '</h3><div class="subsection-content">' + body + '</div></article>';
     }).join('');
     return '<section class="doc-section grouped-section' + (i < 2 ? ' feature-section' : '') + '" id="'
-      + escape(section.id) + '">' + aliasHtml(section) + '<div class="section-heading"><span class="section-number">'
-      + String(i + 1).padStart(2, '0') + '</span><h2>' + markdown.parseInline(section.title)
-      + '</h2></div><div class="section-content">' + toHtml(section.tokens) + children + '</div></section>';
+      + escape(section.id) + '">' + aliasHtml(section) + '<div class="section-heading"><h2>' + markdown.parseInline(section.title)
+      + '</h2></div><div class="section-content">' + toHtml(section.tokens) + children
+      + (section.closingTokens ? toHtml(section.closingTokens) : '') + '</div></section>';
   }).join('\n');
-  const performance = sections[0].children[0], example = sections[4].children[0], integration = sections[4].children[2];
-  const menu = '<a href="#' + escape(sections[0].id) + '">' + (zh ? '性能实测' : 'Performance') + '</a>'
+  const performanceGroup = sections[detailed ? 0 : 1], usageGroup = sections[detailed ? 4 : 3];
+  const performance = performanceGroup.children[0], example = usageGroup.children[0], integration = usageGroup.children[detailed ? 2 : 1];
+  const benefitLabels = zh ? ['批量发送更快', '发送后业务更稳', '缓解突发背压', '内存按需管理']
+    : ['Faster batch submission', 'Less business-cache disruption', 'Buffer temporary slowdowns', 'Manage memory on demand'];
+  const benefitTargets = detailed ? [1, 0, 2, 3].map(index => sections[1].children[index])
+    : [1, 0, 2].map(index => sections[0].children[index]);
+  const menu = '<a href="#' + escape(performanceGroup.id) + '">' + (zh ? '性能实测' : 'Performance') + '</a>'
     + '<a href="#' + escape(example.id) + '">' + (zh ? '开始使用' : 'Quick start') + '</a>'
     + '<a href="#' + escape(integration.id) + '">' + (zh ? '构建接入' : 'Integration') + '</a>'
     + '<a href="docs/index.html">' + (zh ? '全部报告' : 'All reports') + '</a>';
@@ -378,17 +429,18 @@ for (const zh of [false, true]) {
     + '<span aria-hidden="true">☰</span><span class="toc-toggle-label">' + (zh ? '隐藏目录' : 'Hide contents') + '</span></button>';
   const html = '<!doctype html>\n<html lang="' + (zh ? 'zh-CN' : 'en') + '"><head><meta charset="utf-8">'
     + '<meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="'
-    + escape(tagline.text.replace(/\*\*/g, '')) + '"><title>TwoBufQueue · ' + (zh ? '项目介绍' : 'Project overview') + '</title>'
+    + escape(tagline.text.replace(/\*\*/g, '')) + '"><title>TwoBufQueue · ' + (detailed ? (zh ? '完整介绍' : 'Full guide') : (zh ? '简短介绍' : 'Quick overview')) + '</title>'
     + '<link rel="stylesheet" href="docs/assets/readme.css"><script src="docs/assets/readme_view.js" defer></script>'
-    + '<noscript><style>.toc-toggle{display:none}</style></noscript><link rel="alternate" hreflang="en" href="README.html">'
-    + '<link rel="alternate" hreflang="zh-CN" href="README.zh-CN.html"></head><body>'
+    + '<noscript><style>.toc-toggle{display:none}</style></noscript><link rel="alternate" hreflang="en" href="' + englishOverview + '">'
+    + '<link rel="alternate" hreflang="zh-CN" href="' + chineseOverview + '"></head><body>'
     + '<!-- Generated from ' + sourceName + '; SHA256 ' + hash(source) + '; saved business result SHA256 ' + hash(sourceData) + '; saved submission report-data SHA256 ' + hash(submissionPacket) + '. -->'
     + '<a class="skip-link" href="#content">' + (zh ? '跳到正文' : 'Skip to content') + '</a>'
     + '<header class="site-header"><div class="header-inner"><a class="brand" href="#top"><span class="brand-symbol" aria-hidden="true"><i></i><i></i></span>TwoBufQueue<span class="brand-version">C++</span></a>' + tocToggle + '<nav aria-label="'
     + (zh ? '主要导航' : 'Main navigation') + '">' + menu + '</nav><div class="languages">'
-    + '<a href="README.html"' + (!zh ? ' aria-current="page"' : '') + '>EN</a><a href="README.zh-CN.html"'
+    + '<a href="' + englishOverview + '"' + (!zh ? ' aria-current="page"' : '') + '>EN</a><a href="' + chineseOverview + '"'
     + (zh ? ' aria-current="page"' : '') + '>中文</a></div></div></header>'
-    + '<div class="page-layout overview-layout" id="top"><aside class="toc overview-toc" id="overview-toc"><p class="toc-label">' + (zh ? '项目介绍' : 'ON THIS PAGE')
+    + '<div class="page-layout overview-layout' + (detailed ? '' : ' quick-overview')
+    + '" id="top"><aside class="toc overview-toc" id="overview-toc"><p class="toc-label">' + (zh ? '项目介绍' : 'ON THIS PAGE')
     + '</p><nav aria-label="' + (zh ? '目录' : 'Table of contents') + '">' + toc + '</nav><div class="toc-footer"><a href="'
     + (zh ? 'docs/API.zh-CN.html' : 'docs/API.html') + '">' + (zh ? '接口指南' : 'API guide') + '</a><a href="LICENSE">Apache-2.0</a></div></aside>'
     + '<main id="content"><section class="hero"><div class="eyebrow"><span></span>'
@@ -398,9 +450,7 @@ for (const zh of [false, true]) {
     + escape(performance.id) + '">' + (zh ? '查看性能实测' : 'Explore the measurements') + '<span aria-hidden="true">↗</span></a><a class="button secondary" href="#'
     + escape(example.id) + '">' + (zh ? '开始使用' : 'Start using TwoBufQueue') + '</a></div>'
     + '<ul class="hero-benefits" aria-label="' + (zh ? '设计重点' : 'Design priorities') + '">'
-    + (zh ? ['批量发送更快', '发送后业务更稳', '缓解突发背压', '内存按需管理']
-      : ['Faster batch submission', 'Less business-cache disruption', 'Buffer temporary slowdowns', 'Manage memory on demand'])
-      .map((label, index) => '<li><a href="#' + escape(sections[1].children[[1, 0, 2, 3][index]].id) + '">' + escape(label) + '</a></li>').join('') + '</ul>'
+    + benefitTargets.map((target, index) => '<li><a href="#' + escape(target.id) + '">' + escape(benefitLabels[index]) + '</a></li>').join('') + '</ul>'
     + '<div class="resources">' + (navigation ? markdown.parse(navigation.raw) : '') + '</div></section>'
     + content + '<footer class="site-footer"><span>TwoBufQueue · C++ · Apache-2.0</span><span><a href="'
     + (zh ? 'docs/API.zh-CN.html' : 'docs/API.html') + '">' + (zh ? '接口指南' : 'API guide') + '</a><a href="docs/index.html">' + (zh ? '性能报告' : 'Performance reports')
@@ -409,7 +459,17 @@ for (const zh of [false, true]) {
   console.log('Generated ' + outputName + ' from ' + sourceName);
 }
 }
+}
 
+const { spawnSync } = await import('node:child_process');
+const readingPython = process.env.BRQ_DOC_PYTHON || (process.platform === 'win32' ? 'python' : 'python3');
+function buildGithubReading() {
+  const result = spawnSync(readingPython, [resolve(root, 'tools/build_github_reading.py'), '--root', root], { stdio: 'inherit' });
+  if (result.error) throw result.error;
+  if (result.status !== 0) throw new Error('GitHub reading-page generation failed.');
+}
+buildGithubReading();
+site = await documentSite(root);
 await buildOverviewFigures();
 await buildOverviews();
 await buildDocuments({ root, Marked, highlight, escape, flow });
@@ -419,3 +479,9 @@ if (codePages.markdownChanged) {
   await buildOverviews();
   await buildDocuments({ root, Marked, highlight, escape, flow });
 }
+
+const localizedReading = spawnSync(readingPython, [resolve(root, 'tools/localize_reading_pages.py'), '--root', root], { stdio: 'inherit' });
+if (localizedReading.error) throw localizedReading.error;
+if (localizedReading.status !== 0) throw new Error('Reading-page localization failed.');
+
+buildGithubReading();

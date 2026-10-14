@@ -79,7 +79,7 @@ void death_cases(Cases &c) {
                          std::set_terminate([] { std::fputs("EXPECTED_CONTRACT_FAILURE\n", stderr); std::_Exit(86); });
                          WriterFixture source(64, 1, 1);
                          Writer<> writer(&source.queue, 0, source.backpressure);
-                         // 外部错误交接当前生产块，制造块与凭证错位；写满换块时被 acquire_next 拒绝。
+                         // Deliberately hand off the active producer block externally, misaligning block/ticket; acquire_next rejects it on a full-block switch.
                          CHECK(source.queue.send());
                          while (writer.write(11u)) {}
                      }

@@ -7,7 +7,7 @@ namespace TwoBufQueue {
 
 template<class Resource> class ClaimQueue;
 
-// 地址及编号都属于队列；复制凭证不会延长队列或资源的寿命。
+// Addresses and identifiers belong to the queue; copying a ticket extends neither queue nor resource lifetime.
 class QueueReservation {
     template<class> friend class ClaimQueue;
 public:
@@ -34,7 +34,7 @@ private:
     Loan<Resource> loan_;
 };
 
-// begin_finish 已使旧生产/领取凭证失效；外部完成回收后，才能 complete_finish 释放槽位。
+// begin_finish invalidates old producer/claim tickets; complete_finish releases the slot after external recycling finishes.
 template<class Resource>
 class QueueCompletion {
     template<class> friend class ClaimQueue;

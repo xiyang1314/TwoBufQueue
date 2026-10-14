@@ -4,9 +4,9 @@
 
 namespace TwoBufQueue {
 
-// 单线程侵入式 FIFO 队列：不分配内存、不拥有节点，链接由 next_member 提供。
-// 节点必须非空且有效，同一链接不能同时用于其他容器，也不能重复入队。
-// 跨线程使用时，所有访问须由同一把外部锁保护。
+// Single-threaded intrusive FIFO: no allocation or node ownership; next_member supplies the link.
+// Nodes must be non-null and valid; do not share a link with another container or enqueue it twice.
+// Cross-thread use requires all accesses to share one external lock.
 template<class Node, Node* Node::*next_member>
 class SingleThreadQueue {
 public:

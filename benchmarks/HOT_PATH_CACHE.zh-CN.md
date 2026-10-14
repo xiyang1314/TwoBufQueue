@@ -2,7 +2,7 @@
 
 这个独立测试展示 TwoBufQueue 的两层结构：业务写线程重复使用较小的第一层池，复制线程把消息搬到固定 256 MiB 的第二层，回调在线程中消费。它不替代原有纯写入测试，也不修改上游 SPSC 实现。
 
-## 构建与复现
+## 一、构建与复现
 
 依赖由现有 `bootstrap_spsc.py` 下载并校验，CMake 不自动访问网络。
 
@@ -20,7 +20,7 @@ python3 benchmarks/test_hot_path_cache.py \
 
 本机正式数据使用 Clang 18.1.8、Release `-O3 -DNDEBUG`、高 QoS，未硬绑核。Linux/Windows 可通过已有 `--producer_cpu` 设置写线程亲和性；复制/消费线程独立配置。Python 驱动目前固定 32 B 消息和 256 MiB 后台容量，所有生效参数均保存在每次 JSON 中。其他平台应重新测量，不能套用本机数值。
 
-## 结构
+## 二、结构
 
 `hot_path_cache.hpp` 中的 `Config` 包含业务模型、回调场景、测量方式，以及现有 `PerformanceConfig` 全部可调整的队列参数；`HotPathCacheTest(Config)` 构造并运行独立测试。`test_hot_path_cache.cpp` 提供 CLI。`test_hot_path_cache.py` 串行执行参数筛选、独立确认、原始数据保存和 HTML 生成。
 
@@ -34,7 +34,7 @@ python3 benchmarks/test_hot_path_cache.py \
 
 写线程侧数据区是队列数据池容量上限，不是 L1 占用，也不是整个进程 RSS。TwoBufQueue 的总数据池为第一层加 256 MiB 第二层；原生 SPSC 数据区约 256 MiB。元数据和业务存储另外记录或列明。没有新的硬件 PMU 采样，因此报告不把速度差异直接归因于某种缓存机制。
 
-## 参数筛选与数据
+## 三、参数筛选与数据
 
 TwoBufQueue 在相同业务场景下遍历块大小，四项内部权重为吞吐 35%、p50 30%、p99 20%、p999 15%，按各项最好方向归一化；要求相邻候选支持，取成绩在最高值 2% 内的最小源池，用于展示容量解耦。原生队列的原有复制选项都保留并复测，分别在缓存敏感与纯计算负载下选择三次平均吞吐更好的选项，两个业务负载之间不复用选择结果。筛选后进行独立三次对比，三个回调场景保持同一组队列参数。
 

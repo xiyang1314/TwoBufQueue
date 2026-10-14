@@ -111,7 +111,7 @@ h3{font-size:17px;line-height:1.65;margin:25px 0 10px;color:#254d63}
 .scenario-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin:22px 0 8px;align-items:stretch;grid-auto-rows:1fr}
 .scenario-card{border:1px solid #d9e5eb;border-radius:9px;background:#f8fbfc;padding:20px;overflow:hidden;height:100%;display:flex;flex-direction:column}
 .scenario-title{display:flex;align-items:baseline;gap:10px;margin:0 0 16px;font-size:16px;line-height:1.7;color:#204e64}
-.scenario-number{font-size:11px;line-height:22px;min-width:22px;text-align:center;border:1px solid #cce0d7;border-radius:5px;color:#097865;background:#e8f4ee;flex-shrink:0}
+.scenario-number{font-size:11px;line-height:22px;min-width:46px;padding:0 5px;text-align:center;border:1px solid #cce0d7;border-radius:5px;color:#097865;background:#e8f4ee;flex-shrink:0}
 .scenario-body p{font-size:13px;line-height:1.95;margin:12px 0}
 .scenario-body p strong{color:#087f6e}
 .scenario-body p:last-child{margin-bottom:0}
@@ -218,6 +218,13 @@ html[lang=en] .page-layout.overview-layout{--toc-width:300px}
 .overview-layout>main{max-width:1280px}
 .submission-chart .chart-row,.business-ratio-chart .chart-row{grid-template-columns:132px minmax(20px,1fr) 58px;gap:8px}
 @media(max-width:650px){.page-layout.overview-layout{--overview-gutter:10px;padding:16px var(--overview-gutter);gap:var(--overview-gutter)}.submission-chart .chart-row,.business-ratio-chart .chart-row{grid-template-columns:120px minmax(20px,1fr) 56px;gap:6px}}
+
+/* A slightly wider short-overview sidebar keeps its navigation within the column. */
+.page-layout.overview-layout.quick-overview,html[lang=en] .page-layout.overview-layout.quick-overview{--toc-width:340px}
+.quick-overview .overview-toc{overflow-x:hidden;overflow-y:auto}
+.quick-overview .overview-toc nav{min-width:0;max-width:100%}
+.quick-overview .overview-toc nav a{display:block;max-width:100%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+@media(max-width:760px){.quick-overview .overview-toc,html[lang=en] .quick-overview .overview-toc{width:min(340px,calc(100vw - 24px))}}
 
 /* Two private producer lanes merge into shared storage, then split to consumers. */
 .mpmc-layout{display:grid;grid-template-columns:minmax(0,1fr) 22px minmax(0,1fr) 22px minmax(0,1fr) 40px minmax(0,1fr) 40px minmax(0,1fr);align-items:center}

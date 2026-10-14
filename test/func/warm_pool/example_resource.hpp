@@ -2,7 +2,7 @@
 
 #include "TwoBufQueue/src/base_components/WarmPool/resource.hpp"
 
-// 核心测试的业务状态模拟；end_work/completed 不是池要求的接口。
+// Simulated business state for core tests; end_work/completed are not required by the pool interface.
 template<bool concurrent = true>
 class ExampleResource : public TwoBufQueue::DefaultResource<concurrent> {
 public:

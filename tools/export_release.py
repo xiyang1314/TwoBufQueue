@@ -11,7 +11,7 @@ from urllib.parse import unquote, urlsplit
 
 ROOT = Path(__file__).resolve().parents[1]
 ROOT_FILES = {'CMakeLists.txt','README.md','README.zh-CN.md','README.html','README.zh-CN.html','LICENSE','LICENSE.zh-CN.md',
-              'NOTICE','CONTRIBUTING.md','NAMING.md','CHANGELOG.md','.gitignore','.gitattributes'}
+              'NOTICE','START_HERE.html','CONTRIBUTING.md','NAMING.md','CHANGELOG.md','.gitignore','.gitattributes'}
 BENCHMARK_FILES = {
     'spsc.cmake','spsc_dependencies.json','bootstrap_spsc.py','process_metrics.hpp',
     'tune_spsc.py','report_spsc.py','export_spsc_report.py','spsc_html_report.py',
@@ -26,16 +26,18 @@ BENCHMARK_FILES = {
 HISTORICAL_TEST_DIRS = {'review_20260925','review_20260927','aba_review_20260928','results'}
 TOOLS = {'export_release.py','verify_release.py','unpack_performance_data.py',
          'plot_burst_release.py','build_release_assets.py','build_pages.py','build_readme_html.mjs',
-         'build_docs_html.mjs','documentation_pages.json','document_links.py',
-         'build_code_html.mjs','code_highlight.mjs'}
+         'build_docs_html.mjs','documentation_pages.json','document_links.py','build_github_reading.py','github_reading_pages.json','document_sections.py','document_site.json','document_site.mjs',
+         'build_code_html.mjs','code_highlight.mjs','refresh_release_manifest.py','localize_reading_pages.py','report_translations.json','report_pages.json'}
 DOC_SOURCES = json.loads((ROOT / 'tools/documentation_pages.json').read_text())['sources']
 DOC_HTML = {str(Path(name).with_suffix('.html')) for name in DOC_SOURCES}
-ROOT_FILES.update(name for name in DOC_HTML if '/' not in name)
+ROOT_FILES.update(name for name in DOC_SOURCES + list(DOC_HTML) if '/' not in name)
 from document_links import document_links, rewrite_document_links
 CODE_MANIFEST = ROOT / 'docs/code/code-manifest.json'
 CODE_FILES = json.loads(CODE_MANIFEST.read_text())['files'] if CODE_MANIFEST.is_file() else []
-CODE_HTML = {'docs/code/index.html', 'docs/code/code-manifest.json'} | {record['html_path'] for record in CODE_FILES}
+CODE_HTML = {'docs/code/index.html', 'docs/code/index.zh-CN.html', 'docs/code/code-manifest.json'} | {record['html_path'] for record in CODE_FILES}
 
+
+CODE_HTML.update(record['html_path_zh_cn'] for record in CODE_FILES if record.get('html_path_zh_cn'))
 
 def included(relative):
     parts=relative.parts; name=relative.name

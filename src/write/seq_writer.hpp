@@ -6,11 +6,11 @@
 
 namespace TwoBufQueue {
 
-// 单生产线程写入器；在 Writer 的基础上，每条记录最前面多写一个固定大小的小端 seq。
-// 记录布局：[seq (sizeof(TSeq) 字节, 小端)] [长度前缀 (若 TIsWriteLen)] [负载]
-// TSeq 是序号类型，必须是 ≤64 位的无符号整数；其余模板参数与 Writer 相同。
-// write / write_mem 都比 Writer 多一个首位参数 seq，且 seq 不参与长度前缀计数。
-// TSyncContext=void 使用异步缓存；非 void 时直接传递 seq 与负载，不编码前缀。
+// Single-producer writer; extends Writer by prepending a fixed-width little-endian sequence number to each record.
+// Record layout: [seq (sizeof(TSeq), little-endian)] [length prefix, if TIsWriteLen] [payload].
+// TSeq must be an unsigned integer of at most 64 bits; other template arguments match Writer.
+// write / write_mem take a leading seq argument; seq bytes are not included in the payload length prefix.
+// TSyncContext = void selects asynchronous buffering; a non-void context directly passes seq/payload without encoding prefixes.
 template <typename TSeq, std::uint32_t publish_write_ptr_count = 1,
           bool TIsWriteLen = true,
           typename TDataLen = std::uint16_t,
@@ -40,9 +40,9 @@ public:
                        WriterBackpressureConfig backpressure = {})
         : Base(queue, thread_id, total_prefix_size, backpressure) {}
 
-    // 单块 Session：write 只检查容量、复制和推进；用户通过 get_next_session 换块。
-    // 空对象用 if (!session) 检查。置空/析构只同步游标，不隐式 flush 或交接。
-    // 生命周期必须短于 Writer；期间不得直接操作 Writer。
+    // Single-block Session: write checks capacity, copies and advances only; callers switch blocks with get_next_session.
+    // Check empty objects with if (!session). Clearing/destruction synchronizes cursors without implicit flush or handoff.
+    // Session lifetime must be shorter than Writer; do not operate Writer directly while Session is active.
     class WriteSession {
         typename Base::LocalWriteState state_;
         friend class SeqWriter;
@@ -55,8 +55,8 @@ public:
         WriteSession(WriteSession&&) noexcept = default;
         WriteSession& operator=(WriteSession&&) noexcept = default;
         explicit operator bool() const noexcept { return static_cast<bool>(state_); }
-        // 发布当前块的位置并通知读端；不切换块。用户自行决定是否调用。
-        // is_scan_current=false 时，尾块还须 get_next_session/finish_block/finish 交接。
+        // Publish the current block's position and notify the reader without switching blocks; calling is optional.
+        // With is_scan_current = false, get_next_session / finish_block / finish must also hand off the tail.
         void flush() noexcept { state_.flush(); }
         template <typename... Args>
         [[nodiscard]] FAST_LOG_ALWAYS_INLINE SessionWriteResult write(TSeq seq, const Args&... args) noexcept {
@@ -87,7 +87,7 @@ public:
         }
 
 
-        // 源内存必须有效且不与目标重叠。0 长度为参数错误；超出整块为专门的长度错误。
+        // Source memory must be valid and nonoverlapping. Zero length is invalid; exceeding the whole block has a separate length error.
         [[nodiscard]] FAST_LOG_ALWAYS_INLINE SessionWriteResult write_mem(TSeq seq, const void* data, TDataLen len) noexcept {
             if (FAST_LOG_UNLIKELY(len == 0)) return SessionWriteResult::invalid_argument;
             const auto size = static_cast<std::size_t>(len);
@@ -95,7 +95,7 @@ public:
                 return SessionWriteResult::exceeds_block_capacity;
             const auto result = state_.prepare(size + total_prefix_size);
             if (FAST_LOG_UNLIKELY(result != SessionWriteResult::success)) return result;
-            assert(data != nullptr); // 与 memcpy 一样，有效源内存由调用方保证。
+            assert(data != nullptr); // As with memcpy, the caller must provide valid source memory.
             std::byte* const begin = state_.cursor();
             write_seq(begin, seq);
             if constexpr (TIsWriteLen) write_length(begin + seq_size, len);
@@ -104,17 +104,17 @@ public:
             return SessionWriteResult::success;
         }
     };
-    // 复用当前块；没有当前块时才等待取块。0 只尝试一次，正值重试到超时。
+    // Reuse current; wait for a block only when none exists. Zero tries once; positive timeouts retry until expiry.
     [[nodiscard]] WriteSession get_current_session(
         std::chrono::nanoseconds timeout = std::chrono::nanoseconds::zero()) noexcept
         requires (!is_sync && Base::session_enabled) { return WriteSession(*this, false, timeout); }
-    // 交接当前块（可未满），然后等待下一块。调用前须置空或销毁旧 Session。
-    // 复用变量时：session = {}; session = writer.get_next_session(timeout);
+    // Hand off current even if partially full, then wait for another block. Clear or destroy the old Session first.
+    // Reusing a variable: session = {}; session = writer.get_next_session(timeout);
     [[nodiscard]] WriteSession get_next_session(
         std::chrono::nanoseconds timeout = std::chrono::nanoseconds::zero()) noexcept
         requires (!is_sync && Base::session_enabled) { return WriteSession(*this, true, timeout); }
 
-    // 按参数顺序紧密复制对象表示，最前面写 seq；仅支持可平凡复制的非指针、非数组值。
+    // Copy object representations tightly in argument order, with seq first; only trivially copyable nonpointer, nonarray values.
     template <typename... Args>
     [[nodiscard]] FAST_LOG_ALWAYS_INLINE bool write(TSeq seq, const Args&... args) noexcept {
         static_assert((std::is_trivially_copyable_v<Args> && ...),
@@ -148,7 +148,7 @@ public:
         return true;
     }
 
-    // 异步写 seq + len 字节负载；同步直接借用负载并单独传 seq，不保存 data 指针。
+    // Asynchronous mode copies seq plus len payload bytes; synchronous mode borrows payload and passes seq separately without retaining data.
     [[nodiscard]] FAST_LOG_ALWAYS_INLINE bool write_mem(TSeq seq, const void* data, TDataLen len) noexcept {
         const auto size = static_cast<std::size_t>(len);
         if constexpr (is_sync) {

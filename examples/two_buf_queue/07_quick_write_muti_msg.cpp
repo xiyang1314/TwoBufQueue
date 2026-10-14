@@ -5,8 +5,8 @@
 using namespace TwoBufQueue;
 
 int main() try {
-    //---------------1.初始化-----------------------------------------------
-    using HotWriter = Writer<UINT32_MAX>; // 按块发布，保留长度前缀；Session 不要求额外模板参数。
+    //---------------1. Initialization--------------------------------------
+    using HotWriter = Writer<UINT32_MAX>; // Publish at block handoff and keep length prefixes; Session needs no additional template argument.
     auto writer = make_writer<HotWriter>({.block_size = 4096, .pool_min = 8, .pool_max = 8});
     std::size_t count = 0;
     auto rcvCallback = [&](std::int32_t thread_id, const std::byte* data, std::size_t size) noexcept {
@@ -19,30 +19,30 @@ int main() try {
     };
     ::TwoBufQueue::TwoBufQueue queue(rcvCallback, writer);
 
-    //---------------2.生产者写数据------------------------------------------
+    //---------------2. Producer writes-------------------------------------
     std::uint64_t sent = 0;
-    auto session = writer.get_current_session(std::chrono::seconds{1}); // 获取失败则错误处理并返回。
+    auto session = writer.get_current_session(std::chrono::seconds{1}); // Handle acquisition failure and return.
     example::require(static_cast<bool>(session), "cannot acquire session within timeout");
-    while (sent != 10000) { // 外层：由用户明确选择下一块。
-        while (sent != 10000) { // 内层：只写这个块；空间不足就退出。
+    while (sent != 10000) { // Outer loop: the caller explicitly selects the next block.
+        while (sent != 10000) { // Inner loop: write only into this block; leave the loop when it lacks space.
             const auto result = session.write(std::array<std::uint64_t,4>{sent,sent+1,sent+2,sent+3});
             if (result == SessionWriteResult::insufficient_space) break;
             example::require(result == SessionWriteResult::success, "record exceeds block capacity or write error");
-            ++sent; // 只有成功才推进消息位置。
+            ++sent; // Advance the message position only after success.
         }
-        if (sent == 10000) break; // 全部写完，不再申请下一块。
-        session = {}; // 结束旧 Session，仅同步游标；不发布、不换块。
+        if (sent == 10000) break; // All messages are written; do not acquire another block.
+        session = {}; // End the old Session: synchronize the cursor only; neither publish nor switch blocks.
         session = writer.get_next_session(std::chrono::seconds{1});
         example::require(static_cast<bool>(session), "cannot acquire session within timeout");
     }
-    session.flush(); // 用户选择调用；只发布位置，不换块，也不结束 Session。
-    session = {}; // 操作 Writer.finish 前先结束 Session；也可以用作用域析构。
+    session.flush(); // Optional explicit flush: publish the position without switching blocks or ending the Session.
+    session = {}; // End the Session before calling Writer.finish; scope-based destruction works too.
 
-    //---------------3.结束-------------------------------------------------
-    // 关闭 current 扫描时，flush 不交接尾块；finish 在结束时交接最后一块。
+    //---------------3. Finish----------------------------------------------
+    // With current scanning disabled, flush does not hand off the tail; finish hands off the final block.
     writer.finish();
     queue.stop();
-    //---------------4.校验测试结果------------------------------------------
+    //---------------4. Check the result------------------------------------
     example::require(count == 10000, "message count mismatch");
     std::puts("PASS: 10000 messages with current/next single-block sessions");
 } catch (const std::exception& error) { std::fprintf(stderr, "%s\n", error.what()); return 1; }

@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Testing and validation · TwoBufQueue</title><link rel="stylesheet" href="assets/readme.css"></head><body><!-- Generated from docs/TESTING.md; SHA256 b2ba0bc75f38ae3b0cd587775ebad502ffe0120980938c3a63fe3fead6aba3f7. --><a class="skip-link" href="#content">Skip to content</a><header class="site-header"><div class="header-inner"><a class="brand" href="../README.html"><span class="brand-symbol" aria-hidden="true"><i></i><i></i></span>TwoBufQueue<span class="brand-version">C++</span></a><nav aria-label="Main navigation"><a href="../README.html">Overview</a><a href="API.html">API guide</a><a href="../examples/README.html">Examples</a><a href="code/index.html">Source browser</a><a href="index.html">Reports</a></nav><div class="languages"><a href="TESTING.html" aria-current="page">EN</a><a href="TESTING.zh-CN.html">中文</a></div></div></header><div class="page-layout guide-layout" id="top"><aside class="toc"><p class="toc-label">ON THIS PAGE</p><nav aria-label="Table of contents"><a class="toc-depth-2" href="#run-the-current-suite">1. Run the current suite</a><a class="toc-depth-2" href="#inspect-one-part">2. Inspect one part</a><a class="toc-depth-2" href="#historical-evidence">3. Historical evidence</a></nav><div class="toc-footer"><a href="../README.html">Overview</a></div></aside><main id="content" class="guide-main"><section class="guide-hero"><div class="eyebrow"><span></span>TWOBUFQUEUE · DOCUMENTATION</div><h1>Testing and validation</h1><p><a href="TESTING.html">English</a> · <a href="TESTING.zh-CN.html">简体中文</a></p>
+<p>The current standalone Release build includes library regression tests, functional suites, runnable examples and integration checks. A fresh copy containing only publication-manifest files passed <strong>567 / 567 tests</strong> on the local macOS host during English-documentation preparation. This records correctness checks, not a new performance measurement or Linux/Windows result.</p>
+</section><details class="mobile-toc"><summary>On this page</summary><nav><a class="toc-depth-2" href="#run-the-current-suite">1. Run the current suite</a><a class="toc-depth-2" href="#inspect-one-part">2. Inspect one part</a><a class="toc-depth-2" href="#historical-evidence">3. Historical evidence</a></nav></details><article class="guide-content"><h2 id="run-the-current-suite">1. Run the current suite</h2>
+<div class="code-frame"><div class="code-label">Shell</div><pre tabindex="0"><code class="language-sh"><span class="syntax-keyword">cmake</span> -S . -B build -DCMAKE_BUILD_TYPE=Release
+<span class="syntax-keyword">cmake</span> --build build --config Release --parallel
+<span class="syntax-keyword">ctest</span> --test-dir build -C Release --output-on-failure</code></pre></div><div class="table-scroll"><table>
+<thead>
+<tr>
+<th>Area</th>
+<th>What is checked</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Writer and WriteSession</td>
+<td>Complete bytes, boundaries, publication, pressure, explicit block switching and lifetimes</td>
+</tr>
+<tr>
+<td>Layer-1 readers</td>
+<td>Completed-block priority, current snapshots, targeted notifications, retries, cancellation, shutdown and single/multiple Writer implementations</td>
+</tr>
+<tr>
+<td>Block and pool components</td>
+<td>Ownership, alignment, slices, generations, resource return, limits and reclamation</td>
+</tr>
+<tr>
+<td>Handoff queues</td>
+<td>SPSC/MPMC transfer, claims, cancellation modes and concurrent data integrity</td>
+</tr>
+<tr>
+<td>Complete pipeline</td>
+<td>Copying, per-source FIFO, exactly-once handling and resource return</td>
+</tr>
+<tr>
+<td>Examples</td>
+<td>Runnable APIs, synchronous callbacks, grouped callbacks and asynchronous file logging</td>
+</tr>
+<tr>
+<td>Build/integration</td>
+<td>Vendored source, local FetchContent and a relocated installed package</td>
+</tr>
+</tbody></table></div>
+<p>Each case is registered independently with CTest. A passing subset or one matrix parameter does not prove the entire suite passed. Timeouts protect against deadlocks; they are not performance/tail-latency evidence. Concurrency checks use controlled synchronization and verify all sequences rather than relying on sleeps to infer ordering.</p>
+<h2 id="inspect-one-part">2. Inspect one part</h2>
+<div class="code-frame"><div class="code-label">Shell</div><pre tabindex="0"><code class="language-sh"><span class="syntax-keyword">ctest</span> --test-dir build -C Release -L read_ctrl --output-on-failure
+<span class="syntax-keyword">ctest</span> --test-dir build -C Release -R &#39;^read_ctrl_notification_&#39; --output-on-failure
+<span class="syntax-keyword">ctest</span> --test-dir build -C Release -R &#39;^read_ctrl_single_&#39; --output-on-failure
+<span class="syntax-keyword">ctest</span> --test-dir build -C Release -L catalog --output-on-failure</code></pre></div><p>Machine-readable case catalogs and their Markdown tables are kept identical; their historical scenario text currently retains the original Chinese. Case identifiers and runnable test code are shared, with English source comments and diagnostics. These fixtures are not a separate Chinese implementation.</p>
+<h2 id="historical-evidence">3. Historical evidence</h2>
+<p>The <a href="../test/READ_CTRL_TESTS.html">dated reader checks (Chinese)</a> distinguish the test coverage available on each date. The <a href="release-checks/summary.json">saved release checks</a> and <a href="performance_data/release_20261011/release-checks/summary.json">earlier validation records</a> retain their recorded platforms, commands and limits. Do not treat an old subset count as today&#39;s full-suite count or claim a platform that did not run.</p>
+<p>CI is configured for Linux, Windows and macOS, plus sanitizers and optional pinned SPSC adapters. Remote CI execution is still pending until the repository is published and the workflows run. Source/UI translation does not change the library&#39;s non-comment C++ content or the historical measured-source archives.</p>
+</article><footer class="site-footer"><span>TwoBufQueue · C++ · Apache-2.0</span><span><a href="../README.html">Overview</a><a href="#top">Back to top ↑</a></span></footer></main></div></body></html>

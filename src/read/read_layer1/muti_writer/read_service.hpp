@@ -10,7 +10,7 @@
 #include <vector>
 
 namespace TwoBufQueue {
-// Callback 是用户自己的类型，不要求继承；所有回调均由唯一读取线程同步调用。
+// Callback is the user's concrete type, without inheritance; one reader invokes every callback synchronously.
 template<class Callback>
 class ReadService {
 public:
@@ -69,8 +69,8 @@ public:
         catch (...) { record_error(ReadError::registration_allocation_failed); return false; }
     }
 
-    // 一轮读取已有 pending 和 prepare_read 固定的前缀；完成块失败时保留已出队记录。
-    // is_scan_current=false 时仅处理完成块；force_current 不绕过此开关。
+    // Process pending plus the prefix fixed by prepare_read; retain popped records if a completed-block callback fails.
+    // is_scan_current = false processes completed blocks only; force_current does not bypass this setting.
     [[nodiscard]] ReadResult read_once(bool force_current, const std::atomic<bool>& cancel,
                                        Deadline deadline = Deadline::max()) noexcept {
         selected_.clear();
@@ -78,7 +78,7 @@ public:
             selected_.push_back(i);
             queues_[i].notified = false;
         }
-        // 先取走旧通知，再固定快照；读取期间的新通知留给下一轮。
+        // Consume old notifications before fixing snapshots; notifications arriving during reads belong to the next round.
         for (std::size_t word = 0; word < notifications_.size(); ++word) {
             auto bits = notifications_[word]->bits.exchange(0, std::memory_order_acq_rel);
             while (bits) {
@@ -96,7 +96,7 @@ public:
         return result;
     }
 
-    // 事件只表示有通知；位图保留全部来源。同一来源重复通知合并，不限制 Writer 数量。
+    // An event means notifications exist; the bitmap retains every source. Coalesce repeated source notifications without limiting Writer count.
     [[nodiscard]] ReadResult read_notified(const std::atomic<bool>& cancel,
                                            Deadline deadline = Deadline::max()) noexcept {
         selected_.clear();
@@ -111,10 +111,10 @@ public:
         auto result = read_selected(true, cancel, deadline);
         for (auto index : selected_) {
             auto& entry = queues_[index];
-            // 定向读取不能推迟其他来源的扫描期限；允许一次保守的提前全量扫描。
+            // A targeted read must not postpone other sources' deadlines; one conservative early full scan is acceptable.
             if (config_.is_scan_current)
                 next_full_scan_time_ = std::min(next_full_scan_time_, entry.item.next_read_time());
-            // 背压/中止后保留待处理来源，但不自行唤醒，避免无进展忙等。
+            // Retain sources after backpressure/abort, without self-waking into a no-progress busy loop.
             if (entry.notified || entry.pending || entry.queue->pending_count())
                 mark_notified(entry.notification);
         }
@@ -143,7 +143,7 @@ public:
         for (auto& entry : queues_) entry.queue->set_read_available_callback(nullptr, nullptr);
         attached_ = false;
     }
-    // 仅停止读取后调用。转交已出队记录，不归还资源，也不重新入队。
+    // Call only after reads stop; transfer popped records without returning resources or enqueueing again.
     [[nodiscard]] Queue::Record take_pending(Queue* queue) noexcept {
         if (attached_) return {};
         for (auto& entry : queues_) if (entry.queue == queue && entry.pending) {
@@ -154,7 +154,7 @@ public:
         }
         return {};
     }
-    // 新读端先注册同一 queue，再接管旧读端转出的 pending；成功时清空调用方凭证。
+    // Register the same queue on the new reader before adopting old pending; success clears the caller's ticket.
     [[nodiscard]] bool adopt_pending(Queue* queue, Queue::Record& record) noexcept {
         if (attached_ || !queue || !queue->is_pending(record)) return false;
         for (auto& entry : queues_) if (entry.queue == queue && !entry.pending) {
@@ -173,7 +173,7 @@ public:
     [[nodiscard]] std::size_t pending_finished_count() const noexcept {
         std::size_t count = popped_pending_count_.load(std::memory_order_relaxed);
         for (const auto& entry : queues_) count += entry.queue->pending_count();
-        return count; // 包含队内开始记录，以及已 pop 但尚未完成的 pending。
+        return count; // Includes queued begin records and pending records already popped but not completed.
     }
     [[nodiscard]] SteadyClock::duration next_scan_deadline() const noexcept {
         if (!config_.is_scan_current) return config_.idle_rescan_interval;
@@ -201,7 +201,7 @@ public:
 
 private:
     struct alignas(64) NotificationWord { std::atomic<std::uint64_t> bits{0}; };
-    // 回调上下文注册后只读，与消费游标分开；共享修改集中在独立的通知字中。
+    // Callback context becomes read-only after registration and is separate from consumption cursors; shared updates use separate notification words.
     struct alignas(64) NotificationContext {
         NotificationWord* word;
         std::uint64_t bit;
@@ -215,11 +215,11 @@ private:
         std::int32_t writer_id;
         ReadItem item;
         NotificationContext notification;
-        bool notified = false; // 仅读端使用：全量扫描碰上通知时，该来源仍立即读取 current。
-        Queue::Record pending; // 已出队；失败/停止时由此读端持有，下次先处理。
-        std::size_t finish_count = 0; // 本轮固定交接记录数，包含开始记录。
-        Block* current = nullptr; // 队内前缀末尾 next；空快照使用 queue.current()。
-        // Service 的统计去重键，不参与读取选择，也不用于优先重试。
+        bool notified = false; // Reader only: when a full scan observes a notification, read that source's current immediately too.
+        Queue::Record pending; // Already dequeued; this reader retains it on failure/stop and processes it first next time.
+        std::size_t finish_count = 0; // Fixed handoff-record count for this round, including begin records.
+        Block* current = nullptr; // next at the end of the queue prefix; an empty snapshot uses queue.current().
+        // Service statistics deduplication key; does not select reads or prioritize retries.
         std::uintptr_t rejected_block = 0;
         std::uint64_t rejected_sequence = 0;
         std::size_t rejected_offset = 0;
@@ -236,24 +236,24 @@ private:
                 if (config_.is_scan_current) {
                     (void)read_current(force_current, cancel, deadline, result);
                 } else {
-                    // 完成记录已处理，flush 通知也已消费；失败/中止时仍保留来源供重试。
+                    // Completed records and flush notification have been handled; retain the source for retry on failure/abort.
                     for (auto index : selected_) queues_[index].notified = false;
                 }
             }
         }
         callback_.end_read();
-        // 新入队的记录属于下一轮；停止生产后，这个结果可用于收尾判定。
+        // Newly enqueued records belong to the next round; after production stops this result can determine drain completion.
         for (auto index : selected_) {
             const auto& entry = queues_[index];
             result.pending |= bool(entry.pending) || entry.queue->pending_count() != 0;
         }
         return result;
     }
-    // 在读取任何选中来源前固定快照；后续入队留给下一轮。
+    // Fix snapshots before reading any selected source; later enqueues belong to the next round.
     void prepare_read() noexcept {
         for (auto index : selected_) {
             auto& entry = queues_[index];
-            // 完成队列非空取本轮最后一条 next；为空取 queue.current()，不访问 Writer。
+            // With completed records, use this round's final next; otherwise queue.current(). Never access Writer.
             entry.current = entry.queue->snapshot_for_read(entry.finish_count).get();
             entry.finish_count += static_cast<std::size_t>(bool(entry.pending));
         }
@@ -276,7 +276,7 @@ private:
                                ReadResult& result, bool& began) noexcept {
         for (std::size_t i = 0; i < entry.finish_count; ++i) {
             if (interrupted(cancel, deadline)) { result.pending = true; return false; }
-            // 每个来源先处理自己保存的 pending，再 pop 本轮固定前缀。
+            // For each source, handle its retained pending before popping this round's fixed prefix.
             if (!entry.pending) {
                 entry.pending = entry.queue->try_pop();
                 if (!entry.pending) return fail(result, ReadError::foreign_queued_range);
@@ -286,17 +286,17 @@ private:
             if (!block) {
                 finish_pending(entry);
                 result.progressed = true;
-                continue; // {空,next} 只推进队列，不开始完成块回调，也不计完成块数。
+                continue; // {empty, next} advances the queue only; neither begin a completed-block callback nor count a completed block.
             }
-            const auto bytes = block->readable(); // 完成块的写入位置已经固定。
+            const auto bytes = block->readable(); // A completed block's write position is already fixed.
             if (!bytes.empty()) {
-                // 注册 queue 时指定的来源编号，不是操作系统线程号。
-                // 回调只有 Block 参数，需通过 block->source_id() 区分 Writer。
-                // 此元数据仅由读取线程写入；Writer 不读取它，复用时才由池 reset。
+                // Source identifier supplied at queue registration, not an operating-system thread id.
+                // The callback receives only Block; block->source_id() identifies its Writer.
+                // Only the reader writes this metadata; Writer does not read it and the pool resets it only during reuse.
                 block->source_id_ = entry.writer_id;
                 if (!began) {
                     callback_.begin_read_complete(fast_epoch_time_ns()); began = true;
-                    // begin 是用户代码，可能耗时或请求停止；只在调用 begin 后补查一次。
+                    // begin is user code and may take time or request stop; recheck once after invoking it.
                     if (interrupted(cancel, deadline)) {
                         result.pending = true; return false;
                     }
@@ -311,7 +311,7 @@ private:
                 record_saved(entry, bytes.size(), false);
             }
             finish_pending(entry);
-            // block 可能已经被立即复用；之后只更新本地状态和统计。
+            // The block may already have been reused; update only local state/statistics afterward.
             saved_finished_ranges_.fetch_add(1, std::memory_order_relaxed);
             result.progressed = true;
         }
@@ -337,12 +337,12 @@ private:
         if (interrupted(cancel, deadline)) { result.pending = true; return false; }
         auto* block = entry.current;
         if (!block) {
-            // 没有 current 也属于空扫描，避免该来源一直用最小等待时间轮询。
+            // No current also counts as an empty scan, preventing this source from polling forever at the minimum interval.
             (void)entry.item.should_read_current(SteadyClock::now(), force, 0);
             entry.notified = false;
             return true;
         }
-        // 每次只读一次消费游标、一次共享发布游标；回调和确认共用局部快照。
+        // Read the consumption cursor and shared publication cursor once each; callbacks and acknowledgement share this snapshot.
         const auto* read_ptr = block->buf_ + block->read_pos_;
         const auto* write_ptr = block->write_ptr_.load(std::memory_order_acquire);
         const auto read_size = static_cast<std::size_t>(write_ptr - read_ptr);
@@ -360,7 +360,7 @@ private:
             record_rejected(entry, *block, read_ptr);
             result.pending = true; return false;
         }
-        // 不调用 consume() 重读 write_ptr；仅确认传给业务的那一段。
+        // Do not call consume() to reread write_ptr; acknowledge only the exact range passed to business code.
         block->read_pos_ = static_cast<std::size_t>(write_ptr - block->buf_);
         record_saved(entry, read_size, true);
         entry.notified = false;
@@ -398,7 +398,7 @@ private:
     static void read_available(void* context) noexcept {
         const auto& notification = *static_cast<NotificationContext*>(context);
         mark_notified(notification);
-        // 即使位已置位也 set：该位可能是背压重试保留的，不能抑制新的生产通知。
+        // Set the event even if the bit was set: it may be retained for backpressure retry and must not suppress a new production notification.
         notification.event->set();
     }
 
@@ -407,7 +407,7 @@ private:
     AutoResetEvent& work_event_;
     std::vector<QueueEntry> queues_;
     std::vector<std::unique_ptr<NotificationWord>> notifications_;
-    std::vector<std::size_t> selected_; // 注册时预留容量；读取路径不分配内存。
+    std::vector<std::size_t> selected_; // Reserve at registration; no allocations in the read path.
     SteadyClock::time_point next_full_scan_time_{};
     bool attached_ = false;
     std::atomic<std::size_t> popped_pending_count_{0};

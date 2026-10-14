@@ -3,8 +3,8 @@
 #include <type_traits>
 
 namespace TwoBufQueue {
-// 在单位转换前限制范围，避免超大毫秒值隐式转换到纳秒时整数溢出。
-// 原生时钟 duration 直接使用；其他精度的等待时长在时钟范围内饱和。
+// Bound values before unit conversion so huge millisecond durations cannot overflow when implicitly converted to nanoseconds.
+// Native clock durations pass through; other precisions saturate within the clock's representable range.
 template<class Clock, class Rep, class Period>
 [[nodiscard]] constexpr typename Clock::duration wait_duration(
     std::chrono::duration<Rep, Period> timeout) noexcept {

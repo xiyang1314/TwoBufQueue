@@ -19,9 +19,9 @@ void initialize_fast_epoch_clock() noexcept;
 // rdtsc plus a calibrated conversion; other targets use system_clock.
 [[nodiscard]] std::int64_t fast_epoch_time_ns() noexcept;
 
-// 单调时间，单位纳秒：扫描期限使用此接口，不能使用上面的 Unix 时间戳。
-// 与日志时间共用 TSC 频率校准，但以 steady_clock 为独立基准；不支持时回退 steady_clock。
-// TSC 快速路径要求硬件计数器恒定且跨 CPU 同步，与现有日志时间的使用约定一致。
+// Monotonic nanoseconds for scan deadlines; never use the Unix timestamp interface above.
+// Share TSC frequency calibration with logging, using an independent steady_clock reference; fall back to steady_clock if unsupported.
+// The TSC fast path requires an invariant, cross-CPU-synchronized counter, matching the existing logging-time contract.
 [[nodiscard]] std::int64_t fast_steady_time_ns() noexcept;
 
 // Control/test-plane inspection; never needed on the save hot path.

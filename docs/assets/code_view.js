@@ -1,6 +1,7 @@
 /* Local source-view controls. No network requests or external dependencies. */
 (() => {
   'use strict';
+  const zh = document.documentElement.lang === 'zh-CN';
   const wrap = document.getElementById('wrap-code');
   if (wrap) wrap.addEventListener('change', () => {
     document.querySelector('.source-panel').classList.toggle('is-wrapped', wrap.checked);
@@ -24,7 +25,7 @@
       input.remove();
       copy.focus();
     }
-    status.textContent = copied ? '已复制完整代码' : '浏览器未允许复制，请手动选择代码。';
+    status.textContent = copied ? (zh ? '已复制完整代码' : 'Copied complete source') : (zh ? '浏览器未允许复制，请手动选择代码。' : 'Copy was not permitted; select the source manually.');
   });
   const search = document.getElementById('code-search');
   if (search) search.addEventListener('input', () => {
@@ -37,7 +38,7 @@
     for (const group of document.querySelectorAll('.code-group')) {
       group.hidden = !Array.from(group.querySelectorAll('[data-code-file]')).some(row => !row.hidden);
     }
-    document.getElementById('filter-count').textContent = count + ' 个文件';
+    document.getElementById('filter-count').textContent = count + (zh ? ' 个文件' : ' files');
     document.getElementById('empty-filter').hidden = count !== 0;
   });
 })();

@@ -1,4 +1,4 @@
-// 故意只包含 Reader：搭配普通 int 队列，无 WarmPool/HandoffQueue。
+// Intentionally include Reader alone with an ordinary int queue, without WarmPool/HandoffQueue.
 #include "TwoBufQueue/src/base_components/HandoffQueue/handoff_reader.hpp"
 #include <cassert>
 #include <iostream>

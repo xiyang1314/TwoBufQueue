@@ -49,13 +49,13 @@ static void current_snapshot_and_notification() {
         return true;
     };
     CHECK(!r.tick().pending && r.probe.accepted == 1 && r.writer.source_block()->read_pos() == 6);
-    CHECK(r.event.try_wait()); // 通知发生在回调中，不能被本轮读取清除。
+    CHECK(r.event.try_wait()); // A notification raised inside the callback must survive this read round.
     CHECK(!r.tick().pending && r.probe.accepted == 2 && !r.event.try_wait());
     r.drain(); r.probe.verify(7,2);
 }
 static void cancelled_and_current_rejection() {
     SingleRig r; CHECK(!r.tick().pending); CHECK(r.writer.write(0u));
-    CHECK(r.tick(false).pending && r.probe.accepted == 0); // 未到扫描期限。
+    CHECK(r.tick(false).pending && r.probe.accepted == 0); // The scan deadline is not due yet.
     r.cancel = true; CHECK(r.tick().pending && r.probe.accepted == 0);
     r.cancel = false; r.probe.accept = false; CHECK(r.tick().pending);
     CHECK(r.writer.source_block()->read_pos() == 0);
@@ -190,7 +190,7 @@ static void restart_current() {
     probe.end_hook = [&] { if (!initial.entered.load()) initial.pause(); };
     SingleReadWorker worker(slow_config(),probe,writer); CHECK(worker.start()); initial.wait();
     worker.request_stop(ReadStopMode::fast); initial.release(); worker.stop(ReadStopMode::fast);
-    CHECK(writer.write(0u)); // 未发事件，扫描期限仍为 1h，重启也须读到。
+    CHECK(writer.write(0u)); // No event and a one-hour scan deadline; restart must still read existing data.
     CHECK(worker.start()); CHECK(wait_until([&] { return probe.accepted == 1; }));
     writer.finish(); worker.stop(); probe.verify(0,1); CHECK(source.all_released());
 }

@@ -1,12 +1,14 @@
-# CMake integration / CMake 接入
+# CMake integration
 
-[English README](../README.html) · [中文首页](../README.zh-CN.html)
+[English](INTEGRATION.md) · [简体中文](INTEGRATION.zh-CN.md)
+
+[English README](../README.md) · [中文首页](../README.zh-CN.md)
 
 All three methods expose the same `TwoBufQueue::TwoBufQueue` target and `<TwoBufQueue.hpp>` header. The target propagates C++20 and thread linkage; consumers do not need to add internal include paths or link a platform synchronization library by hand. macOS consumers require 14.4+; set their deployment target before `project()` or during configure.
 
-三种方式使用相同 target 和公共头文件。嵌入时默认不构建测试和示例；独立构建时默认构建全部当前测试和示例。不要将自己的 target 命名为 `TwoBufQueue`。
+When embedded, tests and examples are disabled by default; a standalone build enables the current tests and examples. Do not name your application target `TwoBufQueue`.
 
-## Vendored source / 本地源码
+## 1. Vendored source
 
 Place the checkout under `external/TwoBufQueue`:
 
@@ -20,7 +22,7 @@ target_link_libraries(my_app PRIVATE TwoBufQueue::TwoBufQueue)
 
 Use `BRQ_INSTALL=OFF` before `add_subdirectory` if your application should not install the dependency. Override `BRQ_BUILD_TESTS` / `BRQ_BUILD_EXAMPLES` explicitly if you want its tests and examples in the parent build.
 
-## FetchContent
+## 2. FetchContent
 
 For a local checkout, this is fully offline and needs no unpublished GitHub address:
 
@@ -46,9 +48,9 @@ FetchContent_Declare(TwoBufQueue
 FetchContent_MakeAvailable(TwoBufQueue)
 ```
 
-远程接入时填写实际仓库地址和固定提交，不要用会持续变化的分支作为可复现依赖版本。
+For a remote dependency, use the actual repository URL and a pinned commit rather than a moving branch.
 
-## Installed package / 安装后的 find_package
+## 3. Installed package
 
 From the library's root, install to a writable prefix:
 
@@ -70,9 +72,9 @@ target_link_libraries(my_app PRIVATE TwoBufQueue::TwoBufQueue)
 
 Configure the consumer with `-DCMAKE_PREFIX_PATH=/absolute/path/to/install`. On macOS add `-DCMAKE_OSX_DEPLOYMENT_TARGET=14.4` when needed. Libraries, real headers, CMake package files, LICENSE and NOTICE are installed. The prefix may be moved as a whole: installed includes contain no source-tree forwarders. A compiled package is specific to its platform, architecture and compatible toolchain; this does not make binaries portable between operating systems.
 
-安装完成后，应用无需依赖原源码目录。将整个安装目录搬到另一个路径后，更新 `CMAKE_PREFIX_PATH` 即可。包版本为 0.1.0，当前版本文件只接受相同 minor 版本；这不表示已经创建了 GitHub Release。
+After installation, the application no longer depends on the original source directory. Move the complete install prefix and update `CMAKE_PREFIX_PATH`. The package version is 0.1.0 and accepts compatible versions within the same minor series; this does not imply that a GitHub Release has been created.
 
-The [integration consumer](code/test/integration/CMakeLists.txt.html) is runnable through `BRQ_INTEGRATION_MODE=add_subdirectory`, `fetchcontent`, or `package`. Example source-mode check:
+The [integration consumer](../test/integration/CMakeLists.txt) is runnable through `BRQ_INTEGRATION_MODE=add_subdirectory`, `fetchcontent`, or `package`. Example source-mode check:
 
 ```sh
 cmake -S test/integration -B build-consumer -DBRQ_SOURCE_DIR=../.. -DBRQ_INTEGRATION_MODE=fetchcontent

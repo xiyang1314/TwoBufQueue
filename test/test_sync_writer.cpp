@@ -22,7 +22,7 @@ static bool until(Predicate predicate) {
     }
     return true;
 }
-// 用于失败构造的生命周期清理；不执行用户回调。
+// Cleanup for failed construction; never invoke user callbacks.
 template<class WriterT>
 static void finish_and_drain(WriterT& writer) {
     writer.finish();
@@ -40,7 +40,7 @@ static void plain_records(bool list_constructor) {
     std::memcpy(packed.data(), &a, sizeof(a));
     std::memcpy(packed.data() + sizeof(a), &b, sizeof(b));
     std::memcpy(packed.data() + sizeof(a) + sizeof(b), &c, sizeof(c));
-    std::array<std::byte, 80> raw{}; // 大于源块，验证同步消息不占用源块空间。
+    std::array<std::byte, 80> raw{}; // Larger than a source block, proving synchronous messages consume no source-block space.
     raw.back() = std::byte{42};
     unsigned received = 0;
     bool valid = true;
@@ -68,7 +68,7 @@ static void plain_records(bool list_constructor) {
     static_assert(MyWriter::is_sync && !Writer<>::is_sync);
     static_assert(std::is_void_v<Writer<>::SyncContextType>);
     auto writer = make_writer<MyWriter>({.block_size = 16, .pool_min = 1, .pool_max = 1, .thread_id = 7});
-    bool ok = !writer.write(a); // 未绑定时拒绝，不进入异步路径。
+    bool ok = !writer.write(a); // Reject when unbound rather than entering the asynchronous path.
     using Queue = ::TwoBufQueue::TwoBufQueue<decltype(callback), decltype(writer)>;
     std::unique_ptr<Queue> queue;
     if (list_constructor) queue = std::make_unique<Queue>(callback, std::initializer_list<decltype(writer)*>{&writer});
@@ -85,7 +85,7 @@ static void plain_records(bool list_constructor) {
     ok &= writer.source_block() == source && writer.published_write_ptr() == initial && source->readable().empty();
     ok &= writer.handoff_queue().pending_count() == 1 && writer.backpressure_stats().pressure_events == 0;
     writer.finish();
-    writer.finish(); // 幂等；不重复执行业务回调。
+    writer.finish(); // Idempotent: do not invoke the business callback twice.
     ok &= !writer.write(a) && !writer.write_mem(raw.data(), 1) && received == 5;
     queue->stop(); queue->stop();
     ok &= !queue->started() && !writer.has_sync_callback() && writer.handoff_queue().is_drained();
@@ -152,8 +152,8 @@ static void callback_blocks_producer() {
     require(began && blocked && returned.load() && valid.load(), "write returned before producer-thread callback completed");
 }
 
-// 同一 Context 类型在单 Writer 构造（引用或单元素列表）时不加锁。
-// 递归处理第二条消息能返回，验证未错误地取得非递归互斥锁。
+// The same Context uses no lock for single-Writer construction, whether passed by reference or as a one-element list.
+// Recursively processing a second message must return, proving no nonrecursive mutex was acquired incorrectly.
 struct NestedCallback {
     using Context = SyncContext<NestedCallback>;
     using MyWriter = Writer<1, true, std::uint16_t, Context>;
@@ -199,7 +199,7 @@ static void multi_writer_records() {
             const auto index = static_cast<unsigned>(id);
             if (value != received[index] || (WithSeq && seq != value) ||
                 std::this_thread::get_id() != producer_threads[index]) valid.store(false);
-            ++received[index]; // 普通非原子数据，依靠队列的共享锁串行访问。
+            ++received[index]; // Ordinary non-atomic data, serialized by the queue's shared lock.
         }
         std::this_thread::yield();
         active.fetch_sub(1, std::memory_order_release);

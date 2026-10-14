@@ -254,7 +254,7 @@ void policy_cases(Cases &c) {
                      CHECK(reader.start());
                      std::atomic<bool> accepted{false};
                      brq_support::JoiningThread producer([&] {
-                         // 单写线程约束：所有 writer 操作必须来自同一线程。
+                         // Single-producer constraint: every writer operation must come from the same thread.
                          const bool first = writer.write(1u);
                          const bool second = writer.write(2u);
                          accepted = first && second;
@@ -303,9 +303,9 @@ void policy_cases(Cases &c) {
         c.push_back({"S_config_" + k, [k] {
                          invalid([&] {
                              if (k == "callback")
-                                 ReadBlockFactory bad(0, 8); // 块容量为 0 非法。
+                                 ReadBlockFactory bad(0, 8); // Zero block capacity is invalid.
                              else
-                                 ReadBlockFactory bad(64, 0); // frame 容量为 0 非法。
+                                 ReadBlockFactory bad(64, 0); // Zero frame capacity is invalid.
                          });
                      }});
 }

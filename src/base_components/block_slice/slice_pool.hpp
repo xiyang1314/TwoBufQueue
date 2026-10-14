@@ -9,13 +9,13 @@
 
 namespace TwoBufQueue {
 
-// 三种场景共用的分配/换块逻辑；Block 决定释放端策略，AllocateLock 决定分配端策略。
-// AllocateLock = NoLock 时只允许一个分配线程；跨线程释放能力由 Block::concurrent 决定。
-// 内部池销毁前须释放所有切片；外部池必须晚于本适配器及所有切片销毁。
+// Shared allocation/block-switch logic for three policies; Block controls release and AllocateLock controls allocation.
+// AllocateLock = NoLock permits one allocator thread only; Block::concurrent determines cross-thread release support.
+// Release every slice before destroying an internal pool; an external pool must outlive this adapter and all slices.
 template<class Block, class AllocateLock>
 class BasicSlicePool {
 public:
-    // 跨线程块的外部池统一串行化取块/归还，允许多个适配器共享同一池。
+    // External concurrent-block pools serialize acquisition/return so multiple adapters may share one pool.
     using Factory = BlockResourceFactory<Block>;
     using Pool = WarmPool<Block, Block::concurrent, Factory>;
     using Diagnostics = BlockDiagnostics<typename Block::StorageBlock>;
@@ -28,7 +28,7 @@ public:
         : owned_pool_(std::in_place, min_count, max_count, Factory{block_size, block_config},
                 max_free_block_count), pool_(&*owned_pool_) {}
 
-    // 仅借用，不接管所有权。容量、并发策略和回调由传入的池决定。
+    // Borrow without taking ownership; the supplied pool controls capacity, concurrency and callbacks.
     explicit BasicSlicePool(Pool* pool) : pool_(pool) {
         if (!pool_) throw std::invalid_argument("BasicSlicePool requires a non-null WarmPool");
     }
@@ -37,13 +37,13 @@ public:
         close();
         if (owned_pool_ && !pool_->all_released())
             Diagnostics::report_invalid("destroying slice pool while blocks are still in use");
-        // 内部池随后析构并检查全部归还；外部池及已经交出的切片继续有效。
+        // The internal pool is destroyed next and checks all returns; external pools and handed-out slices remain valid.
     }
     BasicSlicePool(const BasicSlicePool&) = delete;
     BasicSlicePool& operator=(const BasicSlicePool&) = delete;
 
-    // 结束分配并交出最后一个块；已有切片仍有效，最后一个切片释放时归还。
-    // 幂等；并发池与 allocate 使用同一把锁。其他池须由分配端串行调用。
+    // End allocation and hand off the final block; existing slices remain valid until the last release returns the block.
+    // Idempotent. Concurrent pools use allocate's lock; other pools require the allocating side to serialize this call.
     void close() noexcept {
         std::lock_guard<AllocateLock> lock(allocate_lock_);
         closed_ = true;
@@ -51,57 +51,57 @@ public:
             block->to_alloc_finished();
         }
     }
-    // 作用于整个底层池；外部池所有者管理回调和上下文，适配器析构不会解除它。
-    // 只在所有使用方静止时安装或解除。回调不得重入本池。
+    // Applies to the whole underlying pool; its external owner manages callback/context. Adapter destruction does not remove it.
+    // Install/remove only while all users are quiescent; the callback must not reenter this pool.
     void set_release_callback(ReleaseCallback callback, void* context) noexcept {
         pool_->set_release_callback(callback, context);
     }
-    // 这些查询统计整个底层池，包括其他适配器及直接借出的块。
+    // Query the entire underlying pool, including other adapters and directly borrowed blocks.
     [[nodiscard]] std::size_t block_count() const noexcept { return pool_->resource_count(); }
     [[nodiscard]] std::size_t in_use_count() const noexcept { return pool_->in_use_count(); }
-    // 所有借出块是否已满足回收条件；任一仍可分配的 Allocating 块会使结果为 false。
+    // Whether every loaned block is reclaimable; any still-allocatable Allocating block makes this false.
     [[nodiscard]] bool all_released() const noexcept {
         std::lock_guard<AllocateLock> lock(allocate_lock_);
         return pool_->all_released();
     }
 
-    // 空间或槽位不足时自动换块；池耗尽、申请超过单块大小时返回空句柄。
-    // 不等待消费者释放；size == 0 或非法 alignment 沿用块接口的错误报告。
+    // Switch blocks when bytes or slice slots run out; return empty on pool exhaustion or requests larger than one block.
+    // Do not wait for consumer releases; size == 0 and invalid alignment use the block interface's existing error reporting.
     [[nodiscard]] Slice allocate(std::size_t size, std::size_t alignment = 1,
         std::source_location location = std::source_location::current()) noexcept {
         if (size == 0 || alignment == 0 || alignment > Block::block_alignment ||
             (alignment & (alignment - 1)) != 0)
             Diagnostics::report_invalid("slice size/alignment is invalid", location);
-        // 永远装不下的请求不能封闭当前块，避免影响后续有效的小请求。
+        // Requests that can never fit must not close current, so subsequent valid small requests can still use it.
         if (size > pool_->factory().block_size()) return {};
-        // 同时串行化 current_、to_alloc_finished 和底层池的 get，不能只锁换块分支。
+        // Serialize current_, to_alloc_finished and pool get together, not merely the block-switch branch.
         std::lock_guard<AllocateLock> lock(allocate_lock_);
         if (closed_) return {};
-        // 外层串行化本适配器的分配；切片释放会并发归还，底层池始终使用自身的锁。
+        // The outer lock serializes this adapter's allocation; concurrent slice returns always use the underlying pool's own lock.
         if (current_) {
             auto slice = current_->allow_without_lock(size, alignment, location);
             if (slice) return slice;
             auto* block = std::exchange(current_, nullptr);
             block->to_alloc_finished(location);
         }
-        // 独占池由本适配器的锁保护；共享池须用自己的锁保护全部取块/归还者。
+        // This adapter's lock protects a private pool; shared pools need their own lock covering every borrower/returner.
         current_ = pool_->get().get();
         if (!current_) return {};
-        // 新块从偏移 0 开始，基地址按 64 字节对齐，至少有一个切片槽位。
+        // New blocks begin at offset 0, with a 64-byte-aligned base and at least one slice slot.
         return current_->allow_without_lock(size, alignment, location);
     }
 
 private:
-    // 原地构造内部池，不为所有权管理额外分配堆内存；借用时保持 disengaged。
+    // Construct the internal pool in place without an extra ownership allocation; leave it disengaged for borrowed pools.
     std::optional<Pool> owned_pool_;
     Pool* const pool_;
     [[no_unique_address]] mutable AllocateLock allocate_lock_;
-    Block* current_ = nullptr; // 由 allocate_lock_ 保护。
-    bool closed_ = false; // 与 current_ 使用相同的串行访问约束。
+    Block* current_ = nullptr; // Protected by allocate_lock_.
+    bool closed_ = false; // Same serialized-access constraints as current_.
 };
 
-// 三种场景独立实例化，复用上面的分配和换块逻辑。
-//单线程alloc和release
+// Separate instantiations for three policies reuse the allocation/block-switch logic above.
+// Single-threaded allocation and release.
 class Alloc1Release1SlicePool final
     : public BasicSlicePool<Alloc1Release1ReaderBlock, NoLock> {
 public:
@@ -109,7 +109,7 @@ public:
     using Base::Base;
 };
 
-//单线程alloc 多线程release
+// Single-threaded allocation, multithreaded release.
 class Alloc1ReleaseNSlicePool final
     : public BasicSlicePool<Alloc1ReleaseNReaderBlock, NoLock> {
 public:
@@ -117,7 +117,7 @@ public:
     using Base::Base;
 };
 
-//多线程alloc 多线程release
+// Multithreaded allocation and release.
 class AllocNReleaseNSlicePool final
     : public BasicSlicePool<AllocNReleaseNReaderBlock, SpinLock> {
 public:

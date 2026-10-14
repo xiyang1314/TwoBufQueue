@@ -11,10 +11,10 @@ namespace TwoBufQueue {
 template<bool is_n_alloc, bool is_n_use> struct WriterBlock;
 enum class ReadError : std::uint32_t;
 
-// 扫描调度使用的快速单调时钟，不是日志的 Unix 时间戳。
-// x86/x64 使用项目现有的 TSC 校准，支持 MSVC、GCC、Clang；无需 Windows API。
-// 不支持恒定 TSC 的平台使用 std::chrono::steady_clock，调用方仍统一使用纳秒时长。
-// 使用独立的 time_point 类型，防止把扫描时间与日志时间戳或其他时钟的时间点混用。
+// Fast monotonic clock for scan scheduling, not Unix timestamps for logging.
+// x86/x64 reuse the project's calibrated TSC with MSVC, GCC or Clang; no Windows API is required.
+// Platforms without invariant TSC use std::chrono::steady_clock; callers still use nanosecond durations.
+// A distinct time_point type prevents mixing scan times with log timestamps or other clock domains.
 class FastSteadyClock {
 public:
     using rep = std::int64_t;
@@ -23,12 +23,12 @@ public:
     using time_point = std::chrono::time_point<FastSteadyClock, duration>;
     static constexpr bool is_steady = true;
 
-    // 复用日志时间的频率校准，以独立的单调时间锚点计算扫描时间。
+    // Reuse logging-time frequency calibration with an independent monotonic anchor for scan scheduling.
     [[nodiscard]] static time_point now() noexcept;
 };
 
-// 每个有效写入至少推进一个字节；无前缀且 min=0 时拒绝空写入。
-// 预留一个额外槽位，并在配置阶段检查加法、除法及槽位数量溢出。
+// Each valid write advances at least one byte; reject empty writes when there is no prefix and min = 0.
+// Reserve one extra slot and validate addition, division and slot-count overflow during configuration.
 [[nodiscard]] constexpr std::size_t source_slice_capacity(
     std::uint64_t block_size, std::size_t min_message_length,
     std::size_t prefix_size = sizeof(std::uint16_t)) {
@@ -54,7 +54,7 @@ public:
                                     std::uint64_t block_size) noexcept;
 [[nodiscard]] bool pin_current_thread(std::int32_t cpu) noexcept;
 void cpu_relax() noexcept;
-// 背压等待统计使用的原始计数：x86/x64 为 TSC tick，其他平台为 steady_clock tick。
+// Raw backpressure-wait counter: TSC ticks on x86/x64, steady_clock ticks elsewhere.
 [[nodiscard]] std::uint64_t read_wait_counter() noexcept;
 
 } // namespace TwoBufQueue

@@ -179,7 +179,7 @@ static void close_and_notify() {
     pool.close();
     assert(!pool.allocate(1) && released.load() == 0);
     s.release();
-    assert(released.load() == 1 && pool.all_released()); // 最后一次释放立即归还并通知。
+    assert(released.load() == 1 && pool.all_released()); // The final release returns the block and notifies immediately.
     pool.close();
     assert(released.load() == 1);
     pool.set_release_callback(nullptr, nullptr);

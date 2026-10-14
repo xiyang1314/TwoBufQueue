@@ -11,7 +11,7 @@
 namespace TwoBufQueue {
 
 namespace detail {
-// 低位为 index + 1（0 表示空），其余位为不回绕的版本号。
+// Low bits store index + 1 (zero means empty); remaining bits hold a nonwrapping version.
 class TaggedIndex {
 public:
     explicit TaggedIndex(std::size_t count) : bits_(checked_bits(count)),
@@ -20,7 +20,7 @@ public:
         return static_cast<std::uint32_t>(value & mask_);
     }
     std::uint64_t next(std::uint64_t old, std::uint32_t index) const noexcept {
-        // 宁可 fail fast，也不能让暂停很久的线程遇到 ABA。
+        // Fail fast rather than expose a long-paused thread to ABA.
         if (old > std::numeric_limits<std::uint64_t>::max() - step_) std::terminate();
         return ((old + step_) & ~mask_) | index;
     }
@@ -35,8 +35,8 @@ private:
 };
 } // namespace detail
 
-// 固定索引的 Treiber 空闲栈。索引只能在被 pop 后归还一次。
-// next 也必须是原子的：落后的 pop 可能仍在读取已被其他线程复用的节点。
+// Fixed-index Treiber free stack. An index may be returned exactly once after being popped.
+// next must also be atomic: a delayed pop may still read a node another thread has reused.
 class LockFreeIndexStack {
     static_assert(std::atomic<std::uint64_t>::is_always_lock_free);
     static_assert(std::atomic<std::uint32_t>::is_always_lock_free);
@@ -73,11 +73,11 @@ private:
     alignas(64) std::atomic<std::uint64_t> head_{0};
 };
 
-// Michael–Scott MPMC FIFO 的固定存储索引版本。
-// 算法参考：https://www.cs.rochester.edu/research/synchronization/pseudocode/queues.html
-// 节点直到队列析构才释放；next/value 全部原子化，head/tail/next 都带版本。
-// enqueue 在链接节点时完成发布，其他线程可帮助推进滞后的 tail。
-// 没有“先占 ring 序号，再等待该生产者发布”的队头阻塞。
+// Fixed-storage-index variant of the Michael-Scott MPMC FIFO.
+// Algorithm reference: https://www.cs.rochester.edu/research/synchronization/pseudocode/queues.html
+// Retain nodes until queue destruction; next/value are atomic and head/tail/next carry versions.
+// Linking a node publishes its enqueue; other threads may help advance a lagging tail.
+// Avoid head-of-line blocking from reserving a ring sequence before that producer publishes.
 class LockFreeIndexQueue {
 public:
     explicit LockFreeIndexQueue(std::size_t capacity)
@@ -87,8 +87,8 @@ public:
         head_.store(dummy + 1, std::memory_order_relaxed);
         tail_.store(dummy + 1, std::memory_order_relaxed);
     }
-    // 暂停在操作中的线程可能暂持节点；false 表示当前无可分配节点。
-    // ClaimQueue 的在途槽位预留保证其有效 send/cancel 始终有节点可用。
+    // A paused operation can temporarily retain a node; false means no node is currently available.
+    // ClaimQueue's in-flight slot reservations ensure nodes remain available for valid send/cancel operations.
     bool try_push(std::uint32_t value) noexcept {
         std::uint32_t index;
         if (!free_.try_pop(index)) return false;
@@ -97,7 +97,7 @@ public:
         const auto previous = node.next.load(std::memory_order_relaxed);
         node.next.store(tag_.next(previous, 0), std::memory_order_relaxed);
 #ifdef BRQ_INDEX_QUEUE_TEST_HOOK
-        BRQ_INDEX_QUEUE_TEST_HOOK(1); // 仅确定性并发测试编译启用。
+        BRQ_INDEX_QUEUE_TEST_HOOK(1); // Enabled only in deterministic concurrency-test builds.
 #endif
         auto tail = tail_.load(std::memory_order_acquire);
         for (;;) {
@@ -127,8 +127,8 @@ public:
             tail = tail_.load(std::memory_order_acquire);
         }
     }
-    // order 可选：成功 CAS 时的带版本 head 单调递增，准确对应 FIFO 出队顺序。
-    // 不能在出队后另用 fetch_add 编号：两个消费者返回的先后可能与出队先后不同。
+    // Optional order: the versioned head increases on successful CAS and exactly tracks FIFO dequeue order.
+    // Do not assign order with fetch_add after dequeue: consumer return order can differ from dequeue order.
     bool try_pop(std::uint32_t& value, std::uint64_t* order = nullptr) noexcept {
         auto head = head_.load(std::memory_order_acquire);
         for (;;) {
@@ -151,7 +151,7 @@ public:
 #ifdef BRQ_INDEX_QUEUE_TEST_HOOK
                     BRQ_INDEX_QUEUE_TEST_HOOK(3);
 #endif
-                    // 在将结果交给调用方前归还旧 dummy，保证预留的节点容量。
+                    // Return the old dummy before exposing the result to preserve reserved node capacity.
                     free_.push(old_index);
                     value = result;
                     if (order) *order = head;
@@ -176,7 +176,7 @@ private:
     static std::size_t node_count(std::size_t capacity) {
         if (!capacity || capacity > std::numeric_limits<std::uint32_t>::max() - 2)
             throw std::invalid_argument("queue_capacity must be in [1, UINT32_MAX - 2]");
-        return capacity + 1; // 永久保留一个 dummy 节点。
+        return capacity + 1; // Permanently retain one dummy node.
     }
     detail::TaggedIndex tag_;
     std::vector<Node> nodes_;

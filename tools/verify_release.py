@@ -17,6 +17,8 @@ def verify(root, check_manifest=True):
     paths = [root / r['path'] for r in records] if records else [p for p in root.rglob('*') if p.is_file()
         and '.git' not in p.relative_to(root).parts and 'performance_archive' not in p.parts
         and not any(x.startswith('build') for x in p.relative_to(root).parts)]
+    reading_path = root / 'tools/github_reading_pages.json'
+    reading_pages = {page['markdown'] for page in json.loads(reading_path.read_text())['pages']} if reading_path.exists() else set()
     errors = []
     for record in records if check_manifest else []:
         path = root / record['path']
@@ -24,13 +26,20 @@ def verify(root, check_manifest=True):
             errors.append('Manifest mismatch: ' + record['path'])
     checked = 0
     for document in paths:
-        if document.suffix not in {'.md', '.html'} or document.relative_to(root).parts[:2] == ('docs', 'performance_data'):
+        if document.suffix not in {'.md', '.html'}:
             continue
-        for match in document_links(document, document.read_text(encoding='utf-8')):
+        body = document.read_text(encoding='utf-8')
+        if document.relative_to(root).parts[:2] == ('docs', 'performance_data') and document.relative_to(root).as_posix() not in reading_pages:
+            continue
+        if document.suffix == '.md' and ('README_TOC:' in body or body.startswith('<!-- Generated GitHub reading copy from ')):
+            errors.append('Internal generation marker in a reading document: ' + str(document.relative_to(root)))
+        for match in document_links(document, body):
             reference = (match['url'] or match['mdurl']).strip('<>')
             parsed = urlsplit(reference)
             if parsed.scheme or parsed.netloc or not parsed.path:
                 continue
+            if document.suffix == '.md' and parsed.path.lower().endswith('.html'):
+                errors.append('Markdown link opens HTML source in the repository: ' + str(document.relative_to(root)) + ': ' + reference)
             target = (document.parent / unquote(parsed.path)).resolve()
             checked += 1
             if not target.exists():

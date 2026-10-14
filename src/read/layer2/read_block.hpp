@@ -10,8 +10,8 @@ namespace TwoBufQueue {
 
 enum class ReadRecordError { none, incomplete_length, incomplete_payload };
 
-// 非侵入式资源：独立拥有数据和 frame 数组，WarmPool 只要求 reset(generation)。
-// 生产者独占 append；send 后由领取者独占读取和逐条消费位置，不需要块内锁。
+// Nonintrusive resource owning data/frame arrays; WarmPool requires only reset(generation).
+// A producer exclusively appends; after send, a claimant exclusively reads and tracks record progress. No block-local lock needed.
 class ReadBlock {
     template<class DataLen, class Callback>
     friend bool read_records(ReadBlock&, Callback&) noexcept;
@@ -44,8 +44,8 @@ public:
         return true;
     }
 
-    // 完整复制一个范围；失败不改变数据、frame 数量或消费位置。
-    // data 不得与本块存储重叠。空范围不登记 frame。
+    // Copy the full range; failure leaves data, frame count and consumption position unchanged.
+    // data must not overlap this block's storage. Empty ranges do not register frames.
     [[nodiscard]] bool append(std::int32_t writer_id, const std::byte* data,
                               std::size_t size, std::int64_t read_time_ns) noexcept {
         if (writer_id < 0 || (size && !data)) return false;
@@ -62,7 +62,7 @@ public:
     [[nodiscard]] std::size_t data_size() const noexcept { return data_size_; }
     [[nodiscard]] std::size_t capacity() const noexcept { return capacity_; }
     [[nodiscard]] std::size_t frame_capacity() const noexcept { return frame_capacity_; }
-    // 仅由持有本块的消费者查询；格式错误与普通回调拒绝分别表示。
+    // Query only by the owning consumer; distinguish malformed records from ordinary callback rejection.
     [[nodiscard]] ReadRecordError record_error() const noexcept { return record_error_; }
 
     static std::size_t checked_capacity(std::size_t capacity) {

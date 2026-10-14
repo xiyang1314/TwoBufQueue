@@ -1,6 +1,6 @@
 #include "../../support/joining_thread.hpp"
-// HandoffQueue：MPMC 模式。多个生产者 send；队列自带多个 Reader 线程并发调用处理回调。
-// Consumer 只实现业务处理，不另建读取线程；共享结果用原子变量累计。
+// HandoffQueue in MPMC mode: multiple producers send; built-in Reader threads invoke callbacks concurrently.
+// Consumer implements business processing only; no extra reader thread. Accumulate shared results with atomics.
 
 #include "TwoBufQueue/src/base_components/HandoffQueue/handoff_queue.hpp"
 #include <atomic>
@@ -18,10 +18,10 @@ struct Message {
 
 class Consumer {
 public:
-    // true 表示处理完成；本例不演示 false 后的取消与重试。
+    // true completes processing; this example does not demonstrate cancellation and retry after false.
     bool process(Message& message) noexcept {
         total_.fetch_add(message.value, std::memory_order_relaxed);
-        return true; // 内置 Reader 随后 finish，归还资源。
+        return true; // The built-in Reader then calls finish to return the resource.
     }
     int total() const noexcept { return total_.load(std::memory_order_relaxed); }
 
@@ -29,7 +29,7 @@ private:
     std::atomic<int> total_{0};
 };
 
-// 示例中仅重试容量背压；线程函数里的其他申请错误直接终止示例。
+// Retry only capacity backpressure; other acquisition errors terminate this example's thread.
 template<class Queue>
 auto acquire_until_available(Queue& queue) {
     for (;;) {
@@ -42,7 +42,7 @@ auto acquire_until_available(Queue& queue) {
 }
 
 int main() try {
-    //--------------- 1. 初始化：资源池、消费者和队列 ---------------------------
+    //---------------1. Initialize the pool, consumer and queue--------------
     constexpr std::size_t pool_min = 2, pool_max = 16, queue_capacity = 32, reader_count = 2;
     constexpr int producer_count = 2, per_producer = 100;
     WarmPool<Message> pool(pool_min, pool_max);
@@ -55,9 +55,9 @@ int main() try {
     options.reader_mode = ReaderMode::WaitSignal;
     options.cancel_claim_mode = CancelClaimMode::Keep;
     auto callback = [&consumer](Message& message) noexcept { return consumer.process(message); };
-    HandoffQueue queue(pool, options, callback); // 构造时启动 reader_count 个读取线程。
+    HandoffQueue queue(pool, options, callback); // Construction starts reader_count reader threads.
 
-    //--------------- 2. 多个生产者各自借资源、写入、发送 -----------------------
+    //---------------2. Each producer borrows, writes and sends--------------
     {
         std::vector<brq_support::JoiningThread> producers;
         for (int i = 0; i < producer_count; ++i) {
@@ -66,16 +66,16 @@ int main() try {
                     auto acquired = acquire_until_available(queue);
                     acquired.loan->value = value;
                     if (!queue.send(acquired.loan)) std::terminate();
-                    // send 后不再访问该资源。
+                    // Do not access the resource after send.
                 }
             });
         }
-    } // jthread 析构时等待全部生产者结束。
+    } // Destruction of jthread waits for every producer to finish.
 
-    //--------------- 3. 排空并校验 -------------------------------------------
+    //---------------3. Drain and verify------------------------------------
     queue.close();
     while (!queue.is_drained()) std::this_thread::yield();
-    queue.stop(); // 等待内置 Reader 线程退出。
+    queue.stop(); // Wait until the built-in Reader threads exit.
 
     const int expected = producer_count * (per_producer * (per_producer + 1) / 2);
     if (consumer.total() != expected || !pool.all_released())

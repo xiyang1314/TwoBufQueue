@@ -4,7 +4,7 @@
 namespace TwoBufQueue {
 enum class ReaderBlockState : std::uint8_t { Free, Allocating, AllocFinished, ForceRecycle };
 
-// 普通存储块：先分配空间，再填充并通过业务队列发布数据。
+// Ordinary storage block: allocate space, fill it, then publish through a business queue.
 template<bool is_n_alloc = false, bool is_n_use = true>
 class ReaderBlock : public BasicBlock<is_n_alloc, is_n_use> {
 public:
@@ -43,13 +43,13 @@ public:
         require_state(State::Allocating, "expected Allocating block", location);
         return this->allocate_slice(size, alignment, this->capacity(), location);
     }
-    // 外层必须串行化整个分配过程；不能与未受同一锁保护的 allocate 并发混用。
+    // The outer layer serializes the whole allocation; do not mix with concurrent allocate calls outside the same lock.
     [[nodiscard]] Slice allow_without_lock(std::size_t size, std::size_t alignment = 1,
         std::source_location location = std::source_location::current()) noexcept {
         require_state(State::Allocating, "expected Allocating block", location);
         return this->allocate_slice_without_lock(size, alignment, this->capacity(), location);
     }
-    // 所有分配调用结束后调用；已取得的切片仍可继续填充、传递和释放。
+    // Call after all allocation calls finish; existing slices may still be filled, transferred and released.
     void to_alloc_finished(std::source_location location = std::source_location::current()) noexcept {
         const auto loan = this->loan();
         bool finished = false;
@@ -64,7 +64,7 @@ public:
     }
     [[nodiscard]] bool is_alloc_finish() const noexcept { return state() == State::AllocFinished; }
 
-    // 必须停止本代所有访问；旧切片立即失效，块立即归还。
+    // Stop every access to this generation first; old slices become invalid and the block is returned immediately.
     void force_recycle(std::source_location location = std::source_location::current()) noexcept {
         const auto loan = this->loan();
         bool finished = false;

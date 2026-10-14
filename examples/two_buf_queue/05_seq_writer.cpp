@@ -1,7 +1,7 @@
 #include "../../support/joining_thread.hpp"
-// SeqWriter：每条记录最前面多一个固定宽度的小端 seq，消费端按 seq 检测顺序。
-// 每个写线程使用独立的 SeqWriter，共享原子计数器，通过 fetch_add 分配全局唯一序号。
-// 同一 Writer 内保持写入顺序，不同 Writer 之间的记录可以交错，不保证全局顺序。
+// SeqWriter prefixes each record with a fixed-width little-endian sequence number; consumers can use it to check ordering.
+// Each producer owns a SeqWriter; shared atomic fetch_add assigns globally unique sequence numbers.
+// Preserve order within each Writer; records from different Writers may interleave without a global ordering guarantee.
 
 #include "../example_support.hpp"
 #include <array>
@@ -11,8 +11,8 @@
 using namespace TwoBufQueue;
 
 int main() try {
-    //--------------- 1. 初始化：4 个 SeqWriter + TwoBufQueue -------------------
-    // SeqWriter<T> 的 T 是 seq 的类型；回调比普通 Writer 多一个 seq 参数。
+    //---------------1. Initialize 4 SeqWriters and TwoBufQueue---------------
+    // SeqWriter<T> uses T for the sequence number; its callback takes one extra leading seq argument.
     using MyWriter = SeqWriter<std::uint32_t>;
     constexpr std::size_t writer_count = 4;
     constexpr std::uint32_t per_writer = 1000;
@@ -43,7 +43,7 @@ int main() try {
 
     ::TwoBufQueue::TwoBufQueue queue(rcvCallback, {&w0, &w1, &w2, &w3});
 
-    //--------------- 2. 每个线程写自己的 Writer：write(seq, value) ------------
+    //---------------2. Each producer writes through its Writer-------------
     std::array<bool, writer_count> written{};
     {
         std::array<OwnedWriter<MyWriter>*, writer_count> writers{&w0, &w1, &w2, &w3};
@@ -58,14 +58,14 @@ int main() try {
                         break;
                     }
                 }
-                writers[i]->finish(); // 由对应的写线程结束自己的 Writer
+                writers[i]->finish(); // Each producer thread finishes its own Writer.
             });
-    } // 先 join 全部写线程，再停止消费者
+    } // Join all producer threads before stopping the consumer.
 
-    //--------------- 3. 结束 --------------------------------------------------
-    queue.stop();      // 等所有记录消费完并停掉读线程
+    //---------------3. Finish----------------------------------------------
+    queue.stop();      // Wait for every record to be consumed and stop the reader threads.
 
-    //--------------- 4. 校验 --------------------------------------------------
+    //---------------4. Verify----------------------------------------------
     bool ok = valid && next_seq.load(std::memory_order_relaxed) == writer_count * per_writer;
     for (std::size_t i = 0; i < writer_count; ++i)
         ok = ok && written[i] && received[i] == per_writer;

@@ -98,7 +98,7 @@ void force_ignore() {
     CHECK(!b->is_alloc_finish() && !b->is_all_released() && !b->is_free());
     b->force_recycle();
     CHECK(b->state() == WriterBlockState::Free);
-    CHECK(pool.in_use_count() == 0); // 强制结束后立即归还。
+    CHECK(pool.in_use_count() == 0); // Return immediately after forced completion.
     auto* next = pool.get().get();
     CHECK(next == b && next->read_pos() == 0 && next->write_pos() == 0);
     next->publish(16);
@@ -116,7 +116,7 @@ void force_ignore() {
     auto before_scan = b->allocate_read_slice();
     finish(b);
     b->force_recycle();
-    before_scan.release(); // ForceRecycle 时忽略，不动旧代计数。
+    before_scan.release(); // Ignore under ForceRecycle without touching old-generation counters.
     CHECK(b->outstanding_count() == 1);
     CHECK(pool.all_released());
 }
@@ -282,7 +282,7 @@ void scan_before_create() {
     auto pool = make_block_pool<TestBlockPool<ReaderBlock<>>>(64, 1, 4);
     auto* b = pool.get().get();
     finish(b);
-    CHECK(pool.get().get() == b && pool.resource_count() == 1); // 先扫描而不是扩容。
+    CHECK(pool.get().get() == b && pool.resource_count() == 1); // Scan before growing the pool.
     finish(b);
     CHECK(pool.all_released());
     CHECK(pool.preallocate(4) && pool.resource_count() == 4);
@@ -302,7 +302,7 @@ template<class B> void boundaries() {
     finish(b);
     b = pool.get().get();
     auto a2 = b->allocate(1), c2 = b->allocate(1), d2 = b->allocate(1);
-    CHECK(!b->allocate(1) && b->allocated_size() == 3); // 槽位用完不扩容。
+    CHECK(!b->allocate(1) && b->allocated_size() == 3); // Exhausted slice slots must not trigger growth.
     a2.release(); c2.release(); d2.release();
     CHECK(!b->allocate(1));
     finish(b);
@@ -467,7 +467,7 @@ template<class Pool> void slice_pool() {
     }
     pool.close(); pool.close();
     CHECK(!pool.allocate(1));
-    // 最后块已完成并立即归还。
+    // The final block is complete and returned immediately.
     CHECK(pool.in_use_count() == 0);
 }
 

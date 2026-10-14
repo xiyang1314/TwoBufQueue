@@ -4,8 +4,8 @@
 namespace TwoBufQueue {
 enum class WriterBlockState : std::uint8_t { Free, Writing, WriteFinished, LeaveWriter, ForceRecycle };
 
-// 先写入并发布完整数据，再登记已发布增量。模板参数控制切片分配/释放，不控制消息写入。
-// write_ptr_ 仍要求单一发布者或外部同步；false/false 要求所有访问在同一执行流中。
+// Write/publish complete data before registering the published increment. Template arguments control slice allocation/release, not message writing.
+// write_ptr_ still requires one publisher or external synchronization; false/false requires all accesses in one execution stream.
 template<bool is_n_alloc = false, bool is_n_use = true>
 struct alignas(64) WriterBlock : public BasicBlock<is_n_alloc, is_n_use> {
     using Base = BasicBlock<is_n_alloc, is_n_use>;
@@ -77,7 +77,7 @@ struct alignas(64) WriterBlock : public BasicBlock<is_n_alloc, is_n_use> {
         }
         if (finished) (void)loan.recycle();
     }
-    // 必须停止本代写入、切片分配及访问；调用后立即归还。
+    // Stop this generation's writing, slice allocation and accesses first; the call returns the block immediately.
     void force_recycle(std::source_location location = std::source_location::current()) noexcept {
         const auto loan = this->loan();
         bool finished = false;
@@ -90,7 +90,7 @@ struct alignas(64) WriterBlock : public BasicBlock<is_n_alloc, is_n_use> {
         }
         if (finished) (void)loan.recycle();
     }
-    // 写好完整数据后 release 发布；WriteFinished 后不可增长。
+    // Publish complete data with release semantics; growth is forbidden after WriteFinished.
     std::conditional_t<Base::concurrent, std::atomic<std::byte*>, PlainValue<std::byte*>> write_ptr_{nullptr};
     std::uint64_t sequence_ = 0;
 
@@ -114,7 +114,7 @@ private:
             std::lock_guard guard(loan);
             if (!loan.is_valid()) BlockDiagnostics<typename Base::StorageBlock>::report_invalid(
                 "expected Writing, WriteFinished or LeaveWriter range", std::source_location::current());
-            // 锁必须覆盖快照和登记，不能只保护分配器最后的计数更新。
+            // Lock both the snapshot and registration, not only the allocator's final counter update.
             result = this->with_allocation_lock([&] {
                 snapshot = read_snapshot_without_lock();
                 Slice slice;

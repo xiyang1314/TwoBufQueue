@@ -530,3 +530,6 @@ __pycache__/
 /src/read/.DS_Store
 /test/.DS_Store
 /test/func/.DS_Store
+
+# Generated language packages; attach ZIPs to a release.
+/packages/

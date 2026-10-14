@@ -1,21 +1,21 @@
-// HandoffQueue：结合内存池（资源池）的生产者消费者队列，支持 SPSC、MPSC、SPMC、MPMC 和 Sync 模式。
-// 场景：生产者从资源池申请资源并生产产品，消费者处理完成后，组件将资源返还给资源池。
-// 生产端：从【资源池】申请资源（try_acquire） -> 生产出产品   -> 交给【产品队列】（send）
-//                                         -> 当前不能处理 -> 放弃生产，返还资源和预留槽位（discard）
-// 消费端：从【产品队列】登记借出产品（try_claim） -> 回调返回 true  -> 确认完成，归还资源（finish）
-//                                              -> 回调返回 false -> 取消本次领取，按 cancel_claim_mode 决定重试顺序
-// 这里和一般生产者消费者队列的不同点：
-//      1. 资源由外部资源池管理，可以反复借出和归还；本例使用 WarmPool，接入上一级队列需要另做适配。
-//      2. 领取不等于完成：处理条件不足时可以取消领取，下次由当前消费者或其他消费者重新领取。
-//         Keep 每次领取按照入队顺序排在前面的优先领取；QueueTail 放回队尾。均占用资源和槽位，不撤销业务操作。
-//      3. try_acquire 同时预留队列槽位，合法的 send 不会因为队列满而失败；池容量和队列容量分别配置。
-//         send 前资源由生产端独占，send 后生产端不再访问，消费者只处理已交接的产品。
-//      4. 内置 Reader 负责领取、调用回调、确认或取消；用户只需提供 bool(Resource&) noexcept 回调。
-// 执行模式：SPSC/MPSC 使用一个内置读取线程，SPMC/MPMC 可以配置多个；可选择持续轮询或等待信号。
+// HandoffQueue combines a resource pool with a producer-consumer queue, supporting SPSC, MPSC, SPMC, MPMC and Sync.
+// Producers borrow pooled resources and populate them; completed consumption returns each resource to the pool.
+// Producer: borrow from the pool (try_acquire) -> populate the resource -> hand it to the queue (send).
+//                                          -> cannot produce now -> return the resource and reserved slot (discard).
+// Consumer: claim a queued resource (try_claim) -> callback returns true -> acknowledge and return it (finish).
+//                                              -> callback returns false -> cancel; cancel_claim_mode controls retry order.
+// Differences from a conventional producer-consumer queue:
+// 1. An external pool owns reusable resources; this example uses WarmPool. An upstream queue needs a separate adapter.
+// 2. Claiming is not completion: cancel when processing is not possible; the same or another consumer can retry.
+//    Keep prioritizes earlier enqueued claims; QueueTail returns them to the tail. Both retain the resource and slot and do not undo business effects.
+// 3. try_acquire also reserves a queue slot, so a valid send cannot fail because the queue is full. Configure pool and queue capacities separately.
+//    The producer exclusively owns an unsent resource and must stop accessing it after send; consumers handle handed-off resources only.
+// 4. The built-in Reader claims, invokes callbacks and finishes/cancels. Applications supply bool(Resource&) noexcept.
+// SPSC/MPSC use one built-in reader; SPMC/MPMC allow multiple readers. Choose continuous polling or signal-based waits.
 //
-// claim/cancel相比pop的优点是：a.消费者线程处理会更简单些，不需要消费者线程自己pending一个产品；
-//                             b.当消费者线程异常结束的时候，不会产生资源泄漏
-//                             c.cancle_claim可以回到queue中重新排序，这样获取的都是靠前的
+// Compared with pop, claim/cancel: a. simplifies consumers by keeping pending resources in the queue;
+//                               b. avoids losing a removed resource when a consumer exits unexpectedly;
+//                               c. reorders cancelled claims in the queue so earlier eligible work can be claimed first.
 #pragma once
 
 #include "pooled_resource_queue.hpp"
@@ -23,8 +23,8 @@
 
 namespace TwoBufQueue {
 
-// 调度入口：组合资源队列与消费器，保持统一的生产/消费接口。
-// 不持有槽位、队列锁、资源状态或线程；具体操作由独立组件负责。
+// Scheduling facade: compose the resource queue and consumer behind one producer/consumer interface.
+// Owns no slots, queue locks, resource state or threads; the separate components perform those operations.
 template<class Pool, class Callback, class ResourceQueue = PooledResourceQueue<Pool>>
 class HandoffQueue {
 public:
@@ -66,7 +66,7 @@ public:
         if (options_.mode != HandoffMode::Sync) reader_.notify();
         return true;
     }
-    // 安装/解除时生产者必须静止；回调只负责通知，不应重入队列生产接口。
+    // Producers must be quiescent while installing/removing this callback; notify only, never reenter the production interface.
     void set_read_available_callback(NotifyCallback callback, void* context) noexcept {
         notify_ = callback;
         notify_context_ = context;

@@ -1,6 +1,6 @@
-// WarmPool 的自定义工厂：对象如何被创建和销毁。
-// 默认工厂只是 new/delete；当对象需要特殊构造（比如要分配额外资源、要打标记）时，
-// 传入自定义 Factory，池在需要新对象时调用 create()，销毁时调用 dispose()。
+// A custom WarmPool factory controls how objects are created and destroyed.
+// The default factory uses new/delete. Supply a custom factory for special construction,
+// such as allocating extra resources or tagging objects; the pool calls create() and dispose().
 
 #include "TwoBufQueue/src/base_components/WarmPool/warm_pool.hpp"
 #include <cstdint>
@@ -8,40 +8,40 @@
 #include <stdexcept>
 using namespace TwoBufQueue;
 
-// 资源带一个自增 id，方便验证"复用"还是"新建"。
+// An increasing id distinguishes a reused object from a newly created one.
 struct Connection {
     int id = 0;
-    bool reset(std::uint64_t) noexcept { return true; } // 连接本身无需清理，直接复用
+    bool reset(std::uint64_t) noexcept { return true; } // The connection needs no cleanup and can be reused directly.
 };
 
-// 自定义工厂：create() 负责 new + 初始化，dispose() 负责完整销毁。
-// dispose 必须 noexcept；create/dispose 都在池锁之外执行。
+// Custom factory: create() allocates and initializes; dispose() performs complete destruction.
+// dispose must be noexcept; both create and dispose run outside the pool lock.
 struct ConnectionFactory {
     int next_id = 0;
     Connection* create() {
         auto* conn = new Connection;
-        conn->id = ++next_id;        // 每次新建给一个递增的 id
+        conn->id = ++next_id;        // Assign a new increasing id to each new object.
         return conn;
     }
     void dispose(Connection* conn) const noexcept { delete conn; }
 };
 
 int main() try {
-    //--------------- 1. 初始化：用自定义工厂构造池 -----------------------------
-    // 第 3 个参数是工厂实例；第 4 个是"空闲上限"，超过它归还时会回收对象。
+    //---------------1. Initialize a pool with a custom factory---------------
+    // The third argument is the factory; the fourth caps free objects and reclaims excess returns.
     WarmPool<Connection, true, ConnectionFactory> pool(2, 4, ConnectionFactory{}, 2);
 
-    //--------------- 2. 借出两个：工厂新建出 id=1、id=2 -----------------------
+    //---------------2. Borrow two: the factory creates ids 1 and 2-----------
     auto a = pool.get();
     auto b = pool.get();
     if (!a || !b) throw std::runtime_error("get failed");
     if (pool.in_use_count() != 2) throw std::runtime_error("in_use_count mismatch");
 
-    //--------------- 3. 归还后再次借出：应该复用旧对象而不是新建 ---------------
+    //---------------3. Return and borrow again: reuse instead of allocation--
     if (!a.finish() || !b.finish()) throw std::runtime_error("recycle failed");
 
     auto c = pool.get();
-    // id > 2 说明工厂又新建了一个对象（id=3）；复用的话 id 只会是 1 或 2。
+    // An id above 2 means a new object was created (id 3); a reused object has id 1 or 2.
     if (!c || c->id > 2) throw std::runtime_error("expected a reused object, not a new one");
     if (pool.resource_count() != 2) throw std::runtime_error("resource should not grow");
 

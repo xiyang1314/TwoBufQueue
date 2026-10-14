@@ -7,7 +7,7 @@
 using namespace read_test;
 constexpr auto block_only = (std::numeric_limits<std::uint32_t>::max)();
 
-// 直接推进 Service，避免用线程调度或睡眠来证明“没有扫描 current”。
+// Drive Service directly; do not rely on scheduling or sleeps to prove current is not scanned.
 template<bool Single, std::uint32_t Count> static void completed_only_service() {
     WriterFixture source(6, 4, 4);
     Writer<Count, true, std::uint16_t, void> writer(&source.queue, 0);
@@ -18,21 +18,21 @@ template<bool Single, std::uint32_t Count> static void completed_only_service() 
     cfg.is_scan_current = false;
     auto exercise = [&](auto& service) {
         service.prepare_start();
-        CHECK(!service.read_once(true, cancel).pending); // 消费开始记录。
+        CHECK(!service.read_once(true, cancel).pending); // Consume the begin record.
         CHECK(writer.write(0u)); writer.flush();
         CHECK(writer.source_block()->readable().size() == 6);
         for (bool force : {false, true}) {
             CHECK(!service.read_once(force, cancel).pending);
             CHECK(probe.accepted == 0 && writer.source_block()->read_pos() == 0);
         }
-        CHECK(writer.write(1u)); writer.flush(); // 0 进入完成队列，1 仍在 current。
+        CHECK(writer.write(1u)); writer.flush(); // Record 0 is completed; record 1 remains current.
         probe.accept = false;
         CHECK(service.read_once(true, cancel).pending);
         CHECK(probe.accepted == 0 && probe.current_calls == 0);
         probe.accept = true;
         if constexpr (Single) CHECK(!service.read_once(true, cancel).pending);
         else {
-            CHECK(!service.read_notified(cancel).pending); // 拒收后保留通知来源，允许重试。
+            CHECK(!service.read_notified(cancel).pending); // Retain the notified source after rejection so it can retry.
             const auto calls = probe.completed_calls.load();
             CHECK(!service.read_notified(cancel).pending && probe.completed_calls == calls);
         }
@@ -56,7 +56,7 @@ template<bool Single, std::uint32_t Count> static void completed_only_service() 
     }
 }
 
-// 一个源块迫使换块时先交接、再等待归还；覆盖单 Writer、列表及多复制线程路径。
+// A one-block pool forces handoff before waiting for return; cover single-Writer, list and multi-copy-thread paths.
 template<std::uint32_t Count> static void queue_forwarding(unsigned layout) {
     WriterSourceConfig source;
     source.block_size = 60;
@@ -90,11 +90,11 @@ template<std::uint32_t Count> static void queue_forwarding(unsigned layout) {
         queue = std::make_unique<Queue>(callback, std::initializer_list<decltype(w0)*>{&w0}, options);
     else queue = std::make_unique<Queue>(callback, std::initializer_list<decltype(w0)*>{&w0, w1.get()}, options);
     CHECK(queue->started());
-    constexpr unsigned total = 103; // 最后一块有不足一块的尾部。
+    constexpr unsigned total = 103; // The final block contains a partial tail.
     for (unsigned i = 0; i < total; ++i) {
         auto send = [&](auto& writer) {
             CHECK(i % 2 ? writer.write(i) : writer.write_mem(&i, sizeof(i)));
-            if (i % 7 == 0) writer.flush(); // flush 也不允许 current 回调。
+            if (i % 7 == 0) writer.flush(); // Even flush must not invoke current callbacks.
         };
         send(w0);
         if (w1) send(*w1);
@@ -158,31 +158,31 @@ static void sequenced_records() {
     CHECK(queue.stats().saved_partial_frames == 0);
 }
 
-// 容量计数不依赖固定记录长度；覆盖空负载、超长拒写、背压恢复和 finish。
+// Capacity counting must support variable record lengths; cover empty payloads, oversized rejection, pressure recovery and finish.
 static void capacity_edges() {
     WriterFixture source(34, 2, 2);
     Writer<block_only, true, std::uint16_t, void> writer(&source.queue, 0);
     const auto* first = writer.source_block()->data();
-    CHECK(writer.write(std::uint64_t{7})); // 10 字节。
-    CHECK(writer.write(std::uint32_t{9})); // 6 字节。
+    CHECK(writer.write(std::uint64_t{7})); // 10 bytes.
+    CHECK(writer.write(std::uint32_t{9})); // 6 bytes.
     const std::array<std::byte, 2> data{std::byte{1}, std::byte{2}};
-    CHECK(writer.write_mem(data.data(), data.size())); // 4 字节。
+    CHECK(writer.write_mem(data.data(), data.size())); // 4 bytes.
     CHECK(writer.published_write_ptr() == first);
-    CHECK(!writer.write_mem(data.data(), 33)); // 连完整块都放不下；不推进容量。
-    CHECK(writer.write_mem(nullptr, 0)); // 空负载仍有长度前缀。
+    CHECK(!writer.write_mem(data.data(), 33)); // Cannot fit even an entire block; leave capacity unchanged.
+    CHECK(writer.write_mem(nullptr, 0)); // An empty payload still has a length prefix.
     writer.flush();
     CHECK(writer.published_write_ptr() == first + 22);
-    CHECK(writer.write(std::array<std::byte, 12>{})); // 换块，14 字节。
+    CHECK(writer.write(std::array<std::byte, 12>{})); // Switch blocks; 14 bytes.
     const auto* second = writer.source_block()->data();
     CHECK(second != first && writer.published_write_ptr() == second);
     writer.finish_block();
-    CHECK(!writer.write(3u)); // 两个已交接块还未归还；必须安全拒写。
+    CHECK(!writer.write(3u)); // Two handed-off blocks have not returned; safely reject the write.
     while (auto claim = source.queue.try_pop()) {
         if (claim.get()) CHECK(claim->consume(claim->readable().size()));
         source.queue.finish(claim);
     }
     CHECK(source.all_released());
-    CHECK(writer.write(4u)); // 背压后重新申请并重置剩余容量。
+    CHECK(writer.write(4u)); // Reacquire after backpressure and reset remaining capacity.
     writer.flush();
     CHECK(writer.source_block()->readable().size() == 6);
     writer.finish();
@@ -190,7 +190,7 @@ static void capacity_edges() {
     writer.finish(); writer.finish_block(); writer.flush();
 }
 
-// 该策略也允许扫描 current：未 flush 前不可见，flush 后立即可读。
+// This policy also permits scanning current: invisible before flush, immediately readable afterward.
 static void current_flush() {
     WriterFixture source(64, 2, 2);
     Writer<block_only, true, std::uint16_t, void> writer(&source.queue, 0);

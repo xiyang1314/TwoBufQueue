@@ -1,7 +1,7 @@
 #include "../../support/joining_thread.hpp"
-// 多线程写：每个 writer 由一个独立线程写入，多个 writer 汇总到一个 TwoBufQueue。
-// 每个 writer 只能被一个线程调用 write（库内部按线程校验）；用 thread_id 区分记录来源。
-// 再配合 read_layer1_thread_count 开启多个第一层读线程，读写两端都是多线程。
+// Multiple producers: one thread owns each writer; one TwoBufQueue gathers all writers.
+// Only one thread may call write on a writer (checked internally); thread_id identifies the source.
+// read_layer1_thread_count enables multiple layer-1 readers, allowing concurrency at both ends.
 
 #include "../example_support.hpp"
 #include <array>
@@ -10,15 +10,15 @@
 using namespace TwoBufQueue;
 
 int main() try {
-    //--------------- 1. 初始化：4 个 writer（各绑一个 thread_id）+ 2 个读线程 ----
-    // read_layer1_thread_count = 2：2个"第一层"读取线程，把4个writer均分给它们，每个读取线程负责2个writer, 各自并发地把数据搬到第二层缓存
+    //---------------1. Initialize 4 writers (unique thread_id) and 2 readers-
+    // read_layer1_thread_count = 2: split the four writers evenly; each layer-1 reader copies two writers into layer 2 concurrently.
     constexpr std::size_t writer_count = 4, per_writer = 1000, read_layer1_thread_count = 2;
     auto w0 = make_writer<Writer<>>(WriterSourceConfig{.thread_id = 0});
     auto w1 = make_writer<Writer<>>(WriterSourceConfig{.thread_id = 1});
     auto w2 = make_writer<Writer<>>(WriterSourceConfig{.thread_id = 2});
     auto w3 = make_writer<Writer<>>(WriterSourceConfig{.thread_id = 3});
 
-    // 消费回调按 thread_id 分流，逐路校验"顺序 + 数量"。
+    // Route callbacks by thread_id and verify each source's ordering and count.
     std::array<std::uint64_t, writer_count> next{};
     std::array<std::size_t, writer_count> received{};
     bool valid = true;
@@ -34,10 +34,10 @@ int main() try {
 
     ::TwoBufQueue::TwoBufQueue queue(
         rcvCallback,
-        {&w0, &w1, &w2, &w3},                                        // 多 writer
-        TwoBufQueueOptions{.read_layer1_thread_count = read_layer1_thread_count}); // 多读线程
+        {&w0, &w1, &w2, &w3},                                        // Multiple writers.
+        TwoBufQueueOptions{.read_layer1_thread_count = read_layer1_thread_count}); // Multiple readers.
 
-    //--------------- 2. 每个 writer 由独立线程写 per_writer 条 -----------------
+    //---------------2. Each writer thread sends per_writer records----------
     std::array<bool, writer_count> written{};
     {
         std::array<OwnedWriter<Writer<>>*, writer_count> writers{&w0, &w1, &w2, &w3};
@@ -49,12 +49,12 @@ int main() try {
                     if (!writers[i]->write(static_cast<std::uint64_t>(j))) { written[i] = false; break; }
                 writers[i]->finish();
             });
-    } // 离开作用域 join 全部写线程
+    } // Join every writer thread when leaving this scope.
 
-    //--------------- 3. 结束 --------------------------------------------------
-    queue.stop();  // 等所有记录消费完，停掉全部读线程
+    //---------------3. Finish----------------------------------------------
+    queue.stop();  // Consume all remaining records and stop every reader thread.
 
-    //--------------- 4. 校验：每个 writer 的数量与顺序都正确 -------------------
+    //---------------4. Verify each writer's ordering and record count-------
     bool ok = valid;
     for (std::size_t i = 0; i < writer_count; ++i)
         ok = ok && written[i] && received[i] == per_writer;

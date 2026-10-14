@@ -1,7 +1,7 @@
 #include "support.hpp"
 namespace ft {
 void store_cases(Cases &cases) {
-    // S_copy：append 完整复制源数据，源随后被清零不影响块内副本。
+    // S_copy: append copies the full source; clearing the source afterward must not change the stored bytes.
     cases.push_back({"S_copy", [] {
         ReadBlock block(64, 8);
         auto a = framed(17);
@@ -14,7 +14,7 @@ void store_cases(Cases &cases) {
         CHECK(batch.frames[0].thread_id == 2);
         CHECK(batch.frames[0].read_time_ns == 987);
         CHECK(std::memcmp(batch.frames[0].data, saved.data(), 6) == 0);
-        // 领取句柄未归还前阻止回收；归还后 all_released 为真。
+        // Prevent reclamation until the claimed handle is returned; all_released becomes true afterward.
         ReadBlockPool pool(1, 2, ReadBlockFactory{64, 8});
         OutputQueue q(pool, 2);
         auto r = q.try_acquire();
@@ -27,7 +27,7 @@ void store_cases(Cases &cases) {
         CHECK(q.finish(loan));
         CHECK(pool.all_released());
     }});
-    // S_split：超出块剩余字节空间后 append 失败，调用方须换新块。
+    // S_split: append fails if remaining block bytes are insufficient; the caller must acquire another block.
     cases.push_back({"S_split", [] {
         ReadBlock block(10, 8);
         auto a = framed(17), b = framed(23);
@@ -37,7 +37,7 @@ void store_cases(Cases &cases) {
         CHECK(block.data_size() == 6);
         CHECK(std::memcmp(block.frames()[0].data, a.data(), 6) == 0);
     }});
-    // S_zero：空范围不登记 frame。
+    // S_zero: empty ranges do not register frames.
     cases.push_back({"S_zero", [] {
         ReadBlock block(64, 8);
         auto a = framed(1);
@@ -46,7 +46,7 @@ void store_cases(Cases &cases) {
         CHECK(block.frames().size() == 0);
         CHECK(block.data_size() == 0);
     }});
-    // S_queuefull：队列容量背压，取出归还后可再次领取。
+    // S_queuefull: queue-capacity backpressure clears after dequeue/return.
     cases.push_back({"S_queuefull", [] {
         ReadBlockPool pool(1, 4, ReadBlockFactory{64, 8});
         OutputQueue q(pool, 1);
@@ -67,7 +67,7 @@ void store_cases(Cases &cases) {
         CHECK(q.finish(l2));
         CHECK(pool.all_released());
     }});
-    // S_poolfull：池上限背压，归还后可再次领取。
+    // S_poolfull: pool-limit backpressure clears after a resource returns.
     cases.push_back({"S_poolfull", [] {
         ReadBlockPool pool(1, 1, ReadBlockFactory{64, 8});
         OutputQueue q(pool, 4);
@@ -88,7 +88,7 @@ void store_cases(Cases &cases) {
         CHECK(q.finish(l2));
         CHECK(pool.all_released());
     }});
-    // S_slots：frame 名额耗尽后 append 失败。
+    // S_slots: append fails after frame slots are exhausted.
     cases.push_back({"S_slots", [] {
         ReadBlock block(100, 1);
         auto a = framed(17), b = framed(23);
@@ -97,7 +97,7 @@ void store_cases(Cases &cases) {
         CHECK(block.frames().size() == 1);
         CHECK(block.data_size() == 6);
     }});
-    // S_closed：关闭后领取失败且原因精确。
+    // S_closed: acquisition after close fails with the exact status.
     cases.push_back({"S_closed", [] {
         ReadBlockPool pool(1, 2, ReadBlockFactory{64, 8});
         {
@@ -116,7 +116,7 @@ void store_cases(Cases &cases) {
             CHECK(pool.all_released());
         }
     }});
-    // S_retry：read_records 进度持久化（不重复交付）；格式错误粘滞、重试仍失败。
+    // S_retry: read_records persists progress without duplicate delivery; malformed-record errors remain sticky across retries.
     cases.push_back({"S_retry", [] {
         ReadBlock block(64, 8);
         auto a = framed(17), b = framed(23);
@@ -136,7 +136,7 @@ void store_cases(Cases &cases) {
         CHECK(bad.record_error() == ReadRecordError::incomplete_length);
         CHECK(!read_records<std::uint16_t>(bad, cb2));
     }});
-    // S_notify：池归还回调每次归还触发一次，清除回调后不再触发。
+    // S_notify: the pool return callback fires once per return and stops firing after removal.
     cases.push_back({"S_notify", [] {
         ReadBlockPool pool(1, 2, ReadBlockFactory{64, 8});
         std::atomic<unsigned> released{0};
@@ -157,7 +157,7 @@ void store_cases(Cases &cases) {
         }
         CHECK(pool.all_released());
     }});
-    // S_timeout：池耗尽时 wait_get 超时返回空凭证。
+    // S_timeout: wait_get returns an empty ticket when an exhausted pool reaches its timeout.
     cases.push_back({"S_timeout", [] {
         ReadBlockPool pool(1, 1, ReadBlockFactory{64, 8});
         auto loan = pool.get();
@@ -166,7 +166,7 @@ void store_cases(Cases &cases) {
         CHECK(pool.recycle(loan));
         CHECK(pool.all_released());
     }});
-    // S_invalid_*：非法来源、负数编号、超块帧、超批次、粘滞无效来源。
+    // S_invalid_*: invalid source, negative id, oversized frame/batch and sticky invalid-source state.
     for (std::string k : {"null", "id", "block", "batch", "prevalidate"})
         cases.push_back({"S_invalid_" + k, [k] {
             auto bytes = payload(128);

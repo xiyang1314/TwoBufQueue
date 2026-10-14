@@ -58,7 +58,7 @@ static void order() {
     for (auto mode : {CancelClaimMode::Keep, CancelClaimMode::QueueTail}) {
         Pool pool(4, 4);
         Queue queue(pool, 4, true, mode);
-        // acquire 顺序与 send 顺序相反；必须按实际入队顺序，不按池槽位/资源地址。
+        // Acquire and send in opposite orders; honor actual enqueue order, not pool slot/resource address order.
         auto second = queue.try_acquire();
         auto first = queue.try_acquire();
         first.loan->value = 1; second.loan->value = 2;
@@ -67,7 +67,7 @@ static void order() {
         auto a = queue.try_claim();
         auto b = queue.try_claim();
         assert(a && a->value == 1 && b && b->value == 2);
-        assert(queue.cancel_claim(b) && queue.cancel_claim(a)); // 逆序取消。
+        assert(queue.cancel_claim(b) && queue.cancel_claim(a)); // Cancel in reverse order.
         if (mode == CancelClaimMode::Keep) {
             expect(queue, 1); expect(queue, 2); expect(queue, 3);
         } else {
@@ -85,10 +85,10 @@ static void receive_and_reuse() {
     auto b = queue.try_claim();
     assert(a->value == 1 && b->value == 2);
     assert(queue.cancel_claim(a));
-    auto received = queue.try_receive(); // 普通 receive 也必须先领取取消的 a。
+    auto received = queue.try_receive(); // Ordinary receive must also claim cancelled a first.
     assert(received && received->value == 1);
     assert(queue.finish(received));
-    send(queue, 4);                     // 复用刚释放的槽位，仍排在 3 后面。
+    send(queue, 4);                     // Reuse the released slot while remaining behind record 3.
     expect(queue, 3); expect(queue, 4);
     assert(queue.cancel_claim(b));
     expect(queue, 2);
@@ -132,7 +132,7 @@ static void parallel() {
         assert(queue.cancel_claim(claim));
     });
     until([&] { return held.load(std::memory_order_acquire); });
-    expect(queue, 2); expect(queue, 3); // a 正在使用不阻塞 b、c。
+    expect(queue, 2); expect(queue, 3); // Running a must not block b or c.
     for (int i = 4; i < 1004; ++i) { send(queue, i); expect(queue, i); }
     release.store(true, std::memory_order_release);
     first.join();
@@ -146,9 +146,9 @@ static void first_order() {
     assert(queue.try_push(0) && queue.try_push(1) && queue.try_push(2));
     paused = false; resume = false;
     std::uint32_t a = 99, b = 99, value = 99;
-    std::thread first([&] { pause_at = 3; assert(queue.try_pop(a)); }); // CAS 成功后暂停。
+    std::thread first([&] { pause_at = 3; assert(queue.try_pop(a)); }); // Pause after successful CAS.
     until([] { return paused.load(std::memory_order_acquire); });
-    assert(queue.try_pop(b) && b == 1); // 第二个出队先返回。
+    assert(queue.try_pop(b) && b == 1); // The second dequeue returns first.
     resume.store(true, std::memory_order_release);
     first.join();
     assert(a == 0);
@@ -165,13 +165,13 @@ static void cancel_race() {
     assert(queue.try_push(0) && queue.try_pop(a));
     assert(queue.try_push(1));
     paused = false; resume = false; publishing_cancel = false;
-    std::thread normal([&] { pause_at = 4; assert(queue.try_pop(b)); }); // FIFO CAS 前暂停。
+    std::thread normal([&] { pause_at = 4; assert(queue.try_pop(b)); }); // Pause before FIFO CAS.
     until([] { return paused.load(std::memory_order_acquire); });
     std::atomic<bool> cancelled{false};
     std::thread cancel([&] { assert(queue.requeue(a)); cancelled.store(true); });
     until([] { return publishing_cancel.load(std::memory_order_acquire); });
     assert(!cancelled.load());
-    assert(queue.try_push(2)); // 新发送仍可前进，但新领取不能越过正在发布的取消。
+    assert(queue.try_push(2)); // New sends can progress, but new claims cannot bypass cancellation publication in progress.
     assert(!queue.try_pop(value));
     resume.store(true, std::memory_order_release);
     normal.join(); cancel.join();

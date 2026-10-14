@@ -12,8 +12,8 @@
 
 namespace TwoBufQueue {
 
-// 独立消费器：Queue 只需提供 Resource、try_claim/finish/cancel_claim/has_ready。
-// 不依赖 HandoffQueue、WarmPool 或 ClaimQueue 的具体类型。
+// Independent consumer: Queue supplies Resource, try_claim/finish/cancel_claim/has_ready.
+// Does not depend on concrete HandoffQueue, WarmPool or ClaimQueue types.
 template<class Queue, class Callback>
 class HandoffReader {
     static_assert(std::is_nothrow_invocable_r_v<bool, Callback&, typename Queue::Resource&>,
@@ -37,7 +37,7 @@ public:
         delete[] workers_;
     }
 
-    // 入队成功后通知。同步模式由调用线程消费；异步模式仅唤醒等待者。
+    // Notify after enqueue succeeds. Sync mode consumes in the caller; asynchronous mode only wakes waiters.
     void notify() noexcept {
         if (options_.mode == HandoffMode::Sync) process_pending();
         else notify_worker();
@@ -57,9 +57,9 @@ public:
                 }
                 break;
             }
-            // acquire 接收忙调用者 exchange(true) 发布的 requests 更新。
+            // acquire observes requests updates published by busy callers' exchange(true).
             (void)processing_.exchange(false, std::memory_order_acq_rel);
-            // 封闭最后一次空检查与退出之间的 send/notify；拒绝则仍立即结束本轮。
+            // Close the send/notify race between the last empty check and exit; rejection still ends this round immediately.
             if (requests_.load(std::memory_order_acquire) == observed) return;
             if (processing_.exchange(true, std::memory_order_acq_rel)) return;
         }
@@ -67,7 +67,7 @@ public:
     [[nodiscard]] bool is_processing() const noexcept { return processing_.load(std::memory_order_acquire); }
     [[nodiscard]] bool is_running() const noexcept { return running_.load(std::memory_order_acquire); }
 
-    // 生命周期操作由使用者串行化；不能从自己的回调中调用 start/stop 或析构。
+    // The caller serializes lifecycle operations; never call start/stop or destroy this object from its own callback.
     bool start() noexcept {
         if (!workers_) return true;
         if (is_running()) return false;
@@ -106,14 +106,14 @@ private:
             if (!queue_.finish(claim)) std::terminate();
             return ReadResult::Finished;
         }
-        // 直接取消，不通知自己，避免 WaitSignal 退化为失败忙循环。
+        // Cancel directly without self-notification so WaitSignal does not become a busy retry loop.
         if (!queue_.cancel_claim(claim)) std::terminate();
         return ReadResult::Cancelled;
     }
     void notify_worker() noexcept {
         if (options_.reader_mode != ReaderMode::WaitSignal) return;
-        // 即使没有等待者，也发布这次入队通知。随后登记的 Reader 通过同一原子的
-        // acquire RMW 观察发布，等待协议不再依赖某种具体队列的内部锁。
+        // Publish every enqueue notification even when no waiter exists. A Reader registering afterward observes it
+        // through acquire RMW on the same atomic; the wait protocol does not depend on a particular queue's internal lock.
         auto mask = sleepers_.fetch_or(0, std::memory_order_acq_rel);
         while (mask) {
             const auto index = std::countr_zero(mask);
@@ -143,7 +143,7 @@ private:
                 continue;
             }
             sleepers_.fetch_or(bit, std::memory_order_acq_rel);
-            // 先登记再复查；配合 notify_worker 的 RMW，封闭通知与入睡之间的空隙。
+            // Register before checking again; together with notify_worker's RMW, this closes the notification-to-sleep race.
             if (result == ReadResult::Empty && queue_.has_ready()) {
                 sleepers_.fetch_and(~bit, std::memory_order_acq_rel);
                 continue;

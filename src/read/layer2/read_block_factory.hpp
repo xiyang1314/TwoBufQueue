@@ -5,7 +5,7 @@
 
 namespace TwoBufQueue {
 
-// 只保存容量；创建、销毁可以由多个生产/消费线程并发调用。
+// Stores capacities only; multiple producer/consumer threads may create/destroy concurrently.
 class ReadBlockFactory {
 public:
     ReadBlockFactory(std::size_t block_capacity, std::size_t frame_capacity)

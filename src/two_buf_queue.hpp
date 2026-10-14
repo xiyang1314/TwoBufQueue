@@ -27,31 +27,31 @@
 
 namespace TwoBufQueue {
 
-// TwoBufQueue / TwoBufQueueBatch 的构造参数，全部可选，不传即用默认值。
-// 只包含读取侧（输出）参数；源侧（源块池 / 交接队列 / writer）由用户自行构造并传入。
+// Optional TwoBufQueue / TwoBufQueueBatch constructor options; omitted fields use their defaults.
+// Reader/output options only; callers construct and supply the source pool, handoff queue and writer separately.
 struct TwoBufQueueOptions {
-    // ── 输出读取侧（读取线程复制 + 消费回调） ──
-    std::size_t output_block_size = 64 * 1024;   // 单个输出块字节数
-    std::size_t output_frame_capacity = 64;      // 每个输出块最多 frame 数
-    std::size_t output_pool_min = 2;             // 输出块池最小/初始数量
-    std::size_t output_pool_max = 8;             // 输出块池最大数量
-    std::size_t output_queue_capacity = 8;       // 输出块交接队列容量
-    // ── 读取线程（read_ctrl）数量：writer 均分到各线程，默认 1 ──
+    // Output side: reader copying and consumer callbacks.
+    std::size_t output_block_size = 64 * 1024;   // Bytes per output block.
+    std::size_t output_frame_capacity = 64;      // Maximum frames per output block.
+    std::size_t output_pool_min = 2;             // Minimum/initial output pool blocks.
+    std::size_t output_pool_max = 8;             // Maximum output pool blocks.
+    std::size_t output_queue_capacity = 8;       // Output handoff queue capacity.
+    // read_ctrl thread count: distribute writers evenly; default is 1.
     std::size_t read_layer1_thread_count = 1;
-    // ── 读取线程调优（worker_cpu / idle spin / finish_timeout 等） ──
-    ReadConfig read_config{};                    // 各字段默认值见 read_layer1/types.hpp
-    CancelClaimMode cancel_claim_mode = CancelClaimMode::QueueTail; // 输出队列取消后的领取顺序
-    // 缓冲输出消费配置：默认由独立回调线程消费，支持一个或多个复制线程生产。
-    // 逐条同步回调由 Writer / SeqWriter 的非 void TSyncContext 选择，不使用这些输出参数。
-    // TwoBufQueueBatch 的 Sync 仍表示在复制线程同步处理整批。
+    // Reader tuning: worker_cpu, idle spins, finish_timeout, etc.
+    ReadConfig read_config{};                    // Field defaults are documented in read_layer1/types.hpp.
+    CancelClaimMode cancel_claim_mode = CancelClaimMode::QueueTail; // Claim ordering after output-queue cancellation.
+    // Buffered output: an independent callback thread by default; one or more copy threads may produce.
+    // Non-void Writer / SeqWriter TSyncContext selects synchronous per-record callbacks and bypasses these output options.
+    // For TwoBufQueueBatch, Sync still processes each batch synchronously in the copy thread.
     HandoffMode output_mode = HandoffMode::MPSC;
     ReaderMode output_reader_mode = ReaderMode::WaitSignal;
-    std::size_t output_reader_count = 1;         // SPMC/MPMC 可设置多个；Sync 忽略。
-    std::chrono::microseconds output_retry_wait{1000}; // 回调拒绝后的重试等待。
+    std::size_t output_reader_count = 1;         // Multiple readers allowed for SPMC/MPMC; ignored by Sync.
+    std::chrono::microseconds output_retry_wait{1000}; // Retry delay after callback rejection.
     bool output_enable_stats = false;
 };
 
-// 判断 WriterT 是否带 seq（SeqWriter 定义了 SeqType 别名）。
+// Detect sequence-capable WriterT (SeqWriter defines SeqType).
 template<class WriterT, class = void>
 struct is_seq_writer : std::false_type {};
 template<class WriterT>
@@ -63,9 +63,9 @@ template<class WriterT>
 struct is_sync_writer<WriterT, std::void_t<decltype(WriterT::is_sync)>>
     : std::bool_constant<WriterT::is_sync> {};
 
-// 按 WriterT 的记录布局选择合适的逐条解析回调：
-// 普通 Writer 用 make_record_callback（[长度前缀][负载]）；
-// SeqWriter 用 make_seq_record_callback（[seq][长度前缀][负载]，回调多一个 seq 首参）。
+// Select the per-record callback adapter from WriterT's record layout:
+// ordinary Writer uses make_record_callback ([length prefix][payload]);
+// SeqWriter uses make_seq_record_callback ([seq][length prefix][payload]) with a leading seq callback argument.
 template<class WriterT, class Callback>
 auto make_writer_record_callback(Callback callback) {
     if constexpr (is_seq_writer<WriterT>::value) {
@@ -76,15 +76,15 @@ auto make_writer_record_callback(Callback callback) {
     }
 }
 
-// 双缓冲管道的公共骨架（内部实现）：组装外部 WriterT + 输出侧 HandoffQueue + ReadWorker。
-// 分两层：一层是 writer（用户构造、拥有全部写/停接口），一层是 queue（只管读取复制与消费回调）。
-// 因此本层不构造、不拥有 writer，也不代理任何写接口；用户直接调用自己的 writer。
+// Shared internal pipeline skeleton: externally owned WriterT + output HandoffQueue + ReadWorker.
+// Writer owns all production/stop interfaces; queue owns reading, copying and consumer callbacks only.
+// This layer neither constructs/owns Writer nor forwards writes; applications call their own Writer directly.
 template<class WriterT, class BlockCallback>
 class TwoBufQueueBase {
     using OutputPool = ReadBlockPool;
     using OutputQueue = HandoffQueue<OutputPool, BlockCallback>;
     using Bridge = ToReadBlock<OutputQueue>;
-    // 构造时选择管道；variant 仅用于启动/停止/查询，不进入读取或回调热路径。
+    // Select the pipeline at construction; variant is used only for startup/stop/queries, never in read/callback hot paths.
     struct SingleReader {
         Bridge bridge;
         SingleReadWorker<Bridge> worker;
@@ -94,7 +94,7 @@ class TwoBufQueueBase {
         template<class TFunction> void for_each(TFunction function) const { function(worker); }
     };
     struct MultiReaders {
-        // 两种对象不可移动，用地址稳定的 deque 保存。
+        // Neither object is movable; deque preserves stable addresses.
         std::deque<Bridge> bridges;
         std::deque<ReadWorker<Bridge>> workers;
         MultiReaders(OutputQueue& output, std::initializer_list<WriterT*> writers,
@@ -119,7 +119,7 @@ class TwoBufQueueBase {
     };
 
 public:
-    // 独立的单 Writer 构造路径，不建立 Writer 列表或多来源 Worker。
+    // Dedicated single-Writer constructor: no Writer list or multi-source Worker.
     TwoBufQueueBase(WriterT& writer, BlockCallback block_callback, TwoBufQueueOptions options)
         : output_pool_(options.output_pool_min, options.output_pool_max,
                        ReadBlockFactory{options.output_block_size, options.output_frame_capacity}),
@@ -140,8 +140,8 @@ public:
     TwoBufQueueBase(const TwoBufQueueBase&) = delete;
     TwoBufQueueBase& operator=(const TwoBufQueueBase&) = delete;
 
-    // 停止全部读取线程，并等待所有已入队记录被消费完。幂等；析构时也会调用。
-    // 注意：writer 的 finish() 由用户负责，本层不代为结束生产者。
+    // Stop every reader and wait until every enqueued record is consumed. Idempotent; also called by the destructor.
+    // The caller must finish each writer; this layer does not end producers on their behalf.
     void stop() noexcept {
         if (stopped_) return;
         stopped_ = true;
@@ -221,33 +221,33 @@ private:
     bool stopped_ = false;
 };
 
-// 简单易用的「双缓冲记录队列」，逐条回调；writer 由用户构造后传入。
+// Simple two-buffer record queue with per-record callbacks and caller-constructed writers.
 //
-//   用户先构造源块池 + 交接队列 + WriterT（或 SeqWriter），再把它传给本类；
-//   本类内部把源块复制到输出块，默认由独立回调线程按条交付。
-//   非 void TSyncContext 在 write / write_mem 所在的写线程直接调用原始回调。
-//   Writer 类型不区分数量：构造时只有一个 Writer 则无锁，多个 Writer 则共享回调锁。
-//   可传入多个 writer 和多个读取线程（read_layer1_thread_count），writer 均分到各线程。
+// Construct the source pool, handoff queue and WriterT (or SeqWriter), then pass the writer to this class.
+// Internally copy source blocks into output blocks; independent callback threads deliver records by default.
+// Non-void TSyncContext directly invokes the original callback in the producer's write / write_mem call.
+// Writer type is independent of count: one Writer uses no callback lock; multiple Writers share a callback lock.
+// Supply multiple writers and read_layer1_thread_count reader threads; distribute writers evenly among them.
 //
-// 约束：每个 writer 仍是单生产者（SPSC）；同一队列的多个 writer 必须是同一 WriterT，
-// 且各自 thread_id 互不相同（记录回调据此区分来源）。
-// WriterT 必须是带长度前缀的写入器（TIsWriteLen=true，定义了 DataLen）；
-// 无前缀的 frameless writer（如 Writer<1,false>）请用 TwoBufQueueBatch。
+// Each writer remains single-producer (SPSC); all writers in a queue must use the same WriterT
+// and distinct thread_id values, which identify sources in record callbacks.
+// WriterT must include a length prefix (TIsWriteLen = true and a DataLen alias).
+// Use TwoBufQueueBatch for frameless writers without prefixes, such as Writer<1, false>.
 //
-// 消费回调签名（普通 Writer）：
+// Consumer callback signature for ordinary Writer:
 //   void(std::int32_t thread_id, const std::byte* data, std::size_t size) noexcept
-// 消费回调签名（SeqWriter）：
+// Consumer callback signature for SeqWriter:
 //   void(std::int32_t thread_id, TSeq seq, const std::byte* data, std::size_t size) noexcept
-// thread_id 是记录来源编号；data 只在回调返回前有效，不得保存指针；回调返回值被忽略。
+// thread_id identifies the source. data is valid only until callback return; never retain its pointer. Ignore callback return values.
 //
-// 用法（单 writer）：
+// Single-writer usage:
 //   auto writer = make_writer<Writer<>>();
 //   TwoBufQueue queue([](std::int32_t tid, const std::byte* d, std::size_t n) noexcept {}, writer);
-// 用法（多 writer + 多读线程，writer 均分）：
+// Multiple writers/readers with evenly assigned writers:
 //   TwoBufQueue queue(callback, {&w0, &w1, &w2, &w3}, {.read_layer1_thread_count = 2});
 //   writer.write_mem("hello", 5);
-//   writer.finish();   // 生产者结束（由用户负责）
-//   queue.stop();      // 等待全部记录消费完并停止线程
+//   writer.finish();   // The application finishes the producer.
+//   queue.stop();      // Consume every record and stop the threads.
 template<class RecordCallback, class WriterT>
 class TwoBufQueue
     : public TwoBufQueueBase<WriterT,
@@ -257,11 +257,11 @@ class TwoBufQueue
     static_assert(!is_sync_writer<WriterT>::value, "sync selection must match the Writer type");
 
 public:
-    // 单 writer（最常用）。
+    // Single writer: the most common case.
     TwoBufQueue(RecordCallback callback, WriterT& writer, TwoBufQueueOptions options = {})
         : Base(writer, make_writer_record_callback<WriterT>(std::move(callback)), record_options(options)) {}
 
-    // 多 writer：同一 WriterT、thread_id 唯一；可选 read_layer1_thread_count 分多个读线程。
+    // Multiple writers share WriterT and have unique thread_id values; read_layer1_thread_count optionally enables multiple readers.
     TwoBufQueue(RecordCallback callback, std::initializer_list<WriterT*> writers,
                  TwoBufQueueOptions options = {})
         : Base(writers, make_writer_record_callback<WriterT>(std::move(callback)), record_options(options)) {}
@@ -274,8 +274,8 @@ private:
     }
 };
 
-// 同步路径只持有原始回调 Context 与 Writer 借用，不构造输出池或任何读取线程。
-// Writer 必须先 finish、写线程必须先 join，再 stop；此时仅归还原构造/finish 的空源块。
+// The synchronous path retains the original callback Context and borrowed Writers only, without output pools or reader threads.
+// Finish Writers and join producer threads before stop; only empty source blocks from construction/finish are returned here.
 template<class RecordCallback, class WriterT>
     requires (is_sync_writer<WriterT>::value)
 class TwoBufQueue<RecordCallback, WriterT> {
@@ -332,7 +332,7 @@ public:
             }
             source.close();
             while (auto record = source.try_pop()) {
-                // 同步 write 不推进源游标，因此旧生命周期只有开始记录与空完成块。
+                // Synchronous write does not advance source cursors, so the original lifecycle contains only begin records and empty completed blocks.
                 if (record.get() && !record->readable().empty()) {
                     std::fputs("sync writer unexpectedly contains buffered data\n", stderr);
                     std::terminate();
@@ -343,7 +343,7 @@ public:
         });
     }
 
-    // 同步模式 started 表示绑定可用；stats 的复制侧字段保持零。
+    // In synchronous mode started means the callback binding is usable; copy-side statistics remain zero.
     [[nodiscard]] bool started() const noexcept { return !stopped_; }
     [[nodiscard]] ReadError error_code() const noexcept { return ReadError::none; }
     [[nodiscard]] std::string last_error() const { return error_message(error_code()); }
@@ -367,9 +367,9 @@ private:
     bool stopped_ = false;
 };
 
-// 「双缓冲记录队列」的整批回调版本：回调收到整个 DataBatch（若干 frame 的只读视图），
-// 返回 true 表示整批已处理；false 表示整批未处理，下一轮从头重试。
-// 适用于无长度前缀的 frameless writer（如 Writer<1,false>），也适用于需要整批吞吐的场景。
+// Batch-callback form of the two-buffer queue: the callback receives the entire DataBatch (read-only frame views).
+// true accepts the whole batch; false leaves it unhandled for a complete retry next round.
+// Suitable for frameless writers such as Writer<1, false>, or applications processing whole batches for throughput.
 template<class BatchCallback, class WriterT>
 class TwoBufQueueBatch
     : public TwoBufQueueBase<WriterT,
@@ -388,7 +388,7 @@ public:
         : Base(writers, make_batch_callback(std::move(callback)), options) {}
 };
 
-// 类模板实参推导：WriterT 从传入的 writer 自动推导（普通 Writer 或 SeqWriter 均可）。
+// Class template argument deduction obtains WriterT from the supplied writer, including ordinary Writer and SeqWriter.
 template<class RecordCallback, class WriterT>
 TwoBufQueue(RecordCallback, WriterT&, TwoBufQueueOptions = {}) -> TwoBufQueue<RecordCallback, WriterT>;
 

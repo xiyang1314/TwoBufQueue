@@ -7,9 +7,9 @@
 
 namespace TwoBufQueue {
 
-// 与 Writer 的 DataLen 一致；前缀为小端、长度不含前缀，可包含空负载。每条数据开头会记录这一条的数据长度
-// callback 每条被调用即确认一条，返回值被忽略；首参 thread_id 是写入来源编号。
-// 进度属于 Block，取消领取后换一个线程也不重复已成功的记录。
+// Match the Writer's DataLen. Each record starts with a little-endian payload length excluding the prefix; empty payloads are allowed.
+// Invoking callback acknowledges one record; ignore its return value. The first argument, thread_id, identifies the producer source.
+// Progress belongs to Block, so another thread retrying a cancelled claim does not repeat acknowledged records.
 template<class DataLen, class Callback>
 bool read_records(ReadBlock& block, Callback& callback) noexcept {
     static_assert(std::is_integral_v<DataLen> && std::is_unsigned_v<DataLen> &&
@@ -46,7 +46,7 @@ bool read_records(ReadBlock& block, Callback& callback) noexcept {
     return true;
 }
 
-// 整批 true 表示全部处理完；false 表示整批未处理，不能先产生部分不可重试的结果。
+// true accepts the whole batch; false rejects it. Do not produce partial effects that cannot safely be retried.
 template<class Callback>
 auto make_batch_callback(Callback callback) {
     static_assert(std::is_nothrow_invocable_r_v<bool, Callback&, const DataBatch&>,
@@ -57,8 +57,8 @@ auto make_batch_callback(Callback callback) {
     };
 }
 
-// 使用同一适配器时所有 frame 必须使用相同 DataLen，且记录不能跨 frame。
-// 格式错误返回 false 并留在块内，绝不静默跳过；自定义 Block 回调可查询 record_error()。
+// All frames using one adapter must share DataLen, and records must not cross frame boundaries.
+// Malformed data returns false and stays in the block; never skip it silently. Custom Block callbacks can query record_error().
 template<class DataLen = std::uint16_t, class Callback>
 auto make_record_callback(Callback callback) {
     return [callback = std::move(callback)](ReadBlock& block) mutable noexcept -> bool {
@@ -66,9 +66,9 @@ auto make_record_callback(Callback callback) {
     };
 }
 
-// 与 read_records 对应，但每条记录最前面多了固定大小的小端 seq（SeqWriter 布局）。
-// 记录布局：[seq (sizeof(TSeq))] [长度前缀 (sizeof(DataLen))] [负载]
-// 回调签名：void(std::int32_t thread_id, TSeq seq, const std::byte* data, std::size_t size) noexcept。
+// Like read_records, but prepend a fixed-width little-endian seq to each record (SeqWriter format).
+// Record layout: [seq (sizeof(TSeq))] [length prefix (sizeof(DataLen))] [payload].
+// Callback: void(std::int32_t thread_id, TSeq seq, const std::byte* data, std::size_t size) noexcept.
 template<class TSeq, class DataLen, class Callback>
 bool read_seq_records(ReadBlock& block, Callback& callback) noexcept {
     static_assert(std::is_integral_v<TSeq> && std::is_unsigned_v<TSeq> &&
@@ -113,7 +113,7 @@ bool read_seq_records(ReadBlock& block, Callback& callback) noexcept {
     return true;
 }
 
-// 把用户回调包装成 seq 记录的 Block 回调；TSeq / DataLen 必须与 SeqWriter 一致。
+// Wrap a user callback as a sequence-record Block callback; TSeq / DataLen must match SeqWriter.
 template<class TSeq, class DataLen = std::uint16_t, class Callback>
 auto make_seq_record_callback(Callback callback) {
     return [callback = std::move(callback)](ReadBlock& block) mutable noexcept -> bool {
@@ -121,8 +121,8 @@ auto make_seq_record_callback(Callback callback) {
     };
 }
 
-// 与 make_batch_callback 等价，但回调传入对象并调用其固定成员 on_rcv_batch(const DataBatch&)。
-// 返回的适配器仅持有引用、不转移所有权，对象生命周期需覆盖整个 HandoffQueue 使用期间。
+// Like make_batch_callback, but invoke the object's fixed on_rcv_batch(const DataBatch&) member.
+// The adapter borrows a reference without ownership; the object must outlive the entire HandoffQueue usage.
 template<class Callback>
 auto make_batch_obj_callback(Callback& callback) {
     static_assert(std::is_nothrow_invocable_r_v<bool, Callback&, const DataBatch&>,
@@ -133,7 +133,7 @@ auto make_batch_obj_callback(Callback& callback) {
     };
 }
 
-// 与 make_record_callback 等价，但回调传入对象并调用其固定成员 on_rcv_record(thread_id, data, size)。
+// Like make_record_callback, but invoke the object's fixed on_rcv_record(thread_id, data, size) member.
 template<class DataLen = std::uint16_t, class Callback>
 auto make_record_obj_callback(Callback& callback) {
     static_assert(std::is_nothrow_invocable_r_v<void, Callback&, std::int32_t, const std::byte*, std::size_t>,
