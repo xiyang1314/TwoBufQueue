@@ -4,7 +4,7 @@
   "source_tree_modified_by_export": false,
   "git_history_copied": false,
   "file_count": 804,
-  "total_bytes": 66915973,
+  "total_bytes": 66917289,
   "preserved_unselected_files": [
     ".DS_Store",
     ".github/.DS_Store",
@@ -1172,29 +1172,29 @@
     },
     {
       "path": "README.html",
-      "bytes": 29844,
-      "sha256": "7fe28715ebd94d4678d04d8fc9c7524bf342c53fa4582beb07015afd73b81dc0",
+      "bytes": 30215,
+      "sha256": "21f28dcfc385fd0b4fff21321af2b2c275ed43f2147c39ce7e70faa10d132ce9",
       "source_path": "README.html",
       "source_sha256": "11654733c104777e7609e19ec7befe248a0e8548a111a4aaa261b2a15fa856d8"
     },
     {
       "path": "README.md",
-      "bytes": 8729,
-      "sha256": "f7f5d68e74d40746a2973bff61e8a6809b2ccde4704491018f02427f9155867b",
+      "bytes": 9094,
+      "sha256": "a90e5332fccd4d584cfea7397a337f65f000c8640b04f4c9555d55b40b64ffd8",
       "source_path": "README.md",
       "source_sha256": "e8f7460dd765d2d84b8866401b47012720c71fc26d2430daba2f744c84753be4"
     },
     {
       "path": "README.zh-CN.html",
-      "bytes": 29418,
-      "sha256": "268de77ccf57f03223a9b8c5545f54812526d2d94f6f0534e364e54140f06ea7",
+      "bytes": 29711,
+      "sha256": "389438cb6637a285d8e95fab2dd3069b7837c525be14f74063227d571ba823cb",
       "source_path": "README.zh-CN.html",
       "source_sha256": "996674e7697dd5e4d7b971dbd250f2b779c9f776083f31dec7d635236f963362"
     },
     {
       "path": "README.zh-CN.md",
-      "bytes": 8446,
-      "sha256": "27429f1842d1606c9496a73f5ea95b44cc8e6b62a483fa0500f9c6815e10a424",
+      "bytes": 8733,
+      "sha256": "3bc50e9ef8388a9616a1fe7e0c8e52e35bbb28a83a07d1979310ef3565b1ee0b",
       "source_path": "README.zh-CN.md",
       "source_sha256": "663a8da5cbc706c83603d1ce2f77e321af4f7a42c1afa7d80b8df74d6f7a4dfa"
     },
@@ -6390,6 +6390,6 @@
       "source_sha256": "a8f1af99e01b0e16ef09a6c5d6c4dbff1f5d5ff3ba7ffef601423bd68bf47164"
     }
   ],
-  "refreshed_at": "2026-10-14T21:28:03.647071+08:00",
+  "refreshed_at": "2026-10-14T22:20:15.481905+08:00",
   "refresh_policy": "bytes/sha256 describe current canonical files; source_path/source_sha256 retain original export provenance where present."
 }
