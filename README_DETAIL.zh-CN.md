@@ -372,7 +372,7 @@ find_package(TwoBufQueue 0.6 CONFIG REQUIRED)
 target_link_libraries(your_app PRIVATE TwoBufQueue::TwoBufQueue)
 ```
 
-[接入文档](https://xiyang1314.github.io/TwoBufQueue/docs/guides/INTEGRATION.zh-CN.html) 包含安装命令、可迁移安装目录和 FetchContent 用法。CMake 包版本为 0.6.0，仅用于包版本识别，不表示已创建 Release 或标签。
+[接入文档](https://xiyang1314.github.io/TwoBufQueue/docs/guides/INTEGRATION.zh-CN.html) 包含安装命令、可迁移安装目录和 FetchContent 用法。CMake 包版本为 0.6.1，仅用于包版本识别，不表示已创建 Release 或标签。
 
 ### 5.4 使用边界
 

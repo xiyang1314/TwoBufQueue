@@ -489,3 +489,7 @@ if (localizedReading.error) throw localizedReading.error;
 if (localizedReading.status !== 0) throw new Error('Reading-page localization failed.');
 
 buildGithubReading();
+
+const languageDirectories = spawnSync(readingPython, [resolve(root, 'tools/build_language_docs.py'), '--root', root], { stdio: 'inherit' });
+if (languageDirectories.error) throw languageDirectories.error;
+if (languageDirectories.status !== 0) throw new Error('Language-directory generation failed.');

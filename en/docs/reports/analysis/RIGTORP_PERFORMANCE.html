@@ -1,0 +1,95 @@
+<!-- Generated language reading page from docs/reports/analysis/RIGTORP_PERFORMANCE.html; source SHA256 d071be89014ba1628d1c51a68442af1878db95735f032f2cd14b48d4c3ad7cdd. -->
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>rigtorp benchmark regression · TwoBufQueue</title><link rel="stylesheet" href="../../../../docs/assets/readme.css"></head><body><!-- Generated from docs/reports/analysis/RIGTORP_PERFORMANCE.md; SHA256 c5e08a902a435d72a6ad8f4db9237bfc27019174d4b90bb57e678ad2ff46a6ac. --><a class="skip-link" href="#content">Skip to content</a><header class="site-header"><div class="header-inner"><a class="brand" href="../../../index.html"><span class="brand-symbol" aria-hidden="true"><i></i><i></i></span>TwoBufQueue<span class="brand-version">C++</span></a><nav aria-label="Main navigation"><a href="../../../index.html">Overview</a><a href="../../guides/API.html">API guide</a><a href="../../../examples/README.html">Examples</a><a href="../../code/index.html">Source browser</a><a href="../index.html">Reports</a></nav><div class="languages"><a href="RIGTORP_PERFORMANCE.html" aria-current="page">EN</a><a href="../../../../zh_cn/docs/reports/analysis/RIGTORP_PERFORMANCE.html">中文</a></div></div></header><div class="page-layout guide-layout" id="top"><aside class="toc"><p class="toc-label">ON THIS PAGE</p><nav aria-label="Table of contents"><a class="toc-depth-2" href="#same-executable-control">1. Same-executable control</a><a class="toc-depth-2" href="#code-generation-and-limits">2. Code generation and limits</a><a class="toc-depth-2" href="#subsequent-complete-measurements">3. Subsequent complete measurements</a></nav><div class="toc-footer"><a href="../../../index.html">Overview</a></div></aside><main id="content" class="guide-main"><section class="guide-hero"><div class="eyebrow"><span></span>TWOBUFQUEUE · DOCUMENTATION</div><h1>rigtorp benchmark regression</h1><p><a href="RIGTORP_PERFORMANCE.html">English</a> · <a href="../../../../zh_cn/docs/reports/analysis/RIGTORP_PERFORMANCE.html">简体中文</a></p>
+<p>This correction changes the external benchmark adapter. The original rigtorp, ReaderWriterQueue and atomic_queue headers retain their pinned versions and original SHA-256 hashes.</p>
+<p>The ordinary Payload copy constructor remains <code>bytes(other.bytes)</code>. A constructor tagged <code>DestinationWritePrefetch</code> hints that the destination will be written, then performs the same complete member copy once. The rigtorp adapter requests it through the original <code>try_emplace</code> API. It adds no zeroing, removes no payload bytes and does not change release/acquire publication.</p>
+<p><code>PerformanceConfig::rigtorp_write_prefetch</code> defaults to true; use <code>--rigtorp_write_prefetch false</code> to disable it. The benchmark selects <code>RigtorpAdapter&lt;Payload, true/false&gt;</code> before timing, so there is no runtime switch inside the write loop. Calls for ReaderWriterQueue, atomic_queue and TwoBufQueue are unchanged by this correction.</p>
+</section><details class="mobile-toc"><summary>On this page</summary><nav><a class="toc-depth-2" href="#same-executable-control">1. Same-executable control</a><a class="toc-depth-2" href="#code-generation-and-limits">2. Code generation and limits</a><a class="toc-depth-2" href="#subsequent-complete-measurements">3. Subsequent complete measurements</a></nav></details><article class="guide-content"><h2 id="same-executable-control">1. Same-executable control</h2>
+<p>The control uses one optimized executable, the same fully varying payload and 10 million messages per run. Throughput and quantiles of 1,000-write group means each have five runs. Both switch states pass full-payload/FIFO validation. Callback iterations are 0 for 8 MiB and fixed at 1/1/3/5 for 8/16/32/64 B at 256 MiB, matching the earlier calibration. The four formal reports recalibrate independently and retain every run. The producer uses high QoS without hard affinity, on AC power.</p>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>Capacity</th>
+<th>Message</th>
+<th align="right">Off: M messages/s</th>
+<th align="right">On: M messages/s</th>
+<th align="right">Off: p50 ns</th>
+<th align="right">On: p50 ns</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>8 MiB</td>
+<td>8 B</td>
+<td align="right">44.51</td>
+<td align="right">345.24</td>
+<td align="right">22.083</td>
+<td align="right">2.758</td>
+</tr>
+<tr>
+<td>8 MiB</td>
+<td>16 B</td>
+<td align="right">43.48</td>
+<td align="right">349.74</td>
+<td align="right">23.192</td>
+<td align="right">2.800</td>
+</tr>
+<tr>
+<td>8 MiB</td>
+<td>32 B</td>
+<td align="right">43.90</td>
+<td align="right">303.25</td>
+<td align="right">22.625</td>
+<td align="right">3.142</td>
+</tr>
+<tr>
+<td>8 MiB</td>
+<td>64 B</td>
+<td align="right">50.90</td>
+<td align="right">221.58</td>
+<td align="right">19.242</td>
+<td align="right">4.283</td>
+</tr>
+<tr>
+<td>256 MiB</td>
+<td>8 B</td>
+<td align="right">47.97</td>
+<td align="right">313.66</td>
+<td align="right">19.475</td>
+<td align="right">3.067</td>
+</tr>
+<tr>
+<td>256 MiB</td>
+<td>16 B</td>
+<td align="right">44.70</td>
+<td align="right">266.82</td>
+<td align="right">21.492</td>
+<td align="right">3.783</td>
+</tr>
+<tr>
+<td>256 MiB</td>
+<td>32 B</td>
+<td align="right">39.36</td>
+<td align="right">162.59</td>
+<td align="right">25.683</td>
+<td align="right">6.000</td>
+</tr>
+<tr>
+<td>256 MiB</td>
+<td>64 B</td>
+<td align="right">39.84</td>
+<td align="right">98.23</td>
+<td align="right">24.717</td>
+<td align="right">9.883</td>
+</tr>
+</tbody></table></div>
+<p>All 160 formal measurements and 16 complete validations passed. <a href="../../../../docs/performance_data/rigtorp_prefetch_20261011/selective_control/summary.json">Summary</a> · <a href="../../../../docs/performance_data/rigtorp_prefetch_20261011/selective_control/raw.jsonl">Raw records</a> · <a href="../../../../docs/performance_data/rigtorp_prefetch_20261011/selective_control/source.tar.gz">Source and reproduction scripts</a>.</p>
+<h2 id="code-generation-and-limits">2. Code generation and limits</h2>
+<p>In the saved 16 B push assembly, both paths use one <code>ldr q0</code>, one <code>str q0</code> and the same <code>stlur</code> publication. The enabled path adds <code>prfm pstl1keep</code> before the copy; it adds no zeroing stores. <a href="../../code/docs/performance_data/rigtorp_prefetch_20261011/push_codegen.s.html">Assembly</a>.</p>
+<p><code>__builtin_prefetch(destination, 1, 3)</code> requests write prefetch with high temporal locality; it does not write the payload. This hint does not guarantee a speedup on every platform. See the <a href="https://gcc.gnu.org/onlinedocs/gcc/Other-Builtins.html#index-__builtin_prefetch">GCC documentation</a>. Compilers without this builtin use a normal complete copy.</p>
+<p>The control confirms that destination write prefetch removes the regression in this call path on the measured host, without restoring the extra zeroing of the constructor-body memcpy path. Hardware counters have not confirmed the specific M3 pipeline or cache-ownership mechanism, and these results do not establish a universal queue or platform ranking.</p>
+<p>Placing the queue object at offsets 0 and 64 modulo 128 did not improve the regression, so no alignment change was adopted. <a href="../../../../docs/performance_data/rigtorp_prefetch_20261011/placement_control/summary.json">Placement control</a>.</p>
+<p>An earlier variant added the hint to the ordinary Payload copy for every adapter. rigtorp improved, but 8 B ReaderWriterQueue throughput fell from about 766 to 481 M messages/s, so that variant was rejected. <a href="../../../../docs/performance_data/rigtorp_prefetch_20261011/fix_control/summary.json">Shared-hint control</a>. The adopted correction requests the hint only in the rigtorp adapter. Later ReaderWriterQueue 16/32 B copy changes are disclosed separately in the <a href="../PERFORMANCE.html">benchmark methodology</a>; they are not part of this prefetch-switch control.</p>
+<h2 id="subsequent-complete-measurements">3. Subsequent complete measurements</h2>
+<p>The four reports below were remeasured at commit <code>f698f25</code>: all 400 independent formal measurements, 40 full-payload/FIFO validations and 45 callback calibration runs completed. For rigtorp at 8 MiB / 16 B, the five-run means are 317.500 M messages/s and 3.017 ns group-average p50. At 256 MiB, callback iterations are fixed to 1/1/2/4 for 8/16/32/64 B, with calibration ratios 3.09/2.17/1.95/2.38; 8 B and 32 B slightly miss the target. That run removes forced inlining from benchmark lambdas and does not change rigtorp prefetch or upstream headers. Ordinary write and Session share freshly measured native results for the same capacity. The earlier switch control remains above; do not attribute every difference between runs to prefetch.</p>
+<p><a href="../../../../zh_cn/docs/reports/comparison/performance_8m_zero.html">8 MiB ordinary write</a> · <a href="../../../../zh_cn/docs/reports/comparison/performance_8m_zero_session.html">8 MiB Session</a> · <a href="../../../../zh_cn/docs/reports/comparison/performance_256m_callback.html">256 MiB ordinary write</a> · <a href="../../../../zh_cn/docs/reports/comparison/performance_256m_callback_session.html">256 MiB Session</a> · <a href="../../../../docs/performance_data/release_20261011_inline_fixed_110024/raw.jsonl.gz">All raw records</a> · <a href="../../../../docs/performance_data/release_20261011_inline_fixed_110024/manifest.json">Run manifest</a>.</p>
+</article><footer class="site-footer"><span>TwoBufQueue · C++ · Apache-2.0</span><span><a href="../../../index.html">Overview</a><a href="#top">Back to top ↑</a></span></footer></main></div></body></html>

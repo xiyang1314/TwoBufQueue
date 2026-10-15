@@ -370,7 +370,7 @@ find_package(TwoBufQueue 0.6 CONFIG REQUIRED)
 target_link_libraries(your_app PRIVATE TwoBufQueue::TwoBufQueue)
 ```
 
-[Integration instructions](https://xiyang1314.github.io/TwoBufQueue/docs/guides/INTEGRATION.html) cover installation, relocatable packages and `FetchContent`. The CMake package version is 0.6.0; no release tag is implied by that metadata.
+[Integration instructions](https://xiyang1314.github.io/TwoBufQueue/docs/guides/INTEGRATION.html) cover installation, relocatable packages and `FetchContent`. The CMake package version is 0.6.1; no release tag is implied by that metadata.
 
 ### 5.4 Usage boundaries
 

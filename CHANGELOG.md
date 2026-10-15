@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.6.1 — 2026-10-15
+
+- Both source archive formats now include separate `en/` and `zh_cn/` reading directories, with one shared C++ source tree.
+- Language directories contain the existing introduction, API, examples, reports and source-reading pages, with local links rewritten for offline use.
+- `START_HERE.html` opens the language selector. GitHub Releases provide only the automatic Source code ZIP and tar.gz downloads.
+- Simplify the local archive builder to produce two bilingual archives; preserve the original v0.6.0 tag and historical measurements.
+
 ## 0.6.0 — 2026-10-15
 
 - C++20 producer-owned source buffers, a batch-copy worker, and an independent record callback thread.

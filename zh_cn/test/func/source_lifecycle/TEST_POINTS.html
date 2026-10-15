@@ -1,0 +1,19 @@
+<!-- Generated language reading page from test/func/source_lifecycle/TEST_POINTS.html; source SHA256 814c0d897d2580f2723316640385999a78420b28f6704b42cba6d3353266779e. -->
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>快速源块生命周期 · TwoBufQueue</title><link rel="stylesheet" href="../../../../docs/assets/readme.css"></head><body><!-- Generated from test/func/source_lifecycle/TEST_POINTS.md; SHA256 481bcf662c0a1504b04403f44bb8a230d61c4a4e2d123ac556af87bda0cfdd33. --><a class="skip-link" href="#content">跳到正文</a><header class="site-header"><div class="header-inner"><a class="brand" href="../../../index.html"><span class="brand-symbol" aria-hidden="true"><i></i><i></i></span>TwoBufQueue<span class="brand-version">C++</span></a><nav aria-label="主要导航"><a href="../../../index.html">项目首页</a><a href="../../../docs/guides/API.html">接口指南</a><a href="../../../examples/README.html">使用示例</a><a href="../../../../en/docs/code/index.html">代码阅读</a><a href="../../../../en/docs/reports/index.html">性能报告</a></nav></div></header><div class="page-layout guide-layout" id="top"><aside class="toc"><p class="toc-label">本页目录</p><nav aria-label="目录"></nav><div class="toc-footer"><a href="../../../index.html">回到首页</a></div></aside><main id="content" class="guide-main"><section class="guide-hero"><div class="eyebrow"><span></span>TWOBUFQUEUE · 文档</div><h1>快速源块生命周期</h1></section><details class="mobile-toc"><summary>本页目录</summary><nav></nav></details><article class="guide-content"><p>源路径使用 SpscWriteBlock，不分配 Slice。旧 Slice 生命周期测试由 block_lifecycle、block_roles、block_templates 保留。
+源测试改用 SpscLiveHandoffQueue 的 current/try_claim/finish，不再通过 read/read_done 提前移走记录。</p>
+<ul>
+<li>写完后首次读取、先读 current 后读尾部：检查完整字节及单次交付。</li>
+<li>current 已全部 consume 仍不能归还，必须等完成记录 finish；空块不调用业务回调。</li>
+<li>单块池在 Claim 未完成时不能复用，finish 后同地址新代可以继续写。</li>
+<li>回调执行期间块仍被占用；true 后才允许复用；false 后整批保持可重试。</li>
+<li>慢退超时后重启继续原批；取消领取不改变队首。</li>
+<li>并发发布尾部/完成与 current 读取，400 代循环校验无漏读或重复。</li>
+<li>多个空/非空完成块穿插，统计准确；同块 1300 次增量读取不依赖 Slice 槽位。</li>
+<li>下游保存背压在没有释放通知时仍定时重试；停机可丢弃未读尾部。</li>
+<li>test/handoff/live_handoff_tests.cpp 另覆盖重复 acquire、取消与过期凭证、独立容量/池上限、工厂/reset 失败、
+on_send 后入队前的暂停窗口、跨线程 FIFO，以及多 Writer 整批 current 拒绝期间追加数据。</li>
+</ul>
+<p>原先“注入任意 SourceBlockMgr::Entry”和“保留源 Slice 至池析构”的测试不再适用于新公开接口；
+队列只能通过合法 ProducerLoan 发布，源回调不转移所有权。</p>
+</article><footer class="site-footer"><span>TwoBufQueue · C++ · Apache-2.0</span><span><a href="../../../index.html">项目首页</a><a href="#top">回到顶部 ↑</a></span></footer></main></div></body></html>

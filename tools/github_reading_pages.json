@@ -3,9 +3,11 @@
   "markdown_fragments": {
     "CHANGELOG.md": {
       "changelog": "changelog",
+      "061--2026-10-15": "061--2026-10-15",
+      "-2026-10-15": "061--2026-10-15",
+      "2026-10-15": "061--2026-10-15",
       "060--2026-10-15": "060--2026-10-15",
-      "-2026-10-15": "060--2026-10-15",
-      "2026-10-15": "060--2026-10-15"
+      "2026-10-15-2": "060--2026-10-15"
     },
     "CONTRIBUTING.md": {
       "contributing": "contributing",
@@ -449,8 +451,8 @@
       "generate-all-html-documentation": "4-generate-all-html-documentation",
       "5-show-the-html-overview-and-reports": "5-show-the-html-overview-and-reports",
       "show-the-html-overview-and-reports": "5-show-the-html-overview-and-reports",
-      "6-package-the-first-release": "6-package-the-first-release",
-      "package-the-first-release": "6-package-the-first-release",
+      "6-package-the-release": "6-package-the-release",
+      "package-the-release": "6-package-the-release",
       "7-repository-readme-and-the-html-documentation-site": "7-repository-readme-and-the-html-documentation-site",
       "repository-readme-and-the-html-documentation-site": "7-repository-readme-and-the-html-documentation-site",
       "8-link-github-documentation-to-the-html-site": "8-link-github-documentation-to-the-html-site",
@@ -467,8 +469,8 @@
       "generate-all-html-documentation": "三generate-all-html-documentation",
       "四show-the-html-overview-and-reports": "四show-the-html-overview-and-reports",
       "show-the-html-overview-and-reports": "四show-the-html-overview-and-reports",
-      "五package-the-first-release": "五package-the-first-release",
-      "package-the-first-release": "五package-the-first-release",
+      "五发布源码包": "五发布源码包",
+      "发布源码包": "五发布源码包",
       "六github-首页与-html-文档网站": "六github-首页与-html-文档网站",
       "github-首页与-html-文档网站": "六github-首页与-html-文档网站",
       "七将-github-文档入口切换到-html-网站": "七将-github-文档入口切换到-html-网站",
@@ -1638,7 +1640,8 @@
   "html_fragments": {
     "CHANGELOG.md": {
       "changelog": "changelog",
-      "060--2026-10-15": "2026-10-15"
+      "061--2026-10-15": "2026-10-15",
+      "060--2026-10-15": "2026-10-15-2"
     },
     "CONTRIBUTING.md": {
       "contributing": "contributing",
@@ -1880,7 +1883,7 @@
       "3-create-and-connect-the-repository": "create-and-connect-the-repository",
       "4-generate-all-html-documentation": "generate-all-html-documentation",
       "5-show-the-html-overview-and-reports": "show-the-html-overview-and-reports",
-      "6-package-the-first-release": "package-the-first-release",
+      "6-package-the-release": "package-the-release",
       "7-repository-readme-and-the-html-documentation-site": "repository-readme-and-the-html-documentation-site",
       "8-link-github-documentation-to-the-html-site": "link-github-documentation-to-the-html-site"
     },
@@ -1890,7 +1893,7 @@
       "二create-and-connect-the-repository": "create-and-connect-the-repository",
       "三generate-all-html-documentation": "generate-all-html-documentation",
       "四show-the-html-overview-and-reports": "show-the-html-overview-and-reports",
-      "五package-the-first-release": "package-the-first-release",
+      "五发布源码包": "发布源码包",
       "六github-首页与-html-文档网站": "github-首页与-html-文档网站",
       "七将-github-文档入口切换到-html-网站": "将-github-文档入口切换到-html-网站"
     },

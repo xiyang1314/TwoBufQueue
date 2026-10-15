@@ -1,0 +1,105 @@
+<!-- Generated language reading page from docs/index.zh-CN.html; source SHA256 9cb6cbc09036bd96523adbc9455d9ebf48d8326f2cdcfa0155cc95092bdbd3c4. -->
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>文档导航 · TwoBufQueue</title><link rel="stylesheet" href="../../docs/assets/readme.css"></head><body><!-- Generated from docs/index.zh-CN.md; SHA256 91aeb7b227fd7a2cea6a9aa8825d2c282c40ddaa99be891cf0f3478e052cd937. --><a class="skip-link" href="#content">跳到正文</a><header class="site-header"><div class="header-inner"><a class="brand" href="../index.html"><span class="brand-symbol" aria-hidden="true"><i></i><i></i></span>TwoBufQueue<span class="brand-version">C++</span></a><nav aria-label="主要导航"><a href="../index.html">项目首页</a><a href="guides/API.html">接口指南</a><a href="../examples/README.html">使用示例</a><a href="code/index.html">代码阅读</a><a href="reports/index.html">性能报告</a></nav><div class="languages"><a href="../../en/docs/index.html">EN</a><a href="index.html" aria-current="page">中文</a></div></div></header><div class="page-layout guide-layout" id="top"><aside class="toc"><p class="toc-label">本页目录</p><nav aria-label="目录"><a class="toc-depth-2" href="#使用指南">一、使用指南</a><a class="toc-depth-2" href="#性能报告">二、性能报告</a><a class="toc-depth-2" href="#开发与发布">三、开发与发布</a></nav><div class="toc-footer"><a href="../index.html">回到首页</a></div></aside><main id="content" class="guide-main"><section class="guide-hero"><div class="eyebrow"><span></span>TWOBUFQUEUE · 文档</div><h1>文档导航</h1><p><a href="../../en/docs/index.html">English</a> · <a href="index.html">简体中文</a> · <a href="../index.html">项目首页</a></p>
+<p>初次接入可先看接口指南和工程接入。性能结果、测试说明和代码阅读分别放在下面的目录中。</p>
+</section><details class="mobile-toc"><summary>本页目录</summary><nav><a class="toc-depth-2" href="#使用指南">一、使用指南</a><a class="toc-depth-2" href="#性能报告">二、性能报告</a><a class="toc-depth-2" href="#开发与发布">三、开发与发布</a></nav></details><article class="guide-content"><h2 id="使用指南">一、使用指南</h2>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>文档</th>
+<th>了解什么</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><a href="guides/API.html">接口指南</a></td>
+<td>初始化、写入、WriteSession、flush 与接收回调</td>
+</tr>
+<tr>
+<td><a href="guides/INTEGRATION.html">工程接入</a></td>
+<td>本地源码、CMake 和安装包接入</td>
+</tr>
+<tr>
+<td><a href="guides/ASYNC_LOGGING.html">异步日志示例</a></td>
+<td>在应用中传递日志记录</td>
+</tr>
+<tr>
+<td><a href="../examples/README.html">示例导航</a></td>
+<td>按用途选择完整示例</td>
+</tr>
+<tr>
+<td><a href="../README_DETAIL.html">详细介绍</a></td>
+<td>性能问题、双层设计与适用场景</td>
+</tr>
+</tbody></table></div>
+<h2 id="性能报告">二、性能报告</h2>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>目录</th>
+<th>内容</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><a href="reports/index.html">reports/</a></td>
+<td>性能报告入口与主要对比</td>
+</tr>
+<tr>
+<td><code>reports/comparison/</code></td>
+<td>普通 write、WriteSession 和开源队列对比</td>
+</tr>
+<tr>
+<td><code>reports/burst/</code></td>
+<td>连续发送消息后对业务性能的影响</td>
+</tr>
+<tr>
+<td><code>reports/block_size/</code></td>
+<td>块大小遍历与发布策略实验</td>
+</tr>
+<tr>
+<td><code>reports/analysis/</code></td>
+<td>缓存、延时和具体实现的分析</td>
+</tr>
+<tr>
+<td><a href="reports/PERFORMANCE.html">测试方法</a></td>
+<td>指标含义、测试条件与复现</td>
+</tr>
+</tbody></table></div>
+<p>报告的原始数据保留在 <code>performance_data/</code>，源码阅读页保留在 <a href="code/index.html">code/</a>。</p>
+<h2 id="开发与发布">三、开发与发布</h2>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>文档</th>
+<th>内容</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><a href="development/TESTING.html">运行测试</a></td>
+<td>功能测试、性能框架检查与工程接入验证</td>
+</tr>
+<tr>
+<td><a href="development/RELEASE_CONTENTS.html">发布内容</a></td>
+<td>发布目录包含哪些文件</td>
+</tr>
+<tr>
+<td><a href="development/PUBLISHING.html">发布步骤</a></td>
+<td>GitHub 仓库、Pages 与中英文包</td>
+</tr>
+<tr>
+<td><a href="../CONTRIBUTING.html">参与贡献</a></td>
+<td>提交功能和文档修改</td>
+</tr>
+<tr>
+<td><a href="../test/README.html">测试导航</a></td>
+<td>按组件选择测试目录</td>
+</tr>
+<tr>
+<td><a href="../third_party/spsc/README.html">第三方对比队列</a></td>
+<td>固定版本、原始许可证与离线构建</td>
+</tr>
+<tr>
+<td><a href="../benchmarks/README.html">性能程序导航</a></td>
+<td>选择性能实验和参数遍历程序</td>
+</tr>
+</tbody></table></div>
+</article><footer class="site-footer"><span>TwoBufQueue · C++ · Apache-2.0</span><span><a href="../index.html">项目首页</a><a href="#top">回到顶部 ↑</a></span></footer></main></div></body></html>

@@ -1,0 +1,43 @@
+<!-- Generated language reading page from test/func/external_pool/TEST_CASES.html; source SHA256 2c40efe71e0a5dd15224a3741bef953cd78d09f59fff206520d062417bf04e4b. -->
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>外部池用例 · TwoBufQueue</title><link rel="stylesheet" href="../../../../docs/assets/readme.css"></head><body><!-- Generated from test/func/external_pool/TEST_CASES.md; SHA256 c6a6b2611dcebe392298c8d9c3532fe56264bfcf682b18124b34b41e5fedecac. --><a class="skip-link" href="#content">跳到正文</a><header class="site-header"><div class="header-inner"><a class="brand" href="../../../index.html"><span class="brand-symbol" aria-hidden="true"><i></i><i></i></span>TwoBufQueue<span class="brand-version">C++</span></a><nav aria-label="主要导航"><a href="../../../index.html">项目首页</a><a href="../../../docs/guides/API.html">接口指南</a><a href="../../../examples/README.html">使用示例</a><a href="../../../../en/docs/code/index.html">代码阅读</a><a href="../../../../en/docs/reports/index.html">性能报告</a></nav></div></header><div class="page-layout guide-layout" id="top"><aside class="toc"><p class="toc-label">本页目录</p><nav aria-label="目录"></nav><div class="toc-footer"><a href="../../../index.html">回到首页</a></div></aside><main id="content" class="guide-main"><section class="guide-hero"><div class="eyebrow"><span></span>TWOBUFQUEUE · 文档</div><h1>外部池用例</h1></section><details class="mobile-toc"><summary>本页目录</summary><nav></nav></details><article class="guide-content"><div class="table-scroll"><table>
+<thead>
+<tr>
+<th>用例</th>
+<th>操作</th>
+<th>预期</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>null_single / null_1n / null_nn</td>
+<td>对三种 SlicePool 传 nullptr</td>
+<td>抛 invalid_argument，无析构副作用</td>
+</tr>
+<tr>
+<td>lifetime_single / lifetime_1n / lifetime_nn</td>
+<td>析构适配器但保留切片；访问并释放后重新借出块</td>
+<td>不销毁外部池、不覆盖数据、可继续复用</td>
+</tr>
+<tr>
+<td>shared_single / shared_1n / shared_nn</td>
+<td>两个适配器分享池；池耗尽；关闭一个；释放复用；另一个继续分配</td>
+<td>current_ 不重叠、关闭相互独立、池容量和统计共享</td>
+</tr>
+<tr>
+<td>min_count</td>
+<td>min_count=0/非零、max 小于 min、缩减总量下限</td>
+<td>初始化数量正确、非法参数拒绝、总数量保持下限</td>
+</tr>
+<tr>
+<td>callback</td>
+<td>外部池安装释放回调，适配器退出后继续触发回收</td>
+<td>回调仍生效且没有指向适配器的内部回调</td>
+</tr>
+<tr>
+<td>concurrent_1n / concurrent_nn</td>
+<td>四个共享适配器、直接池取块者、扫描者与多个释放者并发，校验编号和反码</td>
+<td>无重复、丢失、覆盖、死锁或池容器竞争</td>
+</tr>
+</tbody></table></div>
+<p>并发用例设置有界总块数和缩减阈值，使取块、复用、归还、缩减发生交错；NN 用例同一适配器另有两个线程并发分配。</p>
+</article><footer class="site-footer"><span>TwoBufQueue · C++ · Apache-2.0</span><span><a href="../../../index.html">项目首页</a><a href="#top">回到顶部 ↑</a></span></footer></main></div></body></html>

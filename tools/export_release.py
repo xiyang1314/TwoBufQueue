@@ -24,12 +24,14 @@ BENCHMARK_FILES = {
     'test_per_writer_block_size.cpp','test_per_writer_block_size.py','tune_burst_business.py',
     'tune_three_writer_modes.py','run_burst_empty.py','burst_report_style.css'}
 HISTORICAL_TEST_DIRS = {'review_20260925','review_20260927','aba_review_20260928','results'}
-TOOLS = {'export_release.py','verify_release.py','unpack_performance_data.py',
+TOOLS = {'build_language_docs.py','language_pages.json','export_release.py','verify_release.py','unpack_performance_data.py',
          'plot_burst_release.py','build_release_assets.py','build_pages.py','build_readme_html.mjs',
          'build_docs_html.mjs','documentation_pages.json','document_links.py','build_github_reading.py','github_reading_pages.json','document_sections.py','document_site.json','document_site.mjs',
          'build_code_html.mjs','code_highlight.mjs','refresh_release_manifest.py','localize_reading_pages.py','report_translations.json','report_pages.json'}
 DOC_SOURCES = json.loads((ROOT / 'tools/documentation_pages.json').read_text())['sources']
 DOC_HTML = {str(Path(name).with_suffix('.html')) for name in DOC_SOURCES}
+LANGUAGE_PATH = ROOT / 'tools/language_pages.json'
+LANGUAGE_HTML = {record['path'] for record in json.loads(LANGUAGE_PATH.read_text())['files']} if LANGUAGE_PATH.is_file() else set()
 SPSC_DEPENDENCIES = json.loads((ROOT / 'benchmarks/spsc/spsc_dependencies.json').read_text())
 SPSC_FILES = {'third_party/spsc/' + name + '/' + entry['path']
               for name, dependency in SPSC_DEPENDENCIES.items() for entry in dependency['files']}
@@ -44,7 +46,7 @@ CODE_HTML.update(record['html_path_zh_cn'] for record in CODE_FILES if record.ge
 
 def included(relative):
     parts=relative.parts; name=relative.name
-    if relative.as_posix() in SPSC_FILES: return True
+    if relative.as_posix() in SPSC_FILES or relative.as_posix() in LANGUAGE_HTML: return True
     if relative.as_posix() in DOC_SOURCES or relative.as_posix() in DOC_HTML or relative.as_posix() in CODE_HTML: return True
     if name=='.DS_Store' or '__pycache__' in parts or relative.suffix=='.pyc': return False
     if len(parts)==1: return name in ROOT_FILES

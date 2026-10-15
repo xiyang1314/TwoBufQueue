@@ -60,20 +60,31 @@ README and the report index feature [continuous sending and business performance
 
 The workflow uses GitHub's [Pages actions](https://docs.github.com/en/pages/getting-started-with-github-pages/using-custom-workflows-with-github-pages). 重新生成的 HTML 页面、文档资源或发布清单推送到 main 后，工作流会自动更新网站；需要重试部署时，也可以手动运行工作流。
 
-## 五、Package the first release
+## 五、发布源码包
 
-```sh
-python tools/build_release_assets.py --version 0.6.0
+每个源码包都同时包含中文和英文文档：
+
+```text
+TwoBufQueue-0.6.1/
+  START_HERE.html
+  en/index.html
+  zh_cn/index.html
+  src/  include/  examples/  third_party/
 ```
 
-The visible `packages/` directory contains the source archive, complete packaged measurement evidence and SHA-256 checksums. It is ignored by Git. Keep all original samples; packing is lossless and is verified by `tools/verify_release.py`.
+解压后打开 `START_HERE.html` 选择语言，也可以直接打开 `zh_cn/index.html` 或 `en/index.html`。两个语言目录中存放实际的阅读页面；源码、页面资源和测试数据共用一份。
 
-After remote CI passes, tag the intended commit as `v0.6.0`, push the tag and create a GitHub Release. Use `CHANGELOG.md` as release notes and attach the generated files. No tag or public release is created by the exporter.
+GitHub Release 只提供自动生成的 **Source code (zip)** 和 **Source code (tar.gz)**。两个包内容相同，只是压缩格式不同。不再额外上传 CN、EN、源码、性能数据或校验文件。已发布标签保持固定，打包结构调整在新的修订版本中发布。
 
-Suggested repository description: **C++ producer–consumer queue with two-layer buffers, batch publication and transfer, and small producer memory use.** Topics: `cpp20`, `spsc`, `logging`, `low-latency`, `message-queue`, `benchmark`. These describe the component; performance conclusions remain specific to the disclosed experiments.
+需要在本机生成离线包时，执行：
 
+```sh
+python3 tools/build_release_assets.py
+```
 
-运行 `python3 tools/build_release_assets.py --version 0.6.0` 后，包在可见的 `packages/` 目录：`TwoBufQueue-0.6.0-CN.zip`、`TwoBufQueue-0.6.0-EN.zip`，同时提供解压目录和 `packages/index.html` 下载导航。中文包打开 `index.html` 默认进入中文首页，英文包进入英文首页。两者的 C++ 源码、示例和编译配置完全相同；文档保留两种语言，功能 PR 只修改正式仓库。完整原始中文备份与发布包是两个不同用途的文件。
+版本号从 `CMakeLists.txt` 读取。工具在忽略上传的 `packages/` 目录生成 `TwoBufQueue-0.6.1.zip`、`TwoBufQueue-0.6.1.tar.gz`、解压副本和下载导航，逐个校验两个包中的文件，并打印 SHA-256。已有本地包和历史测试数据保留。
+
+发布前先重新生成 HTML、刷新并校验发布清单，提交指定文件，等待 CI 通过后发布新标签。打包工具本身不创建标签，也不发布 Release。
 
 ## 六、GitHub 首页与 HTML 文档网站
 

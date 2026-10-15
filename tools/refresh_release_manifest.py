@@ -18,6 +18,12 @@ def refresh(root, check=False):
     if len(previous) != len(manifest['files']):
         raise ValueError('Duplicate publication path')
     selected = set(previous)
+    languages = json.loads((root / 'tools/language_pages.json').read_text(encoding='utf-8'))
+    selected.update(('tools/build_language_docs.py', 'tools/language_pages.json'))
+    for record in languages['files']:
+        if not record['path'].startswith(('en/', 'zh_cn/')) or not record['path'].endswith('.html'):
+            raise ValueError('Unexpected language document: ' + record['path'])
+        selected.add(record['path'])
     dependencies = json.loads((root / 'benchmarks/spsc/spsc_dependencies.json').read_text(encoding='utf-8'))
     for name, dependency in dependencies.items():
         for entry in dependency['files']:

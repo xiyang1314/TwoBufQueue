@@ -1,0 +1,22 @@
+<!-- Generated language reading page from CHANGELOG.html; source SHA256 563320a0bc50defa810e6e03333289c38150936bbb20ade04fc0737bc73120af. -->
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Changelog · TwoBufQueue</title><link rel="stylesheet" href="../docs/assets/readme.css"></head><body><!-- Generated from CHANGELOG.md; SHA256 df16b1c0b0f080017b84a665ec702cd82d0fae93e9656c667b46e174e550473e. --><a class="skip-link" href="#content">Skip to content</a><header class="site-header"><div class="header-inner"><a class="brand" href="index.html"><span class="brand-symbol" aria-hidden="true"><i></i><i></i></span>TwoBufQueue<span class="brand-version">C++</span></a><nav aria-label="Main navigation"><a href="index.html">Overview</a><a href="docs/guides/API.html">API guide</a><a href="examples/README.html">Examples</a><a href="docs/code/index.html">Source browser</a><a href="docs/reports/index.html">Reports</a></nav></div></header><div class="page-layout guide-layout" id="top"><aside class="toc"><p class="toc-label">ON THIS PAGE</p><nav aria-label="Table of contents"><a class="toc-depth-2" href="#2026-10-15">0.6.1 — 2026-10-15</a><a class="toc-depth-2" href="#2026-10-15-2">0.6.0 — 2026-10-15</a></nav><div class="toc-footer"><a href="index.html">Overview</a></div></aside><main id="content" class="guide-main"><section class="guide-hero"><div class="eyebrow"><span></span>TWOBUFQUEUE · DOCUMENTATION</div><h1>Changelog</h1></section><details class="mobile-toc"><summary>On this page</summary><nav><a class="toc-depth-2" href="#2026-10-15">0.6.1 — 2026-10-15</a><a class="toc-depth-2" href="#2026-10-15-2">0.6.0 — 2026-10-15</a></nav></details><article class="guide-content"><h2 id="2026-10-15">0.6.1 — 2026-10-15</h2>
+<ul>
+<li>Both source archive formats now include separate <code>en/</code> and <code>zh_cn/</code> reading directories, with one shared C++ source tree.</li>
+<li>Language directories contain the existing introduction, API, examples, reports and source-reading pages, with local links rewritten for offline use.</li>
+<li><code>START_HERE.html</code> opens the language selector. GitHub Releases provide only the automatic Source code ZIP and tar.gz downloads.</li>
+<li>Simplify the local archive builder to produce two bilingual archives; preserve the original v0.6.0 tag and historical measurements.</li>
+</ul>
+<h2 id="2026-10-15-2">0.6.0 — 2026-10-15</h2>
+<ul>
+<li>C++20 producer-owned source buffers, a batch-copy worker, and an independent record callback thread.</li>
+<li>Independent source/output pool limits, bounded backpressure policies, explicit flush/finish and drain-on-stop.</li>
+<li>Single- and multi-producer read paths, optional current-block scanning, fixed-size records and sequence Writers.</li>
+<li>Single-block WriteSession for loops, plus typed synchronous callbacks on the producer thread.</li>
+<li>CMake installation and relocatable package support, runnable examples, and Linux/Windows/macOS CI configurations.</li>
+<li>Pinned SPSC comparison headers and original licenses bundled under <code>third_party/spsc/</code> for offline benchmark builds.</li>
+<li>Reproducible SPSC comparisons, block-size searches, and a continuous-batch business experiment starting each batch with zero backlog; all initialization parameters and measured data are retained.</li>
+<li>Business reports show post-send p50 and the ratio to normal business execution, with collapsible parameters and environment details. The earlier prepared-backlog experiment remains available as a separate measurement.</li>
+</ul>
+<p>This is the first public source release. Public APIs may evolve during the 0.x series. Measurements identify their own hardware, compiler, configuration and metric; group-average quantiles are not individual-message latency.</p>
+</article><footer class="site-footer"><span>TwoBufQueue · C++ · Apache-2.0</span><span><a href="index.html">Overview</a><a href="#top">Back to top ↑</a></span></footer></main></div></body></html>

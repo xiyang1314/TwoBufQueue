@@ -2,6 +2,8 @@
 
 [English](https://xiyang1314.github.io/TwoBufQueue/docs/development/RELEASE_CONTENTS.html) · [简体中文](https://xiyang1314.github.io/TwoBufQueue/docs/development/RELEASE_CONTENTS.zh-CN.html)
 
+两种格式的源码包都包含 `en/` 英文阅读目录和 `zh_cn/` 中文阅读目录，打开 `START_HERE.html` 即可选择语言。源码、页面资源和测试数据共用一份；语言目录由正常的 HTML 生成流程自动更新。
+
 此目录现在作为唯一正式源码维护。日常修改直接在这里完成，不要用旧开发目录导出来覆盖这里。修改文档后先运行 `node tools/build_readme_html.mjs`，发布前运行 `python3 tools/refresh_release_manifest.py` 和 `python3 tools/verify_release.py`。刷新只处理明确的发布文件和已登记页面，不删除或自动纳入临时文件。
 
 The release directory contains current library source and headers, CMake package support, runnable examples, active regression/functional tests, CI, current SPSC comparisons and block-size/backlog tests, published reports and their referenced evidence. LICENSE and NOTICE remain at the root.

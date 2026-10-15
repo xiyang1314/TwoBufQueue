@@ -1,0 +1,139 @@
+<!-- Generated language reading page from docs/reports/PERFORMANCE.html; source SHA256 3520aef9c709c62981367f880463f6a28c4df6d63020c16b8790b4baa61c6034. -->
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Performance evidence · TwoBufQueue</title><link rel="stylesheet" href="../../../docs/assets/readme.css"></head><body><!-- Generated from docs/reports/PERFORMANCE.md; SHA256 fb086869b736a41e477188e3e2e74030617198bbc351222e1a54fc533bfe401a. --><a class="skip-link" href="#content">Skip to content</a><header class="site-header"><div class="header-inner"><a class="brand" href="../../index.html"><span class="brand-symbol" aria-hidden="true"><i></i><i></i></span>TwoBufQueue<span class="brand-version">C++</span></a><nav aria-label="Main navigation"><a href="../../index.html">Overview</a><a href="../guides/API.html">API guide</a><a href="../../examples/README.html">Examples</a><a href="../code/index.html">Source browser</a><a href="index.html">Reports</a></nav><div class="languages"><a href="PERFORMANCE.html" aria-current="page">EN</a><a href="../../../zh_cn/docs/reports/PERFORMANCE.html">中文</a></div></div></header><div class="page-layout guide-layout" id="top"><aside class="toc"><p class="toc-label">ON THIS PAGE</p><nav aria-label="Table of contents"><a class="toc-depth-2" href="#current-comparison-entry-points">1. Current comparison entry points</a><a class="toc-depth-2" href="#business-performance-after-continuous-sending">2. Business performance after continuous sending</a><a class="toc-depth-2" href="#compressed-evidence">3. Compressed evidence</a><a class="toc-depth-2" href="#historical-matched-measurements">4. Historical matched measurements</a><a class="toc-depth-2" href="#historical-ordinary-write-scan-current-run">5. Historical ordinary-write scan-current run</a><a class="toc-depth-2" href="#previous-matched-experiment-scope">6. Previous matched experiment scope</a><a class="toc-depth-2" href="#copy-constructor-sensitivity">7. Copy-constructor sensitivity</a><a class="toc-depth-3" href="#earlier-16-byte-follow-up-before-write-prefetch">7.1 Earlier 16-byte follow-up before write prefetch</a><a class="toc-depth-2" href="#reproduce-and-inspect">8. Reproduce and inspect</a></nav><div class="toc-footer"><a href="../../index.html">Overview</a></div></aside><main id="content" class="guide-main"><section class="guide-hero"><div class="eyebrow"><span></span>TWOBUFQUEUE · DOCUMENTATION</div><h1>Performance evidence</h1><p><a href="PERFORMANCE.html">English</a> · <a href="../../../zh_cn/docs/reports/PERFORMANCE.html">简体中文</a></p>
+<p><a href="../../index.html">README</a> · <a href="../../benchmarks/guides/TUNABLE_SPSC.html">Complete configurable benchmark guide </a></p>
+</section><details class="mobile-toc"><summary>On this page</summary><nav><a class="toc-depth-2" href="#current-comparison-entry-points">1. Current comparison entry points</a><a class="toc-depth-2" href="#business-performance-after-continuous-sending">2. Business performance after continuous sending</a><a class="toc-depth-2" href="#compressed-evidence">3. Compressed evidence</a><a class="toc-depth-2" href="#historical-matched-measurements">4. Historical matched measurements</a><a class="toc-depth-2" href="#historical-ordinary-write-scan-current-run">5. Historical ordinary-write scan-current run</a><a class="toc-depth-2" href="#previous-matched-experiment-scope">6. Previous matched experiment scope</a><a class="toc-depth-2" href="#copy-constructor-sensitivity">7. Copy-constructor sensitivity</a><a class="toc-depth-3" href="#earlier-16-byte-follow-up-before-write-prefetch">7.1 Earlier 16-byte follow-up before write prefetch</a><a class="toc-depth-2" href="#reproduce-and-inspect">8. Reproduce and inspect</a></nav></details><article class="guide-content"><h2 id="current-comparison-entry-points">1. Current comparison entry points</h2>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>Experiment</th>
+<th>Report</th>
+<th>What is timed</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>256 MiB, WriteSession, empty callback</td>
+<td><a href="comparison/performance_256m_zero_session_plateau.html">Session</a></td>
+<td>Producer submission, including session acquisition and switching</td>
+</tr>
+<tr>
+<td>256 MiB, ordinary write, maximum publish count</td>
+<td><a href="comparison/performance_256m_zero_publish_max_plateau.html">Block-handoff publication</a></td>
+<td>Producer submission, including block acquisition and switching</td>
+</tr>
+<tr>
+<td>256 MiB, ordinary write, publication every record</td>
+<td><a href="comparison/performance_256m_zero_publish1_plateau.html">Per-record publication</a></td>
+<td>Producer submission, including publication</td>
+</tr>
+<tr>
+<td>Continuous message batches, each starting empty</td>
+<td><a href="burst/performance_burst_from_empty.html">Business performance after a batch</a></td>
+<td>Business execution immediately after sending; ratio to normal business cost</td>
+</tr>
+<tr>
+<td>Earlier experiment: prepared message backlog</td>
+<td><a href="../../../zh_cn/docs/reports/burst/performance_burst_cache.html">Prepared-backlog business execution</a></td>
+<td>Same business workload with approximately 198–205 MiB pending</td>
+</tr>
+</tbody></table></div>
+<p>The first three reports use three independent runs, callback loop count 0 and one common block configuration per report across 8/16/32/64 B. Configuration selection uses the stated 35% throughput, 30% p50, 20% p99 and 15% p999 weights. The current business experiment starts every batch empty and uses regular upstream SPSC APIs with fixed callback work. Business p50 reflects 16-call group means; the write reports use 1,000-write group means. The two business reports have different initial backlog states.</p>
+<p>All initialization parameters are disclosed in each report. The saved configuration and complete set of runs, rather than a selected best run, define each experiment. Historical report notes and test catalogs retain their original Chinese; current guides and the four main reports have separate English and Chinese reading pages. Numerical evidence and original commands are preserved.</p>
+<h2 id="business-performance-after-continuous-sending">2. Business performance after continuous sending</h2>
+<p>Flow: normal business execution → continuous message batch → immediate business execution. Each batch starts with zero pending messages, consumers stay active, and draining happens outside timing. The setup uses 32 B messages, a 48 KiB business working set, 64 callback iterations, a 16 KiB TwoBufQueue source pool and 256 MiB output/native capacity. Every 2/4/8/16 MiB size has three independent runs, 2,500 windows and 10,000 business timing groups per run. <a href="../../../docs/performance_data/burst_from_empty_20261013/validation.json">Full invariant and sample verification</a>.</p>
+<p>The current table reports post-send business p50: time 16 business calls per group and divide by 16, calculate p50 independently for each run, then average three runs. The normal reference comes from the same no-queue control and is about <strong>13 ns/call</strong> on this host; every ratio is post-send cost divided by 13 ns. Charts, README and report all use the <a href="../../../docs/performance_data/burst_from_empty_20261013/formal/report_results.json">same complete result</a>, without reselecting trials.</p>
+<p>Source and output budgets are counted separately; consumers and copy workers continue running. Pending messages accumulate naturally after each batch, without preparing an initial backlog of approximately 200 MiB. The old 80% prefill rule belongs only to the <a href="../../../zh_cn/docs/reports/burst/performance_burst_cache.html">historical prepared-backlog experiment</a>; its <a href="../../../docs/assets/burst_business_cost_prefilled.svg">figure</a> and original results remain available.</p>
+<p>From the project root, replay the current fixed workload or regenerate its figure:</p>
+<div class="code-frame"><div class="code-label">Shell</div><pre tabindex="0"><code class="language-sh"><span class="syntax-keyword">python3</span> benchmarks/burst/run_burst_empty.py --profile docs/performance_data/burst_from_empty_20261013/selected_config.json
+<span class="syntax-keyword">python3</span> -m pip install reportlab==4.4.9
+<span class="syntax-keyword">python3</span> tools/plot_burst_release.py</code></pre></div><p>The plot command reads saved results and updates <code>docs/assets/burst_business_cost.svg</code> and its numeric JSON; it does not run performance tests. The original measurements and their hashes remain unchanged.</p>
+<p><a href="../../benchmarks/guides/BURST_CACHE.html">Run the batch/business experiment</a> · <a href="../../benchmarks/guides/TUNABLE_SPSC.html">Search writer configurations</a> · <a href="index.html">Browse all published reports</a>.</p>
+<h2 id="compressed-evidence">3. Compressed evidence</h2>
+<p>The release exporter retains original measurements byte for byte inside deterministic gzip files when they exceed 1 MiB. HTML and Markdown evidence links in the release copy point to the compressed files. <code>compression-manifest.json</code> records both original and compressed SHA-256 hashes. To restore the recorded file paths without overwriting different existing files:</p>
+<div class="code-frame"><div class="code-label">Shell</div><pre tabindex="0"><code class="language-sh">python tools/unpack_performance_data.py</code></pre></div><p>The original development directory remains unchanged by export. Source/executable archives and original absolute command paths are evidence of the measurement host; use the portable benchmark runners to measure another host. Publication packaging and compression do not create new benchmark results.</p>
+<h2 id="historical-matched-measurements">4. Historical matched measurements</h2>
+<p>The historical producer-write chart uses the saved 2026-10-11 post-fix matched-parameter experiment, not newly selected best results. Both ordinary write and single-block Session use the same block sizes, pool limits, publication settings and read configuration for each payload length. Throughput and latency use the same configuration; the results are not claimed to be global optima.</p>
+<p>The saved <code>f698f25</code> experiment retains every formal run. The chart and main table do not substitute selected best trials.</p>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>Condition</th>
+<th>Ordinary write</th>
+<th>WriteSession</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>8 MiB per layer, callback iterations 0</td>
+<td><a href="../../../zh_cn/docs/reports/comparison/performance_8m_zero.html">Historical report (Chinese)</a></td>
+<td><a href="../../../zh_cn/docs/reports/comparison/performance_8m_zero_session.html">Historical report (Chinese)</a></td>
+</tr>
+<tr>
+<td>256 MiB per layer, calibrated callback work</td>
+<td><a href="../../../zh_cn/docs/reports/comparison/performance_256m_callback.html">Historical report (Chinese)</a></td>
+<td><a href="../../../zh_cn/docs/reports/comparison/performance_256m_callback_session.html">Historical report (Chinese)</a></td>
+</tr>
+</tbody></table></div>
+<h2 id="historical-ordinary-write-scan-current-run">5. Historical ordinary-write scan-current run</h2>
+<p>A separate ordinary-write run uses <code>is_scan_current=true</code>, <strong>1 ms</strong> initial/maximum scan intervals and minimum wait, and <code>publish_count=10</code>. Each entry sends 10 million messages with five throughput and five group-latency runs; all 320 formal measurements and 32 full-payload/FIFO validations passed. Callback iterations remain 1/1/2/4 at 256 MiB and 0 at 8 MiB to isolate the read/publication change; they were not recalibrated to a 2–3 ratio. Native SPSC controls were remeasured in that batch.</p>
+<p>Ordinary-write links in the historical four-report table above point to this run, while Session reports retain the preceding batch. They are therefore no longer a same-parameter, same-batch control. The historical write-cost figure still uses the matched scan-disabled, UINT32_MAX-publication experiment described below; it contains no mixed-in new data. Old report backups stay in the development directory. Use each published report&#39;s saved configuration to interpret its metrics.</p>
+<p><a href="../../../docs/performance_data/normal_current_scan10_20261011/raw.jsonl.gz">Raw data for this run</a> · <a href="../../../docs/performance_data/normal_current_scan10_20261011/environment.json">Environment and source hashes</a> · <a href="../../../docs/performance_data/normal_current_scan10_20261011/source.tar.gz">Source snapshot</a> · <a href="../../../docs/performance_data/normal_current_scan10_20261011/post-run-audit.json">Post-run audit</a>. The methodology and historical experiments below use their own saved settings; this batch changes the scanning/publication settings described above.</p>
+<h2 id="previous-matched-experiment-scope">6. Previous matched experiment scope</h2>
+<ul>
+<li>Apple M3, 8 GiB RAM, macOS 14.4.1 arm64, Clang 18.1.8, optimized unsanitized Release, AC power. Producer high QoS; no hard affinity. Other platforms must be measured independently.</li>
+<li>8/16/32/64-byte payloads; 10 million successful writes per formal run, five throughput runs and five latency runs per entry. Input is prepared before timing and every message&#39;s bytes vary. Full-payload/FIFO validation runs are separate from measured runs.</li>
+<li>Latency is the distribution of average write cost over groups of 1,000 writes. The table reports the arithmetic mean of five runs&#39; p50/p99/p999 values. It is not individual-call latency or time to callback. The historical producer-write chart shows the mean p50; all five values are retained in the chart data.</li>
+<li>Throughput uses accumulated producer send time across rounds. Each round drains before the next; draining time is excluded, but copying/callback threads may contend during sending. Failed attempts, waiting and block switching stay in the send timing.</li>
+<li>TwoBufQueue includes layer-2 copying and an independent callback thread. Each layer has its own payload budget, so 8 MiB per layer means 16 MiB total. Native SPSC comparisons have one 8 MiB payload budget, including reserved slots/padding. Queue metadata, prepared input and other process memory are reported separately.</li>
+<li>Current-block scanning is disabled; publish count is <code>UINT32_MAX</code>. There is no per-message flush. Tail handoff happens outside round send timing; Session acquisition and switching stay inside write timing.</li>
+<li>For 256 MiB, callback loop work is calibrated against ordinary TwoBufQueue write to approximately 2–3 times producer wall time. The same loop count is then fixed for that length across all transports and Session. Their actual callback/write ratio can differ; the ratio is not a per-call callback latency ratio.</li>
+</ul>
+<p>The p50/p99/p999 samples, CPU/RSS, backpressure, round counts and actual parameters are in each report. The finite sample count and timer granularity constrain tail interpretation. These conditions emphasize producer submission cost, not equal-thread-count or equal-total-memory competition.</p>
+<h2 id="copy-constructor-sensitivity">7. Copy-constructor sensitivity</h2>
+<p>All implementations copy the complete variable payload. The ordinary copy constructor is <code>bytes(other.bytes)</code>. ReaderWriterQueue 16/32 B uses a tagged <code>CopyAfterZero</code> constructor through the original <code>try_emplace</code>: default-zero the destination, then <code>memcpy</code> the full payload once; both operations are timed. Its 8/64 B paths retain member copying. rigtorp optionally requests a destination write-prefetch hint through its original <code>try_emplace</code> API, followed by one complete member copy, with no extra zeroing. These per-transport choices are fixed before timing and disclosed in each row and the complete parameters. See the <a href="analysis/RIGTORP_PERFORMANCE.html">rigtorp control</a> and <a href="../../../docs/performance_data/native_copy_control_20261011/summary.json">native copy control</a>. Upstream headers remain unchanged and are checked against pinned hashes. The earlier <a href="../../../docs/performance_data/copy_sensitivity_20261011/summary.json">independent A/B</a> changes only the external message copy constructor; validation passes but results change markedly. The precise processor-level explanation has not been established.</p>
+<p>The main table discloses per-adapter optimizations rather than enforcing one copy strategy: ReaderWriterQueue 16/32 B includes zeroing before copying, and rigtorp includes destination write prefetch. Rankings reflect external Payload code and compiler generation as well as queue algorithms. Historical A/B results are not mixed into the formal batch.</p>
+<h3 id="earlier-16-byte-follow-up-before-write-prefetch">7.1 Earlier 16-byte follow-up before write prefetch</h3>
+<p>The follow-up uses the same two measured binaries and arguments: 8 MiB, callback iterations 0, 10 million messages per run, alternating constructor variants, five throughput runs and five latency runs per variant/queue. Four separate full-payload validation runs passed. Upstream queue implementations are unchanged.</p>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>Queue</th>
+<th>External Payload copy constructor</th>
+<th align="right">Throughput M messages/s</th>
+<th align="right">Group-average p50 ns</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>ReaderWriterQueue</td>
+<td>Member initialization: <code>bytes(other.bytes)</code></td>
+<td align="right">97.12</td>
+<td align="right">9.308</td>
+</tr>
+<tr>
+<td>ReaderWriterQueue</td>
+<td>Constructor-body <code>memcpy</code></td>
+<td align="right">480.01</td>
+<td align="right">1.292</td>
+</tr>
+<tr>
+<td>rigtorp/SPSCQueue</td>
+<td>Member initialization: <code>bytes(other.bytes)</code></td>
+<td align="right">42.84</td>
+<td align="right">23.075</td>
+</tr>
+<tr>
+<td>rigtorp/SPSCQueue</td>
+<td>Constructor-body <code>memcpy</code></td>
+<td align="right">368.86</td>
+<td align="right">2.608</td>
+</tr>
+</tbody></table></div>
+<p>These are arithmetic means of five independent runs per metric. The p50 is a quantile of 1,000-write group averages, not single-message or end-to-end latency. Complete commands, executable hashes and all 44 runs are retained in the <a href="../../../docs/performance_data/copy_sensitivity_20261011/16b_recheck/summary.json">summary</a>, <a href="../../../docs/performance_data/copy_sensitivity_20261011/16b_recheck/metadata.json">metadata</a> and <a href="../../../docs/performance_data/copy_sensitivity_20261011/16b_recheck/raw.jsonl">raw data</a>. The original measured and variant sources are in the archives linked below.</p>
+<p>This follow-up reproduced 16 B copy-constructor sensitivity. The rigtorp constructor-body <code>memcpy</code> restored throughput to approximately the earlier 363 M messages/s. ReaderWriterQueue p50 recovered to about 1.292 ns, but throughput near 480 M messages/s remained below the earlier 742 M messages/s. This is a pre-fix historical control; current main tables explicitly retain the ReaderWriterQueue 16/32 B zero-then-copy path. Hardware counters have not isolated the precise processor/compiler mechanism. An 8 B local improvement neither proves all lengths improve nor establishes such a large queue-algorithm advantage for TwoBufQueue. Current main reports were remeasured with the corrected program, without replacing results by historical scores. The rigtorp regression is removed through optional adapter-side destination prefetch; see the <a href="analysis/RIGTORP_PERFORMANCE.html">same-executable control and limits</a>.</p>
+<h2 id="reproduce-and-inspect">8. Reproduce and inspect</h2>
+<p>The <a href="../code/benchmarks/spsc/run_release_benchmarks.py.html">runner</a> records original source snapshots, executable/source/dependency hashes, compiler flags, commands, calibration and all trials. Resume requires identical inputs. Build with <code>BRQ_BUILD_SPSC_BENCHMARKS=ON</code>; dependencies are benchmark-only and explicitly downloaded by <code>bootstrap_spsc.py</code>, never by default configure. Follow <a href="../../benchmarks/guides/TUNABLE_SPSC.html">the complete commands</a>.</p>
+<p><a href="../../../docs/performance_data/release_20261011_inline_fixed_110024/raw.jsonl.gz">Formal raw data</a> · <a href="../../../docs/performance_data/release_20261011_inline_fixed_110024/environment.json">environment</a> · <a href="../../../docs/performance_data/release_20261011_inline_fixed_110024/source.tar.gz">original measured source</a> · <a href="../../../docs/performance_data/copy_sensitivity_20261011/raw.jsonl">copy-control raw data</a></p>
+<p>The previous four-report matched experiment was measured from commit <code>f698f25</code>, which removes forced inlining from six benchmark lambdas while leaving the queue library unchanged. The <a href="../code/docs/performance_data/twobufqueue_8b_regression_20261011/README.txt.html">8 B regression evidence</a> records the controls and limits. This run retains 400 independent formal measurements, 40 separate complete-payload/FIFO validations and 45 callback calibration runs; all completed successfully. The 256 MiB callback loop counts for 8/16/32/64 B are 1/1/2/4, shared across all transports and Session. Calibration ratios are 3.09/2.17/1.95/2.38; 8 B and 32 B slightly miss the 2–3 target and remain disclosed. Native controls are shared between ordinary/Session reports of the same cache size, so report counts cannot be added together. Exact measured-source hashes and the source archive are retained; scratch/report files explain the dirty worktree flag. Saved absolute command paths identify the measurement host, not portable instructions.</p>
+<p>Regenerate the historical producer-write figure with Python 3.9+ and ReportLab 4.4.9:</p>
+<div class="code-frame"><div class="code-label">Shell</div><pre tabindex="0"><code class="language-sh">python -m pip install reportlab==4.4.9
+python benchmarks/spsc/plot_release.py --data docs/performance_data/release_20261011_inline_fixed_110024</code></pre></div><p>The <a href="../code/benchmarks/spsc/plot_release.py.html">plot script</a> reads the original two results files, exports <a href="../../../docs/assets/write_cost_8m.svg">SVG</a>, and saves its <a href="../../../docs/assets/write_cost_8m.json">numeric chart data</a>. It does not run benchmarks or change measurement data.</p>
+</article><footer class="site-footer"><span>TwoBufQueue · C++ · Apache-2.0</span><span><a href="../../index.html">Overview</a><a href="#top">Back to top ↑</a></span></footer></main></div></body></html>

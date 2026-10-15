@@ -72,20 +72,31 @@ README and the report index feature [continuous sending and business performance
 
 The workflow uses GitHub's [Pages actions](https://docs.github.com/en/pages/getting-started-with-github-pages/using-custom-workflows-with-github-pages). After regenerated HTML pages, documentation assets, or the publication manifest are pushed to main, it automatically publishes the website. The workflow can also be run manually to retry a deployment.
 
-## 6. Package the first release
+## 6. Package the release
 
-```sh
-python tools/build_release_assets.py --version 0.6.0
+Each source archive contains **both** documentation languages:
+
+```text
+TwoBufQueue-0.6.1/
+  START_HERE.html
+  en/index.html
+  zh_cn/index.html
+  src/  include/  examples/  third_party/
 ```
 
-The visible `packages/` directory contains the source archive, complete packaged measurement evidence and SHA-256 checksums. It is ignored by Git. Keep all original samples; packing is lossless and is verified by `tools/verify_release.py`.
+Open `START_HERE.html` to choose a language, or open `en/index.html` / `zh_cn/index.html` directly. The language directories contain actual reading pages; source code, assets and measurement evidence are shared.
 
-After remote CI passes, tag the intended commit as `v0.6.0`, push the tag and create a GitHub Release. Use `CHANGELOG.md` as release notes and attach the generated files. No tag or public release is created by the exporter.
+GitHub Releases use only the automatic **Source code (zip)** and **Source code (tar.gz)** downloads. They contain the same tagged files in different compression formats. Do not add separate CN/EN, source, evidence or checksum attachments. Keep published tags fixed; packaging changes belong in a new patch version.
 
-Suggested repository description: **C++ producer–consumer queue with two-layer buffers, batch publication and transfer, and small producer memory use.** Topics: `cpp20`, `spsc`, `logging`, `low-latency`, `message-queue`, `benchmark`. These describe the component; performance conclusions remain specific to the disclosed experiments.
+For a local offline copy, run:
 
+```sh
+python3 tools/build_release_assets.py
+```
 
-The visible `packages/` directory contains `TwoBufQueue-0.6.0-EN.zip` and `TwoBufQueue-0.6.0-CN.zip`, unpacked copies, and an HTML download index. Open `index.html` inside either package for its default language. Both contain the same canonical C++ code and both documentation languages; they are generated release artifacts rather than independently maintained implementations. Submit feature changes against the shared repository. ZIPs belong in GitHub Release attachments; generated packages are ignored by Git. The separate original Chinese backup is not the CN release package.
+The version is read from `CMakeLists.txt`. The tool generates `TwoBufQueue-0.6.1.zip`, `TwoBufQueue-0.6.1.tar.gz`, an unpacked copy and a download index under the ignored `packages/` directory. It verifies every file in both archives and prints their SHA-256 values. Original local packages and historical data remain available.
+
+Regenerate HTML, refresh and verify the publication manifest, commit the selected files, and wait for CI before publishing a new tag. The archive builder does not create tags or publish releases.
 
 ## 7. Repository README and the HTML documentation site
 

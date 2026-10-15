@@ -1,0 +1,17 @@
+<!-- Generated language reading page from test/func/warm_pool/TEST_POINTS.html; source SHA256 a52a871f37a51a719888b9ff662275d94df7abd243f8c1911f7b46645b618dfd. -->
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>WarmPool 测试点 · TwoBufQueue</title><link rel="stylesheet" href="../../../../docs/assets/readme.css"></head><body><!-- Generated from test/func/warm_pool/TEST_POINTS.md; SHA256 284b2b34659ac4ff2b2205e22b35935311c278de85236f26c243186491deacc6. --><a class="skip-link" href="#content">跳到正文</a><header class="site-header"><div class="header-inner"><a class="brand" href="../../../index.html"><span class="brand-symbol" aria-hidden="true"><i></i><i></i></span>TwoBufQueue<span class="brand-version">C++</span></a><nav aria-label="主要导航"><a href="../../../index.html">项目首页</a><a href="../../../docs/guides/API.html">接口指南</a><a href="../../../examples/README.html">使用示例</a><a href="../../../../en/docs/code/index.html">代码阅读</a><a href="../../../../en/docs/reports/index.html">性能报告</a></nav></div></header><div class="page-layout guide-layout" id="top"><aside class="toc"><p class="toc-label">本页目录</p><nav aria-label="目录"></nav><div class="toc-footer"><a href="../../../index.html">回到首页</a></div></aside><main id="content" class="guide-main"><section class="guide-hero"><div class="eyebrow"><span></span>TWOBUFQUEUE · 文档</div><h1>WarmPool 测试点</h1></section><details class="mobile-toc"><summary>本页目录</summary><nav></nav></details><article class="guide-content"><ol>
+<li>Resource 只要求 noexcept reset(generation) -&gt; bool 及不抛异常的析构；Factory::dispose(Resource*) 完整销毁对象。</li>
+<li>DefaultResource 每次借出绑定 Loan，finish() 无参数归还；独立资源不要求继承。</li>
+<li>同代归还在池 SpinLock 内认领，复制 Loan、多线程重复归还只有一次成功。</li>
+<li>旧 Loan 在对象销毁、Node 复用、下一代 reset 期间仍可校验，且不能归还新一代。</li>
+<li>创建、reset、Factory::dispose 在池锁外；构造和 reset 失败回滚容量与所有权。</li>
+<li>LIFO 缓存、max_free_count、min_count 优先及并发缩减下限。</li>
+<li>Node 锁不占用池锁；已进入的旧操作退出前不能 reset 同一节点，新旧 Loan 共享节点锁。</li>
+<li>登记销毁前至多尝试两个不同旧记录；锁忙放回队尾，新记录最后入队。</li>
+<li>队列保存旧对象指针，max_count=1 时 Node 复用不会误销毁新对象；析构清理尾部记录。</li>
+<li>多生产者/消费者传递编号与反码、超时等待、代号耗尽和未归还时析构诊断。</li>
+</ol>
+<p>Block/Slice 的实际销毁、旧凭证和 force_recycle 同步另由 block_lifecycle 的 trim 测试覆盖。
+is_valid 是瞬时检查；通过可能失效的 Loan 访问资源时，由使用者先取得 Node 锁，再校验、访问。</p>
+</article><footer class="site-footer"><span>TwoBufQueue · C++ · Apache-2.0</span><span><a href="../../../index.html">项目首页</a><a href="#top">回到顶部 ↑</a></span></footer></main></div></body></html>

@@ -2,7 +2,7 @@
 
 [English](https://xiyang1314.github.io/TwoBufQueue/third_party/spsc/README.html) · [简体中文](https://xiyang1314.github.io/TwoBufQueue/third_party/spsc/README.zh-CN.html)
 
-These are the pinned upstream headers and licenses required by the optional SPSC comparisons. They are included in the repository and source/language packages, so building the benchmarks does not require downloading dependencies. The regular TwoBufQueue library does not depend on these queues.
+These are the pinned upstream headers and licenses required by the optional SPSC comparisons. They are included in the repository and source archives, so building the benchmarks does not require downloading dependencies. The regular TwoBufQueue library does not depend on these queues.
 
 ## 1. Included versions
 

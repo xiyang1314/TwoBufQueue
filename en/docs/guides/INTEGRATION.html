@@ -1,0 +1,46 @@
+<!-- Generated language reading page from docs/guides/INTEGRATION.html; source SHA256 6131e33a51353cfa37686d65508d0a02dd845a7d66e040ee06bd2feb0d8db5c1. -->
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>CMake integration · TwoBufQueue</title><link rel="stylesheet" href="../../../docs/assets/readme.css"></head><body><!-- Generated from docs/guides/INTEGRATION.md; SHA256 b05aa09de30d9ec22128dabde24f724983ac198ec50ce30fb36ba36015682b51. --><a class="skip-link" href="#content">Skip to content</a><header class="site-header"><div class="header-inner"><a class="brand" href="../../index.html"><span class="brand-symbol" aria-hidden="true"><i></i><i></i></span>TwoBufQueue<span class="brand-version">C++</span></a><nav aria-label="Main navigation"><a href="../../index.html">Overview</a><a href="API.html">API guide</a><a href="../../examples/README.html">Examples</a><a href="../code/index.html">Source browser</a><a href="../reports/index.html">Reports</a></nav><div class="languages"><a href="INTEGRATION.html" aria-current="page">EN</a><a href="../../../zh_cn/docs/guides/INTEGRATION.html">中文</a></div></div></header><div class="page-layout guide-layout" id="top"><aside class="toc"><p class="toc-label">ON THIS PAGE</p><nav aria-label="Table of contents"><a class="toc-depth-2" href="#vendored-source">1. Vendored source</a><a class="toc-depth-2" href="#fetchcontent">2. FetchContent</a><a class="toc-depth-2" href="#installed-package">3. Installed package</a></nav><div class="toc-footer"><a href="../../index.html">Overview</a></div></aside><main id="content" class="guide-main"><section class="guide-hero"><div class="eyebrow"><span></span>TWOBUFQUEUE · DOCUMENTATION</div><h1>CMake integration</h1><p><a href="INTEGRATION.html">English</a> · <a href="../../../zh_cn/docs/guides/INTEGRATION.html">简体中文</a></p>
+<p><a href="../../index.html">English README</a> · <a href="../../../zh_cn/index.html">中文首页</a></p>
+<p>All three methods expose the same <code>TwoBufQueue::TwoBufQueue</code> target and <code>&lt;TwoBufQueue.hpp&gt;</code> header. The target propagates C++20 and thread linkage; consumers do not need to add internal include paths or link a platform synchronization library by hand. macOS consumers require 14.4+; set their deployment target before <code>project()</code> or during configure.</p>
+<p>When embedded, tests and examples are disabled by default; a standalone build enables the current tests and examples. Do not name your application target <code>TwoBufQueue</code>.</p>
+</section><details class="mobile-toc"><summary>On this page</summary><nav><a class="toc-depth-2" href="#vendored-source">1. Vendored source</a><a class="toc-depth-2" href="#fetchcontent">2. FetchContent</a><a class="toc-depth-2" href="#installed-package">3. Installed package</a></nav></details><article class="guide-content"><h2 id="vendored-source">1. Vendored source</h2>
+<p>Place the checkout under <code>external/TwoBufQueue</code>:</p>
+<div class="code-frame"><div class="code-label">CMake</div><pre tabindex="0"><code class="language-cmake">cmake_minimum_required(VERSION 3.20)
+project(my_app LANGUAGES CXX)
+<span class="syntax-keyword">add_subdirectory</span>(external/TwoBufQueue)
+add_executable(my_app main.cpp)
+<span class="syntax-keyword">target_link_libraries</span>(my_app <span class="syntax-keyword">PRIVATE</span> TwoBufQueue::TwoBufQueue)</code></pre></div><p>Use <code>BRQ_INSTALL=OFF</code> before <code>add_subdirectory</code> if your application should not install the dependency. Override <code>BRQ_BUILD_TESTS</code> / <code>BRQ_BUILD_EXAMPLES</code> explicitly if you want its tests and examples in the parent build.</p>
+<h2 id="fetchcontent">2. FetchContent</h2>
+<p>For a local checkout, this is fully offline and needs no unpublished GitHub address:</p>
+<div class="code-frame"><div class="code-label">CMake</div><pre tabindex="0"><code class="language-cmake">include(FetchContent)
+FetchContent_Declare(TwoBufQueue SOURCE_DIR <span class="syntax-string">&quot;${CMAKE_CURRENT_SOURCE_DIR}/external/TwoBufQueue&quot;</span>)
+FetchContent_MakeAvailable(TwoBufQueue)
+add_executable(my_app main.cpp)
+<span class="syntax-keyword">target_link_libraries</span>(my_app <span class="syntax-keyword">PRIVATE</span> TwoBufQueue::TwoBufQueue)</code></pre></div><p>When a repository is published, replace the declaration above with the actual URL and a pinned commit. No repository URL or release tag is invented here:</p>
+<div class="code-frame"><div class="code-label">CMake</div><pre tabindex="0"><code class="language-cmake">set(TWOBUFQUEUE_REPOSITORY <span class="syntax-string">&quot;&quot;</span> CACHE STRING <span class="syntax-string">&quot;Published repository URL&quot;</span>)
+set(TWOBUFQUEUE_REVISION <span class="syntax-string">&quot;&quot;</span> CACHE STRING <span class="syntax-string">&quot;Pinned full commit hash&quot;</span>)
+if(NOT TWOBUFQUEUE_REPOSITORY OR NOT TWOBUFQUEUE_REVISION)
+  message(FATAL_ERROR <span class="syntax-string">&quot;Set TWOBUFQUEUE_REPOSITORY and TWOBUFQUEUE_REVISION&quot;</span>)
+endif()
+FetchContent_Declare(TwoBufQueue
+  GIT_REPOSITORY <span class="syntax-string">&quot;${TWOBUFQUEUE_REPOSITORY}&quot;</span>
+  GIT_TAG <span class="syntax-string">&quot;${TWOBUFQUEUE_REVISION}&quot;</span>)
+FetchContent_MakeAvailable(TwoBufQueue)</code></pre></div><p>For a remote dependency, use the actual repository URL and a pinned commit rather than a moving branch.</p>
+<h2 id="installed-package">3. Installed package</h2>
+<p>From the library&#39;s root, install to a writable prefix:</p>
+<div class="code-frame"><div class="code-label">Shell</div><pre tabindex="0"><code class="language-sh"><span class="syntax-keyword">cmake</span> -S . -B build-package -DCMAKE_BUILD_TYPE=Release -DBRQ_BUILD_TESTS=OFF -DBRQ_BUILD_EXAMPLES=OFF
+<span class="syntax-keyword">cmake</span> --build build-package --config Release --parallel
+<span class="syntax-keyword">cmake</span> --install build-package --config Release --prefix ./install</code></pre></div><p>Consumer <code>CMakeLists.txt</code>:</p>
+<div class="code-frame"><div class="code-label">CMake</div><pre tabindex="0"><code class="language-cmake">cmake_minimum_required(VERSION 3.20)
+project(my_app LANGUAGES CXX)
+<span class="syntax-keyword">find_package</span>(TwoBufQueue 0.6 <span class="syntax-keyword">CONFIG</span> <span class="syntax-keyword">REQUIRED</span>)
+add_executable(my_app main.cpp)
+<span class="syntax-keyword">target_link_libraries</span>(my_app <span class="syntax-keyword">PRIVATE</span> TwoBufQueue::TwoBufQueue)</code></pre></div><p>Configure the consumer with <code>-DCMAKE_PREFIX_PATH=/absolute/path/to/install</code>. On macOS add <code>-DCMAKE_OSX_DEPLOYMENT_TARGET=14.4</code> when needed. Libraries, real headers, CMake package files, LICENSE and NOTICE are installed. The prefix may be moved as a whole: installed includes contain no source-tree forwarders. A compiled package is specific to its platform, architecture and compatible toolchain; this does not make binaries portable between operating systems.</p>
+<p>After installation, the application no longer depends on the original source directory. Move the complete install prefix and update <code>CMAKE_PREFIX_PATH</code>. The package version is 0.6.1 and accepts compatible versions within the same minor series; this does not imply that a GitHub Release has been created.</p>
+<p>The <a href="../code/test/integration/CMakeLists.txt.html">integration consumer</a> is runnable through <code>BRQ_INTEGRATION_MODE=add_subdirectory</code>, <code>fetchcontent</code>, or <code>package</code>. Example source-mode check:</p>
+<div class="code-frame"><div class="code-label">Shell</div><pre tabindex="0"><code class="language-sh"><span class="syntax-keyword">cmake</span> -S test/integration -B build-consumer -DBRQ_SOURCE_DIR=../.. -DBRQ_INTEGRATION_MODE=fetchcontent
+<span class="syntax-keyword">cmake</span> --build build-consumer --config Release --parallel
+<span class="syntax-keyword">ctest</span> --test-dir build-consumer -C Release --output-on-failure</code></pre></div><p>For package mode, omit <code>BRQ_SOURCE_DIR</code>, use <code>-DBRQ_INTEGRATION_MODE=package</code> and set <code>CMAKE_PREFIX_PATH</code> to the installed prefix.</p>
+<p>Package export follows CMake&#39;s <a href="https://cmake.org/cmake/help/latest/guide/importing-exporting/index.html">Importing and Exporting Guide</a>; source population uses its <a href="https://cmake.org/cmake/help/latest/module/FetchContent.html">FetchContent module</a>.</p>
+</article><footer class="site-footer"><span>TwoBufQueue · C++ · Apache-2.0</span><span><a href="../../index.html">Overview</a><a href="#top">Back to top ↑</a></span></footer></main></div></body></html>

@@ -1,0 +1,73 @@
+<!-- Generated language reading page from test/func/concurrent/TEST_POINTS.html; source SHA256 c1dc2e55e98eb328fda8614b79c3095eb081e6347e33e6a65d980db7fce1db81. -->
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>并发数据测试点 · TwoBufQueue</title><link rel="stylesheet" href="../../../../docs/assets/readme.css"></head><body><!-- Generated from test/func/concurrent/TEST_POINTS.md; SHA256 0e55923fbafc50ecd5e2efe79fb31172f328491ab38e334b728f8263ff3d4c58. --><a class="skip-link" href="#content">跳到正文</a><header class="site-header"><div class="header-inner"><a class="brand" href="../../../index.html"><span class="brand-symbol" aria-hidden="true"><i></i><i></i></span>TwoBufQueue<span class="brand-version">C++</span></a><nav aria-label="主要导航"><a href="../../../index.html">项目首页</a><a href="../../../docs/guides/API.html">接口指南</a><a href="../../../examples/README.html">使用示例</a><a href="../../../../en/docs/code/index.html">代码阅读</a><a href="../../../../en/docs/reports/index.html">性能报告</a></nav></div></header><div class="page-layout guide-layout" id="top"><aside class="toc"><p class="toc-label">本页目录</p><nav aria-label="目录"><a class="toc-depth-2" href="#c7-块级分配锁-2026-09-28">C7 块级分配锁（2026-09-28）</a><a class="toc-depth-2" href="#c8-独立-blockpool-并发取还-2026-09-29">C8 独立 BlockPool 并发取还（2026-09-29）</a><a class="toc-depth-2" href="#c9-每次取块独立时限">C9 每次取块独立时限</a></nav><div class="toc-footer"><a href="../../../index.html">回到首页</a></div></aside><main id="content" class="guide-main"><section class="guide-hero"><div class="eyebrow"><span></span>TWOBUFQUEUE · 文档</div><h1>并发数据测试点</h1><p>这一轮重点检查数据损坏，不以“线程运行完了”或吞吐数字作为正确性依据。</p>
+<table>
+<thead>
+<tr>
+<th>测试点</th>
+<th>重点风险</th>
+<th>独立判定依据</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>C1 并发传输</td>
+<td>丢失、重复、每源乱序、来源串线、输入所有权错误、拒收后数据变化</td>
+<td>不可变参考表、writer+seq身份、逐字节比较、唯一性表、拒收快照</td>
+</tr>
+<tr>
+<td>C2 大消息</td>
+<td>65535边界截断、换块时越界、前缀撕裂</td>
+<td>独立解析2字节前缀，与完整原始payload对比</td>
+</tr>
+<tr>
+<td>C3 交错分配释放</td>
+<td>旧代数据被新分配覆盖、片重叠、提前回收、漏回收</td>
+<td>活跃地址区间集合、持有时重复比较、每片唯一代次、最终池计数</td>
+</tr>
+<tr>
+<td>C4 固定持有</td>
+<td>池耗尽时错误复用仍持有块</td>
+<td>确定性握手强制耗尽及单片释放，另一片字节保持不变</td>
+</tr>
+<tr>
+<td>C5 SPSC环绕</td>
+<td>发布前可见、pop前覆盖、满时错误移动</td>
+<td>唯一序号、变长payload、front快照、移动所有权</td>
+</tr>
+<tr>
+<td>C6 活动块</td>
+<td>扫描与继续写入交错导致重复读/漏读/旧帧污染</td>
+<td>逐轮Flush/回调握手，先于Finish读到；跨轮持有和复核</td>
+</tr>
+</tbody></table>
+<p>负载包含全字节变化的确定性数据，身份编码使用字节读取而非未对齐强转；比较原始参考payload，不仅比较校验和。
+异步完成顺序可以不同，只要求回调入口中同一writer有序；不要求不同writer之间存在全局顺序。
+每个writer仅由所属写线程调用；只有单线程读队列，读到的独占DataFrame可分发给多个线程处理/释放。
+普通Alloc1Release1池不跨线程使用；1N和NN分别遵守分配线程数量约束；不并发释放同一个句柄。
+测试辅助队列使用mutex，统计及错误采集同步；检查库数据时不持有全局地址登记锁，以免串行化掩盖问题。
+先写本测试点和TEST_CASES，再写实现。所有等待有截止时间、进程级超时；固定种子和用例ID可复现。
+计划验证：Windows GCC Debug/Release、MSVC Release、Linux ASan/UBSan与TSan；重复并发测试；保留实际结果和未覆盖范围。
+有限测试不能证明无数据竞争或生产中永不出错；发现失败须区分用例错误与实现缺陷，不修改预期来回避有效问题。</p>
+</section><details class="mobile-toc"><summary>本页目录</summary><nav><a class="toc-depth-2" href="#c7-块级分配锁-2026-09-28">C7 块级分配锁（2026-09-28）</a><a class="toc-depth-2" href="#c8-独立-blockpool-并发取还-2026-09-29">C8 独立 BlockPool 并发取还（2026-09-29）</a><a class="toc-depth-2" href="#c9-每次取块独立时限">C9 每次取块独立时限</a></nav></details><article class="guide-content"><h2 id="c7-块级分配锁-2026-09-28">C7 块级分配锁（2026-09-28）</h2>
+<ul>
+<li>直接共享 NN 块：分配编号和字节区间必须唯一，槽位/字节容量不能超卖。</li>
+<li>63/64/65/129 位图边界及同一块多代复用；并发释放后恰好回收一次。</li>
+<li>NN 分配与释放交错：变长、变化对齐、逐字节复核，确保位图首位初始化不会丢失释放。</li>
+<li>三种策略的 allow_without_lock 在外部保证串行时与普通入口一致；失败不得消耗偏移或槽位，make_slice 不重复加锁。</li>
+<li>保留现有 pool_1N/pool_NN 流式测试，验证外层 SlicePool 串行化分配和换块、调用内层无锁入口。</li>
+<li>to_write_finished 仍在所有分配调用结束后执行；无锁入口与普通入口不得在缺少共同外部同步时并发混用。</li>
+</ul>
+<h2 id="c8-独立-blockpool-并发取还-2026-09-29">C8 独立 BlockPool 并发取还（2026-09-29）</h2>
+<ul>
+<li>不经过 SlicePool，直接验证 BlockPool 默认多取多还；独立覆盖 1/1、1/N、N/1、N/N 和同线程路径。</li>
+<li>取块锁覆盖回收栈 pop、按需创建、代号和占用统计；活动块不可重复借出，按需扩展不可超过 max_count。</li>
+<li>get_without_lock 仅在所有取块调用共用外部锁时使用；仍允许与归还端并行。</li>
+<li>不在校验 payload 时持有地址登记锁；按身份和全部字节验证，不只比较校验和。</li>
+<li>is_n_use 包含 to_write_finished 自动归还；N/1 测试确保归还仅发生在一个消费者线程。</li>
+<li>多等待者覆盖批量归还和通知合并；确定性构造多个空闲块仅一个起始信号，防止依赖调度运气。</li>
+<li>等待不得持有分配锁；重复通知不得重置总超时；所有等待有进程级和用例级期限。</li>
+<li>所有线程结束后才析构；preallocate、回调安装依旧仅在两端静止时使用。</li>
+</ul>
+<h2 id="c9-每次取块独立时限">C9 每次取块独立时限</h2>
+<p>直接调用 BlockPool::wait_get(timeout)，覆盖非正时限、不同等待者使用不同期限、毫秒到时钟精度溢出、截止时间加法溢出。沿用批量归还、通知合并和无资源通知回归，确认不丢唤醒且不重置总期限。</p>
+</article><footer class="site-footer"><span>TwoBufQueue · C++ · Apache-2.0</span><span><a href="../../../index.html">项目首页</a><a href="#top">回到顶部 ↑</a></span></footer></main></div></body></html>

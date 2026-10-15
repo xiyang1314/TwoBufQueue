@@ -2,7 +2,7 @@
 
 [English](https://xiyang1314.github.io/TwoBufQueue/third_party/spsc/README.html) · [简体中文](https://xiyang1314.github.io/TwoBufQueue/third_party/spsc/README.zh-CN.html)
 
-这里保存 SPSC 对比测试需要的固定版本头文件和许可证，随仓库、源码包和中英文发布包一起提供。构建性能测试不需要再下载这些依赖；正常使用 TwoBufQueue 库也不依赖它们。
+这里保存 SPSC 对比测试需要的固定版本头文件和许可证，随仓库、源码包一起提供。构建性能测试不需要再下载这些依赖；正常使用 TwoBufQueue 库也不依赖它们。
 
 ## 一、包含的版本
 

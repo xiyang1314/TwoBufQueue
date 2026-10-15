@@ -1,0 +1,170 @@
+<!-- Generated language reading page from NAMING.zh-CN.html; source SHA256 026eb7552bc99a30721ef27af46890f904a846546137e4ab4a54d52ecc173548. -->
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>命名规范 · TwoBufQueue</title><link rel="stylesheet" href="../docs/assets/readme.css"></head><body><!-- Generated from NAMING.zh-CN.md; SHA256 79d2b9a1b43acb6ab1db7965f5e8c28a0f614979b3d5c7e4af3ce1a98b32f082. --><a class="skip-link" href="#content">跳到正文</a><header class="site-header"><div class="header-inner"><a class="brand" href="index.html"><span class="brand-symbol" aria-hidden="true"><i></i><i></i></span>TwoBufQueue<span class="brand-version">C++</span></a><nav aria-label="主要导航"><a href="index.html">项目首页</a><a href="docs/guides/API.html">接口指南</a><a href="examples/README.html">使用示例</a><a href="docs/code/index.html">代码阅读</a><a href="docs/reports/index.html">性能报告</a></nav><div class="languages"><a href="../en/NAMING.html">EN</a><a href="NAMING.html" aria-current="page">中文</a></div></div></header><div class="page-layout guide-layout" id="top"><aside class="toc"><p class="toc-label">本页目录</p><nav aria-label="目录"><a class="toc-depth-2" href="#本次-api-迁移">一、本次 API 迁移</a><a class="toc-depth-2" href="#源数据块命名">二、源数据块命名</a><a class="toc-depth-2" href="#块资源工厂命名">三、块资源工厂命名</a><a class="toc-depth-2" href="#模板参数命名">四、模板参数命名</a></nav><div class="toc-footer"><a href="index.html">回到首页</a></div></aside><main id="content" class="guide-main"><section class="guide-hero"><div class="eyebrow"><span></span>TWOBUFQUEUE · 文档</div><h1>命名规范</h1><p><a href="../en/NAMING.html">English</a> · <a href="NAMING.html">简体中文</a></p>
+<ul>
+<li>类、结构体、枚举类型、自定义类型别名：<code>PascalCase</code>，例如 <code>WriterQueue</code>、<code>DataFrame</code>、<code>ReadConfig</code>。现有类名已符合，保持原名。</li>
+<li>函数与成员函数：<code>snake_case</code>，例如 <code>allocate()</code>、<code>try_read()</code>、<code>add_writer()</code>。构造/析构函数遵循 C++ 规则，与类同名；运算符保留语言规定名称。</li>
+<li>类的内部状态成员：<code>snake_case_</code>，例如 <code>write_ptr_</code>、<code>current_range_</code>。</li>
+<li>配置、统计、记录等结构体的公开数据字段：<code>snake_case</code>，例如 <code>block_size</code>、<code>frames</code>、<code>finish_mem</code>；不使用尾下划线。内部嵌套记录结构体也遵循此规则。</li>
+<li>普通变量和常量：<code>snake_case</code>。</li>
+<li>模板参数统一使用 <code>T</code> 前缀加 <code>PascalCase</code>：类型模板参数如 <code>TResource</code>、<code>TBlock</code>；值模板参数（<code>bool</code> 及其他非类型参数）如 <code>TIsConcurrent</code>、<code>TMaxCount</code>。详见「模板参数命名」。</li>
+<li>宏保持 <code>UPPER_SNAKE_CASE</code>。标准库协议名称（如 Clock 的 <code>rep</code>、<code>period</code>、<code>duration</code>、<code>time_point</code>、<code>is_steady</code>）和系统/第三方 API 不改名。</li>
+</ul>
+</section><details class="mobile-toc"><summary>本页目录</summary><nav><a class="toc-depth-2" href="#本次-api-迁移">一、本次 API 迁移</a><a class="toc-depth-2" href="#源数据块命名">二、源数据块命名</a><a class="toc-depth-2" href="#块资源工厂命名">三、块资源工厂命名</a><a class="toc-depth-2" href="#模板参数命名">四、模板参数命名</a></nav></details><article class="guide-content"><h2 id="本次-api-迁移">一、本次 API 迁移</h2>
+<p>本次只统一命名，不保留大写函数别名，不改变消息布局、所有权、同步或错误处理。外部调用需要同步更新。</p>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>原名称</th>
+<th>新名称</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>AddWriter()</code></td>
+<td><code>add_writer()</code></td>
+</tr>
+<tr>
+<td><code>Allocate()</code></td>
+<td><code>allocate()</code></td>
+</tr>
+<tr>
+<td><code>Close()</code></td>
+<td><code>close()</code></td>
+</tr>
+<tr>
+<td><code>Finish()</code></td>
+<td><code>finish()</code></td>
+</tr>
+<tr>
+<td><code>Flush()</code></td>
+<td><code>flush()</code></td>
+</tr>
+<tr>
+<td><code>Get()</code></td>
+<td><code>get()</code></td>
+</tr>
+<tr>
+<td><code>MakeSlice()</code></td>
+<td><code>make_slice()</code></td>
+</tr>
+<tr>
+<td><code>Notify()</code></td>
+<td><code>notify()</code></td>
+</tr>
+<tr>
+<td><code>NotifyMemoryAvailable()</code></td>
+<td><code>notify_memory_available()</code></td>
+</tr>
+<tr>
+<td><code>Poll()</code></td>
+<td><code>poll()</code></td>
+</tr>
+<tr>
+<td><code>Preallocate()</code></td>
+<td><code>preallocate()</code></td>
+</tr>
+<tr>
+<td><code>ReadAvailable()</code></td>
+<td><code>read_available()</code></td>
+</tr>
+<tr>
+<td><code>Release()</code></td>
+<td><code>release()</code></td>
+</tr>
+<tr>
+<td><code>ReportInvalid()</code></td>
+<td><code>report_invalid()</code></td>
+</tr>
+<tr>
+<td><code>RequestStop()</code></td>
+<td><code>request_stop()</code></td>
+</tr>
+<tr>
+<td><code>Reset()</code></td>
+<td><code>reset()</code></td>
+</tr>
+<tr>
+<td><code>Save()</code></td>
+<td><code>save()</code></td>
+</tr>
+<tr>
+<td><code>Seal()</code></td>
+<td><code>to_complete()</code></td>
+</tr>
+<tr>
+<td><code>Set()</code></td>
+<td><code>set()</code></td>
+</tr>
+<tr>
+<td><code>SetBatchAvailableCallback()</code></td>
+<td><code>set_batch_available_callback()</code></td>
+</tr>
+<tr>
+<td><code>SetErrorHandler()</code></td>
+<td><code>set_error_handler()</code></td>
+</tr>
+<tr>
+<td><code>SetReadAvailableCallback()</code></td>
+<td><code>set_read_available_callback()</code></td>
+</tr>
+<tr>
+<td><code>SetReleaseCallback()</code></td>
+<td><code>set_release_callback()</code></td>
+</tr>
+<tr>
+<td><code>SetSpaceAvailableCallback()</code></td>
+<td><code>set_space_available_callback()</code></td>
+</tr>
+<tr>
+<td><code>Start()</code></td>
+<td><code>start()</code></td>
+</tr>
+<tr>
+<td><code>Stop()</code></td>
+<td><code>stop()</code></td>
+</tr>
+<tr>
+<td><code>TryRead()</code></td>
+<td><code>try_read()</code></td>
+</tr>
+<tr>
+<td><code>TryWait()</code></td>
+<td><code>try_wait()</code></td>
+</tr>
+<tr>
+<td><code>Wait()</code></td>
+<td><code>wait()</code></td>
+</tr>
+<tr>
+<td><code>WaitFor()</code></td>
+<td><code>wait_for()</code></td>
+</tr>
+<tr>
+<td><code>WaitUntil()</code></td>
+<td><code>wait_until()</code></td>
+</tr>
+</tbody></table></div>
+<p>公开字段 <code>Entry::finishMem/nextMem</code> 改为 <code>finish_mem/next_mem</code>；<code>BlockPool::kBlockAlignment</code> 改为 <code>block_alignment</code>。
+为避免重名，<code>QueueReader</code> 的内部 <code>poll()</code> 改为 <code>poll_once()</code>，<code>ReadService</code> 的内部注册模板改为 <code>register_writer()</code>。</p>
+<p>审查报告及既有性能/测试结果是历史记录，其中的旧符号不作为当前 API 示例；当前示例、测试源码与基准源码随接口更新。</p>
+<h2 id="源数据块命名">二、源数据块命名</h2>
+<p><code>MemRange</code> 改为 <code>WriterBlock</code>，对应文件为 <code>src/write/writer_block.hpp</code> 和 <code>.cpp</code>；
+状态枚举为 <code>SourceBlockState</code>，写入器通过 <code>source_block()</code> 取得当前源块。
+该类继承 <code>ReaderBlock&lt;&gt;</code>，增加源端发布/交付游标和写入完成状态；命名调整不改变块的生命周期。</p>
+<p>旧源块管理器已删除。Writer 直接引用 SpscLiveHandoffQueue，通过 handoff_queue() 提供给读端；
+WriterPool/WriterQueue 仅是现有组件的类型别名，不是新增管理类。</p>
+<h2 id="块资源工厂命名">三、块资源工厂命名</h2>
+<p><code>MemoryResourceFactory</code> 改为 <code>BlockResourceFactory</code>，对应文件为 <code>src/base_components/block_slice/block_resource_factory.hpp</code>；
+该类只创建 Block，不负责内存归还，名称与 <code>WarmPool</code> 的资源语义对齐。
+前置声明、友元声明、<code>SlicePool</code> 的 <code>Factory</code> 别名、测试辅助类及文档同步改名，构造签名不变。</p>
+<h2 id="模板参数命名">四、模板参数命名</h2>
+<p>模板参数统一使用 <code>T</code> 前缀加 <code>PascalCase</code>，类型参数和值参数（<code>bool</code> 及其他非类型参数）均适用：
+<code>TResource</code>、<code>TBlock</code>、<code>TIsConcurrent</code>、<code>TMaxCount</code>。<code>T</code> 表示模板参数，不区分类型与值。</p>
+<p><code>WarmPool</code> 的资源类型参数由 <code>T</code> 改为 <code>TResource</code>；池锁策略参数由 <code>is_n_alloc</code> 改为 <code>TIsConcurrent</code>。
+后者原名沿自 <code>BasicBlockSlicesAllocator</code>，在分配器中与 <code>is_n_use</code> 成对表示「N 个分配者 / N 个释放者」，
+但该参数在池内只决定 <code>Lock = std::conditional_t&lt;TIsConcurrent, SpinLock, NoLock&gt;</code>，覆盖全部池操作（借出、归还、
+受保护访问、预分配、计数查询、回调注册），与「分配」无对应关系，故改名。两个参数均为位置传参，调用点无需修改。</p>
+<p><code>BasicBlock</code>、<code>ReaderBlock</code>、<code>WriterBlock</code> 与 <code>BasicBlockSlicesAllocator</code> 保留 <code>is_n_alloc</code>，
+第二个参数已按接口约定改为 <code>is_n_use</code>，表示块由多个线程使用，包括切片释放和强制回收。
+两个参数任一为 true 时启用跨线程元数据及 Node 锁；此处暂未统一成 T 前缀命名。</p>
+</article><footer class="site-footer"><span>TwoBufQueue · C++ · Apache-2.0</span><span><a href="index.html">项目首页</a><a href="#top">回到顶部 ↑</a></span></footer></main></div></body></html>

@@ -20,6 +20,18 @@ def verify(root, check_manifest=True):
     reading_path = root / 'tools/github_reading_pages.json'
     reading_pages = {page['markdown'] for page in json.loads(reading_path.read_text(encoding='utf-8'))['pages']} if reading_path.exists() else set()
     errors = []
+    language_manifest = root / 'tools/language_pages.json'
+    if language_manifest.is_file():
+        languages = json.loads(language_manifest.read_text(encoding='utf-8'))
+        for record in languages['files']:
+            source = root / record['source_path']
+            target = root / record['path']
+            if not source.is_file() or hashlib.sha256(source.read_bytes()).hexdigest() != record['source_sha256']:
+                errors.append('Stale language source: ' + record['source_path'])
+            if not target.is_file() or hashlib.sha256(target.read_bytes()).hexdigest() != record['sha256']:
+                errors.append('Language page mismatch: ' + record['path'])
+        if not all((root / name).is_file() for name in languages['entries'].values()):
+            errors.append('Missing English or Chinese documentation entry')
     dependency_manifest = root / 'benchmarks/spsc/spsc_dependencies.json'
     if dependency_manifest.is_file():
         dependencies = json.loads(dependency_manifest.read_text(encoding='utf-8'))

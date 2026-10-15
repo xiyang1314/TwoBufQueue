@@ -1,0 +1,13 @@
+<!-- Generated language reading page from test/func/block_roles/TEST_POINTS.html; source SHA256 530c8e2ac0184c6299b690111474476fb87c6dc0a58d20de3969b5305a5fa38f. -->
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>WriterBlock / ReaderBlock 拆分测试点 · TwoBufQueue</title><link rel="stylesheet" href="../../../../docs/assets/readme.css"></head><body><!-- Generated from test/func/block_roles/TEST_POINTS.md; SHA256 27bce6102ee860191ccc370d3f9f84df1fafea7b4162588c514bb4a4ec631e71. --><a class="skip-link" href="#content">跳到正文</a><header class="site-header"><div class="header-inner"><a class="brand" href="../../../index.html"><span class="brand-symbol" aria-hidden="true"><i></i><i></i></span>TwoBufQueue<span class="brand-version">C++</span></a><nav aria-label="主要导航"><a href="../../../index.html">项目首页</a><a href="../../../docs/guides/API.html">接口指南</a><a href="../../../examples/README.html">使用示例</a><a href="../../../../en/docs/code/index.html">代码阅读</a><a href="../../../../en/docs/reports/index.html">性能报告</a></nav></div></header><div class="page-layout guide-layout" id="top"><aside class="toc"><p class="toc-label">本页目录</p><nav aria-label="目录"></nav><div class="toc-footer"><a href="../../../index.html">回到首页</a></div></aside><main id="content" class="guide-main"><section class="guide-hero"><div class="eyebrow"><span></span>TWOBUFQUEUE · 文档</div><h1>WriterBlock / ReaderBlock 拆分测试点</h1></section><details class="mobile-toc"><summary>本页目录</summary><nav></nav></details><article class="guide-content"><ol>
+<li>接口隔离：BasicBlock 不公开业务分配接口；WriterBlock 只公开无参读取切片接口；ReaderBlock 只公开普通分配接口。</li>
+<li>公共所有权：两类块使用相同基础块和切片分配器，切片可放入同一个 DataBatch；不同池的句柄正确归属和释放。</li>
+<li>ReaderBlock：空块即可分配；对齐、容量、槽位、分配失败及三种并发策略不改变已有数据；停止分配与切片释放共同决定回收。</li>
+<li>WriterBlock：未发布字节不能被读取；增量发布、空增量、写入结束、离开 Writer、未读尾部、异步持有分别保护块生命周期。</li>
+<li>回收隔离：先登记切片再发布分配游标；池不得仅按基础类条件提前回收 WriterBlock。</li>
+<li>内存缩减和复用：恢复后游标清零、发布指针重新绑定；旧代切片不能修改新代计数。</li>
+<li>集成：直接回调和 BigMemoryStore 缓存路径继续使用相同 DataFrame/DataBatch，Linux 区分大小写的 include 使用 data。</li>
+</ol>
+<p>先记录测试点和测试用例，再实现拆分及回归测试。现有并发、生命周期和内存缩减测试同步适配新的职责边界。</p>
+</article><footer class="site-footer"><span>TwoBufQueue · C++ · Apache-2.0</span><span><a href="../../../index.html">项目首页</a><a href="#top">回到顶部 ↑</a></span></footer></main></div></body></html>
