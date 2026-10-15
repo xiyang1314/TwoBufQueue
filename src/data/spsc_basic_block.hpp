@@ -1,6 +1,6 @@
 #pragma once
 
-#include "TwoBufQueue/src/base_components/WarmPool/resource.hpp"
+#include "TwoBufQueue/src/base_components/warm_pool/resource.hpp"
 #include <cstddef>
 #include <limits>
 #include <new>

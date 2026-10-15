@@ -1,10 +1,10 @@
 #pragma once
 
-#include "TwoBufQueue/src/base_components/WarmPool/resource.hpp"
+#include "TwoBufQueue/src/base_components/warm_pool/resource.hpp"
 
 // Simulated business state for core tests; end_work/completed are not required by the pool interface.
-template<bool concurrent = true>
-class ExampleResource : public TwoBufQueue::DefaultResource<concurrent> {
+template<bool TConcurrent = true>
+class ExampleResource : public TwoBufQueue::DefaultResource<TConcurrent> {
 public:
     bool reset(std::uint64_t generation) noexcept {
         if (!generation) return false;

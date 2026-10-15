@@ -11,11 +11,11 @@ namespace TwoBufQueue {
 // TSeq must be an unsigned integer of at most 64 bits; other template arguments match Writer.
 // write / write_mem take a leading seq argument; seq bytes are not included in the payload length prefix.
 // TSyncContext = void selects asynchronous buffering; a non-void context directly passes seq/payload without encoding prefixes.
-template <typename TSeq, std::uint32_t publish_write_ptr_count = 1,
+template <typename TSeq, std::uint32_t TPublishWritePtrCount = 1,
           bool TIsWriteLen = true,
           typename TDataLen = std::uint16_t,
           class TSyncContext = void>
-class SeqWriter : public WriterBase<publish_write_ptr_count>,
+class SeqWriter : public WriterBase<TPublishWritePtrCount>,
                   public detail::SyncBinding<TSyncContext> {
     static_assert(std::is_integral_v<TSeq> && std::is_unsigned_v<TSeq> &&
                   !std::is_same_v<TSeq, bool> &&
@@ -27,7 +27,7 @@ class SeqWriter : public WriterBase<publish_write_ptr_count>,
                   std::is_same_v<TDataLen, std::remove_cv_t<TDataLen>> &&
                   sizeof(TDataLen) <= sizeof(std::uint64_t),
                   "TDataLen must be an unqualified unsigned integer of at most 64 bits");
-    using Base = WriterBase<publish_write_ptr_count>;
+    using Base = WriterBase<TPublishWritePtrCount>;
 public:
     static constexpr bool is_sync = !std::is_void_v<TSyncContext>;
     using SeqType = TSeq;
@@ -58,13 +58,13 @@ public:
         // Publish the current block's position and notify the reader without switching blocks; calling is optional.
         // With is_scan_current = false, get_next_session / finish_block / finish must also hand off the tail.
         void flush() noexcept { state_.flush(); }
-        template <typename... Args>
-        [[nodiscard]] FAST_LOG_ALWAYS_INLINE SessionWriteResult write(TSeq seq, const Args&... args) noexcept {
-            static_assert((std::is_trivially_copyable_v<Args> && ...),
+        template <typename... TArgs>
+        [[nodiscard]] FAST_LOG_ALWAYS_INLINE SessionWriteResult write(TSeq seq, const TArgs&... args) noexcept {
+            static_assert((std::is_trivially_copyable_v<TArgs> && ...),
                           "write requires trivially-copyable arguments");
-            static_assert(((!std::is_pointer_v<Args> && !std::is_array_v<Args>) && ...),
+            static_assert(((!std::is_pointer_v<TArgs> && !std::is_array_v<TArgs>) && ...),
                           "use write_mem for pointer/array payloads");
-            constexpr std::size_t size = (std::size_t{0} + ... + sizeof(Args));
+            constexpr std::size_t size = (std::size_t{0} + ... + sizeof(TArgs));
             if constexpr (TIsWriteLen) {
                 static_assert(size <= (std::numeric_limits<TDataLen>::max)(),
                               "payload does not fit TDataLen");
@@ -80,7 +80,7 @@ public:
             std::byte* const begin = state_.cursor();
             write_seq(begin, seq);
             if constexpr (TIsWriteLen) write_length(begin + seq_size, static_cast<TDataLen>(size));
-            Base::copy_arguments(std::index_sequence_for<Args...>{}, begin + total_prefix_size, args...);
+            Base::copy_arguments(std::index_sequence_for<TArgs...>{}, begin + total_prefix_size, args...);
             state_.commit(begin + total_prefix_size + size);
 
             return SessionWriteResult::success;
@@ -115,13 +115,13 @@ public:
         requires (!is_sync && Base::session_enabled) { return WriteSession(*this, true, timeout); }
 
     // Copy object representations tightly in argument order, with seq first; only trivially copyable nonpointer, nonarray values.
-    template <typename... Args>
-    [[nodiscard]] FAST_LOG_ALWAYS_INLINE bool write(TSeq seq, const Args&... args) noexcept {
-        static_assert((std::is_trivially_copyable_v<Args> && ...),
+    template <typename... TArgs>
+    [[nodiscard]] FAST_LOG_ALWAYS_INLINE bool write(TSeq seq, const TArgs&... args) noexcept {
+        static_assert((std::is_trivially_copyable_v<TArgs> && ...),
                       "write requires trivially-copyable arguments");
-        static_assert(((!std::is_pointer_v<Args> && !std::is_array_v<Args>) && ...),
+        static_assert(((!std::is_pointer_v<TArgs> && !std::is_array_v<TArgs>) && ...),
                       "use write_mem for pointer/array payloads");
-        constexpr std::size_t size = (std::size_t{0} + ... + sizeof(Args));
+        constexpr std::size_t size = (std::size_t{0} + ... + sizeof(TArgs));
         if constexpr (TIsWriteLen) {
             static_assert(size <= (std::numeric_limits<TDataLen>::max)(),
                           "payload does not fit TDataLen");
@@ -142,7 +142,7 @@ public:
             if (FAST_LOG_UNLIKELY(begin == nullptr)) return false;
             write_seq(begin, seq);
             if constexpr (TIsWriteLen) write_length(begin + seq_size, static_cast<TDataLen>(size));
-            this->copy_arguments(std::index_sequence_for<Args...>{}, begin + total_prefix_size, args...);
+            this->copy_arguments(std::index_sequence_for<TArgs...>{}, begin + total_prefix_size, args...);
             this->commit_write(begin + total_prefix_size + size);
         }
         return true;

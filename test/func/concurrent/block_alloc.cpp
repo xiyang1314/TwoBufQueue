@@ -177,8 +177,8 @@ static void direct_streaming() {
             CHECK(n == 1);
 }
 
-template<class Block> static void without_lock_contract() {
-    auto pool = make_block_pool<TestBlockPool<Block, false>>(128, 1, 1, {.max_slices_per_block = 4});
+template<class TBlock> static void without_lock_contract() {
+    auto pool = make_block_pool<TestBlockPool<TBlock, false>>(128, 1, 1, {.max_slices_per_block = 4});
     for (unsigned round = 0; round < 3; ++round) {
         auto *block = pool.get().get();
         CHECK(block);
@@ -198,7 +198,7 @@ template<class Block> static void without_lock_contract() {
         CHECK(!block->allow_without_lock(1)); // Release must not reuse an index.
         CHECK(block->outstanding_count() == 2);
         finish_block(block);
-        if constexpr (Block::concurrent) {
+        if constexpr (TBlock::concurrent) {
             brq_support::JoiningThread a([slice = std::move(first)]() mutable { slice.release(); });
             brq_support::JoiningThread b([slice = std::move(fourth)]() mutable { slice.release(); });
         } else {

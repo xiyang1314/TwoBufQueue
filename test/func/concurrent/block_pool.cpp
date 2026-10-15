@@ -10,8 +10,8 @@ namespace {
 using Pool = TestBlockPool<ReaderBlock<>>;
 static_assert(std::is_same_v<Pool, TestBlockPool<ReaderBlock<>, true>>);
 
-template<class Predicate>
-void until(Predicate predicate) {
+template<class TPredicate>
+void until(TPredicate predicate) {
     const auto deadline = Clock::now() + 5s;
     while (!predicate()) {
         CHECK(Clock::now() < deadline);
@@ -26,12 +26,12 @@ struct Work {
     unsigned writer, sequence;
 };
 
-template<bool NAlloc, bool NRelease, bool External = false>
+template<bool TNAlloc, bool TNRelease, bool TExternal = false>
 void streaming(std::size_t initial) {
-    constexpr unsigned writers = NAlloc ? 4 : 1;
-    constexpr unsigned readers = NRelease ? 4 : 1;
+    constexpr unsigned writers = TNAlloc ? 4 : 1;
+    constexpr unsigned readers = TNRelease ? 4 : 1;
     constexpr unsigned count = 1001;
-    auto pool = make_block_pool<TestBlockPool<ReaderBlock<>, NAlloc>>(256, initial, 8,
+    auto pool = make_block_pool<TestBlockPool<ReaderBlock<>, TNAlloc>>(256, initial, 8,
                                              {.max_slices_per_block = 1});
     Channel<Work> handoff(8);
     Failure failure;
@@ -69,7 +69,7 @@ void streaming(std::size_t initial) {
             failure.run([&] {
                 const auto deadline = Clock::now() + 30s;
                 const auto get = [&]() {
-                    if constexpr (External) {
+                    if constexpr (TExternal) {
                         std::lock_guard lock(external_mutex);
                         return pool.get().get();
                     } else return pool.get().get();
@@ -311,8 +311,8 @@ void wait_independent() {
     CHECK(pool.in_use_count() == 0);
 }
 
-template<class Duration>
-void wait_max(Duration timeout) {
+template<class TDuration>
+void wait_max(TDuration timeout) {
     auto pool = make_block_pool<Pool>(64, 1, 1);
     auto* held = pool.get().get();
     CHECK(held);

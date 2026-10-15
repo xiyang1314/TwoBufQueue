@@ -1,4 +1,4 @@
-#include "TwoBufQueue/src/base_components/WarmPool/warm_pool.hpp"
+#include "TwoBufQueue/src/base_components/warm_pool/warm_pool.hpp"
 #include "example_resource.hpp"
 
 #include <array>
@@ -23,7 +23,7 @@ using namespace std::chrono_literals;
 
 namespace TwoBufQueue {
 struct WarmPoolTestAccess {
-    template<class Pool> static void exhaust_next(Pool& pool) {
+    template<class TPool> static void exhaust_next(TPool& pool) {
         pool.next_generation_ = std::numeric_limits<std::uint64_t>::max() - 1;
     }
 };
@@ -54,17 +54,17 @@ struct Payload : ExampleResource<> {
     }
 };
 
-template<class T>
+template<class TValue>
 struct Factory {
     Control* control;
-    T* create() const {
+    TValue* create() const {
         if (control->on_create) control->on_create();
         const auto mode = control->create_mode.load();
         if (mode == 1) return {};
         if (mode == 2) throw std::bad_alloc{};
-        return new T(control);
+        return new TValue(control);
     }
-    void dispose(T* resource) const noexcept {
+    void dispose(TValue* resource) const noexcept {
         if (control->on_dispose) control->on_dispose();
         ++control->disposes;
         delete resource;
@@ -79,19 +79,19 @@ struct Heavy : Payload {
 };
 using HeavyPool = WarmPool<Heavy, true, Factory<Heavy>>;
 
-template<class T> concept HasEndWork = requires(T& value) { value.end_work(std::uint64_t{1}); };
-template<class T> concept HasOnRecycle = requires(T& value) { value.on_recycle(); };
-template<class T> concept HasRestore = requires(T& value) { value.restore_resources(); };
-template<class T> concept HasGeneration = requires(const T& value) { value.generation(); };
+template<class TValue> concept HasEndWork = requires(TValue& value) { value.end_work(std::uint64_t{1}); };
+template<class TValue> concept HasOnRecycle = requires(TValue& value) { value.on_recycle(); };
+template<class TValue> concept HasRestore = requires(TValue& value) { value.restore_resources(); };
+template<class TValue> concept HasGeneration = requires(const TValue& value) { value.generation(); };
 
-template<class T> void finish(const T& resource) {
+template<class TValue> void finish(const TValue& resource) {
     CHECK(resource != nullptr);
     const auto generation = resource.generation();
     CHECK(generation != 0);
     CHECK(resource->end_work(generation));
 }
 
-template<class P> void release(P& pool, const typename P::Loan& loan) {
+template<class TPool> void release(TPool& pool, const typename TPool::Loan& loan) {
     finish(loan);
     CHECK(pool.recycle(loan));
 }
@@ -123,8 +123,8 @@ void protocol() {
     static_assert(HasEndWork<ExampleResource<>>);
 }
 
-template<bool concurrent> void resource_one() {
-    ExampleResource<concurrent> resource;
+template<bool TConcurrent> void resource_one() {
+    ExampleResource<TConcurrent> resource;
     CHECK(resource.completed());
     CHECK(!resource.reset(0));
     CHECK(resource.reset(4));
@@ -670,9 +670,9 @@ void factory_loan() {
     release(pool, b);
 }
 
-template<bool concurrent> void default_finish_one() {
-    using R = DefaultResource<concurrent>;
-    using P = WarmPool<R, concurrent>;
+template<bool TConcurrent> void default_finish_one() {
+    using R = DefaultResource<TConcurrent>;
+    using P = WarmPool<R, TConcurrent>;
     for (const std::size_t cap : {0u, 1u}) {
         P pool(0, 1, {}, cap), other(0, 1);
         typename P::Loan old;

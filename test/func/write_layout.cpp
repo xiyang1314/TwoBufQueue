@@ -32,15 +32,15 @@ struct RawReceiver {
     void end_read() noexcept {}
 };
 
-template<class T> void append_value(std::vector<std::byte>& bytes, const T& value) {
+template<class TValue> void append_value(std::vector<std::byte>& bytes, const TValue& value) {
     const auto* begin = reinterpret_cast<const std::byte*>(&value);
-    for (std::size_t i = 0; i < sizeof(T); ++i) bytes.push_back(begin[i]);
+    for (std::size_t i = 0; i < sizeof(TValue); ++i) bytes.push_back(begin[i]);
 }
-template<bool WriteLen, class Len>
+template<bool TWriteLen, class TLen>
 void append_record(std::vector<std::byte>& output, const std::vector<std::byte>& payload) {
-    if constexpr (WriteLen) {
+    if constexpr (TWriteLen) {
         auto size = static_cast<std::uint64_t>(payload.size());
-        for (std::size_t i = 0; i < sizeof(Len); ++i) {
+        for (std::size_t i = 0; i < sizeof(TLen); ++i) {
             output.push_back(std::byte(size % 256));
             size /= 256;
         }
@@ -48,12 +48,12 @@ void append_record(std::vector<std::byte>& output, const std::vector<std::byte>&
     for (const auto byte : payload) output.push_back(byte);
 }
 
-template<unsigned Publish, bool WriteLen, class Len>
+template<unsigned TPublish, bool TWriteLen, class TLen>
 void layout_bytes(bool buffered) {
-    using RecordWriter = std::conditional_t<WriteLen,
-        Writer<Publish, true, Len>, Writer<Publish, false>>;
-    if constexpr (WriteLen) {
-        using RawWrite = bool (RecordWriter::*)(const void*, Len) noexcept;
+    using RecordWriter = std::conditional_t<TWriteLen,
+        Writer<TPublish, true, TLen>, Writer<TPublish, false>>;
+    if constexpr (TWriteLen) {
+        using RawWrite = bool (RecordWriter::*)(const void*, TLen) noexcept;
         [[maybe_unused]] RawWrite typed_entry = static_cast<RawWrite>(&RecordWriter::write_mem);
     }
     static_assert(!std::is_polymorphic_v<RecordWriter>);
@@ -74,12 +74,12 @@ void layout_bytes(bool buffered) {
             CHECK(writer.write(a, b, c));
             if (i == 0) {
                 CHECK(writer.published_write_ptr() == begin +
-                      (Publish == 1 ? RecordWriter::message_prefix_size + packed.size() : 0));
+                      (TPublish == 1 ? RecordWriter::message_prefix_size + packed.size() : 0));
             }
-            append_record<WriteLen, Len>(expected, packed);
+            append_record<TWriteLen, TLen>(expected, packed);
             auto raw = payload(3, i);
-            CHECK(writer.write_mem(raw.data(), static_cast<Len>(raw.size())));
-            append_record<WriteLen, Len>(expected, raw);
+            CHECK(writer.write_mem(raw.data(), static_cast<TLen>(raw.size())));
+            append_record<TWriteLen, TLen>(expected, raw);
             std::fill(raw.begin(), raw.end(), std::byte{0});
             writer.flush();
             if (i == 0 && !buffered) {
@@ -133,9 +133,9 @@ void layout_bytes(bool buffered) {
     }
 }
 
-template<bool WriteLen, class Len> void slice_capacity() {
-    using RecordWriter = std::conditional_t<WriteLen,
-        Writer<1, true, Len>, Writer<1, false>>;
+template<bool TWriteLen, class TLen> void slice_capacity() {
+    using RecordWriter = std::conditional_t<TWriteLen,
+        Writer<1, true, TLen>, Writer<1, false>>;
     constexpr std::size_t count = 1100;
     constexpr std::size_t block_bytes = count * (RecordWriter::message_prefix_size + 1);
     WriterFixture pool(block_bytes, 1, 1, {}, 0, RecordWriter::message_prefix_size);
@@ -148,7 +148,7 @@ template<bool WriteLen, class Len> void slice_capacity() {
     for (unsigned i = 0; i < count; ++i) {
         const auto value = static_cast<std::uint8_t>(i);
         CHECK(writer.write(value));
-        append_record<WriteLen, Len>(expected, {std::byte{value}});
+        append_record<TWriteLen, TLen>(expected, {std::byte{value}});
         tick(service); tick(service);
     }
     CHECK(receiver.good && receiver.bytes[0] == expected);
@@ -157,14 +157,14 @@ template<bool WriteLen, class Len> void slice_capacity() {
     CHECK(pool.all_released());
 }
 
-template<class Len> void length_limits() {
-    using RecordWriter = Writer<1, true, Len>;
+template<class TLen> void length_limits() {
+    using RecordWriter = Writer<1, true, TLen>;
     // Keep oversized input a runtime rejection test, not a compile-time
     // out-of-bounds copy; no source byte may be read on this path.
-    const volatile Len maximum = (std::numeric_limits<Len>::max)();
+    const volatile TLen maximum = (std::numeric_limits<TLen>::max)();
     // Select a valid length that fits Len while leaving room to test exceeding block capacity.
-    const std::size_t valid_size = sizeof(Len) == 1 ? 200u : sizeof(Len) == 2 ? 60000u : 100000u;
-    WriterFixture pool(valid_size + sizeof(Len), 1, 1, {}, 0, sizeof(Len));
+    const std::size_t valid_size = sizeof(TLen) == 1 ? 200u : sizeof(TLen) == 2 ? 60000u : 100000u;
+    WriterFixture pool(valid_size + sizeof(TLen), 1, 1, {}, 0, sizeof(TLen));
     RecordWriter writer(&pool.queue, 0, pool.backpressure);
     RawReceiver receiver;
     AutoResetEvent event;
@@ -172,13 +172,13 @@ template<class Len> void length_limits() {
     CHECK(service.add_writer(&writer, false)); tick(service);
     const auto bytes = payload(valid_size);
     auto* before = writer.published_write_ptr();
-    CHECK(!writer.write_mem(nullptr, Len{1}));        // Null pointer with positive length.
+    CHECK(!writer.write_mem(nullptr, TLen{1}));        // Null pointer with positive length.
     CHECK(!writer.write_mem(bytes.data(), maximum));  // Exceeds block capacity; u64 also exercises prefix-addition overflow.
     CHECK(writer.published_write_ptr() == before);
-    CHECK(writer.write_mem(bytes.data(), static_cast<Len>(valid_size)));
+    CHECK(writer.write_mem(bytes.data(), static_cast<TLen>(valid_size)));
     writer.finish(); tick(service);
     std::vector<std::byte> expected;
-    append_record<true, Len>(expected, bytes);
+    append_record<true, TLen>(expected, bytes);
     CHECK(receiver.good && receiver.bytes[0] == expected && pool.all_released());
 }
 
@@ -258,16 +258,16 @@ void mixed_registration(bool background) {
 } // namespace
 
 void write_layout_cases(Cases& cases) {
-    auto add = [&]<class Len>(const std::string& name) {
-        auto mode = [&]<bool WriteLen>(const std::string& suffix) {
-            cases.push_back({"W_layout_" + name + suffix + "_p1", [] { layout_bytes<1, WriteLen, Len>(false); }});
-            cases.push_back({"W_layout_" + name + suffix + "_p3", [] { layout_bytes<3, WriteLen, Len>(false); }});
-            cases.push_back({"W_layout_" + name + suffix + "_buffered", [] { layout_bytes<3, WriteLen, Len>(true); }});
-            cases.push_back({"W_slots_" + name + suffix, [] { slice_capacity<WriteLen, Len>(); }});
+    auto add = [&]<class TLen>(const std::string& name) {
+        auto mode = [&]<bool TWriteLen>(const std::string& suffix) {
+            cases.push_back({"W_layout_" + name + suffix + "_p1", [] { layout_bytes<1, TWriteLen, TLen>(false); }});
+            cases.push_back({"W_layout_" + name + suffix + "_p3", [] { layout_bytes<3, TWriteLen, TLen>(false); }});
+            cases.push_back({"W_layout_" + name + suffix + "_buffered", [] { layout_bytes<3, TWriteLen, TLen>(true); }});
+            cases.push_back({"W_slots_" + name + suffix, [] { slice_capacity<TWriteLen, TLen>(); }});
         };
         mode.template operator()<true>("_prefix");
         mode.template operator()<false>("_raw");
-        cases.push_back({"W_limits_" + name, [] { length_limits<Len>(); }});
+        cases.push_back({"W_limits_" + name, [] { length_limits<TLen>(); }});
     };
     add.template operator()<std::uint8_t>("u8");
     add.template operator()<std::uint16_t>("u16");

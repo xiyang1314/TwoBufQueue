@@ -4,7 +4,7 @@ struct Item {
     unsigned value = 0;
     bool reset(std::uint64_t) noexcept { value = 0; return true; }
 };
-template<class Queue> static void start_record(Queue& queue) {
+template<class TQueue> static void start_record(TQueue& queue) {
     auto start = queue.try_pop();
     CHECK(start && !start.get());
     queue.finish(start);

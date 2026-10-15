@@ -112,7 +112,7 @@ struct PipelineReceiver {
     }
 };
 
-template<unsigned Publish>
+template<unsigned TPublish>
 void pipeline(bool buffered, const std::string& style, unsigned producers, bool large = false, bool active = false) {
     const unsigned count = active ? 257 : (large ? 129 : 1537);
     const std::size_t block = large ? 65537 : 1024;
@@ -123,10 +123,10 @@ void pipeline(bool buffered, const std::string& style, unsigned producers, bool 
     }
     Failure failure;
     std::vector<std::unique_ptr<WriterFixture>> pools;
-    std::vector<std::unique_ptr<Writer<Publish>>> writers;
+    std::vector<std::unique_ptr<Writer<TPublish>>> writers;
     for (unsigned w = 0; w < producers; ++w) {
         pools.push_back(std::make_unique<WriterFixture>(block, 4, 4));
-        writers.push_back(std::make_unique<Writer<Publish>>(&pools.back()->queue, static_cast<int>(w), pools.back()->backpressure));
+        writers.push_back(std::make_unique<Writer<TPublish>>(&pools.back()->queue, static_cast<int>(w), pools.back()->backpressure));
     }
     PipelineReceiver receiver(expected, failure, style != "sync", style == "reject", active);
     ReadConfig config; config.finish_timeout = 20s; config.idle_rescan_interval = 100us; config.idle_rescan_max_interval = 500us;

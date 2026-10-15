@@ -126,6 +126,6 @@
 
 [汇总与完整参数](../../performance_data/latency32_investigation_20261010/confirmation-summary.json) · [源代码与二进制哈希](../../performance_data/latency32_investigation_20261010/source-manifest.json) · [复测配置](../../performance_data/latency32_investigation_20261010/confirmation-configs.json) · [复测脚本](https://xiyang1314.github.io/TwoBufQueue/docs/code/docs/performance_data/latency32_investigation_20261010/run.py.html)
 
-[第一组原始数据](../../performance_data/latency32_investigation_20261010/confirmation-configs-143853/raw.jsonl) · [第二组原始数据](../../performance_data/latency32_investigation_20261010/confirmation-configs-143931/raw.jsonl) · [计时组分类诊断](../../performance_data/latency32_investigation_20261010/phase11-configs-143756/classification-results.json) · [原完整报告](https://xiyang1314.github.io/TwoBufQueue/docs/reports/comparison/performance_8m_zero.html)
+[第一组原始数据](../../performance_data/latency32_investigation_20261010/confirmation_configs_143853/raw.jsonl) · [第二组原始数据](../../performance_data/latency32_investigation_20261010/confirmation_configs_143931/raw.jsonl) · [计时组分类诊断](../../performance_data/latency32_investigation_20261010/phase11_configs_143756/classification-results.json) · [原完整报告](https://xiyang1314.github.io/TwoBufQueue/docs/reports/comparison/performance_8m_zero.html)
 
 生成时间：2026-10-10T14:40:35.996138+08:00

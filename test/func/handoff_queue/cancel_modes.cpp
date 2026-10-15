@@ -9,7 +9,7 @@ static void pause_index(int point);
 static void cancel_phase(int point);
 #define BRQ_INDEX_QUEUE_TEST_HOOK(point) pause_index(point)
 #define BRQ_READY_QUEUE_TEST_HOOK(point) cancel_phase(point)
-#include "TwoBufQueue/src/base_components/HandoffQueue/handoff_queue.hpp"
+#include "TwoBufQueue/src/base_components/handoff_queue/handoff_queue.hpp"
 #include "TwoBufQueue/src/two_buf_queue.hpp"
 #undef BRQ_INDEX_QUEUE_TEST_HOOK
 #undef BRQ_READY_QUEUE_TEST_HOOK
@@ -18,7 +18,7 @@ using namespace TwoBufQueue;
 using namespace std::chrono_literals;
 static thread_local int pause_at = 0;
 static std::atomic<bool> paused{false}, resume{false}, publishing_cancel{false};
-template<class F> static void until(F condition) {
+template<class TFunction> static void until(TFunction condition) {
     const auto deadline = std::chrono::steady_clock::now() + 5s;
     while (!condition()) {
         assert(std::chrono::steady_clock::now() < deadline);

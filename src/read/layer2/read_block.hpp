@@ -13,10 +13,10 @@ enum class ReadRecordError { none, incomplete_length, incomplete_payload };
 // Nonintrusive resource owning data/frame arrays; WarmPool requires only reset(generation).
 // A producer exclusively appends; after send, a claimant exclusively reads and tracks record progress. No block-local lock needed.
 class ReadBlock {
-    template<class DataLen, class Callback>
-    friend bool read_records(ReadBlock&, Callback&) noexcept;
-    template<class TSeq, class DataLen, class Callback>
-    friend bool read_seq_records(ReadBlock&, Callback&) noexcept;
+    template<class TDataLen, class TCallback>
+    friend bool read_records(ReadBlock&, TCallback&) noexcept;
+    template<class TSeq, class TDataLen, class TCallback>
+    friend bool read_seq_records(ReadBlock&, TCallback&) noexcept;
 public:
     static constexpr std::size_t block_alignment = 64;
 

@@ -288,7 +288,7 @@ for (const zh of [false, true]) {
     ] },
     { label: '问题与解决', questions: true, children: [
       { label: '无背压为何变慢' }, { label: '批量交接能快多少' },
-      { label: '缓存满了怎么办', planned: true, aliases: ['消费者偶尔慢一下-生产者也必须跟着等吗'] },
+      { label: '缓存满了怎么办', planned: true, aliases: ['消费者偶尔慢一下-生产者也必须跟着等吗', '消息缓存满了-生产者必须等吗'] },
       { label: '容量该设多大', aliases: ['队列到底应该预留多少内存'] },
       { label: '大消息怎么发送', planned: true, aliases: ['消息大小不一会影响性能吗'] }, { label: '优先复用有用吗' },
     ] },
@@ -306,7 +306,7 @@ for (const zh of [false, true]) {
     ] },
     { label: 'Problems & solutions', questions: true, children: [
       { label: 'No wait, still slow' }, { label: 'Batch handoff' },
-      { label: 'Full buffers', planned: true, aliases: ['must-a-brief-consumer-slowdown-make-the-producer-wait-too'] },
+      { label: 'Full buffers', planned: true, aliases: ['must-a-brief-consumer-slowdown-make-the-producer-wait-too', 'when-message-buffers-are-full-must-the-producer-wait'] },
       { label: 'Capacity choice', aliases: ['how-much-queue-memory-should-be-reserved'] },
       { label: 'Large messages', planned: true, aliases: ['do-varying-message-sizes-affect-performance'] }, { label: 'Reuse recent blocks' },
     ] },
@@ -318,10 +318,10 @@ for (const zh of [false, true]) {
     { label: 'Roadmap', aliases: ['planned-improvements'], children: [] },
   ];
   if (!detailed) schema = zh ? [
-    { label: '几个问题', questions: true, closingNote: true, aliases: ['为什么选择-twobufqueue'], children: [
+    { label: '几个有趣的问题', questions: true, closingNote: true, aliases: ['为什么选择-twobufqueue', '几个问题'], children: [
       { label: '发送后为何变慢', aliases: ['发送完后-业务还能保持快', '发送完后业务还能保持快'] },
       { label: '批量提交快多少', aliases: ['批量发送更快'] },
-      { label: '缓存满了怎么办', aliases: ['消费者偶尔慢一下-生产者也必须跟着等吗', '为消费者的临时波动留出余量'] },
+      { label: '缓存满了怎么办', aliases: ['消费者偶尔慢一下-生产者也必须跟着等吗', '为消费者的临时波动留出余量', '消息缓存满了-生产者必须等吗'] },
       { label: '大消息怎么发送' },
       { label: '容量该设多大' },
     ] },
@@ -330,10 +330,10 @@ for (const zh of [false, true]) {
     { label: '如何开始', children: [{ label: '最小使用示例' }, { label: '构建与接入' }] },
     { label: '完整文档', children: [] },
   ] : [
-    { label: 'A few questions', questions: true, closingNote: true, aliases: ['why-choose-twobufqueue'], children: [
+    { label: 'A few interesting questions', questions: true, closingNote: true, aliases: ['why-choose-twobufqueue', 'a-few-questions'], children: [
       { label: 'Business-cache interference', aliases: ['keep-subsequent-business-work-fast'] },
       { label: 'Batch submission', aliases: ['submit-prepared-batches-quickly'] },
-      { label: 'Full buffers', aliases: ['must-a-brief-consumer-slowdown-make-the-producer-wait-too', 'allow-for-temporary-consumer-slowdowns'] },
+      { label: 'Full buffers', aliases: ['must-a-brief-consumer-slowdown-make-the-producer-wait-too', 'allow-for-temporary-consumer-slowdowns', 'when-message-buffers-are-full-must-the-producer-wait'] },
       { label: 'Large messages' },
       { label: 'Capacity choice' },
     ] },

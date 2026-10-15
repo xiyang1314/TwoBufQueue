@@ -1,6 +1,6 @@
 #pragma once
 #include "TwoBufQueue/src/data/spsc_write_block.hpp"
-#include "TwoBufQueue/src/base_components/LiveHandoffQueue/spsc_live_handoff_queue.hpp"
+#include "TwoBufQueue/src/base_components/live_handoff_queue/spsc_live_handoff_queue.hpp"
 #include "TwoBufQueue/src/write/types.hpp"
 
 namespace TwoBufQueue {
@@ -45,11 +45,11 @@ struct WriterSourceStorage {
 // Self-owning writer: publicly derives from WriterT and can be passed directly to TwoBufQueue / ReadWorker;
 // Hide pool/queue in private bases. WriterT needs to be complete only when initializing its base,
 // so this header does not depend on writer.hpp / seq_writer.hpp.
-template <class WriterT>
-struct OwnedWriter : private WriterSourceStorage, public WriterT {
+template <class TWriter>
+struct OwnedWriter : private WriterSourceStorage, public TWriter {
     explicit OwnedWriter(const WriterSourceConfig& config = {})
         : WriterSourceStorage(config),
-          WriterT(&static_cast<WriterSourceStorage&>(*this).queue, config.thread_id,
+          TWriter(&static_cast<WriterSourceStorage&>(*this).queue, config.thread_id,
                   config.backpressure) {}
 };
 
@@ -60,8 +60,8 @@ struct OwnedWriter : private WriterSourceStorage, public WriterT {
 //   auto writer = make_writer<SeqWriter<std::uint32_t>>();     // Writer with sequence numbers.
 //   auto writer = make_writer<Writer<>>({.block_size = 4096}); // Override only the needed fields.
 //   TwoBufQueue queue(callback, writer);                      // Pass the writer directly to the queue.
-template <class WriterT>
-[[nodiscard]] OwnedWriter<WriterT> make_writer(const WriterSourceConfig& config = {}) {
-    return OwnedWriter<WriterT>(config);
+template <class TWriter>
+[[nodiscard]] OwnedWriter<TWriter> make_writer(const WriterSourceConfig& config = {}) {
+    return OwnedWriter<TWriter>(config);
 }
 } // namespace TwoBufQueue

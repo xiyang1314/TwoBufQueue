@@ -1,9 +1,9 @@
 #include "support.hpp"
 namespace ft {
-template <class Pool> void pool_mode(Cases &c, std::string mode) {
+template <class TPool> void pool_mode(Cases &c, std::string mode) {
     for (std::size_t a : {1u, 2u, 4u, 8u, 16u, 32u, 64u})
         c.push_back({"P_align_" + mode + "_" + std::to_string(a), [a] {
-                         Pool p(128, 1, 1);
+                         TPool p(128, 1, 1);
                          auto first = p.allocate(1);
                          auto second = p.allocate(7, a);
                          CHECK(first && second);
@@ -25,9 +25,9 @@ template <class Pool> void pool_mode(Cases &c, std::string mode) {
                      }});
     for (std::size_t n : {1u, 63u, 64u, 65u, 129u})
         c.push_back({"P_slots_" + mode + "_" + std::to_string(n), [n] {
-                         Pool p(512, 0, 1, {.max_slices_per_block = n});
+                         TPool p(512, 0, 1, {.max_slices_per_block = n});
                          for (unsigned generation = 0; generation < 4; ++generation) {
-                             std::vector<typename Pool::Slice> held;
+                             std::vector<typename TPool::Slice> held;
                              for (std::size_t i = 0; i < n; ++i) {
                                  auto s = p.allocate(1);
                                  CHECK(s);
@@ -45,13 +45,13 @@ template <class Pool> void pool_mode(Cases &c, std::string mode) {
                          p.close();
                      }});
     c.push_back({"P_move_" + mode, [] {
-                     Pool p(64, 1, 1);
+                     TPool p(64, 1, 1);
                      auto a = p.allocate(8);
                      auto b = p.allocate(8);
                      std::memset(a.data(), 77, 8);
                      auto *address = a.data();
                      p.close();
-                     typename Pool::Slice moved(std::move(a));
+                     typename TPool::Slice moved(std::move(a));
                      CHECK(!a && a.data() == nullptr && a.size() == 0);
                      b = std::move(moved);
                      CHECK(!moved);

@@ -5,10 +5,10 @@
 namespace TwoBufQueue {
 // Bound values before unit conversion so huge millisecond durations cannot overflow when implicitly converted to nanoseconds.
 // Native clock durations pass through; other precisions saturate within the clock's representable range.
-template<class Clock, class Rep, class Period>
-[[nodiscard]] constexpr typename Clock::duration wait_duration(
-    std::chrono::duration<Rep, Period> timeout) noexcept {
-    using Duration = typename Clock::duration;
+template<class TClock, class TRep, class TPeriod>
+[[nodiscard]] constexpr typename TClock::duration wait_duration(
+    std::chrono::duration<TRep, TPeriod> timeout) noexcept {
+    using Duration = typename TClock::duration;
     if constexpr (std::is_same_v<decltype(timeout), Duration>) {
         return timeout > Duration::zero() ? timeout : Duration::zero();
     } else {
@@ -21,11 +21,11 @@ template<class Clock, class Rep, class Period>
 
 // Non-positive delays are already due; positive delays saturate at the clock limit.
 // Compare against max-delay, not max-now: the latter can overflow for negative origins.
-template <class Clock>
-[[nodiscard]] constexpr typename Clock::time_point deadline_after(
-    std::chrono::time_point<Clock> now, typename Clock::duration delay) noexcept {
-    using Point = typename Clock::time_point;
-    if (delay <= Clock::duration::zero()) return now;
+template <class TClock>
+[[nodiscard]] constexpr typename TClock::time_point deadline_after(
+    std::chrono::time_point<TClock> now, typename TClock::duration delay) noexcept {
+    using Point = typename TClock::time_point;
+    if (delay <= TClock::duration::zero()) return now;
     return now >= Point::max() - delay ? Point::max() : now + delay;
 }
 

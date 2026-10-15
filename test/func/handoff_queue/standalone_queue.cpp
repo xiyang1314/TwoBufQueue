@@ -1,5 +1,5 @@
 // Do not include handoff_queue.hpp or handoff_reader.hpp.
-#include "TwoBufQueue/src/base_components/HandoffQueue/pooled_resource_queue.hpp"
+#include "TwoBufQueue/src/base_components/handoff_queue/pooled_resource_queue.hpp"
 #include <cassert>
 #include <iostream>
 

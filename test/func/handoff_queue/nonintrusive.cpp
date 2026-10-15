@@ -1,4 +1,4 @@
-#include "TwoBufQueue/src/base_components/HandoffQueue/handoff_queue.hpp"
+#include "TwoBufQueue/src/base_components/handoff_queue/handoff_queue.hpp"
 #include <cassert>
 #include <iostream>
 #include <thread>
@@ -14,7 +14,7 @@ struct Message final {
         return true;
     }
 };
-template<class T> concept HasPoolMetadata = requires(T& t) { t.loan(); t.state(); t.finish(); };
+template<class TValue> concept HasPoolMetadata = requires(TValue& t) { t.loan(); t.state(); t.finish(); };
 static_assert(PoolResource<Message> && !HasPoolMetadata<Message>);
 static_assert(!std::is_base_of_v<DefaultResource<>, Message>);
 

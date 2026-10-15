@@ -8,7 +8,7 @@
 #include <type_traits>
 
 namespace TwoBufQueue {
-template<bool is_n_alloc, bool is_n_use> struct WriterBlock;
+template<bool TIsNAlloc, bool TIsNUse> struct WriterBlock;
 enum class ReadError : std::uint32_t;
 
 // Fast monotonic clock for scan scheduling, not Unix timestamps for logging.

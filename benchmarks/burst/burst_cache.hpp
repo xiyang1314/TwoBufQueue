@@ -100,13 +100,13 @@ struct Result {
     std::string timer_name;
     bool qos_applied=false;
 };
-template<class Channel> Result run_with(const Config& c) {
+template<class TChannel> Result run_with(const Config& c) {
     Result r; r.config=c;
     detail::Watchdog watchdog(c.queue.timeout_seconds);
     Sink sink(c.queue.callback_iterations);
     burst_prefault_aligned_buffers(true);
     struct PrefaultGuard { ~PrefaultGuard(){burst_prefault_aligned_buffers(false);} } prefault_guard;
-    Channel channel(c.queue,sink);
+    TChannel channel(c.queue,sink);
     burst_prefault_aligned_buffers(false);
     detail::ProducerAffinity affinity(c.queue.producer_cpu);
     PerformanceResult schedule; detail::ProducerScheduling scheduling(c.queue.producer_qos,schedule);

@@ -9,14 +9,14 @@
 namespace TwoBufQueue {
 class BlockSlicesAllocatorForTest {
   public:
-    template <class B> static void release(B *b, std::size_t index, std::uint64_t generation) {
+    template <class TBlock> static void release(TBlock *b, std::size_t index, std::uint64_t generation) {
         b->slices_.release(index, generation, std::source_location::current());
     }
 };
 } // namespace TwoBufQueue
 namespace ft {
-template <class B> void tolerant(std::string kind) {
-    auto pool = make_block_pool<TestBlockPool<B, false>>(64, 1, 1,
+template <class TBlock> void tolerant(std::string kind) {
+    auto pool = make_block_pool<TestBlockPool<TBlock, false>>(64, 1, 1,
                                                         {.is_check_slice_release = false});
     auto *b = pool.get().get();
     auto first = b->allocate(8);
@@ -56,8 +56,8 @@ template <class B> void tolerant(std::string kind) {
     again.release();
     CHECK(pool.in_use_count() == 0);
 }
-template <class B> void complete_lifecycle() {
-    auto pool = make_block_pool<TestBlockPool<B, false>>(64, 1, 1);
+template <class TBlock> void complete_lifecycle() {
+    auto pool = make_block_pool<TestBlockPool<TBlock, false>>(64, 1, 1);
     std::atomic<unsigned> recycled{0};
     pool.set_release_callback([](void *context) noexcept {
         static_cast<std::atomic<unsigned> *>(context)->fetch_add(1);

@@ -108,6 +108,6 @@ DataBatch 现在是借用视图。并发管道测试通过 OutputQueue 的 loan 
 | Debug、ASan / UBSan（Apple Clang） | 564 / 564 |
 | Release、启用 SPSC 对照（Clang 18.1.8） | 567 / 567 |
 
-默认构建无需关闭 functional 测试或降低警告级别。Linux、Windows、macOS 的 CI 已配置，但云端任务尚未执行；以上通过数只表示本机结果。保存的日志和检查摘要见 [发布验证数据](../../docs/performance_data/release_20261011/release-checks/summary.json)。性能测试复现脚本也通过小规模运行和续跑检查，续跑保留原始数据、运行命令和源码快照。
+默认构建无需关闭 functional 测试或降低警告级别。Linux、Windows、macOS 的 CI 已配置，但云端任务尚未执行；以上通过数只表示本机结果。保存的日志和检查摘要见 [发布验证数据](../../docs/performance_data/release_20261011/release_checks/summary.json)。性能测试复现脚本也通过小规模运行和续跑检查，续跑保留原始数据、运行命令和源码快照。
 
-同日完成首页和接入工作后，从筛选后的发布源码副本重新构建：默认测试 **567 / 567 通过**，包含新增异步日志示例及其慢回调 Block / Drop 用例。独立应用通过 add_subdirectory、本地 FetchContent、搬移安装目录后的 find_package 三种方式，每种校验 1,000 条记录。安装头文件与 CMake 导出文件没有开发源码或构建目录的绝对路径。该轮未重跑性能测量，生产 C++ 和主表 Payload 拷贝方式与原正式测量一致。[本轮检查记录](../../docs/release-checks/summary.json)。
+同日完成首页和接入工作后，从筛选后的发布源码副本重新构建：默认测试 **567 / 567 通过**，包含新增异步日志示例及其慢回调 Block / Drop 用例。独立应用通过 add_subdirectory、本地 FetchContent、搬移安装目录后的 find_package 三种方式，每种校验 1,000 条记录。安装头文件与 CMake 导出文件没有开发源码或构建目录的绝对路径。该轮未重跑性能测量，生产 C++ 和主表 Payload 拷贝方式与原正式测量一致。[本轮检查记录](../../docs/release_checks/summary.json)。

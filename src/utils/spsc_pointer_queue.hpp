@@ -10,9 +10,9 @@
 namespace TwoBufQueue {
 
 // Fixed-capacity SPSC pointer ring queue.
-// T is the pointee type; transfer non-null pointers without creating, destroying or owning pointees.
+// TValue is the pointee type; transfer non-null pointers without creating, destroying or owning pointees.
 // Fix capacity at construction; no runtime allocation. Stop every access before destruction.
-template<class T>
+template<class TValue>
 class SpscPointerQueue {
 public:
     // capacity counts usable entries; one extra sentinel slot distinguishes full from empty.
@@ -24,7 +24,7 @@ public:
     SpscPointerQueue& operator=(const SpscPointerQueue&) = delete;
 
     // Producer only; value must be non-null. A full queue returns false without changing state.
-    [[nodiscard]] bool try_push(T* value) noexcept {
+    [[nodiscard]] bool try_push(TValue* value) noexcept {
         assert(value != nullptr);
         const std::size_t write = write_.load(std::memory_order_relaxed);
         const std::size_t next = (write + 1) % slots_.size();
@@ -35,7 +35,7 @@ public:
     }
 
     // Consumer only; inspect the head without removing it. Empty returns nullptr.
-    [[nodiscard]] T* front() const noexcept {
+    [[nodiscard]] TValue* front() const noexcept {
         const std::size_t read = read_.load(std::memory_order_relaxed);
         if (read == write_.load(std::memory_order_acquire)) return nullptr;
         return slots_[read];
@@ -69,7 +69,7 @@ private:
         return capacity + 1;
     }
 
-    std::vector<T*> slots_;
+    std::vector<TValue*> slots_;
     // Keep reader/writer indices on separate cache lines, preserving the original queue layout.
     alignas(64) std::atomic<std::size_t> read_{0};
     alignas(64) std::atomic<std::size_t> write_{0};

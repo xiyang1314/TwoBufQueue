@@ -7,9 +7,9 @@
 using namespace ct;
 static_assert(PoolResource<ReaderBlock<>> && PoolResource<WriterBlock<>>);
 
-template<class T> concept HasState = requires(const T& b) { typename T::State; b.state(); };
-template<class T> concept HasRecycle = requires(T& b) { b.force_recycle(); b.is_free(); };
-template<class T> concept HasName = requires { &T::state_name; };
+template<class TValue> concept HasState = requires(const TValue& b) { typename TValue::State; b.state(); };
+template<class TValue> concept HasRecycle = requires(TValue& b) { b.force_recycle(); b.is_free(); };
+template<class TValue> concept HasName = requires { &TValue::state_name; };
 static_assert(!HasState<BasicBlock<>> && !HasRecycle<BasicBlock<>> && !HasName<BasicBlock<>>);
 static_assert(!std::same_as<ReaderBlock<>::State, WriterBlock<>::State>);
 static_assert(!BasicBlock<false, false>::concurrent);
@@ -18,14 +18,14 @@ static_assert(std::same_as<ReaderBlock<true, false>::Slice, WriterBlock<true, fa
 static_assert(std::same_as<decltype(WriterBlock<false, false>::write_ptr_), PlainValue<std::byte*>>);
 static_assert(std::same_as<decltype(WriterBlock<true, false>::write_ptr_), std::atomic<std::byte*>>);
 
-template<class B> static void publish(B* b, std::uint64_t first, std::uint64_t end) {
+template<class TBlock> static void publish(TBlock* b, std::uint64_t first, std::uint64_t end) {
     for (auto id = first; id < end; ++id) {
         const std::array<std::uint64_t, 2> record{id, ~id};
         std::memcpy(b->buf_ + id * 16, record.data(), 16);
     }
     b->write_ptr_.store(b->buf_ + end * 16, std::memory_order_release);
 }
-template<class S> static void verify(const S& slice, std::uint64_t first) {
+template<class TSlice> static void verify(const TSlice& slice, std::uint64_t first) {
     CHECK(slice && slice.size() % 16 == 0);
     for (std::size_t offset = 0; offset < slice.size(); offset += 16) {
         std::array<std::uint64_t, 2> record;
@@ -33,8 +33,8 @@ template<class S> static void verify(const S& slice, std::uint64_t first) {
         CHECK(record[0] == first + offset / 16 && record[1] == ~record[0]);
     }
 }
-template<bool A, bool R> static void writer_mode() {
-    using B = WriterBlock<A, R>;
+template<bool TA, bool TR> static void writer_mode() {
+    using B = WriterBlock<TA, TR>;
     auto pool = make_block_pool<TestBlockPool<B, false>>(128, 1, 1, {.max_slices_per_block = 2});
     for (unsigned round = 0; round < 20; ++round) {
         auto* b = pool.get().get();
@@ -93,8 +93,8 @@ static void reader_10() {
     CHECK(pool.all_released());
 }
 
-template<bool release_many> static void writer_parallel() {
-    using B = WriterBlock<true, release_many>;
+template<bool TReleaseMany> static void writer_parallel() {
+    using B = WriterBlock<true, TReleaseMany>;
     constexpr unsigned readers = 4, records = 1024;
     for (unsigned round = 0; round < 12; ++round) {
         auto pool = make_block_pool<TestBlockPool<B>>(records * 16, 1, 1, {.max_slices_per_block = records});
@@ -112,7 +112,7 @@ template<bool release_many> static void writer_parallel() {
             }
         });
         std::vector<brq_support::JoiningThread> releasers;
-        for (unsigned t = 0; t < (release_many ? 4u : 1u); ++t) releasers.emplace_back([&] {
+        for (unsigned t = 0; t < (TReleaseMany ? 4u : 1u); ++t) releasers.emplace_back([&] {
             while (auto slice = queue.pop()) {
                 const auto first = static_cast<std::size_t>(slice->data() - b->buf_) / 16;
                 CHECK(first < records && slice->size() % 16 == 0);
@@ -155,7 +155,7 @@ template<bool release_many> static void writer_parallel() {
     }
 }
 
-template<class B> static typename B::Slice allocate_one(B* b) {
+template<class TBlock> static typename TBlock::Slice allocate_one(TBlock* b) {
     if constexpr (requires { b->allocate(16); }) return b->allocate(16);
     else {
         const auto begin = b->write_pos() / 16;
@@ -163,8 +163,8 @@ template<class B> static typename B::Slice allocate_one(B* b) {
         return b->allocate_read_slice();
     }
 }
-template<class B> static void force_case() {
-    auto pool = make_block_pool<TestBlockPool<B>>(64, 1, 1, {.is_check_slice_release = false});
+template<class TBlock> static void force_case() {
+    auto pool = make_block_pool<TestBlockPool<TBlock>>(64, 1, 1, {.is_check_slice_release = false});
     auto* b = pool.get().get();
     auto old1 = allocate_one(b), old2 = allocate_one(b);
     finish_block(b); b->force_recycle();
@@ -181,12 +181,12 @@ template<class B> static void force_case() {
     CHECK(pool.all_released());
 }
 
-template<class B> static void death_state() {
-    using P = TestBlockPool<B>;
+template<class TBlock> static void death_state() {
+    using P = TestBlockPool<TBlock>;
     TestDiagnostics<P>::set_error_handler([](const typename TestDiagnostics<P>::ErrorInfo& info) noexcept {
         const char* expected;
-        typename B::State value;
-        if constexpr (requires(B& b) { b.to_alloc_finished(); }) {
+        typename TBlock::State value;
+        if constexpr (requires(TBlock& b) { b.to_alloc_finished(); }) {
             // A returned Loan cannot safely inspect old resource state.
             if (!info.has_actual_state && std::strcmp(info.reason, "expected Allocating block") == 0) {
                 std::fputs("EXPECTED_STATE unavailable\n", stderr);

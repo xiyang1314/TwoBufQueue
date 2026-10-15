@@ -152,27 +152,27 @@ C++ · 54 行
 
 需要了解底层行为时，再读这些头文件。
 
-[handoff_queue.hpp](https://xiyang1314.github.io/TwoBufQueue/docs/code/src/base_components/HandoffQueue/handoff_queue.hpp.zh-CN.html)
+[handoff_queue.hpp](https://xiyang1314.github.io/TwoBufQueue/docs/code/src/base_components/handoff_queue/handoff_queue.hpp.zh-CN.html)
 
 资源交接队列实现，包含多种并发模式和消费工作线程。
 
-src/base_components/HandoffQueue/handoff_queue.hpp
+src/base_components/handoff_queue/handoff_queue.hpp
 
 C++ · 102 行
 
-[spsc_live_handoff_queue.hpp](https://xiyang1314.github.io/TwoBufQueue/docs/code/src/base_components/LiveHandoffQueue/spsc_live_handoff_queue.hpp.zh-CN.html)
+[spsc_live_handoff_queue.hpp](https://xiyang1314.github.io/TwoBufQueue/docs/code/src/base_components/live_handoff_queue/spsc_live_handoff_queue.hpp.zh-CN.html)
 
 单生产者与单消费者之间交接资源，并支持读取正在生产的内容。
 
-src/base_components/LiveHandoffQueue/spsc_live_handoff_queue.hpp
+src/base_components/live_handoff_queue/spsc_live_handoff_queue.hpp
 
 C++ · 353 行
 
-[warm_pool.hpp](https://xiyang1314.github.io/TwoBufQueue/docs/code/src/base_components/WarmPool/warm_pool.hpp.zh-CN.html)
+[warm_pool.hpp](https://xiyang1314.github.io/TwoBufQueue/docs/code/src/base_components/warm_pool/warm_pool.hpp.zh-CN.html)
 
 资源池实现：创建、借出、归还和容量控制。
 
-src/base_components/WarmPool/warm_pool.hpp
+src/base_components/warm_pool/warm_pool.hpp
 
 C++ · 375 行
 

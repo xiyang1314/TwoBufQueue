@@ -5,10 +5,10 @@ namespace TwoBufQueue {
 enum class ReaderBlockState : std::uint8_t { Free, Allocating, AllocFinished, ForceRecycle };
 
 // Ordinary storage block: allocate space, fill it, then publish through a business queue.
-template<bool is_n_alloc = false, bool is_n_use = true>
-class ReaderBlock : public BasicBlock<is_n_alloc, is_n_use> {
+template<bool TIsNAlloc = false, bool TIsNUse = true>
+class ReaderBlock : public BasicBlock<TIsNAlloc, TIsNUse> {
 public:
-    using Base = BasicBlock<is_n_alloc, is_n_use>;
+    using Base = BasicBlock<TIsNAlloc, TIsNUse>;
     using typename Base::Config;
     using typename Base::Slice;
     using State = ReaderBlockState;

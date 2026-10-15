@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1060" height="510" viewBox="0 0 1060 510">
 <title>Producer submission throughput · million messages/s · higher is better</title>
-<desc>Saved report-data SHA256 abce8a78661ac5cc97794ad3ed0ab716bf75b32063a4ba4f5e88a1494d9b5086</desc>
+<desc>Saved report-data SHA256 0b370ae48a3ba73f25c1a0b8bae51e076b3240d56b391916bd0230fcd6169889</desc>
 <rect width="1060" height="510" fill="white"/>
 <g font-family="Arial, sans-serif">
 <text x="24" y="32" font-size="20" fill="#163044">Producer submission throughput · million messages/s · higher is better</text>

@@ -71,14 +71,14 @@
     },
     "README.md": {
       "twobufqueue": "twobufqueue",
-      "1-a-few-questions": "1-a-few-questions",
-      "a-few-questions": "1-a-few-questions",
+      "1-a-few-interesting-questions": "1-a-few-interesting-questions",
+      "a-few-interesting-questions": "1-a-few-interesting-questions",
       "11-why-can-business-work-slow-down-after-sending-even-without-backpressure": "11-why-can-business-work-slow-down-after-sending-even-without-backpressure",
       "why-can-business-work-slow-down-after-sending-even-without-backpressure": "11-why-can-business-work-slow-down-after-sending-even-without-backpressure",
       "12-how-much-faster-can-batch-submission-be-for-tiny-messages": "12-how-much-faster-can-batch-submission-be-for-tiny-messages",
       "how-much-faster-can-batch-submission-be-for-tiny-messages": "12-how-much-faster-can-batch-submission-be-for-tiny-messages",
-      "13-when-message-buffers-are-full-must-the-producer-wait": "13-when-message-buffers-are-full-must-the-producer-wait",
-      "when-message-buffers-are-full-must-the-producer-wait": "13-when-message-buffers-are-full-must-the-producer-wait",
+      "13-when-message-buffers-are-full-must-the-producer-keep-waiting": "13-when-message-buffers-are-full-must-the-producer-keep-waiting",
+      "when-message-buffers-are-full-must-the-producer-keep-waiting": "13-when-message-buffers-are-full-must-the-producer-keep-waiting",
       "14-how-can-large-messages-be-sent-more-efficiently": "14-how-can-large-messages-be-sent-more-efficiently",
       "how-can-large-messages-be-sent-more-efficiently": "14-how-can-large-messages-be-sent-more-efficiently",
       "15-small-buffers-cause-backpressure-large-buffers-waste-memory-what-should-you-do": "15-small-buffers-cause-backpressure-large-buffers-waste-memory-what-should-you-do",
@@ -106,17 +106,17 @@
     },
     "README.zh-CN.md": {
       "twobufqueue": "twobufqueue",
-      "一几个问题": "一几个问题",
-      "几个问题": "一几个问题",
+      "一几个有趣的问题": "一几个有趣的问题",
+      "几个有趣的问题": "一几个有趣的问题",
       "11-没有背压为什么发送完消息后业务还是慢了好几倍": "11-没有背压为什么发送完消息后业务还是慢了好几倍",
       "没有背压为什么发送完消息后业务还是慢了好几倍": "11-没有背压为什么发送完消息后业务还是慢了好几倍",
       "没有背压-为什么发送完消息后业务还是慢了好几倍": "11-没有背压为什么发送完消息后业务还是慢了好几倍",
       "12-消息只有几个字节批量提交究竟能快多少": "12-消息只有几个字节批量提交究竟能快多少",
       "消息只有几个字节批量提交究竟能快多少": "12-消息只有几个字节批量提交究竟能快多少",
       "消息只有几个字节-批量提交究竟能快多少": "12-消息只有几个字节批量提交究竟能快多少",
-      "13-消息缓存满了生产者必须等吗": "13-消息缓存满了生产者必须等吗",
-      "消息缓存满了生产者必须等吗": "13-消息缓存满了生产者必须等吗",
-      "消息缓存满了-生产者必须等吗": "13-消息缓存满了生产者必须等吗",
+      "13-消息缓存满了生产者必须一直等吗": "13-消息缓存满了生产者必须一直等吗",
+      "消息缓存满了生产者必须一直等吗": "13-消息缓存满了生产者必须一直等吗",
+      "消息缓存满了-生产者必须一直等吗": "13-消息缓存满了生产者必须一直等吗",
       "14-对于大消息怎么发送才能达到更好的效果": "14-对于大消息怎么发送才能达到更好的效果",
       "对于大消息怎么发送才能达到更好的效果": "14-对于大消息怎么发送才能达到更好的效果",
       "对于大消息-怎么发送才能达到更好的效果": "14-对于大消息怎么发送才能达到更好的效果",
@@ -161,8 +161,8 @@
       "why-can-business-execution-slow-down-several-times-even-without-backpressure": "21-why-can-business-execution-slow-down-several-times-even-without-backpressure",
       "22-how-much-faster-is-batch-publication-and-handoff-than-per-record-handoff": "22-how-much-faster-is-batch-publication-and-handoff-than-per-record-handoff",
       "how-much-faster-is-batch-publication-and-handoff-than-per-record-handoff": "22-how-much-faster-is-batch-publication-and-handoff-than-per-record-handoff",
-      "23-when-message-buffers-are-full-must-the-producer-wait": "23-when-message-buffers-are-full-must-the-producer-wait",
-      "when-message-buffers-are-full-must-the-producer-wait": "23-when-message-buffers-are-full-must-the-producer-wait",
+      "23-when-message-buffers-are-full-must-the-producer-keep-waiting": "23-when-message-buffers-are-full-must-the-producer-keep-waiting",
+      "when-message-buffers-are-full-must-the-producer-keep-waiting": "23-when-message-buffers-are-full-must-the-producer-keep-waiting",
       "24-small-buffers-cause-backpressure-large-buffers-waste-memory-what-should-you-do": "24-small-buffers-cause-backpressure-large-buffers-waste-memory-what-should-you-do",
       "small-buffers-cause-backpressure-large-buffers-waste-memory-what-should-you-do": "24-small-buffers-cause-backpressure-large-buffers-waste-memory-what-should-you-do",
       "25-how-can-large-messages-be-sent-more-efficiently": "25-how-can-large-messages-be-sent-more-efficiently",
@@ -232,9 +232,9 @@
       "22-批量发布与交接相比每条交接性能提高得多吗": "22-批量发布与交接相比每条交接性能提高得多吗",
       "批量发布与交接相比每条交接性能提高得多吗": "22-批量发布与交接相比每条交接性能提高得多吗",
       "批量发布与交接相比每条交接-性能提高得多吗": "22-批量发布与交接相比每条交接性能提高得多吗",
-      "23-消息缓存满了生产者必须等吗": "23-消息缓存满了生产者必须等吗",
-      "消息缓存满了生产者必须等吗": "23-消息缓存满了生产者必须等吗",
-      "消息缓存满了-生产者必须等吗": "23-消息缓存满了生产者必须等吗",
+      "23-消息缓存满了生产者必须一直等吗": "23-消息缓存满了生产者必须一直等吗",
+      "消息缓存满了生产者必须一直等吗": "23-消息缓存满了生产者必须一直等吗",
+      "消息缓存满了-生产者必须一直等吗": "23-消息缓存满了生产者必须一直等吗",
       "24-消息缓存太小会背压太大又浪费怎么办": "24-消息缓存太小会背压太大又浪费怎么办",
       "消息缓存太小会背压太大又浪费怎么办": "24-消息缓存太小会背压太大又浪费怎么办",
       "消息缓存太小会背压-太大又浪费-怎么办": "24-消息缓存太小会背压太大又浪费怎么办",
@@ -1661,10 +1661,10 @@
     },
     "README.md": {
       "twobufqueue": "twobufqueue",
-      "1-a-few-questions": "a-few-questions",
+      "1-a-few-interesting-questions": "a-few-interesting-questions",
       "11-why-can-business-work-slow-down-after-sending-even-without-backpressure": "why-can-business-work-slow-down-after-sending-even-without-backpressure",
       "12-how-much-faster-can-batch-submission-be-for-tiny-messages": "how-much-faster-can-batch-submission-be-for-tiny-messages",
-      "13-when-message-buffers-are-full-must-the-producer-wait": "when-message-buffers-are-full-must-the-producer-wait",
+      "13-when-message-buffers-are-full-must-the-producer-keep-waiting": "when-message-buffers-are-full-must-the-producer-keep-waiting",
       "14-how-can-large-messages-be-sent-more-efficiently": "how-can-large-messages-be-sent-more-efficiently",
       "15-small-buffers-cause-backpressure-large-buffers-waste-memory-what-should-you-do": "small-buffers-cause-backpressure-large-buffers-waste-memory-what-should-you-do",
       "2-how-fast-is-it": "how-fast-is-it",
@@ -1680,10 +1680,10 @@
     },
     "README.zh-CN.md": {
       "twobufqueue": "twobufqueue",
-      "一几个问题": "几个问题",
+      "一几个有趣的问题": "几个有趣的问题",
       "11-没有背压为什么发送完消息后业务还是慢了好几倍": "没有背压-为什么发送完消息后业务还是慢了好几倍",
       "12-消息只有几个字节批量提交究竟能快多少": "消息只有几个字节-批量提交究竟能快多少",
-      "13-消息缓存满了生产者必须等吗": "消息缓存满了-生产者必须等吗",
+      "13-消息缓存满了生产者必须一直等吗": "消息缓存满了-生产者必须一直等吗",
       "14-对于大消息怎么发送才能达到更好的效果": "对于大消息-怎么发送才能达到更好的效果",
       "15-消息缓存太小会背压太大又浪费怎么办": "消息缓存太小会背压-太大又浪费-怎么办",
       "二有多快": "有多快",
@@ -1706,7 +1706,7 @@
       "2-problems-and-solutions": "problems-and-solutions",
       "21-why-can-business-execution-slow-down-several-times-even-without-backpressure": "why-can-business-execution-slow-down-several-times-even-without-backpressure",
       "22-how-much-faster-is-batch-publication-and-handoff-than-per-record-handoff": "how-much-faster-is-batch-publication-and-handoff-than-per-record-handoff",
-      "23-when-message-buffers-are-full-must-the-producer-wait": "when-message-buffers-are-full-must-the-producer-wait",
+      "23-when-message-buffers-are-full-must-the-producer-keep-waiting": "when-message-buffers-are-full-must-the-producer-keep-waiting",
       "24-small-buffers-cause-backpressure-large-buffers-waste-memory-what-should-you-do": "small-buffers-cause-backpressure-large-buffers-waste-memory-what-should-you-do",
       "25-how-can-large-messages-be-sent-more-efficiently": "how-can-large-messages-be-sent-more-efficiently",
       "26-does-reusing-the-most-recently-returned-free-block-matter": "does-reusing-the-most-recently-returned-free-block-matter",
@@ -1741,7 +1741,7 @@
       "二问题与解决": "问题与解决",
       "21-没有背压为什么业务线程偶尔还变慢好几倍呢": "没有背压-为什么业务线程偶尔还变慢好几倍呢",
       "22-批量发布与交接相比每条交接性能提高得多吗": "批量发布与交接相比每条交接-性能提高得多吗",
-      "23-消息缓存满了生产者必须等吗": "消息缓存满了-生产者必须等吗",
+      "23-消息缓存满了生产者必须一直等吗": "消息缓存满了-生产者必须一直等吗",
       "24-消息缓存太小会背压太大又浪费怎么办": "消息缓存太小会背压-太大又浪费-怎么办",
       "25-对于大消息怎么发送才能达到更好的效果": "对于大消息-怎么发送才能达到更好的效果",
       "26-优先使用刚归还的空闲缓存有意义吗": "优先使用刚归还的空闲缓存有意义吗",
@@ -2579,12 +2579,12 @@
     {
       "markdown": "docs/code/index.md",
       "html": "docs/code/index.html",
-      "html_sha256": "ac87d187a6f8198ace0233e9b8107a380d3016fa5c43271c086fd0c2178aaf8c"
+      "html_sha256": "235bb70df56a5144ff423d3071368508757b00488d3494595272b77bbdaf2545"
     },
     {
       "markdown": "docs/code/index.zh-CN.md",
       "html": "docs/code/index.zh-CN.html",
-      "html_sha256": "22ab9b2d19120aaca9a011eddbec4c8c958f5a393f06a6eb010d73bc68ac1dfa"
+      "html_sha256": "c154282e01a63b63018dca69e53875d9320e5943496529fc486ae776aa8098d5"
     },
     {
       "markdown": "docs/performance_data/ordinary_readback_optimal_20261011/report_full_details_before_compact_20261011.md",
@@ -2594,12 +2594,12 @@
     {
       "markdown": "docs/reports/analysis/performance_8m_32b_latency.md",
       "html": "docs/reports/analysis/performance_8m_32b_latency.html",
-      "html_sha256": "066d253029135f4f9428bae04a3497865d88ab635d0c63677905ac98a763bd04"
+      "html_sha256": "49df9eaf1007702ab587cf996754623ce7954f1872fb8ea7f9d3044bc33a5c57"
     },
     {
       "markdown": "docs/reports/analysis/performance_hot_path_cache.md",
       "html": "docs/reports/analysis/performance_hot_path_cache.html",
-      "html_sha256": "55e23da3f04e0889ad5ff0206f09024fff1b24ab4bc240a2a7b3a34fca715825"
+      "html_sha256": "779f4c083d4bb832c6007a9b1ae9f1ccb083765af88dd77aff7616aac50fe43b"
     },
     {
       "markdown": "docs/reports/analysis/performance_optimal_ordinary_readback_reader2g_zero.md",
@@ -2614,22 +2614,22 @@
     {
       "markdown": "docs/reports/block_size/test_per_write_block_size_only_writer_publish1.md",
       "html": "docs/reports/block_size/test_per_write_block_size_only_writer_publish1.html",
-      "html_sha256": "1d4ec32bff3f379811e6ced2a72f50a4007e3213ec9d967d581ca3579b98abb5"
+      "html_sha256": "ede7639e370924bae64b0bb19b4ee18487f12322bbe1c63c17a9aa0d2a86dee6"
     },
     {
       "markdown": "docs/reports/block_size/test_per_write_block_size_only_writer_publish_max.md",
       "html": "docs/reports/block_size/test_per_write_block_size_only_writer_publish_max.html",
-      "html_sha256": "9decad43b010cb6e6a3908ed089bb535cefa2288d18662236be9d2a34607483d"
+      "html_sha256": "90e66c5007df5587faaa677c9f16e27cef996d94fce2c96194097f198ab92ec1"
     },
     {
       "markdown": "docs/reports/block_size/test_per_write_block_size_only_writer_reader80_3runs_publish1.md",
       "html": "docs/reports/block_size/test_per_write_block_size_only_writer_reader80_3runs_publish1.html",
-      "html_sha256": "b5eee798990bd1874de3765ab015679947cc40c097cf5176fd424dc60f2d2ea5"
+      "html_sha256": "3b5fe9ac3bc1bedad7d26f64fc39408b92fc14fdec6fe404ba62d5b3d3c9d6e4"
     },
     {
       "markdown": "docs/reports/block_size/test_per_write_block_size_only_writer_reader80_3runs_publish_max.md",
       "html": "docs/reports/block_size/test_per_write_block_size_only_writer_reader80_3runs_publish_max.html",
-      "html_sha256": "539e3fe4ed501bcccddb0b1739e9152f67848204ada7fab2ef798650d1dd7437"
+      "html_sha256": "6f33b3b64cf3738053c72974a2376543e6b4b66efc53b6699421e0229f279915"
     },
     {
       "markdown": "docs/reports/block_size/test_per_write_block_size_readback_fixed_reader_3runs.md",
@@ -2639,7 +2639,7 @@
     {
       "markdown": "docs/reports/block_size/test_per_writer_block_size.md",
       "html": "docs/reports/block_size/test_per_writer_block_size.html",
-      "html_sha256": "b13d7abd6f24df2568d0459f1def9eb5c497d99c5eba281bbc346cdee9b821c5"
+      "html_sha256": "73c5648d34650de3a0d5813062f169104335c9dd1a2cd5239fe6b580f6a3c101"
     },
     {
       "markdown": "docs/reports/block_size/test_per_writer_block_size_cache_hits.md",
@@ -2654,17 +2654,17 @@
     {
       "markdown": "docs/reports/block_size/test_per_writer_block_size_no_current.md",
       "html": "docs/reports/block_size/test_per_writer_block_size_no_current.html",
-      "html_sha256": "20e7978194ae7d864219d03c99ad5617b1e532374175a8e7b16cb943a412eb4b"
+      "html_sha256": "9f3c1a9987256fb0ef8b3277a4c67871b54c49a0ade7ed456a547c3eeaba8d2d"
     },
     {
       "markdown": "docs/reports/block_size/test_per_writer_block_size_no_current_publish1.md",
       "html": "docs/reports/block_size/test_per_writer_block_size_no_current_publish1.html",
-      "html_sha256": "79224381130e929363c7fbbc7a4025f1f4a36f307cd9f9105d2e3ef98bd7602a"
+      "html_sha256": "1c8473dd08a49d717d9edd0804ca8e90396db7336a1679c8411d1044056986e1"
     },
     {
       "markdown": "docs/reports/block_size/test_per_writer_block_size_reader80_3runs_max.md",
       "html": "docs/reports/block_size/test_per_writer_block_size_reader80_3runs_max.html",
-      "html_sha256": "68247c3c13efe048854104e18ddc6d2b2f999b9ee8930990fcaee9f519db294c"
+      "html_sha256": "a536dc58d3a9c2c17798166389f9fda453c51e814da9be784c4f86ae65f4eb28"
     },
     {
       "markdown": "docs/reports/burst/performance_burst_business_sizes.md",
@@ -2699,62 +2699,62 @@
     {
       "markdown": "docs/reports/comparison/performance_256m_callback.md",
       "html": "docs/reports/comparison/performance_256m_callback.html",
-      "html_sha256": "9abdb1246b0788922e174c5585ebabeb66fb2bc93359e8197b2a23b3dff7e4ba"
+      "html_sha256": "9e579d9c4aafe241843b108b3721dc3d511274b57d0ea2e07e6823b316b69f86"
     },
     {
       "markdown": "docs/reports/comparison/performance_256m_callback_session.md",
       "html": "docs/reports/comparison/performance_256m_callback_session.html",
-      "html_sha256": "d695d5f066370ca6182c8502a6f1b59c9a243468b703d51b1ac3ebbf01162cf2"
+      "html_sha256": "c084ab60d17e51ee807ac5a56fce93114b3d5886466de85dfb993a05e85b0403"
     },
     {
       "markdown": "docs/reports/comparison/performance_256m_zero_publish1_plateau.md",
       "html": "docs/reports/comparison/performance_256m_zero_publish1_plateau.html",
-      "html_sha256": "9fb839ef960d6b2a0fc5a597ce85cc8ab4348bfd7f7a654dcd63e9ff0c2692d5"
+      "html_sha256": "a8741571422c6cdfdab160a2a167e69c59159df492bd68d7f1675ba652d59705"
     },
     {
       "markdown": "docs/reports/comparison/performance_256m_zero_publish1_plateau.zh-CN.md",
       "html": "docs/reports/comparison/performance_256m_zero_publish1_plateau.zh-CN.html",
-      "html_sha256": "69864d16ee13a99d8a591310f67d509700e13d9c9d4e61540d71f6b246c7e9f7"
+      "html_sha256": "5b37f69a3d581fd81d8ec9904dad359bb682dbdce2446a81239eb634a4bd0230"
     },
     {
       "markdown": "docs/reports/comparison/performance_256m_zero_publish_max_plateau.md",
       "html": "docs/reports/comparison/performance_256m_zero_publish_max_plateau.html",
-      "html_sha256": "2b243bbb18cb928d3542bc329d525dcf58f3f10534be020bfa02fdc033aa4be7"
+      "html_sha256": "068c29d53cfa159f9478cc4b4c607d4f3730fb99a3ee9ff1176cc50e7bf47cf5"
     },
     {
       "markdown": "docs/reports/comparison/performance_256m_zero_publish_max_plateau.zh-CN.md",
       "html": "docs/reports/comparison/performance_256m_zero_publish_max_plateau.zh-CN.html",
-      "html_sha256": "a7627f42fad8987e762e25136c787fee429afcefd9a46e986bb9a552c905cb74"
+      "html_sha256": "3043b7f637aa945bdfe7403db12fcae8b0ae34ba846e7b9650565099e485b2a0"
     },
     {
       "markdown": "docs/reports/comparison/performance_256m_zero_session_plateau.md",
       "html": "docs/reports/comparison/performance_256m_zero_session_plateau.html",
-      "html_sha256": "214d39d34b01928795d7a11a1d16c6ee32d2bb6713031f9a5b01641316e72956"
+      "html_sha256": "44cb279f3ded2b133ba68970b2094df829ecd081af0a9e60a62f9ded0dd9b5ac"
     },
     {
       "markdown": "docs/reports/comparison/performance_256m_zero_session_plateau.zh-CN.md",
       "html": "docs/reports/comparison/performance_256m_zero_session_plateau.zh-CN.html",
-      "html_sha256": "38430b1cadc3e105d5a587749c6958fcb724f1e39cc7f8513a7180516af3b29e"
+      "html_sha256": "8cb7f05e5c9473877fc3c5913fee6cab196b7acf073678d880f181c0bae9a8b2"
     },
     {
       "markdown": "docs/reports/comparison/performance_8m_16b_32b_64b_tuned.md",
       "html": "docs/reports/comparison/performance_8m_16b_32b_64b_tuned.html",
-      "html_sha256": "d93735181aafaebf40ea975e4b108a2ed3fae680e36d19c51952a7c3a6f32a71"
+      "html_sha256": "65f4f5bda4e3dd4e88be3249549ca4b62169dc5a3700c8c9d06dec137be7f3f7"
     },
     {
       "markdown": "docs/reports/comparison/performance_8m_16b_32b_tuned.md",
       "html": "docs/reports/comparison/performance_8m_16b_32b_tuned.html",
-      "html_sha256": "5738eac2d31f349e0a989838134e3d61fa238fc0e79d66dc2217c53d9fde0687"
+      "html_sha256": "3b51daf102fa7e7eb6b6e40878b0ca3f87b2ec87edf8591ccbb851d95688a147"
     },
     {
       "markdown": "docs/reports/comparison/performance_8m_zero.md",
       "html": "docs/reports/comparison/performance_8m_zero.html",
-      "html_sha256": "6d34e82d4f02b548acaf199c8bdb21f3117f6144eb070c72afbb95060e2ce17a"
+      "html_sha256": "4299ee5f1aa5da0aa3871573605f2b8f39dee2a4ffe5e154c80669f7dbe4cf44"
     },
     {
       "markdown": "docs/reports/comparison/performance_8m_zero_session.md",
       "html": "docs/reports/comparison/performance_8m_zero_session.html",
-      "html_sha256": "ee46a24a63a986f8dfe69638739379f207faa5a758b25a0cc9149876f2c8d9af"
+      "html_sha256": "c7a92b3eabf298402a291761571bd5fc357c21e9583ee16dca15fd34b3bc6aa7"
     },
     {
       "markdown": "docs/reports/index.md",

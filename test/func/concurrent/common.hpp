@@ -24,7 +24,7 @@ struct Failure {
             failed.store(true);
         }
     }
-    template <class F> void run(F &&f) noexcept {
+    template <class TFunction> void run(TFunction &&f) noexcept {
         try {
             f();
         } catch (const std::exception &e) {
@@ -85,16 +85,16 @@ inline void wait_flag(const std::atomic<bool> &flag, Failure &failure, Clock::ti
 }
 
 // Synchronize only ownership handoff. Payload validation happens outside this lock.
-template <class T> class Channel {
+template <class TValue> class Channel {
     std::mutex mutex_;
     std::condition_variable ready_;
-    std::deque<T> values_;
+    std::deque<TValue> values_;
     std::size_t capacity_;
     bool closed_ = false;
 
   public:
     explicit Channel(std::size_t capacity) : capacity_(capacity) {}
-    bool push(T &value) {
+    bool push(TValue &value) {
         std::lock_guard lock(mutex_);
         if (closed_ || values_.size() == capacity_)
             return false;
@@ -102,12 +102,12 @@ template <class T> class Channel {
         ready_.notify_one();
         return true;
     }
-    std::optional<T> pop() {
+    std::optional<TValue> pop() {
         std::unique_lock lock(mutex_);
         ready_.wait(lock, [&] { return closed_ || !values_.empty(); });
         if (values_.empty())
             return {};
-        T result = std::move(values_.back()); // Deliberately release out of FIFO order.
+        TValue result = std::move(values_.back()); // Deliberately release out of FIFO order.
         values_.pop_back();
         return result;
     }

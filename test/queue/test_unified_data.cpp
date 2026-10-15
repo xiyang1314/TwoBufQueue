@@ -38,7 +38,7 @@ struct Receiver {
     }
     void end_read() noexcept {}
 };
-template<class Callback> static void tick(ReadService<Callback>& service) {
+template<class TCallback> static void tick(ReadService<TCallback>& service) {
     static const std::atomic<bool> cancel{false};
     const auto result = service.read_once(true, cancel);
     assert(result.error == ReadError::none);

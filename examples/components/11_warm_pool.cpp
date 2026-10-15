@@ -2,7 +2,7 @@
 // Reuse objects to avoid frequent new/delete calls; reset each object to a clean state before lending it.
 // Returning an object makes it available for another loan. Useful for repeatedly borrowed messages, connections and similar resources.
 
-#include "TwoBufQueue/src/base_components/WarmPool/warm_pool.hpp"
+#include "TwoBufQueue/src/base_components/warm_pool/warm_pool.hpp"
 #include <cstdint>
 #include <cstdio>
 #include <stdexcept>

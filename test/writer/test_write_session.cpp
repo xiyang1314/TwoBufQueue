@@ -17,20 +17,20 @@ using Plain = Writer<UINT32_MAX, false>;
 using Framed = Writer<UINT32_MAX, true, std::uint16_t, void>;
 using Sequenced = SeqWriter<std::uint32_t, UINT32_MAX, true>;
 using Result = SessionWriteResult;
-template<class S> concept HasClose = requires(S& session) { session.close(); };
+template<class TSlice> concept HasClose = requires(TSlice& session) { session.close(); };
 static_assert(!HasClose<Plain::WriteSession> && !HasClose<Framed::WriteSession> && !HasClose<Sequenced::WriteSession>);
 static_assert(std::is_nothrow_default_constructible_v<Plain::WriteSession>);
 
-template<class W> concept HasSession = requires(W& writer) {
+template<class TWriter> concept HasSession = requires(TWriter& writer) {
     writer.get_current_session(); writer.get_next_session(1ms);
 };
 static_assert(!HasSession<Writer<>> && !HasSession<Writer<32, false>>);
 static_assert(HasSession<Plain> && HasSession<Framed> && HasSession<Sequenced>);
-template<class W> constexpr bool movable_session =
-    std::is_nothrow_move_constructible_v<typename W::WriteSession> &&
-    std::is_nothrow_move_assignable_v<typename W::WriteSession> &&
-    !std::is_copy_constructible_v<typename W::WriteSession> &&
-    !std::is_copy_assignable_v<typename W::WriteSession>;
+template<class TWriter> constexpr bool movable_session =
+    std::is_nothrow_move_constructible_v<typename TWriter::WriteSession> &&
+    std::is_nothrow_move_assignable_v<typename TWriter::WriteSession> &&
+    !std::is_copy_constructible_v<typename TWriter::WriteSession> &&
+    !std::is_copy_assignable_v<typename TWriter::WriteSession>;
 static_assert(movable_session<Plain> && movable_session<Framed> && movable_session<Sequenced>);
 static void drain(WriterFixture& source, std::vector<std::byte>& actual) {
     while (auto claim = source.queue.try_pop()) {
@@ -42,7 +42,7 @@ static void drain(WriterFixture& source, std::vector<std::byte>& actual) {
         source.queue.finish(claim);
     }
 }
-template<class T> static void append(std::vector<std::byte>& bytes, const T& value) {
+template<class TValue> static void append(std::vector<std::byte>& bytes, const TValue& value) {
     const auto* data = reinterpret_cast<const std::byte*>(&value);
     bytes.insert(bytes.end(), data, data + sizeof(value));
 }
@@ -190,19 +190,19 @@ static void prefixes() {
       for (char x : {'a','b','c'}) expected.push_back(static_cast<std::byte>(x)); }
     u.finish(); drain(c, actual); assert(actual == expected);
 }
-template<class W> static void move_ownership() {
+template<class TWriter> static void move_ownership() {
     WriterFixture a(64, 1, 2), b(64, 1, 2);
-    W first_writer(&a.queue, 0), second_writer(&b.queue, 1);
+    TWriter first_writer(&a.queue, 0), second_writer(&b.queue, 1);
     std::vector<std::byte> expected_a, expected_b, actual_a, actual_b;
     const auto try_write = [](auto& session, std::uint64_t value) {
-        if constexpr (std::is_same_v<W, Sequenced>)
+        if constexpr (std::is_same_v<TWriter, Sequenced>)
             return session.write(static_cast<std::uint32_t>(value), value);
         else return session.write(value);
     };
     const auto write_record = [&](auto& session, auto& expected, std::uint64_t value) {
         assert(try_write(session, value) == Result::success);
-        if constexpr (std::is_same_v<W, Sequenced>) append(expected, static_cast<std::uint32_t>(value));
-        if constexpr (!std::is_same_v<W, Plain>) append(expected, std::uint16_t{8});
+        if constexpr (std::is_same_v<TWriter, Sequenced>) append(expected, static_cast<std::uint32_t>(value));
+        if constexpr (!std::is_same_v<TWriter, Plain>) append(expected, std::uint16_t{8});
         append(expected, value);
     };
     auto original = first_writer.get_current_session(); assert(original);

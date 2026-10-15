@@ -5,14 +5,14 @@
 
 namespace TwoBufQueue {
 // Test aliases and construction helpers; tests use WarmPool directly without a wrapper.
-template<class Block, bool concurrent = Block::concurrent>
-using TestBlockPool = WarmPool<Block, concurrent || Block::concurrent, BlockResourceFactory<Block>>;
-template<class Pool>
-using TestDiagnostics = BlockDiagnostics<typename Pool::ResourceType::StorageBlock>;
-template<class Pool>
-Pool make_block_pool(std::uint64_t size, std::size_t min, std::size_t max,
-    typename Pool::ResourceType::Config config = {},
+template<class TBlock, bool TConcurrent = TBlock::concurrent>
+using TestBlockPool = WarmPool<TBlock, TConcurrent || TBlock::concurrent, BlockResourceFactory<TBlock>>;
+template<class TPool>
+using TestDiagnostics = BlockDiagnostics<typename TPool::ResourceType::StorageBlock>;
+template<class TPool>
+TPool make_block_pool(std::uint64_t size, std::size_t min, std::size_t max,
+    typename TPool::ResourceType::Config config = {},
     std::size_t cache = std::numeric_limits<std::size_t>::max()) {
-    return Pool(min, max, BlockResourceFactory<typename Pool::ResourceType>{size, config}, cache);
+    return TPool(min, max, BlockResourceFactory<typename TPool::ResourceType>{size, config}, cache);
 }
 } // namespace TwoBufQueue

@@ -26,7 +26,7 @@ enum class PoolGetStatus { Success, Limit, ResourceError };
 // Lock a Loan before checking validity; callers using ordinary raw pointers remain responsible for lifetime.
 // Creation, reset and Factory::dispose run outside the pool lock; factories must support concurrent calls.
 template<PoolResource TResource, bool TIsConcurrent = true,
-         class Factory = DefaultResourceFactory<TResource>>
+         class TFactory = DefaultResourceFactory<TResource>>
 class WarmPool {
     using Lock = std::conditional_t<TIsConcurrent, SpinLock, NoLock>;
     struct Node;
@@ -44,7 +44,7 @@ class WarmPool {
         bool in_use = false;
     };
     friend struct WarmPoolTestAccess;
-    static_assert(requires(Factory& factory, TResource* resource) {
+    static_assert(requires(TFactory& factory, TResource* resource) {
         { factory.dispose(resource) } noexcept -> std::same_as<void>;
     }, "Factory::dispose(Resource*) must be noexcept and destroy the complete resource");
 
@@ -54,7 +54,7 @@ public:
     using Loan = TwoBufQueue::Loan<TResource>;
     using ReleaseCallback = void (*)(void*) noexcept;
 
-    WarmPool(std::size_t min_count, std::size_t max_count, Factory factory = {},
+    WarmPool(std::size_t min_count, std::size_t max_count, TFactory factory = {},
         std::size_t max_free_count = std::numeric_limits<std::size_t>::max())
         : min_count_(min_count), max_count_(max_count), max_free_count_(max_free_count),
           factory_(std::move(factory)) {
@@ -108,8 +108,8 @@ public:
         status = PoolGetStatus::Success;
         return loan;
     }
-    template<class Rep, class Period>
-    [[nodiscard]] Loan wait_get(std::chrono::duration<Rep, Period> timeout) noexcept {
+    template<class TRep, class TPeriod>
+    [[nodiscard]] Loan wait_get(std::chrono::duration<TRep, TPeriod> timeout) noexcept {
         using Clock = std::chrono::steady_clock;
         const auto deadline = deadline_after<Clock>(Clock::now(), wait_duration<Clock>(timeout));
         const auto interval = wait_duration<Clock>(std::chrono::milliseconds{1});
@@ -123,7 +123,7 @@ public:
     }
 
     // O(1) snapshot check of stable nodes only; the resource pointer may already be stale.
-    template<class U> [[nodiscard]] bool is_valid(const TwoBufQueue::Loan<U>& loan) const noexcept {
+    template<class TOtherValue> [[nodiscard]] bool is_valid(const TwoBufQueue::Loan<TOtherValue>& loan) const noexcept {
         if (!owns(loan)) return false;
         return is_valid_node(static_cast<const Node*>(loan.node_), loan.generation_);
     }
@@ -135,7 +135,7 @@ public:
     }
     // Claim return at most once per generation. Stop using the resource afterward; ordinary accesses require caller serialization.
     // A thread holding an old Loan lock may unlock it; get/destruction waits or skips the node so generations never overlap.
-    template<class U> [[nodiscard]] bool recycle(const TwoBufQueue::Loan<U>& loan) noexcept {
+    template<class TOtherValue> [[nodiscard]] bool recycle(const TwoBufQueue::Loan<TOtherValue>& loan) noexcept {
         return owns(loan) && recycle_node(static_cast<Node*>(loan.node_), loan.generation_);
     }
     [[nodiscard]] bool recycle(const TResource& resource) noexcept requires BoundResource<TResource> {
@@ -162,7 +162,7 @@ public:
         release_callback_ = callback;
         release_context_ = context;
     }
-    [[nodiscard]] const Factory& factory() const noexcept { return factory_; }
+    [[nodiscard]] const TFactory& factory() const noexcept { return factory_; }
 #if defined(BRQ_ENABLE_POOL_DEPTH_STATS)
     // Begin only after warmup and input preparation. The initial snapshot
     // contributes to maxima, not to acquisition-weighted averages.
@@ -197,7 +197,7 @@ public:
     [[nodiscard]] bool all_released() const noexcept {
         std::lock_guard<Lock> guard(lock_); return !in_use_count_ && !pending_count_;
     }
-    template<class U> [[nodiscard]] bool owns(const TwoBufQueue::Loan<U>& loan) const noexcept {
+    template<class TOtherValue> [[nodiscard]] bool owns(const TwoBufQueue::Loan<TOtherValue>& loan) const noexcept {
         return loan.owner_ == this && loan.node_ != nullptr;
     }
     // The raw resource must still be alive; this overload cannot detect dangling pointers.
@@ -356,7 +356,7 @@ private:
     const std::size_t min_count_;
     const std::size_t max_count_;
     const std::size_t max_free_count_;
-    Factory factory_;
+    TFactory factory_;
     mutable Lock lock_;
     std::vector<Node*> nodes_;
     SingleThreadStack<Node, &Node::next> free_;

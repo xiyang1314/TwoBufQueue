@@ -8,9 +8,9 @@ using namespace read_test;
 constexpr auto block_only = (std::numeric_limits<std::uint32_t>::max)();
 
 // Drive Service directly; do not rely on scheduling or sleeps to prove current is not scanned.
-template<bool Single, std::uint32_t Count> static void completed_only_service() {
+template<bool TSingle, std::uint32_t TCount> static void completed_only_service() {
     WriterFixture source(6, 4, 4);
-    Writer<Count, true, std::uint16_t, void> writer(&source.queue, 0);
+    Writer<TCount, true, std::uint16_t, void> writer(&source.queue, 0);
     Probe probe;
     AutoResetEvent event;
     std::atomic<bool> cancel{false};
@@ -30,7 +30,7 @@ template<bool Single, std::uint32_t Count> static void completed_only_service() 
         CHECK(service.read_once(true, cancel).pending);
         CHECK(probe.accepted == 0 && probe.current_calls == 0);
         probe.accept = true;
-        if constexpr (Single) CHECK(!service.read_once(true, cancel).pending);
+        if constexpr (TSingle) CHECK(!service.read_once(true, cancel).pending);
         else {
             CHECK(!service.read_notified(cancel).pending); // Retain the notified source after rejection so it can retry.
             const auto calls = probe.completed_calls.load();
@@ -46,7 +46,7 @@ template<bool Single, std::uint32_t Count> static void completed_only_service() 
         CHECK(service.error_code() == ReadError::none && source.all_released());
         service.detach_completed_callbacks();
     };
-    if constexpr (Single) {
+    if constexpr (TSingle) {
         SingleReadService service(cfg, probe, event, writer);
         exercise(service);
     } else {
@@ -57,13 +57,13 @@ template<bool Single, std::uint32_t Count> static void completed_only_service() 
 }
 
 // A one-block pool forces handoff before waiting for return; cover single-Writer, list and multi-copy-thread paths.
-template<std::uint32_t Count> static void queue_forwarding(unsigned layout) {
+template<std::uint32_t TCount> static void queue_forwarding(unsigned layout) {
     WriterSourceConfig source;
     source.block_size = 60;
     source.pool_min = source.pool_max = 1;
     source.backpressure.mode = BackpressureMode::Block;
     source.backpressure.wait_get_timeout = 2s;
-    auto w0 = make_writer<Writer<Count, true, std::uint16_t, void>>(source);
+    auto w0 = make_writer<Writer<TCount, true, std::uint16_t, void>>(source);
     source.thread_id = 1;
     std::unique_ptr<decltype(w0)> w1;
     if (layout >= 2) w1 = std::make_unique<decltype(w0)>(source);

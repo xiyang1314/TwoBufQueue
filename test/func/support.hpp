@@ -1,7 +1,7 @@
 #include "../support/writer_fixture.hpp"
 #pragma once
 #include "TwoBufQueue/src/base_components/block_slice/slice_pool.hpp"
-#include "TwoBufQueue/src/base_components/HandoffQueue/pooled_resource_queue.hpp"
+#include "TwoBufQueue/src/base_components/handoff_queue/pooled_resource_queue.hpp"
 #include "TwoBufQueue/src/read/read_layer1/read_service.hpp"
 #include "TwoBufQueue/src/read/read_layer1/read_worker.hpp"
 #include "TwoBufQueue/src/read/layer2/read_block_factory.hpp"
@@ -32,7 +32,7 @@ inline void check(bool ok, const char *expr,
                                  " " + expr);
 }
 #define CHECK(...) ::ft::check(static_cast<bool>((__VA_ARGS__)), #__VA_ARGS__)
-template <class F> void invalid(F &&f) {
+template <class TFunction> void invalid(TFunction &&f) {
     bool caught = false;
     try {
         f();
@@ -120,19 +120,19 @@ struct Receiver {
     }
     void end_read() noexcept {}
 };
-template <class Callback>
-inline void tick(ReadService<Callback> &service) {
+template <class TCallback>
+inline void tick(ReadService<TCallback> &service) {
     const std::atomic<bool> no{false};
     (void)service.read_once(true, no);
 }
-template <unsigned Publish = 1, std::size_t Min = 0> struct Direct {
+template <unsigned TPublish = 1, std::size_t TMin = 0> struct Direct {
     WriterFixture pool;
-    Writer<Publish, true> writer;
+    Writer<TPublish, true> writer;
     Receiver receiver;
     AutoResetEvent event;
     ReadService<Receiver> service;
     Direct(std::size_t bytes = 256, std::size_t blocks = 4, WriterBackpressureConfig bp = {})
-        : pool(bytes, blocks, blocks, bp, Min), writer(&pool.queue, 3, pool.backpressure),
+        : pool(bytes, blocks, blocks, bp, TMin), writer(&pool.queue, 3, pool.backpressure),
           service({}, receiver, event) {
         CHECK(service.add_writer(&writer, false));
         tick(service);
@@ -178,9 +178,9 @@ inline CollectedBatch collect(const DataBatch &batch) {
 }
 using OutputQueue = PooledResourceQueue<ReadBlockPool>;
 using StoreSaver = ToReadBlock<OutputQueue>;
-template <unsigned Publish = 1, std::size_t Min = 0, class DataLen = std::uint16_t> struct Buffered {
+template <unsigned TPublish = 1, std::size_t TMin = 0, class TDataLen = std::uint16_t> struct Buffered {
     WriterFixture source;
-    Writer<Publish, true, DataLen> writer;
+    Writer<TPublish, true, TDataLen> writer;
     ReadBlockPool pool;
     OutputQueue output;
     StoreSaver saver;

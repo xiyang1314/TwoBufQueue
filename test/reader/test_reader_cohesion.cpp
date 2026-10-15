@@ -1,15 +1,15 @@
 #include "../support/read_test_support.hpp"
 using namespace read_test;
 
-template<unsigned Publish> static void concurrent(unsigned writer_count, unsigned per_writer, std::size_t blocks) {
+template<unsigned TPublish> static void concurrent(unsigned writer_count, unsigned per_writer, std::size_t blocks) {
     Probe probe;
     unsigned attempts = 0;
     probe.decide = [&](char, SpscWriteBlock*, const std::byte*, std::size_t) { return ++attempts % 3 != 0; };
     std::vector<std::unique_ptr<WriterFixture>> sources;
-    std::vector<std::unique_ptr<Writer<Publish>>> writers;
+    std::vector<std::unique_ptr<Writer<TPublish>>> writers;
     for (unsigned i = 0; i != writer_count; ++i) {
         sources.push_back(std::make_unique<WriterFixture>(30, blocks, blocks, WriterBackpressureConfig{}, 0, 2, 4));
-        writers.push_back(std::make_unique<Writer<Publish>>(&sources.back()->queue, static_cast<int>(i)));
+        writers.push_back(std::make_unique<Writer<TPublish>>(&sources.back()->queue, static_cast<int>(i)));
     }
     ReadWorker worker(config(), probe);
     for (const auto& writer : writers) CHECK(worker.add_writer(writer.get()));

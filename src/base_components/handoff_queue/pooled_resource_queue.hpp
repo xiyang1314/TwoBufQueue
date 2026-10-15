@@ -1,28 +1,28 @@
 #pragma once
 
 #include "claim_queue.hpp"
-#include "TwoBufQueue/src/base_components/WarmPool/warm_pool.hpp"
+#include "TwoBufQueue/src/base_components/warm_pool/warm_pool.hpp"
 
 namespace TwoBufQueue {
 
 // Standalone pooled-resource queue without callbacks or threads; Queue permits alternate slot/claim implementations.
-template<class Pool, class Queue = ClaimQueue<typename Pool::ResourceType>>
+template<class TPool, class TQueue = ClaimQueue<typename TPool::ResourceType>>
 class PooledResourceQueue {
 public:
-    using Resource = typename Pool::ResourceType;
-    using Loan = typename Pool::Loan;
-    template<bool C> using Ticket = typename Queue::template Ticket<C>;
-    using ProducerLoan = typename Queue::ProducerLoan;
-    using Claim = typename Queue::Claim;
+    using Resource = typename TPool::ResourceType;
+    using Loan = typename TPool::Loan;
+    template<bool TC> using Ticket = typename TQueue::template Ticket<TC>;
+    using ProducerLoan = typename TQueue::ProducerLoan;
+    using Claim = typename TQueue::Claim;
     static_assert(PoolResource<Resource>);
-    static_assert(Pool::concurrent, "PooledResourceQueue requires a concurrent WarmPool");
+    static_assert(TPool::concurrent, "PooledResourceQueue requires a concurrent WarmPool");
     struct AcquireResult {
         AcquireStatus status;
         ProducerLoan loan;
         explicit operator bool() const noexcept { return status == AcquireStatus::Success; }
     };
 
-    PooledResourceQueue(Pool& pool, std::size_t capacity, bool enable_stats = false,
+    PooledResourceQueue(TPool& pool, std::size_t capacity, bool enable_stats = false,
                         CancelClaimMode cancel_claim_mode = CancelClaimMode::QueueTail)
         : pool_(pool), queue_(capacity, enable_stats, cancel_claim_mode),
           received_operations_{&validate_received, &recycle_received, this} {}
@@ -67,7 +67,7 @@ public:
         loan = {};
         return true;
     }
-    template<bool C> [[nodiscard]] HandoffState state(const Ticket<C>& ticket) const noexcept {
+    template<bool TC> [[nodiscard]] HandoffState state(const Ticket<TC>& ticket) const noexcept {
         return queue_.state(ticket);
     }
     [[nodiscard]] HandoffState state(const Loan& loan) const noexcept {
@@ -82,7 +82,7 @@ public:
     [[nodiscard]] HandoffStats stats() const noexcept { return queue_.stats(); }
 
 private:
-    template<class T> bool finish_ticket(T& ticket) noexcept {
+    template<class TValue> bool finish_ticket(TValue& ticket) noexcept {
         auto completed = queue_.begin_finish(ticket);
         if (!completed) return false;
         const auto loan = completed.loan();
@@ -108,13 +108,13 @@ private:
         self.queue_.complete_received();
         return true;
     }
-    Pool& pool_;
-    Queue queue_;
+    TPool& pool_;
+    TQueue queue_;
     const LoanOperations received_operations_;
 };
 
-template<class Pool>
-PooledResourceQueue(Pool&, std::size_t, bool = false, CancelClaimMode = CancelClaimMode::QueueTail)
-    -> PooledResourceQueue<Pool>;
+template<class TPool>
+PooledResourceQueue(TPool&, std::size_t, bool = false, CancelClaimMode = CancelClaimMode::QueueTail)
+    -> PooledResourceQueue<TPool>;
 
 } // namespace TwoBufQueue

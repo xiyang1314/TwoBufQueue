@@ -12,8 +12,8 @@ inline void require(bool ok, const char* message) {
 
 // A frame contains multiple [uint16 little-endian length][payload] records.
 // Payloads may be unaligned: use memcpy, never reinterpret_cast<Record*>.
-template<class Visitor>
-bool messages(const TwoBufQueue::DataBatch& batch, Visitor&& visit) noexcept {
+template<class TVisitor>
+bool messages(const TwoBufQueue::DataBatch& batch, TVisitor&& visit) noexcept {
     for (const auto& frame : batch.frames) {
         const auto* p = frame.data;
         auto remaining = frame.size;
@@ -31,9 +31,9 @@ bool messages(const TwoBufQueue::DataBatch& batch, Visitor&& visit) noexcept {
     return true;
 }
 
-template<class Visitor>
+template<class TVisitor>
 bool messages(const TwoBufQueue::SpscWriteBlock* block, const std::byte* p,
-              std::size_t remaining, Visitor&& visit) noexcept {
+              std::size_t remaining, TVisitor&& visit) noexcept {
     while (remaining) {
         if (remaining < 2) return false;
         const auto length = std::to_integer<unsigned>(p[0]) | (std::to_integer<unsigned>(p[1]) << 8);

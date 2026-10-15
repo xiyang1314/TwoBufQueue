@@ -11,21 +11,21 @@ using namespace TwoBufQueue;
 using Clock = std::chrono::steady_clock;
 constexpr std::size_t count = 100000, depth = 128, readers = 4;
 
-template<class Pool, std::size_t Writers>
+template<class TPool, std::size_t TWriters>
 static void run(const char* name) {
-    Pool pool(65536, 32, 32);
-    std::array<std::vector<double>, Writers> samples;
+    TPool pool(65536, 32, 32);
+    std::array<std::vector<double>, TWriters> samples;
     for (auto& sample : samples) sample.reserve(count / 256 + 1);
     auto report = [&](Clock::time_point begin) {
         const double seconds = std::chrono::duration<double>(Clock::now() - begin).count();
         std::vector<double> all;
         for (const auto& sample : samples) all.insert(all.end(), sample.begin(), sample.end());
         std::sort(all.begin(), all.end());
-        std::cout << name << ": " << count * Writers / seconds / 1e6
+        std::cout << name << ": " << count * TWriters / seconds / 1e6
                   << " M slices/s, sampled allocate p99 " << all[all.size() * 99 / 100]
                   << " ns\n";
     };
-    if constexpr (std::is_same_v<Pool, Alloc1Release1SlicePool>) {
+    if constexpr (std::is_same_v<TPool, Alloc1Release1SlicePool>) {
         auto begin = Clock::now();
         for (std::size_t i = 0; i < count; ++i) {
             const bool sampled = (i & 255) == 0;
@@ -38,18 +38,18 @@ static void run(const char* name) {
         }
         report(begin);
     } else {
-        struct Slot { typename Pool::Slice slice; std::atomic<bool> ready{false}; };
-        auto slots = std::make_unique<Slot[]>(Writers * readers * depth);
-        std::barrier start(static_cast<std::ptrdiff_t>(Writers + readers + 1));
+        struct Slot { typename TPool::Slice slice; std::atomic<bool> ready{false}; };
+        auto slots = std::make_unique<Slot[]>(TWriters * readers * depth);
+        std::barrier start(static_cast<std::ptrdiff_t>(TWriters + readers + 1));
         std::vector<std::thread> threads;
         for (std::size_t r = 0; r < readers; ++r) {
             threads.emplace_back([&, r] {
-                std::array<std::size_t, Writers> consumed{};
+                std::array<std::size_t, TWriters> consumed{};
                 std::size_t total = 0;
                 start.arrive_and_wait();
-                while (total < Writers * count / readers) {
+                while (total < TWriters * count / readers) {
                     bool progress = false;
-                    for (std::size_t w = 0; w < Writers; ++w) {
+                    for (std::size_t w = 0; w < TWriters; ++w) {
                         auto& slot = slots[(w * readers + r) * depth + consumed[w] % depth];
                         if (!slot.ready.load(std::memory_order_acquire)) continue;
                         if (*slot.slice.data() != std::byte{42}) std::abort();
@@ -61,7 +61,7 @@ static void run(const char* name) {
                 }
             });
         }
-        for (std::size_t w = 0; w < Writers; ++w) {
+        for (std::size_t w = 0; w < TWriters; ++w) {
             threads.emplace_back([&, w] {
                 start.arrive_and_wait();
                 for (std::size_t i = 0; i < count; ++i) {

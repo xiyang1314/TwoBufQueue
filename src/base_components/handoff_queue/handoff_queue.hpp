@@ -25,18 +25,18 @@ namespace TwoBufQueue {
 
 // Scheduling facade: compose the resource queue and consumer behind one producer/consumer interface.
 // Owns no slots, queue locks, resource state or threads; the separate components perform those operations.
-template<class Pool, class Callback, class ResourceQueue = PooledResourceQueue<Pool>>
+template<class TPool, class TCallback, class TResourceQueue = PooledResourceQueue<TPool>>
 class HandoffQueue {
 public:
-    using Resource = typename ResourceQueue::Resource;
-    using Loan = typename ResourceQueue::Loan;
-    template<bool C> using Ticket = typename ResourceQueue::template Ticket<C>;
-    using ProducerLoan = typename ResourceQueue::ProducerLoan;
-    using Claim = typename ResourceQueue::Claim;
-    using AcquireResult = typename ResourceQueue::AcquireResult;
+    using Resource = typename TResourceQueue::Resource;
+    using Loan = typename TResourceQueue::Loan;
+    template<bool TC> using Ticket = typename TResourceQueue::template Ticket<TC>;
+    using ProducerLoan = typename TResourceQueue::ProducerLoan;
+    using Claim = typename TResourceQueue::Claim;
+    using AcquireResult = typename TResourceQueue::AcquireResult;
     using NotifyCallback = void (*)(void*) noexcept;
 
-    HandoffQueue(Pool& pool, HandoffOptions options, Callback callback)
+    HandoffQueue(TPool& pool, HandoffOptions options, TCallback callback)
         : options_(validate_handoff_options(options)),
           queue_(pool, options_.queue_capacity, options_.enable_stats, options_.cancel_claim_mode),
           reader_(queue_, options_, std::move(callback)) {}
@@ -57,7 +57,7 @@ public:
     [[nodiscard]] Claim try_claim() noexcept { return queue_.try_claim(); }
     bool finish(Loan& loan) noexcept { return queue_.finish(loan); }
     bool finish(Claim& claim) noexcept { return queue_.finish(claim); }
-    template<class TicketType> [[nodiscard]] HandoffState state(const TicketType& ticket) const noexcept {
+    template<class TTicketType> [[nodiscard]] HandoffState state(const TTicketType& ticket) const noexcept {
         return queue_.state(ticket);
     }
     bool cancel_claim(Claim& claim) noexcept {
@@ -90,13 +90,13 @@ private:
     }
 
     const HandoffOptions options_;
-    ResourceQueue queue_;
-    HandoffReader<ResourceQueue, Callback> reader_;
+    TResourceQueue queue_;
+    HandoffReader<TResourceQueue, TCallback> reader_;
     NotifyCallback notify_ = nullptr;
     void* notify_context_ = nullptr;
 };
 
-template<class Pool, class Callback>
-HandoffQueue(Pool&, HandoffOptions, Callback) -> HandoffQueue<Pool, Callback>;
+template<class TPool, class TCallback>
+HandoffQueue(TPool&, HandoffOptions, TCallback) -> HandoffQueue<TPool, TCallback>;
 
 } // namespace TwoBufQueue

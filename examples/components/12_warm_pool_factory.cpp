@@ -2,7 +2,7 @@
 // The default factory uses new/delete. Supply a custom factory for special construction,
 // such as allocating extra resources or tagging objects; the pool calls create() and dispose().
 
-#include "TwoBufQueue/src/base_components/WarmPool/warm_pool.hpp"
+#include "TwoBufQueue/src/base_components/warm_pool/warm_pool.hpp"
 #include <cstdint>
 #include <cstdio>
 #include <stdexcept>

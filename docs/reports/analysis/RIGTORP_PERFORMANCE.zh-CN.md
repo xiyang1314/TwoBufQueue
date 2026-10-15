@@ -23,7 +23,7 @@
 | 256 MiB | 32 B | 39.36 | 162.59 | 25.683 | 6.000 |
 | 256 MiB | 64 B | 39.84 | 98.23 | 24.717 | 9.883 |
 
-全部 160 次正式测量和 16 次完整校验通过。[汇总](../../performance_data/rigtorp_prefetch_20261011/selective-control/summary.json) · [原始记录](../../performance_data/rigtorp_prefetch_20261011/selective-control/raw.jsonl) · [源码和复现脚本](../../performance_data/rigtorp_prefetch_20261011/selective-control/source.tar.gz)。
+全部 160 次正式测量和 16 次完整校验通过。[汇总](../../performance_data/rigtorp_prefetch_20261011/selective_control/summary.json) · [原始记录](../../performance_data/rigtorp_prefetch_20261011/selective_control/raw.jsonl) · [源码和复现脚本](../../performance_data/rigtorp_prefetch_20261011/selective_control/source.tar.gz)。
 
 ## 二、Code generation and limits / 汇编与结论边界
 
@@ -33,9 +33,9 @@
 
 对照可以确认：本机此调用路径的回退能够通过目标写预取消除，不需要恢复函数体 memcpy 的额外写零。具体 M3 内部流水线或缓存所有权机制尚未由硬件计数器证实，不据此推断所有队列或平台的通用排名。
 
-固定队列对象偏移 0/64（mod 128）的对照均没有改善该回退，因此未采用对齐改动。[排除布局假设的记录](../../performance_data/rigtorp_prefetch_20261011/placement-control/summary.json)。
+固定队列对象偏移 0/64（mod 128）的对照均没有改善该回退，因此未采用对齐改动。[排除布局假设的记录](../../performance_data/rigtorp_prefetch_20261011/placement_control/summary.json)。
 
-前期把预取统一加入普通 Payload 复制时，rigtorp 提升，但 8 B ReaderWriterQueue 吞吐从约 766 降到 481 M条/s，因此未采用这个版本。[统一添加提示的对照](../../performance_data/rigtorp_prefetch_20261011/fix-control/summary.json)。该修正只在 rigtorp 适配器显式请求提示。后续 ReaderWriterQueue 16/32 B 的调用端复制调整单独披露于 [性能口径](https://xiyang1314.github.io/TwoBufQueue/docs/reports/PERFORMANCE.zh-CN.html)，不属于这次预取开关对照。
+前期把预取统一加入普通 Payload 复制时，rigtorp 提升，但 8 B ReaderWriterQueue 吞吐从约 766 降到 481 M条/s，因此未采用这个版本。[统一添加提示的对照](../../performance_data/rigtorp_prefetch_20261011/fix_control/summary.json)。该修正只在 rigtorp 适配器显式请求提示。后续 ReaderWriterQueue 16/32 B 的调用端复制调整单独披露于 [性能口径](https://xiyang1314.github.io/TwoBufQueue/docs/reports/PERFORMANCE.zh-CN.html)，不属于这次预取开关对照。
 
 ## 三、Fresh formal reports / 修正后的完整复测
 

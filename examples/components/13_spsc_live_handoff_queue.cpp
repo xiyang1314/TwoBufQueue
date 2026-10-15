@@ -1,6 +1,6 @@
 // SpscLiveHandoffQueue: the pop-based interface.
 
-#include "TwoBufQueue/src/base_components/LiveHandoffQueue/spsc_live_handoff_queue.hpp"
+#include "TwoBufQueue/src/base_components/live_handoff_queue/spsc_live_handoff_queue.hpp"
 #include "TwoBufQueue/src/utils/auto_reset_event.hpp"
 #include <atomic>
 #include <cassert>
@@ -103,8 +103,8 @@ private:
 };
 
 // Producer helper: notify the consumer after changing shared data.
-template<class Modify>
-void modify_and_notify(Queue& queue, Modify&& modify) {
+template<class TModify>
+void modify_and_notify(Queue& queue, TModify&& modify) {
     modify();
     queue.notify_read_available();
 }

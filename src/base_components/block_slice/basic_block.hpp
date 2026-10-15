@@ -3,7 +3,7 @@
 #include "TwoBufQueue/src/base_components/block_slice/block_slices_allocator.hpp"
 #include <stdexcept>
 #include <cstring>
-#include "TwoBufQueue/src/base_components/WarmPool/resource.hpp"
+#include "TwoBufQueue/src/base_components/warm_pool/resource.hpp"
 
 namespace TwoBufQueue {
 struct BlockConfig {
@@ -11,18 +11,18 @@ struct BlockConfig {
     std::size_t max_slices_per_block = 1024;
 };
 
-template<class Block> class BlockResourceFactory;
+template<class TBlock> class BlockResourceFactory;
 
 // Shared storage, pool identity and slice management; derived classes implement business state and recycling rules.
 // false/false requires one execution stream or complete external serialization.
-template<bool is_n_alloc = false, bool is_n_use = true>
-class alignas(64) BasicBlock : public DefaultResource<is_n_alloc || is_n_use> {
+template<bool TIsNAlloc = false, bool TIsNUse = true>
+class alignas(64) BasicBlock : public DefaultResource<TIsNAlloc || TIsNUse> {
 public:
     using StorageBlock = BasicBlock;
     using Config = BlockConfig;
     static constexpr std::size_t block_alignment = 64;
     using Slice = BasicMemorySlice<BasicBlock>;
-    static constexpr bool concurrent = is_n_alloc || is_n_use;
+    static constexpr bool concurrent = TIsNAlloc || TIsNUse;
     BasicBlock(const BasicBlock&) = delete;
     BasicBlock& operator=(const BasicBlock&) = delete;
     [[nodiscard]] std::size_t capacity() const noexcept { return capacity_; }
@@ -39,10 +39,10 @@ public:
         data_ = std::move(data);
     }
 protected:
-    using ResourceBase = DefaultResource<is_n_alloc || is_n_use>;
+    using ResourceBase = DefaultResource<TIsNAlloc || TIsNUse>;
     using ResourceBase::finish; // Only the final completer may return it; never bypass slice lifetimes.
     bool finish_slices(bool force = false) noexcept { return slices_.close(force); }
-    template<class Predicate> bool finish_slices_when(Predicate predicate) noexcept {
+    template<class TPredicate> bool finish_slices_when(TPredicate predicate) noexcept {
         return slices_.close_when(predicate);
     }
     explicit BasicBlock(Config config)
@@ -75,9 +75,9 @@ protected:
         return slices_.allow_without_lock(size, alignment, limit, location);
     }
     // Protect the derived class's entire allocation transaction; NoLock disappears for a single allocator.
-    template<class Function> decltype(auto) with_allocation_lock(Function&& function) const noexcept {
+    template<class TFunction> decltype(auto) with_allocation_lock(TFunction&& function) const noexcept {
         std::lock_guard guard(slices_.allocate_lock_);
-        return std::forward<Function>(function)();
+        return std::forward<TFunction>(function)();
     }
     [[noreturn]] void report_error(const char* reason, std::source_location location) const noexcept {
         BlockDiagnostics<BasicBlock>::report_error(reason, this, location);
@@ -85,10 +85,10 @@ protected:
     std::byte* buf_ = nullptr;
 
 private:
-    template<class B> friend class BlockResourceFactory;
+    template<class TBlock> friend class BlockResourceFactory;
     friend struct BlockDiagnostics<BasicBlock>;
-    template<class B, bool, bool> friend class BasicBlockSlicesAllocator;
-    template<class B> friend class BasicMemorySlice;
+    template<class TBlock, bool, bool> friend class BasicBlockSlicesAllocator;
+    template<class TBlock> friend class BasicMemorySlice;
     friend class BlockSlicesAllocatorForTest;
     bool release_slice(std::size_t index, std::uint64_t sequence, std::source_location location) noexcept {
         return slices_.release(index, sequence, location);
@@ -105,6 +105,6 @@ protected:
     void (*describe_error_)(const BasicBlock*, bool, typename BlockDiagnostics<BasicBlock>::ErrorInfo&) noexcept = nullptr;
 private:
     std::size_t capacity_ = 0;
-    BasicBlockSlicesAllocator<BasicBlock, is_n_alloc, is_n_use> slices_;
+    BasicBlockSlicesAllocator<BasicBlock, TIsNAlloc, TIsNUse> slices_;
 };
 } // namespace TwoBufQueue

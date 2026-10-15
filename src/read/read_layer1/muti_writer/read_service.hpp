@@ -11,14 +11,14 @@
 
 namespace TwoBufQueue {
 // Callback is the user's concrete type, without inheritance; one reader invokes every callback synchronously.
-template<class Callback>
+template<class TCallback>
 class ReadService {
 public:
     using Queue = WriterQueue;
     using Block = SpscWriteBlock;
     using SteadyClock = ReadItem::SteadyClock;
     using Deadline = AutoResetEvent::Clock::time_point;
-    static_assert(requires(Callback& cb, Block* block, const std::byte* ptr,
+    static_assert(requires(TCallback& cb, Block* block, const std::byte* ptr,
                            std::size_t size, std::int64_t time) {
         { cb.begin_read_complete(time) } noexcept -> std::same_as<void>;
         { cb.read_complete(block) } noexcept -> std::same_as<bool>;
@@ -28,7 +28,7 @@ public:
         { cb.end_read() } noexcept -> std::same_as<void>;
     }, "Callback must implement the noexcept block-reading methods shown in ReadWriterDataCallback");
 
-    ReadService(ReadConfig config, Callback& callback, AutoResetEvent& work_event)
+    ReadService(ReadConfig config, TCallback& callback, AutoResetEvent& work_event)
         : config_(config), callback_(callback), work_event_(work_event) {}
     ~ReadService() {
         detach_completed_callbacks();
@@ -40,7 +40,7 @@ public:
     ReadService(const ReadService&) = delete;
     ReadService& operator=(const ReadService&) = delete;
 
-    template<class Writer> [[nodiscard]] bool add_writer(Writer* writer, bool running = false) noexcept {
+    template<class TWriter> [[nodiscard]] bool add_writer(TWriter* writer, bool running = false) noexcept {
         return add_queue(writer ? &writer->handoff_queue() : nullptr,
                          writer ? writer->thread_id() : -1, running);
     }
@@ -403,7 +403,7 @@ private:
     }
 
     const ReadConfig config_;
-    Callback& callback_;
+    TCallback& callback_;
     AutoResetEvent& work_event_;
     std::vector<QueueEntry> queues_;
     std::vector<std::unique_ptr<NotificationWord>> notifications_;

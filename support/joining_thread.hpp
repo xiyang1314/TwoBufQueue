@@ -9,9 +9,9 @@ class JoiningThread {
     std::thread thread_;
 public:
     JoiningThread() noexcept = default;
-    template<class Function, class... Args>
-    explicit JoiningThread(Function&& function, Args&&... args)
-        : thread_(std::forward<Function>(function), std::forward<Args>(args)...) {}
+    template<class TFunction, class... TArgs>
+    explicit JoiningThread(TFunction&& function, TArgs&&... args)
+        : thread_(std::forward<TFunction>(function), std::forward<TArgs>(args)...) {}
     JoiningThread(JoiningThread&&) noexcept = default;
     JoiningThread& operator=(JoiningThread&& other) noexcept {
         if (this != &other) {

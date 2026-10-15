@@ -1,4 +1,4 @@
-#include "TwoBufQueue/src/base_components/HandoffQueue/handoff_queue.hpp"
+#include "TwoBufQueue/src/base_components/handoff_queue/handoff_queue.hpp"
 #include <array>
 #include <cassert>
 #include <iostream>
@@ -13,14 +13,14 @@ struct Item {
 };
 using Pool = WarmPool<Item>;
 
-template<class Predicate> void until(Predicate predicate) {
+template<class TPredicate> void until(TPredicate predicate) {
     const auto deadline = std::chrono::steady_clock::now() + 10s;
     while (!predicate()) {
         assert(std::chrono::steady_clock::now() < deadline);
         std::this_thread::yield();
     }
 }
-template<class Pipeline> void drain(Pipeline& pipeline) {
+template<class TPipeline> void drain(TPipeline& pipeline) {
     pipeline.close();
     until([&] { return pipeline.is_drained(); });
 }

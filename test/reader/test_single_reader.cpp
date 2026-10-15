@@ -61,17 +61,17 @@ static void cancelled_and_current_rejection() {
     CHECK(r.writer.source_block()->read_pos() == 0);
     r.probe.accept = true; CHECK(!r.tick().pending); r.drain(); r.probe.verify(7,1);
 }
-template<bool Accept> static void completion_during_current() {
+template<bool TAccept> static void completion_during_current() {
     for (unsigned round = 0; round != 30; ++round) {
         SingleRig r(12); CHECK(r.writer.write(0u)); auto* original = r.writer.source_block();
         Gate gate;
         r.probe.decide = [&](char phase, SpscWriteBlock* block, const std::byte*, std::size_t size) {
-            CHECK(phase == 'C' && block == original && size == 6); gate.pause(); return Accept;
+            CHECK(phase == 'C' && block == original && size == 6); gate.pause(); return TAccept;
         };
         ReadResult result; std::thread reader([&] { result = r.tick(); }); gate.wait();
         CHECK(r.writer.write(1u) && r.writer.write(2u) && r.writer.write(3u)); r.writer.finish();
         gate.release(); reader.join();
-        CHECK(result.pending && original->read_pos() == (Accept ? 6u : 0u) && !original->is_free());
+        CHECK(result.pending && original->read_pos() == (TAccept ? 6u : 0u) && !original->is_free());
         r.drain(); r.probe.verify(7,4); CHECK(r.service.stats().saved_data_bytes == 24);
     }
 }
@@ -85,9 +85,9 @@ static void prefix_append() {
     CHECK(result.pending && r.probe.accepted == 2 && r.source.queue.pending_count() == 1);
     r.drain(); r.probe.verify(7,3);
 }
-template<unsigned Publish> static void concurrent(std::size_t blocks) {
+template<unsigned TPublish> static void concurrent(std::size_t blocks) {
     WriterFixture source(30,blocks,blocks,WriterBackpressureConfig{},0,2,4);
-    Writer<Publish> writer(&source.queue,0); Probe probe; unsigned attempts = 0;
+    Writer<TPublish> writer(&source.queue,0); Probe probe; unsigned attempts = 0;
     probe.decide = [&](char, SpscWriteBlock*, const std::byte*, std::size_t) { return ++attempts % 3 != 0; };
     SingleReadWorker worker(config(),probe,writer); CHECK(worker.start());
     std::thread producer([&] {

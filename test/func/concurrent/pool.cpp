@@ -1,8 +1,8 @@
 #include "../../../support/joining_thread.hpp"
 #include "common.hpp"
 namespace ct {
-template <class Slice> struct SliceWork {
-    Slice slice;
+template <class TSlice> struct SliceWork {
+    TSlice slice;
     Bytes expected;
     unsigned writer, seq;
 };
@@ -23,9 +23,9 @@ struct LiveRanges {
     }
 };
 
-template <class Pool> void streaming(unsigned producers, std::size_t slots) {
-    Pool pool(8192, 8, 8, {.max_slices_per_block = slots});
-    using Work = SliceWork<typename Pool::Slice>;
+template <class TPool> void streaming(unsigned producers, std::size_t slots) {
+    TPool pool(8192, 8, 8, {.max_slices_per_block = slots});
+    using Work = SliceWork<typename TPool::Slice>;
     Channel<Work> channel(128);
     Failure failure;
     LiveRanges live;
@@ -118,8 +118,8 @@ template <class Pool> void streaming(unsigned producers, std::size_t slots) {
               << " allocation retries=" << retries << '\n';
 }
 
-template <class Pool> void pinned() {
-    Pool pool(128, 2, 2, {.max_slices_per_block = 1});
+template <class TPool> void pinned() {
+    TPool pool(128, 2, 2, {.max_slices_per_block = 1});
     Failure failure;
     for (unsigned round = 0; round < 100; ++round) {
         auto a = pool.allocate(128), b = pool.allocate(128);

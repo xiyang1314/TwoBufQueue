@@ -1,15 +1,15 @@
 #pragma once
-#include "TwoBufQueue/src/base_components/WarmPool/resource.hpp"
+#include "TwoBufQueue/src/base_components/warm_pool/resource.hpp"
 #include <cstdio>
 #include <exception>
 #include <source_location>
 
 namespace TwoBufQueue {
 // Static diagnostics for error paths only; owns no resources and manages neither pool identity nor lifetimes.
-template<class Block> struct BlockDiagnostics {
+template<class TBlock> struct BlockDiagnostics {
     struct ErrorInfo {
         const char* reason;
-        const Block* range;
+        const TBlock* range;
         bool has_actual_state;
         std::uint8_t actual_state;
         const char* actual_state_name;
@@ -19,7 +19,7 @@ template<class Block> struct BlockDiagnostics {
     static void set_error_handler(ErrorHandler handler) noexcept {
         error_handler_.store(handler, std::memory_order_release);
     }
-    [[noreturn]] static void report_error(const char* reason, const Block* block,
+    [[noreturn]] static void report_error(const char* reason, const TBlock* block,
         std::source_location location = std::source_location::current(), bool inactive = false) noexcept {
         ErrorInfo info{reason, block, block != nullptr, 0, "unavailable", location};
         if (block && block->describe_error_) block->describe_error_(block, inactive, info);

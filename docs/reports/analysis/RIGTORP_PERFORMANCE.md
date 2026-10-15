@@ -23,7 +23,7 @@ The control uses one optimized executable, the same fully varying payload and 10
 | 256 MiB | 32 B | 39.36 | 162.59 | 25.683 | 6.000 |
 | 256 MiB | 64 B | 39.84 | 98.23 | 24.717 | 9.883 |
 
-All 160 formal measurements and 16 complete validations passed. [Summary](../../performance_data/rigtorp_prefetch_20261011/selective-control/summary.json) · [Raw records](../../performance_data/rigtorp_prefetch_20261011/selective-control/raw.jsonl) · [Source and reproduction scripts](../../performance_data/rigtorp_prefetch_20261011/selective-control/source.tar.gz).
+All 160 formal measurements and 16 complete validations passed. [Summary](../../performance_data/rigtorp_prefetch_20261011/selective_control/summary.json) · [Raw records](../../performance_data/rigtorp_prefetch_20261011/selective_control/raw.jsonl) · [Source and reproduction scripts](../../performance_data/rigtorp_prefetch_20261011/selective_control/source.tar.gz).
 
 ## 2. Code generation and limits
 
@@ -33,9 +33,9 @@ In the saved 16 B push assembly, both paths use one `ldr q0`, one `str q0` and t
 
 The control confirms that destination write prefetch removes the regression in this call path on the measured host, without restoring the extra zeroing of the constructor-body memcpy path. Hardware counters have not confirmed the specific M3 pipeline or cache-ownership mechanism, and these results do not establish a universal queue or platform ranking.
 
-Placing the queue object at offsets 0 and 64 modulo 128 did not improve the regression, so no alignment change was adopted. [Placement control](../../performance_data/rigtorp_prefetch_20261011/placement-control/summary.json).
+Placing the queue object at offsets 0 and 64 modulo 128 did not improve the regression, so no alignment change was adopted. [Placement control](../../performance_data/rigtorp_prefetch_20261011/placement_control/summary.json).
 
-An earlier variant added the hint to the ordinary Payload copy for every adapter. rigtorp improved, but 8 B ReaderWriterQueue throughput fell from about 766 to 481 M messages/s, so that variant was rejected. [Shared-hint control](../../performance_data/rigtorp_prefetch_20261011/fix-control/summary.json). The adopted correction requests the hint only in the rigtorp adapter. Later ReaderWriterQueue 16/32 B copy changes are disclosed separately in the [benchmark methodology](https://xiyang1314.github.io/TwoBufQueue/docs/reports/PERFORMANCE.html); they are not part of this prefetch-switch control.
+An earlier variant added the hint to the ordinary Payload copy for every adapter. rigtorp improved, but 8 B ReaderWriterQueue throughput fell from about 766 to 481 M messages/s, so that variant was rejected. [Shared-hint control](../../performance_data/rigtorp_prefetch_20261011/fix_control/summary.json). The adopted correction requests the hint only in the rigtorp adapter. Later ReaderWriterQueue 16/32 B copy changes are disclosed separately in the [benchmark methodology](https://xiyang1314.github.io/TwoBufQueue/docs/reports/PERFORMANCE.html); they are not part of this prefetch-switch control.
 
 ## 3. Subsequent complete measurements
 

@@ -5,7 +5,7 @@
 #include <thread>
 static void pause_operation(int point);
 #define BRQ_INDEX_QUEUE_TEST_HOOK(point) pause_operation(point)
-#include "TwoBufQueue/src/base_components/HandoffQueue/pooled_resource_queue.hpp"
+#include "TwoBufQueue/src/base_components/handoff_queue/pooled_resource_queue.hpp"
 #undef BRQ_INDEX_QUEUE_TEST_HOOK
 
 using namespace TwoBufQueue;

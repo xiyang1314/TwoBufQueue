@@ -116,13 +116,13 @@ static void no_lock_allocate() {
     }
 }
 
-template<class PoolType>
+template<class TPoolType>
 static void common_contract() {
     // The exact same contract tests run against all three synchronization policies.
     for (std::size_t cap : {1u, 63u, 64u, 65u, 129u}) {
-        PoolType pool(4096, 1, 1, {.max_slices_per_block = cap});
+        TPoolType pool(4096, 1, 1, {.max_slices_per_block = cap});
         for (int pass = 0; pass < 3; ++pass) {
-            std::vector<typename PoolType::Slice> held;
+            std::vector<typename TPoolType::Slice> held;
             for (std::size_t i = 0; i < cap; ++i) {
                 auto s = pool.allocate(1);
                 assert(s);
@@ -137,7 +137,7 @@ static void common_contract() {
         }
     }
     for (std::size_t alignment : {1u, 2u, 4u, 8u, 16u, 32u, 64u}) {
-        PoolType pool(65, 1, 1);
+        TPoolType pool(65, 1, 1);
         auto first = pool.allocate(1);
         assert(!pool.allocate(66));
         auto aligned = pool.allocate(1, alignment);
@@ -145,7 +145,7 @@ static void common_contract() {
         assert(reinterpret_cast<std::uintptr_t>(aligned.data()) % alignment == 0);
     }
     bool rejected = false;
-    try { PoolType invalid(64, 0, 1, {.max_slices_per_block = 0}); }
+    try { TPoolType invalid(64, 0, 1, {.max_slices_per_block = 0}); }
     catch (const std::invalid_argument&) { rejected = true; }
     assert(rejected);
 }
@@ -166,10 +166,10 @@ static void simultaneous_modes() {
     assert(local.allocate(64) && producer.allocate(64) && shared.allocate(64));
 }
 
-template<class PoolType>
+template<class TPoolType>
 static void close_and_notify() {
     std::atomic<unsigned> released{0};
-    PoolType pool(64, 1, 1);
+    TPoolType pool(64, 1, 1);
     pool.set_release_callback([](void* context) noexcept {
         static_cast<std::atomic<unsigned>*>(context)->fetch_add(1, std::memory_order_relaxed);
     }, &released);
@@ -183,7 +183,7 @@ static void close_and_notify() {
     pool.close();
     assert(released.load() == 1);
     pool.set_release_callback(nullptr, nullptr);
-    PoolType empty(64, 0, 1);
+    TPoolType empty(64, 0, 1);
     empty.close();
     assert(!empty.allocate(1) && empty.block_count() == 0);
 }

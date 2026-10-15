@@ -1,7 +1,7 @@
 #pragma once
 
 #include "read_block.hpp"
-#include "TwoBufQueue/src/base_components/WarmPool/warm_pool.hpp"
+#include "TwoBufQueue/src/base_components/warm_pool/warm_pool.hpp"
 
 namespace TwoBufQueue {
 

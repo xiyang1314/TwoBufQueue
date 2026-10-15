@@ -8,10 +8,10 @@ Its two-layer buffer design prioritizes producer hot-path performance. Batch pub
 
 **Contents**
 
-- [1. A few questions](#1-a-few-questions)
+- [1. A few interesting questions](#1-a-few-interesting-questions)
   - [1.1 Why can business work slow down after sending, even without backpressure?](#11-why-can-business-work-slow-down-after-sending-even-without-backpressure)
   - [1.2 How much faster can batch submission be for tiny messages?](#12-how-much-faster-can-batch-submission-be-for-tiny-messages)
-  - [1.3 When message buffers are full, must the producer wait?](#13-when-message-buffers-are-full-must-the-producer-wait)
+  - [1.3 When message buffers are full, must the producer keep waiting?](#13-when-message-buffers-are-full-must-the-producer-keep-waiting)
   - [1.4 How can large messages be sent more efficiently?](#14-how-can-large-messages-be-sent-more-efficiently)
   - [1.5 Small buffers cause backpressure; large buffers waste memory. What should you do?](#15-small-buffers-cause-backpressure-large-buffers-waste-memory-what-should-you-do)
 - [2. How fast is it?](#2-how-fast-is-it)
@@ -27,7 +27,7 @@ Its two-layer buffer design prioritizes producer hot-path performance. Batch pub
 
 ---
 
-## 1. A few questions
+## 1. A few interesting questions
 
 ### 1.1 Why can business work slow down after sending, even without backpressure?
 
@@ -37,7 +37,7 @@ The queue has room and sends never block, so everything appears normal. Yet afte
 
 Copying an 8 or 16 B message should be quick. The smaller the message, the more the other work involved in sending deserves attention. With the same amount of data and the same number of messages, how much can performance differ between individual and batch submission?
 
-### 1.3 When message buffers are full, must the producer wait?
+### 1.3 When message buffers are full, must the producer keep waiting?
 
 Consumption slows down, messages accumulate and the buffers eventually fill. Waiting interrupts business execution; dropping messages can lose important records. Could there be another place for pending messages while keeping memory use bounded?
 
@@ -83,7 +83,7 @@ In practical terms: the producer runs on the hot-path thread and the consumer ru
 
 ### 3.2 Tradeoffs to consider
 
-Two-layer transfer adds copying and background work. A single-layer queue may fit better when individual send-to-receive time is the main objective, or when traffic and processing are light. Capacity is finite; insufficient copy progress or sustained overload still causes backpressure.
+Two-layer transfer adds copying and background work. The single-layer queues mentioned earlier may be a better fit when individual send-to-receive time matters most, or when traffic and processing are light. Also, the producer and consumer threads must not be pinned to the same CPU core; otherwise, two-layer buffering effectively behaves like single-layer buffering.
 
 [Detailed benefits, tradeoffs and design comparison](https://xiyang1314.github.io/TwoBufQueue/README_DETAIL.html)
 

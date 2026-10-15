@@ -12,17 +12,17 @@ namespace TwoBufQueue {
 //   false: tightly copy bytes without a prefix; boundaries are not self-describing, so empty payloads are rejected.
 // Publication count is part of the type, not a constructor argument; one object never mixes the two policies.
 // TSyncContext = void uses asynchronous buffers; non-void invokes the callback directly without these prefixes.
-template <std::uint32_t publish_write_ptr_count = 1,
+template <std::uint32_t TPublishWritePtrCount = 1,
           bool TIsWriteLen = true, typename TDataLen = std::uint16_t,
           class TSyncContext = void>
-class Writer : public WriterBase<publish_write_ptr_count>,
+class Writer : public WriterBase<TPublishWritePtrCount>,
                public detail::SyncBinding<TSyncContext> {
     static_assert(std::is_integral_v<TDataLen> && std::is_unsigned_v<TDataLen> &&
                   !std::is_same_v<TDataLen, bool> &&
                   std::is_same_v<TDataLen, std::remove_cv_t<TDataLen>> &&
                   sizeof(TDataLen) <= sizeof(std::uint64_t),
                   "TDataLen must be an unqualified unsigned integer of at most 64 bits");
-    using Base = WriterBase<publish_write_ptr_count>;
+    using Base = WriterBase<TPublishWritePtrCount>;
 public:
     static constexpr bool is_sync = !std::is_void_v<TSyncContext>;
     // Ordinary asynchronous writes read back the first byte after copying; Session retains its write-only path.
@@ -52,13 +52,13 @@ public:
         // Publish the current block's position and notify the reader without switching blocks; calling is optional.
         // With is_scan_current = false, get_next_session / finish_block / finish must also hand off the tail.
         void flush() noexcept { state_.flush(); }
-        template <typename... Args>
-        [[nodiscard]] FAST_LOG_ALWAYS_INLINE SessionWriteResult write(const Args&... args) noexcept {
-            static_assert((std::is_trivially_copyable_v<Args> && ...),
+        template <typename... TArgs>
+        [[nodiscard]] FAST_LOG_ALWAYS_INLINE SessionWriteResult write(const TArgs&... args) noexcept {
+            static_assert((std::is_trivially_copyable_v<TArgs> && ...),
                           "write requires trivially-copyable arguments");
-            static_assert(((!std::is_pointer_v<Args> && !std::is_array_v<Args>) && ...),
+            static_assert(((!std::is_pointer_v<TArgs> && !std::is_array_v<TArgs>) && ...),
                           "use write_mem for pointer/array payloads");
-            constexpr std::size_t size = (std::size_t{0} + ... + sizeof(Args));
+            constexpr std::size_t size = (std::size_t{0} + ... + sizeof(TArgs));
             if constexpr (TIsWriteLen) {
                 static_assert(size <= (std::numeric_limits<TDataLen>::max)(),
                               "payload does not fit TDataLen");
@@ -73,7 +73,7 @@ public:
             if (FAST_LOG_UNLIKELY(result != SessionWriteResult::success)) return result;
             std::byte* const begin = state_.cursor();
             if constexpr (TIsWriteLen) write_length(begin, static_cast<TDataLen>(size));
-            Base::copy_arguments(std::index_sequence_for<Args...>{}, begin + message_prefix_size, args...);
+            Base::copy_arguments(std::index_sequence_for<TArgs...>{}, begin + message_prefix_size, args...);
             state_.commit(begin + message_prefix_size + size);
             return SessionWriteResult::success;
         }
@@ -107,13 +107,13 @@ public:
 
     // Tightly copy object representations in argument order; only trivially copyable nonpointer, nonarray values.
     // With prefixes, encode the payload length in sizeof(TDataLen) little-endian bytes; without prefixes reject empty payloads.
-    template <typename... Args>
-    [[nodiscard]] FAST_LOG_ALWAYS_INLINE bool write(const Args&... args) noexcept {
-        static_assert((std::is_trivially_copyable_v<Args> && ...),
+    template <typename... TArgs>
+    [[nodiscard]] FAST_LOG_ALWAYS_INLINE bool write(const TArgs&... args) noexcept {
+        static_assert((std::is_trivially_copyable_v<TArgs> && ...),
                       "write requires trivially-copyable arguments");
-        static_assert(((!std::is_pointer_v<Args> && !std::is_array_v<Args>) && ...),
+        static_assert(((!std::is_pointer_v<TArgs> && !std::is_array_v<TArgs>) && ...),
                       "use write_mem for pointer/array payloads");
-        constexpr std::size_t size = (std::size_t{0} + ... + sizeof(Args));
+        constexpr std::size_t size = (std::size_t{0} + ... + sizeof(TArgs));
         if constexpr (TIsWriteLen) {
             static_assert(size <= (std::numeric_limits<TDataLen>::max)(),
                           "payload does not fit TDataLen");
@@ -133,7 +133,7 @@ public:
             std::byte* const begin = this->prepare_write(size + message_prefix_size);
             if (FAST_LOG_UNLIKELY(begin == nullptr)) return false;
             if constexpr (TIsWriteLen) write_length(begin, static_cast<TDataLen>(size));
-            this->copy_arguments(std::index_sequence_for<Args...>{}, begin + message_prefix_size, args...);
+            this->copy_arguments(std::index_sequence_for<TArgs...>{}, begin + message_prefix_size, args...);
             // Preserve an actual first-byte readback; commit_write subsequently publishes data with release semantics.
             (void)*reinterpret_cast<volatile std::byte*>(begin);
             this->commit_write(begin + message_prefix_size + size);

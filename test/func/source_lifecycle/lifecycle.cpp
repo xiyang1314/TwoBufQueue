@@ -4,13 +4,13 @@
 namespace {
 using namespace ft;
 using Queue = WriterQueue;
-template<class Bytes> unsigned value(const Bytes& bytes) {
+template<class TBytes> unsigned value(const TBytes& bytes) {
     CHECK(bytes.size() == 6);
     CHECK(bytes.data()[0] == std::byte{4} && bytes.data()[1] == std::byte{0});
     unsigned n; std::memcpy(&n, bytes.data() + 2, 4); return n;
 }
 // Current becomes visible on the consumer side after acknowledging the start record.
-template<class W> void acknowledge_start(W& writer) {
+template<class TWriter> void acknowledge_start(TWriter& writer) {
     auto& queue = writer.handoff_queue();
     auto start = queue.try_claim();
     CHECK(start && !start.get()); queue.finish(start);

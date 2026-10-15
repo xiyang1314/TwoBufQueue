@@ -1,14 +1,14 @@
 #include "../support/read_test_support.hpp"
 using namespace read_test;
 
-template<bool Accept> static void completion_during_current() {
+template<bool TAccept> static void completion_during_current() {
     for (unsigned round = 0; round != 30; ++round) {
         Rig r(12,4); CHECK(r.writer.write(0u));
         auto* original = r.writer.source_block();
         Gate gate;
         r.probe.decide = [&](char phase, SpscWriteBlock* block, const std::byte*, std::size_t size) {
             CHECK(phase == 'C' && block == original && size == 6);
-            gate.pause(); return Accept;
+            gate.pause(); return TAccept;
         };
         ReadResult result;
         std::thread reader([&] { result = r.tick(); });
@@ -17,7 +17,7 @@ template<bool Accept> static void completion_during_current() {
         r.writer.finish();
         CHECK(original->state() == SpscWriteBlockState::WriteFinished && r.source.in_use_count() == 2);
         gate.release(); reader.join();
-        CHECK(original->read_pos() == (Accept ? 6u : 0u));
+        CHECK(original->read_pos() == (TAccept ? 6u : 0u));
         CHECK(result.pending && !original->is_free());
         r.probe.decide = {}; r.drain(); r.probe.verify(0,4);
         CHECK(r.service.stats().saved_data_bytes == 24);

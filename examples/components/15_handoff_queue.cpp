@@ -1,6 +1,6 @@
 // HandoffQueue in SPSC mode: the main thread produces; one built-in Reader invokes the consumer callback.
 
-#include "TwoBufQueue/src/base_components/HandoffQueue/handoff_queue.hpp"
+#include "TwoBufQueue/src/base_components/handoff_queue/handoff_queue.hpp"
 #include <atomic>
 #include <cstdint>
 #include <cstdio>
@@ -41,8 +41,8 @@ private:
 };
 
 // Retry only capacity backpressure in this example; report other acquisition errors to the caller.
-template<class Queue>
-auto acquire_until_available(Queue& queue) {
+template<class TQueue>
+auto acquire_until_available(TQueue& queue) {
     for (;;) {
         auto acquired = queue.try_acquire();
         if (acquired) return acquired;

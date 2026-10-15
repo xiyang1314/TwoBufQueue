@@ -245,8 +245,8 @@
       "language": "cpp",
       "category": "examples",
       "lines": 48,
-      "bytes": 2487,
-      "sha256": "0a7b21d03b2b484b0529fb844913d670371347922990f76e435120d5c6e45fbb",
+      "bytes": 2488,
+      "sha256": "8b7d2149f714858b2edaab7daed8641021687d5884d96abee7f4cd100888c0ec",
       "description": "Borrow and return pooled resources, and observe reuse. / 借出和归还池中资源，观察资源何时可再次使用。",
       "referenced_by": [
         "examples/README.html",
@@ -260,8 +260,8 @@
       "language": "cpp",
       "category": "examples",
       "lines": 55,
-      "bytes": 2458,
-      "sha256": "1fb62940c481ab55e7e46a9542318ff32e8466bb56553a712e632a92726e537c",
+      "bytes": 2459,
+      "sha256": "bf225a5d47e052f36b0d10991f09d7b4cd80501d957f2b888543cea6ef70128a",
       "description": "Customize resource creation and destruction. / 为内存池提供自定义资源创建和销毁方法。",
       "referenced_by": [
         "examples/README.html",
@@ -275,8 +275,8 @@
       "language": "cpp",
       "category": "examples",
       "lines": 149,
-      "bytes": 6055,
-      "sha256": "7414ba844ca871fac88027dd9ab6d15af9c0dcd8ff261a2f4597003c595b4fdd",
+      "bytes": 6059,
+      "sha256": "f6849c54d67a8c6944bd5ce9ab72bf74af9c42efff580bf3ad3aaaab142aaef2",
       "description": "Read an active resource range and return it after processing. / 读取尚在生产中的资源范围，并在处理完后归还。",
       "referenced_by": [
         "examples/README.html",
@@ -290,8 +290,8 @@
       "language": "cpp",
       "category": "examples",
       "lines": 155,
-      "bytes": 6891,
-      "sha256": "9ac5ca35f471fc5ef6856288494e2aac82407aac8b8530d498356f65bc1c86d2",
+      "bytes": 6895,
+      "sha256": "650902256c9e34c95e9e724389a357116eaaec60ee2e79b2714d86d8faffcfd1",
       "description": "Claim the head; cancel to retain work that cannot yet be processed. / 领取队首资源；暂时不能处理时取消领取并保留记录。",
       "referenced_by": [
         "examples/README.html",
@@ -305,8 +305,8 @@
       "language": "cpp",
       "category": "examples",
       "lines": 96,
-      "bytes": 4063,
-      "sha256": "027f78901df5c34f181fbaf002d3fdf417c598c48d951ea0d4d833e06acdba60",
+      "bytes": 4066,
+      "sha256": "2565ed937cb80ecc006d884d1597d09b5f1480d40f1dd4cd4ef93f7842ae59c0",
       "description": "Built-in consumers process handoffs and retry rejected work. / 使用内置消费线程处理交接资源，拒绝时等待重试。",
       "referenced_by": [
         "examples/README.html",
@@ -320,8 +320,8 @@
       "language": "cpp",
       "category": "examples",
       "lines": 87,
-      "bytes": 3538,
-      "sha256": "9a094938257053c7459442ec45a4cffa45aec393cad3729529a3aae6b258d8f3",
+      "bytes": 3541,
+      "sha256": "e2e1a5e117546ac985ec8a3777864a4b4048c4516af05789f6927671c394aa53",
       "description": "Concurrent producers and consumers share a handoff queue. / 多个生产者和消费者共享交接队列，校验并发处理结果。",
       "referenced_by": [
         "examples/README.html",
@@ -335,8 +335,8 @@
       "language": "cpp",
       "category": "examples",
       "lines": 54,
-      "bytes": 1887,
-      "sha256": "d69c038e581e952c16786e08c4fd1ff1a0de51a329e16c03463d52ea640c5332",
+      "bytes": 1891,
+      "sha256": "f42a0beeba019fdc6bfc4e7b4a819574f429b9d9c799c7dce198917de850ac8e",
       "description": "Shared example checks, parsing and helpers. / 示例共用的检查、解析与辅助函数。",
       "referenced_by": [
         "examples/README.html",
@@ -464,8 +464,8 @@
       "language": "cpp",
       "category": "examples",
       "lines": 111,
-      "bytes": 9349,
-      "sha256": "728fda0edc9e9defabee018df689e5c331928b2d2668bfe0692baf2f6cc7e65a",
+      "bytes": 9345,
+      "sha256": "5daa424608fcf8a9225384b8689576e58eed43c0c9bb6ac2d9427a80f65aa2e2",
       "description": "All Writer, pool, reader and consumer settings. / 逐项展示 Writer、两层内存池、读取与消费线程的全部参数。",
       "referenced_by": [
         "README_DETAIL.html",
@@ -497,43 +497,43 @@
       "html_path_zh_cn": "docs/code/examples/two_buf_queue/09_async_logger.cpp.zh-CN.html"
     },
     {
-      "source_path": "src/base_components/HandoffQueue/handoff_queue.hpp",
-      "html_path": "docs/code/src/base_components/HandoffQueue/handoff_queue.hpp.html",
+      "source_path": "src/base_components/handoff_queue/handoff_queue.hpp",
+      "html_path": "docs/code/src/base_components/handoff_queue/handoff_queue.hpp.html",
       "language": "cpp",
       "category": "components",
       "lines": 102,
-      "bytes": 5842,
-      "sha256": "501102217ae5c1ad04791df84c10f4e6a66da3cce01efb721c39e1f4591d2585",
+      "bytes": 5867,
+      "sha256": "552cb8d92d750dca53283a27041dd88025ce5b99ed6a7b32f1ea72ba3c1df903",
       "description": "Resource handoff with multiple concurrency modes and consumer workers. / 资源交接队列实现，包含多种并发模式和消费工作线程。",
       "referenced_by": [
         "examples/README.html",
         "examples/README.zh-CN.html"
       ],
-      "html_path_zh_cn": "docs/code/src/base_components/HandoffQueue/handoff_queue.hpp.zh-CN.html"
+      "html_path_zh_cn": "docs/code/src/base_components/handoff_queue/handoff_queue.hpp.zh-CN.html"
     },
     {
-      "source_path": "src/base_components/LiveHandoffQueue/spsc_live_handoff_queue.hpp",
-      "html_path": "docs/code/src/base_components/LiveHandoffQueue/spsc_live_handoff_queue.hpp.html",
+      "source_path": "src/base_components/live_handoff_queue/spsc_live_handoff_queue.hpp",
+      "html_path": "docs/code/src/base_components/live_handoff_queue/spsc_live_handoff_queue.hpp.html",
       "language": "cpp",
       "category": "components",
       "lines": 353,
-      "bytes": 17018,
-      "sha256": "ba58eb4987946064c426b1e7a386c5de8f8c85609ddb3cf4cd4d2d089c61fadd",
+      "bytes": 17025,
+      "sha256": "76ccda92631c94e1c22366d969fb0069d7e729eac5120eee5e0fe5db00b32a91",
       "description": "SPSC resource handoff with access to data still being produced. / 单生产者与单消费者之间交接资源，并支持读取正在生产的内容。",
       "referenced_by": [
         "examples/README.html",
         "examples/README.zh-CN.html"
       ],
-      "html_path_zh_cn": "docs/code/src/base_components/LiveHandoffQueue/spsc_live_handoff_queue.hpp.zh-CN.html"
+      "html_path_zh_cn": "docs/code/src/base_components/live_handoff_queue/spsc_live_handoff_queue.hpp.zh-CN.html"
     },
     {
-      "source_path": "src/base_components/WarmPool/warm_pool.hpp",
-      "html_path": "docs/code/src/base_components/WarmPool/warm_pool.hpp.html",
+      "source_path": "src/base_components/warm_pool/warm_pool.hpp",
+      "html_path": "docs/code/src/base_components/warm_pool/warm_pool.hpp.html",
       "language": "cpp",
       "category": "components",
       "lines": 375,
-      "bytes": 16739,
-      "sha256": "3ccdd2a047d2dba90a31aace9082296699488b7b3b40b1abf1d6de1f43e949de",
+      "bytes": 16808,
+      "sha256": "8ba551b261acc5bd5dc653a4928311e1445e21c191572cb10d8eb5be2e2e3933",
       "description": "Resource creation, borrowing, return and capacity control. / 资源池实现：创建、借出、归还和容量控制。",
       "referenced_by": [
         "README_DETAIL.html",
@@ -541,7 +541,7 @@
         "examples/README.html",
         "examples/README.zh-CN.html"
       ],
-      "html_path_zh_cn": "docs/code/src/base_components/WarmPool/warm_pool.hpp.zh-CN.html"
+      "html_path_zh_cn": "docs/code/src/base_components/warm_pool/warm_pool.hpp.zh-CN.html"
     },
     {
       "source_path": "test/integration/CMakeLists.txt",

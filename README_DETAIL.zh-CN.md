@@ -15,7 +15,7 @@
 - [二、问题与解决](#二问题与解决)
   - [2.1 没有背压，为什么业务线程偶尔还变慢好几倍呢？](#21-没有背压为什么业务线程偶尔还变慢好几倍呢)
   - [2.2 批量发布与交接相比每条交接，性能提高得多吗？](#22-批量发布与交接相比每条交接性能提高得多吗)
-  - [2.3 消息缓存满了，生产者必须等吗？](#23-消息缓存满了生产者必须等吗)
+  - [2.3 消息缓存满了，生产者必须一直等吗？](#23-消息缓存满了生产者必须一直等吗)
   - [2.4 消息缓存太小会背压，太大又浪费，怎么办？](#24-消息缓存太小会背压太大又浪费怎么办)
   - [2.5 对于大消息，怎么发送才能达到更好的效果？](#25-对于大消息怎么发送才能达到更好的效果)
   - [2.6 优先使用刚归还的空闲缓存有意义吗？](#26-优先使用刚归还的空闲缓存有意义吗)
@@ -102,7 +102,7 @@ TwoBufQueue 让生产者反复使用较小的消息池，把较大的积压空�
 
 具体见 [Session 报告](https://xiyang1314.github.io/TwoBufQueue/docs/reports/comparison/performance_256m_zero_session_plateau.zh-CN.html)、[普通批量发布报告](https://xiyang1314.github.io/TwoBufQueue/docs/reports/comparison/performance_256m_zero_publish_max_plateau.zh-CN.html)、[每条发布报告](https://xiyang1314.github.io/TwoBufQueue/docs/reports/comparison/performance_256m_zero_publish1_plateau.zh-CN.html)。各方式采用各自调优后的参数，数字对应完整实测配置。
 
-### 2.3 消息缓存满了，生产者必须等吗？
+### 2.3 消息缓存满了，生产者必须一直等吗？
 
 消费者暂时变慢时，只要缓存还有空间，常规单层队列也能继续接收消息。真正需要处理的是缓存达到容量上限之后：生产者可能等待，或按策略放弃本次写入。
 
@@ -138,7 +138,7 @@ TwoBufQueue 可以设置一个较宽松的内存上限，内存池根据实际�
 
 如果优先使用刚归还的空闲块，在后台能够及时归还的情况下，生产者就可以集中复用较少的块，减少反复写入的内存范围，对业务热缓存的干扰也更小。TwoBufQueue 采用的就是这种策略。
 
-[缓存池设计与实现](https://xiyang1314.github.io/TwoBufQueue/docs/code/src/base_components/WarmPool/warm_pool.hpp.zh-CN.html)。
+[缓存池设计与实现](https://xiyang1314.github.io/TwoBufQueue/docs/code/src/base_components/warm_pool/warm_pool.hpp.zh-CN.html)。
 
 ## 三、与常规单层缓存队列对比
 

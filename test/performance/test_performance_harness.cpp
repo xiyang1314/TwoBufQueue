@@ -7,7 +7,7 @@ namespace perf = TwoBufQueue::performance;
 static void require(bool condition, const char* text) {
     if (!condition) throw std::runtime_error(text);
 }
-template<class F> static void invalid(F function) {
+template<class TFunction> static void invalid(TFunction function) {
     bool rejected = false;
     try { function(); } catch (const std::invalid_argument&) { rejected = true; }
     require(rejected,"invalid configuration was accepted");
@@ -138,24 +138,24 @@ static void check_complete_copy(perf::PerformanceConfig config, TFactory make_ch
 }
 template<std::size_t TBytes> static void check_copy_adapters(perf::PerformanceConfig config) {
     using Value=perf::Payload<TBytes>;
-    check_complete_copy<TBytes>(config,[]<class Sink>(const auto& cfg,Sink& sink) {
-        return std::make_unique<perf::TwoBufChannel<1,Sink,TBytes>>(cfg,sink);
+    check_complete_copy<TBytes>(config,[]<class TSink>(const auto& cfg,TSink& sink) {
+        return std::make_unique<perf::TwoBufChannel<1,TSink,TBytes>>(cfg,sink);
     });
-    check_complete_copy<TBytes>(config,[]<class Sink>(const auto& cfg,Sink& sink) {
-        return std::make_unique<perf::SpscChannel<Sink,perf::ReaderWriterAdapter<Value>>>(cfg,sink);
+    check_complete_copy<TBytes>(config,[]<class TSink>(const auto& cfg,TSink& sink) {
+        return std::make_unique<perf::SpscChannel<TSink,perf::ReaderWriterAdapter<Value>>>(cfg,sink);
     });
-    check_complete_copy<TBytes>(config,[]<class Sink>(const auto& cfg,Sink& sink) {
-        return std::make_unique<perf::SpscChannel<Sink,perf::ReaderWriterAdapter<Value,true>>>(cfg,sink);
+    check_complete_copy<TBytes>(config,[]<class TSink>(const auto& cfg,TSink& sink) {
+        return std::make_unique<perf::SpscChannel<TSink,perf::ReaderWriterAdapter<Value,true>>>(cfg,sink);
     });
-    check_complete_copy<TBytes>(config,[]<class Sink>(const auto& cfg,Sink& sink) {
-        return std::make_unique<perf::SpscChannel<Sink,perf::RigtorpAdapter<Value>>>(cfg,sink);
+    check_complete_copy<TBytes>(config,[]<class TSink>(const auto& cfg,TSink& sink) {
+        return std::make_unique<perf::SpscChannel<TSink,perf::RigtorpAdapter<Value>>>(cfg,sink);
     });
     // Both placement-construction paths must preserve every payload byte and FIFO.
-    check_complete_copy<TBytes>(config,[]<class Sink>(const auto& cfg,Sink& sink) {
-        return std::make_unique<perf::SpscChannel<Sink,perf::RigtorpAdapter<Value,false>>>(cfg,sink);
+    check_complete_copy<TBytes>(config,[]<class TSink>(const auto& cfg,TSink& sink) {
+        return std::make_unique<perf::SpscChannel<TSink,perf::RigtorpAdapter<Value,false>>>(cfg,sink);
     });
-    check_complete_copy<TBytes>(config,[]<class Sink>(const auto& cfg,Sink& sink) {
-        return std::make_unique<perf::SpscChannel<Sink,perf::AtomicAdapter<Value>>>(cfg,sink);
+    check_complete_copy<TBytes>(config,[]<class TSink>(const auto& cfg,TSink& sink) {
+        return std::make_unique<perf::SpscChannel<TSink,perf::AtomicAdapter<Value>>>(cfg,sink);
     });
 }
 int main() {

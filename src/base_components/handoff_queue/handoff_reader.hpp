@@ -14,12 +14,12 @@ namespace TwoBufQueue {
 
 // Independent consumer: Queue supplies Resource, try_claim/finish/cancel_claim/has_ready.
 // Does not depend on concrete HandoffQueue, WarmPool or ClaimQueue types.
-template<class Queue, class Callback>
+template<class TQueue, class TCallback>
 class HandoffReader {
-    static_assert(std::is_nothrow_invocable_r_v<bool, Callback&, typename Queue::Resource&>,
+    static_assert(std::is_nothrow_invocable_r_v<bool, TCallback&, typename TQueue::Resource&>,
                   "callback must return bool and be noexcept");
 public:
-    HandoffReader(Queue& queue, HandoffOptions options, Callback callback)
+    HandoffReader(TQueue& queue, HandoffOptions options, TCallback callback)
         : queue_(queue), options_(validate_handoff_options(options)), callback_(std::move(callback)) {
         if (options_.mode != HandoffMode::Sync) {
             workers_ = new Worker[options_.reader_count];
@@ -153,9 +153,9 @@ private:
             sleepers_.fetch_and(~bit, std::memory_order_acq_rel);
         }
     }
-    Queue& queue_;
+    TQueue& queue_;
     const HandoffOptions options_;
-    Callback callback_;
+    TCallback callback_;
     Worker* workers_ = nullptr;
     std::atomic<std::uint64_t> sleepers_{0};
     std::atomic<bool> stopping_{false}, running_{false};
@@ -163,7 +163,7 @@ private:
     std::atomic<bool> processing_{false};
 };
 
-template<class Queue, class Callback>
-HandoffReader(Queue&, HandoffOptions, Callback) -> HandoffReader<Queue, Callback>;
+template<class TQueue, class TCallback>
+HandoffReader(TQueue&, HandoffOptions, TCallback) -> HandoffReader<TQueue, TCallback>;
 
 } // namespace TwoBufQueue

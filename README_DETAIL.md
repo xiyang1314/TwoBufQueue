@@ -15,7 +15,7 @@ Its two-layer buffer design prioritizes producer hot-path performance. Batch pub
 - [2. Problems and solutions](#2-problems-and-solutions)
   - [2.1 Why can business execution slow down several times even without backpressure?](#21-why-can-business-execution-slow-down-several-times-even-without-backpressure)
   - [2.2 How much faster is batch publication and handoff than per-record handoff?](#22-how-much-faster-is-batch-publication-and-handoff-than-per-record-handoff)
-  - [2.3 When message buffers are full, must the producer wait?](#23-when-message-buffers-are-full-must-the-producer-wait)
+  - [2.3 When message buffers are full, must the producer keep waiting?](#23-when-message-buffers-are-full-must-the-producer-keep-waiting)
   - [2.4 Small buffers cause backpressure; large buffers waste memory. What should you do?](#24-small-buffers-cause-backpressure-large-buffers-waste-memory-what-should-you-do)
   - [2.5 How can large messages be sent more efficiently?](#25-how-can-large-messages-be-sent-more-efficiently)
   - [2.6 Does reusing the most recently returned free block matter?](#26-does-reusing-the-most-recently-returned-free-block-matter)
@@ -100,7 +100,7 @@ For 8 B messages on this host, **Session loops reach about 2,306.5 million messa
 
 See [Session](https://xiyang1314.github.io/TwoBufQueue/docs/reports/comparison/performance_256m_zero_session_plateau.html), [ordinary-write batch publication](https://xiyang1314.github.io/TwoBufQueue/docs/reports/comparison/performance_256m_zero_publish_max_plateau.html), and [per-record publication](https://xiyang1314.github.io/TwoBufQueue/docs/reports/comparison/performance_256m_zero_publish1_plateau.html). Each mode uses its tuned configuration; these numbers compare the complete measured configurations.
 
-### 2.3 When message buffers are full, must the producer wait?
+### 2.3 When message buffers are full, must the producer keep waiting?
 
 A brief consumer slowdown does not force a typical single-layer queue to stop accepting messages while space remains. The question arises once its capacity limit is reached: the producer may wait or reject the write according to its policy.
 
@@ -136,7 +136,7 @@ Suppose the producer pool has a **10 MiB** limit and many blocks have already be
 
 Taking the most recently returned block first lets production concentrate on fewer blocks when the background stage returns them promptly. This reduces the repeatedly written memory range and can reduce business-cache interference. TwoBufQueue uses this strategy.
 
-[Pool design and implementation](https://xiyang1314.github.io/TwoBufQueue/docs/code/src/base_components/WarmPool/warm_pool.hpp.html).
+[Pool design and implementation](https://xiyang1314.github.io/TwoBufQueue/docs/code/src/base_components/warm_pool/warm_pool.hpp.html).
 
 ## 3. Comparison with typical single-layer queues
 

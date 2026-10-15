@@ -6,8 +6,8 @@ using namespace TwoBufQueue;
 using namespace std::chrono_literals;
 
 int main() try {
-    // 1. Writer<publish_write_ptr_count, TIsWriteLen, TDataLen>
-    // publish_write_ptr_count = 4: publish after every four successful writes; 1 publishes each record. Must be positive.
+    // 1. Writer<TPublishWritePtrCount, TIsWriteLen, TDataLen>
+    // TPublishWritePtrCount = 4: publish after every four successful writes; 1 publishes each record. Must be positive.
     // flush() publishes a partial group; finish() and block switches also publish remaining data.
     // The uint32_t maximum publishes only on flush / block switch / finish; write does not decrement a publication counter.
     // Combine with is_scan_current = false below to reduce producer hot-path overhead.

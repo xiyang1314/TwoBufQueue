@@ -6,9 +6,9 @@ enum class WriterBlockState : std::uint8_t { Free, Writing, WriteFinished, Leave
 
 // Write/publish complete data before registering the published increment. Template arguments control slice allocation/release, not message writing.
 // write_ptr_ still requires one publisher or external synchronization; false/false requires all accesses in one execution stream.
-template<bool is_n_alloc = false, bool is_n_use = true>
-struct alignas(64) WriterBlock : public BasicBlock<is_n_alloc, is_n_use> {
-    using Base = BasicBlock<is_n_alloc, is_n_use>;
+template<bool TIsNAlloc = false, bool TIsNUse = true>
+struct alignas(64) WriterBlock : public BasicBlock<TIsNAlloc, TIsNUse> {
+    using Base = BasicBlock<TIsNAlloc, TIsNUse>;
     using typename Base::Config;
     using typename Base::Slice;
     using State = WriterBlockState;

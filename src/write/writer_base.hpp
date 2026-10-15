@@ -63,13 +63,13 @@ class WriterForTest;
 // Publication count is part of the type, not a constructor argument; one object never mixes the two policies.
 // The uint32_t maximum advances only a local cursor during writes; publish on flush, block switch and finish only.
 // Handoff-only publication caches remaining capacity; per-record/batched publication retains pointer-difference checks.
-template <std::uint32_t publish_write_ptr_count = 1>
+template <std::uint32_t TPublishWritePtrCount = 1>
 class WriterBase {
-    static_assert(publish_write_ptr_count > 0,
+    static_assert(TPublishWritePtrCount > 0,
                   "Writer publish_write_ptr_count must be positive");
 public:
     static constexpr bool session_enabled =
-        publish_write_ptr_count == (std::numeric_limits<std::uint32_t>::max)();
+        TPublishWritePtrCount == (std::numeric_limits<std::uint32_t>::max)();
 
     // Shared base prefix size; Writer overrides it with sizeof(TDataLen) when TIsWriteLen = true.
     static constexpr std::size_t message_prefix_size = 0;
@@ -178,7 +178,7 @@ public:
     void flush() noexcept {
         check_no_session();
         if (source_block_ == nullptr) return;
-        if constexpr (publish_write_ptr_count == 1) {
+        if constexpr (TPublishWritePtrCount == 1) {
             flush_immediate();
         } else {
             flush_batched();
@@ -335,7 +335,7 @@ protected:
                 if (!switch_block_for_record(size)) return nullptr;
             }
             std::byte* begin;
-            if constexpr (publish_write_ptr_count == 1) {
+            if constexpr (TPublishWritePtrCount == 1) {
                 begin = source_block_->write_ptr_.load(std::memory_order_relaxed);
             } else {
                 begin = local_write_ptr_;
@@ -350,50 +350,50 @@ protected:
 
     // Publish only after all copying finishes so readers never observe a partial write.
     FAST_LOG_ALWAYS_INLINE void commit_write(std::byte* end) noexcept {
-        if constexpr (publish_write_ptr_count == 1) {
+        if constexpr (TPublishWritePtrCount == 1) {
             source_block_->write_ptr_.store(end, std::memory_order_release);
         } else {
             local_write_ptr_ = end;
-            if constexpr (publish_write_ptr_count != (std::numeric_limits<std::uint32_t>::max)()) {
+            if constexpr (TPublishWritePtrCount != (std::numeric_limits<std::uint32_t>::max)()) {
                 if (FAST_LOG_UNLIKELY(--publish_countdown_ == 0)) {
                     source_block_->write_ptr_.store(end, std::memory_order_release);
-                    publish_countdown_ = publish_write_ptr_count;
+                    publish_countdown_ = TPublishWritePtrCount;
                 }
             }
         }
     }
 
-    template <std::size_t... indices, typename... Args>
+    template <std::size_t... TIndices, typename... TArgs>
     static FAST_LOG_ALWAYS_INLINE void copy_arguments(
-        std::index_sequence<indices...>, [[maybe_unused]] std::byte* begin, const Args&... args) noexcept {
-        [[maybe_unused]] constexpr auto offsets = argument_offsets<Args...>();
-        ((void)std::memcpy(begin + offsets[indices], std::addressof(args), sizeof(Args)), ...);
+        std::index_sequence<TIndices...>, [[maybe_unused]] std::byte* begin, const TArgs&... args) noexcept {
+        [[maybe_unused]] constexpr auto offsets = argument_offsets<TArgs...>();
+        ((void)std::memcpy(begin + offsets[TIndices], std::addressof(args), sizeof(TArgs)), ...);
     }
 
     // Borrow one value's object representation directly; pack multiple values as tightly as buffered writes.
     // The temporary byte array is valid only during this callback and contains no length or seq prefixes.
-    template<class Callback, typename... Args>
-    static FAST_LOG_ALWAYS_INLINE void with_argument_bytes(Callback&& callback, const Args&... args) noexcept {
-        if constexpr (sizeof...(Args) == 1) {
-            (callback(reinterpret_cast<const std::byte*>(std::addressof(args)), sizeof(Args)), ...);
-        } else if constexpr (sizeof...(Args) == 0) {
+    template<class TCallback, typename... TArgs>
+    static FAST_LOG_ALWAYS_INLINE void with_argument_bytes(TCallback&& callback, const TArgs&... args) noexcept {
+        if constexpr (sizeof...(TArgs) == 1) {
+            (callback(reinterpret_cast<const std::byte*>(std::addressof(args)), sizeof(TArgs)), ...);
+        } else if constexpr (sizeof...(TArgs) == 0) {
             // Keep a valid, initialized address for an empty synchronous payload.
             const std::byte empty{};
             callback(std::addressof(empty), std::size_t{0});
         } else {
-            constexpr std::size_t size = (std::size_t{0} + ... + sizeof(Args));
+            constexpr std::size_t size = (std::size_t{0} + ... + sizeof(TArgs));
             std::array<std::byte, size> payload;
-            copy_arguments(std::index_sequence_for<Args...>{}, payload.data(), args...);
+            copy_arguments(std::index_sequence_for<TArgs...>{}, payload.data(), args...);
             callback(payload.data(), size);
         }
     }
 
-    template <typename... Args>
-    static consteval std::array<std::size_t, sizeof...(Args)> argument_offsets() noexcept {
-        std::array<std::size_t, sizeof...(Args)> result{};
+    template <typename... TArgs>
+    static consteval std::array<std::size_t, sizeof...(TArgs)> argument_offsets() noexcept {
+        std::array<std::size_t, sizeof...(TArgs)> result{};
         std::size_t offset = 0;
         std::size_t index = 0;
-        ((result[index++] = offset, offset += sizeof(Args)), ...);
+        ((result[index++] = offset, offset += sizeof(TArgs)), ...);
         return result;
     }
 
@@ -428,7 +428,7 @@ private:
     void flush_batched() noexcept {
         if (source_block_ == nullptr) return;
         source_block_->write_ptr_.store(local_write_ptr_, std::memory_order_release);
-        publish_countdown_ = publish_write_ptr_count;
+        publish_countdown_ = TPublishWritePtrCount;
     }
 
 #pragma endregion
@@ -485,9 +485,9 @@ private:
         buf_size_ = range->capacity();
         if constexpr (session_enabled)
             write_capacity_.remaining = buf_size_;
-        if constexpr (publish_write_ptr_count != 1) {
+        if constexpr (TPublishWritePtrCount != 1) {
             local_write_ptr_ = buf_;
-            publish_countdown_ = publish_write_ptr_count;
+            publish_countdown_ = TPublishWritePtrCount;
         }
 
         // Prepare all new-block fields before release-publishing the range pointer to the saving side.
@@ -534,7 +534,7 @@ private:
     // Current block capacity in bytes; the cold path rejects records larger than an entire block.
     std::uint64_t buf_size_ = 0;
     // Decrement only on successful writes; reset after publication, flush and block switches.
-    std::uint32_t publish_countdown_ = publish_write_ptr_count;
+    std::uint32_t publish_countdown_ = TPublishWritePtrCount;
 
     // Producer-private current SpscWriteBlock pointer; not responsible for cross-thread publication.
     SpscWriteBlock* source_block_ = nullptr;
@@ -545,8 +545,8 @@ private:
 };
 
 // Template cold-function definitions must be visible to each instantiation; keep noinline/cold attributes.
-template <std::uint32_t publish_write_ptr_count>
-bool WriterBase<publish_write_ptr_count>::switch_block_for_record(std::uint64_t record_size) noexcept {
+template <std::uint32_t TPublishWritePtrCount>
+bool WriterBase<TPublishWritePtrCount>::switch_block_for_record(std::uint64_t record_size) noexcept {
     if (finished_ || record_size > buf_size_) [[unlikely]] return false;
     flush();
     SpscWriteBlock* const finished = source_block_;

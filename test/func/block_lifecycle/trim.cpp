@@ -9,11 +9,11 @@
 #include <string_view>
 using namespace TwoBufQueue;
 #define CHECK(x) do { if (!(x)) { std::cerr << #x << ':' << __LINE__ << '\n'; std::abort(); } } while (false)
-template<class B> void limits() {
+template<class TBlock> void limits() {
     for (std::size_t minimum : {0u, 2u}) for (std::size_t cache : {0u, 1u, 4u}) {
-        auto pool = make_block_pool<TestBlockPool<B>>(64, minimum, 4, {}, cache);
+        auto pool = make_block_pool<TestBlockPool<TBlock>>(64, minimum, 4, {}, cache);
         for (int round = 0; round != 10; ++round) {
-            std::array<B*,4> blocks;
+            std::array<TBlock*,4> blocks;
             for (auto& block : blocks) { block = pool.get().get(); CHECK(block); }
             CHECK(!pool.get().get());
             for (auto* block : blocks) block->to_alloc_finished();

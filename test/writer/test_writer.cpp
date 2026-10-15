@@ -17,12 +17,12 @@ static void drain(WriterFixture& mgr, std::vector<std::byte>& output) {
         queue.finish(claim);
     }
 }
-template<class T> static void append(std::vector<std::byte>& bytes, const T& value) {
+template<class TValue> static void append(std::vector<std::byte>& bytes, const TValue& value) {
     auto* data = reinterpret_cast<const std::byte*>(&value);
     bytes.insert(bytes.end(), data, data + sizeof(value));
 }
 
-template<unsigned Count> static void mixed_payloads() {
+template<unsigned TCount> static void mixed_payloads() {
     WriterFixture mgr(64, 2, 2);
     std::vector<std::byte> expected, actual;
     const std::uint8_t a = 7;
@@ -30,12 +30,12 @@ template<unsigned Count> static void mixed_payloads() {
     const std::int16_t c = -123;
     const unsigned char raw[] = {0, 255, 42};
     {
-        Writer<Count> writer(&mgr.queue, 0, mgr.backpressure);
+        Writer<TCount> writer(&mgr.queue, 0, mgr.backpressure);
         auto* begin = writer.published_write_ptr();
         assert(writer.write(a, b, c));
         append(expected, std::uint16_t{11});
         append(expected, a); append(expected, b); append(expected, c);
-        if constexpr (Count == 1) assert(writer.published_write_ptr() == begin + expected.size());
+        if constexpr (TCount == 1) assert(writer.published_write_ptr() == begin + expected.size());
         else assert(writer.published_write_ptr() == begin);
         assert(!writer.write_mem(nullptr, 1));
         const volatile std::uint16_t oversized_length = (std::numeric_limits<std::uint16_t>::max)();
@@ -46,8 +46,8 @@ template<unsigned Count> static void mixed_payloads() {
         append(expected, std::uint16_t{3});
         for (auto value : raw) expected.push_back(static_cast<std::byte>(value));
         // Empty messages contain a prefix and count toward publication; failed calls do not.
-        if constexpr (Count == 2) assert(writer.published_write_ptr() == begin + expected.size());
-        if constexpr (Count == 3) assert(writer.published_write_ptr() == begin + 17);
+        if constexpr (TCount == 2) assert(writer.published_write_ptr() == begin + expected.size());
+        if constexpr (TCount == 3) assert(writer.published_write_ptr() == begin + 17);
         writer.flush();
         assert(writer.published_write_ptr() == begin + expected.size());
         assert(std::memcmp(begin, expected.data(), expected.size()) == 0);
@@ -60,13 +60,13 @@ template<unsigned Count> static void mixed_payloads() {
     assert(mgr.all_released());
 }
 
-template<unsigned Count> static void rollover() {
+template<unsigned TCount> static void rollover() {
     WriterFixture mgr(64, 2, 2);
     std::vector<std::byte> actual;
     unsigned char raw[60]{};
     raw[59] = 77;
     {
-        Writer<Count> writer(&mgr.queue, 0, mgr.backpressure);
+        Writer<TCount> writer(&mgr.queue, 0, mgr.backpressure);
         assert(writer.write_mem(raw, sizeof(raw)));
         assert(writer.write(std::uint64_t{123}));
     }
@@ -78,12 +78,12 @@ template<unsigned Count> static void rollover() {
     assert(tail == 123);
 }
 
-template<unsigned Count> static void backpressure_retry() {
+template<unsigned TCount> static void backpressure_retry() {
     WriterFixture mgr(64, 1, 1);
     std::vector<std::byte> actual;
     unsigned char raw[62]{};
     {
-        Writer<Count> writer(&mgr.queue, 0, mgr.backpressure);
+        Writer<TCount> writer(&mgr.queue, 0, mgr.backpressure);
         assert(writer.write_mem(raw, sizeof(raw)));
         assert(!writer.write(std::uint32_t{9}));
         assert(writer.source_block() == nullptr);

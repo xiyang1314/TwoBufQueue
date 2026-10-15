@@ -12,8 +12,8 @@
 #include "TwoBufQueue/src/read/layer2/read_callbacks.hpp"
 #include "TwoBufQueue/src/write/writer.hpp"
 #include "TwoBufQueue/src/write/seq_writer.hpp"
-#include "TwoBufQueue/src/base_components/HandoffQueue/handoff_queue.hpp"
+#include "TwoBufQueue/src/base_components/handoff_queue/handoff_queue.hpp"
 
-#include "TwoBufQueue/src/base_components/LiveHandoffQueue/spsc_live_handoff_queue.hpp"
+#include "TwoBufQueue/src/base_components/live_handoff_queue/spsc_live_handoff_queue.hpp"
 
 #include "TwoBufQueue/src/two_buf_queue.hpp"

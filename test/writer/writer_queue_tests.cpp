@@ -5,7 +5,7 @@
 
 using namespace TwoBufQueue;
 
-template<class F> void invalid(F&& action) {
+template<class TFunction> void invalid(TFunction&& action) {
     bool caught = false;
     try { action(); } catch (const std::invalid_argument&) { caught = true; }
     assert(caught);

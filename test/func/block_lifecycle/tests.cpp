@@ -4,7 +4,7 @@
 #include "TwoBufQueue/src/base_components/block_slice/writer_block.hpp"
 #include "../../support/block_test_support.hpp"
 #include <array>
-#include "TwoBufQueue/src/base_components/WarmPool/intrusive_queue.hpp"
+#include "TwoBufQueue/src/base_components/warm_pool/intrusive_queue.hpp"
 #include <barrier>
 #include <condition_variable>
 #include <cstring>
@@ -35,13 +35,13 @@ struct SourceForTest : WriterBlock<> {
     }
 };
 
-template<class B> void finish(B* b) { finish_block(b); }
-template<class S> void write_id(S& s, std::uint64_t id) {
+template<class TBlock> void finish(TBlock* b) { finish_block(b); }
+template<class TSlice> void write_id(TSlice& s, std::uint64_t id) {
     CHECK(s.size() >= 16);
     const std::array<std::uint64_t, 2> values{id, ~id};
     std::memcpy(s.data(), values.data(), 16);
 }
-template<class S> std::uint64_t check_id(const S& s) {
+template<class TSlice> std::uint64_t check_id(const TSlice& s) {
     CHECK(s.size() >= 16);
     std::array<std::uint64_t, 2> values;
     std::memcpy(values.data(), s.data(), 16);
@@ -49,8 +49,8 @@ template<class S> std::uint64_t check_id(const S& s) {
     return values[0];
 }
 
-template<class B> void states() {
-    auto pool = make_block_pool<TestBlockPool<B, false>>(64, 1, 1);
+template<class TBlock> void states() {
+    auto pool = make_block_pool<TestBlockPool<TBlock, false>>(64, 1, 1);
     auto* b = pool.get().get();
     CHECK(!b->is_alloc_finish() && b->is_all_released() && !b->is_free());
     CHECK(pool.free_resource_count() == 0 && pool.get().get() == nullptr);
@@ -143,14 +143,14 @@ void scan_skip_head() {
     CHECK(pool.in_use_count() == 0);
 }
 
-template<class B> struct PointerBlock : B {
-    using B::B;
+template<class TBlock> struct PointerBlock : TBlock {
+    using TBlock::TBlock;
     std::byte* buffer() const { return this->buf_; }
     std::byte* end() const { return this->buf_ ? this->buf_ + this->allocated_size() : nullptr; }
 };
 
-template<class Base> void pointer_cursor() {
-    using Block = PointerBlock<Base>;
+template<class TBase> void pointer_cursor() {
+    using Block = PointerBlock<TBase>;
     Block uninitialized(BlockConfig{});
     CHECK(uninitialized.allocated_size() == 0 && uninitialized.end() == nullptr);
     auto pool = make_block_pool<TestBlockPool<Block, false>>(128, 1, 1, {.max_slices_per_block = 3});
@@ -288,8 +288,8 @@ void scan_before_create() {
     CHECK(pool.preallocate(4) && pool.resource_count() == 4);
 }
 
-template<class B> void boundaries() {
-    auto pool = make_block_pool<TestBlockPool<B, false>>(128, 1, 1, {.max_slices_per_block = 3});
+template<class TBlock> void boundaries() {
+    auto pool = make_block_pool<TestBlockPool<TBlock, false>>(128, 1, 1, {.max_slices_per_block = 3});
     auto* b = pool.get().get();
     auto a = b->allocate(1);
     auto c = b->allocate(7, 64);
@@ -455,8 +455,8 @@ void wait_multiple() {
     CHECK(pool.all_released());
 }
 
-template<class Pool> void slice_pool() {
-    Pool pool(16, 1, 1);
+template<class TPool> void slice_pool() {
+    TPool pool(16, 1, 1);
     for (unsigned i = 0; i < 1000; ++i) {
         auto s = pool.allocate(16);
         CHECK(s);

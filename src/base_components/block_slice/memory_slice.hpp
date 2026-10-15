@@ -7,16 +7,16 @@
 #include <source_location>
 #include <utility>
 #include <mutex>
-#include "TwoBufQueue/src/base_components/WarmPool/resource.hpp"
+#include "TwoBufQueue/src/base_components/warm_pool/resource.hpp"
 
 namespace TwoBufQueue {
 
-template<class Block, bool is_n_alloc, bool is_n_use> class BasicBlockSlicesAllocator;
+template<class TBlock, bool TIsNAlloc, bool TIsNUse> class BasicBlockSlicesAllocator;
 
 // Independently releasable slice ownership handle, returned by value and move-only.
 // Stores a pool-node ticket and loan generation; stale slice releases can still be rejected after Block destruction.
 // Only concurrent Block policies permit different handles on different threads; one handle itself is not thread-safe.
-template<class Block>
+template<class TBlock>
 class BasicMemorySlice {
 public:
     BasicMemorySlice() noexcept = default;
@@ -36,10 +36,10 @@ public:
     void release(std::source_location location = std::source_location::current()) noexcept;
 
 private:
-    template<class B, bool, bool> friend class BasicBlockSlicesAllocator;
-    BasicMemorySlice(Block* block, std::byte* data, std::size_t size,
+    template<class TOtherBlock, bool, bool> friend class BasicBlockSlicesAllocator;
+    BasicMemorySlice(TBlock* block, std::byte* data, std::size_t size,
                 std::size_t index, bool check_release) noexcept;
-    Block* block_ = nullptr;
+    TBlock* block_ = nullptr;
     Loan<void> loan_; // Includes the stable node's lock pointer and loan generation, without owning the pool.
     std::byte* data_ = nullptr;
     std::size_t size_ = 0;
@@ -47,26 +47,26 @@ private:
     bool check_release_ = true; // Determines whether stale releases report errors or are ignored, even after object destruction.
 };
 
-template<class Block>
-BasicMemorySlice<Block>::BasicMemorySlice(Block* block, std::byte* data, std::size_t size,
+template<class TBlock>
+BasicMemorySlice<TBlock>::BasicMemorySlice(TBlock* block, std::byte* data, std::size_t size,
                          std::size_t index, bool check_release) noexcept
     : block_(block), loan_(block->loan()), data_(data), size_(size), index_(index),
       check_release_(check_release) {}
 
-template<class Block>
-BasicMemorySlice<Block>::~BasicMemorySlice() noexcept {
+template<class TBlock>
+BasicMemorySlice<TBlock>::~BasicMemorySlice() noexcept {
     if (block_) release();
 }
 
-template<class Block>
-BasicMemorySlice<Block>::BasicMemorySlice(BasicMemorySlice&& other) noexcept
+template<class TBlock>
+BasicMemorySlice<TBlock>::BasicMemorySlice(BasicMemorySlice&& other) noexcept
     : block_(std::exchange(other.block_, nullptr)), loan_(std::exchange(other.loan_, {})),
       data_(std::exchange(other.data_, nullptr)), size_(std::exchange(other.size_, 0)),
       index_(std::exchange(other.index_, 0)),
       check_release_(other.check_release_) {}
 
-template<class Block>
-BasicMemorySlice<Block>& BasicMemorySlice<Block>::operator=(BasicMemorySlice&& other) noexcept {
+template<class TBlock>
+BasicMemorySlice<TBlock>& BasicMemorySlice<TBlock>::operator=(BasicMemorySlice&& other) noexcept {
     if (this == &other) return *this;
     if (block_) release();
     block_ = std::exchange(other.block_, nullptr);
@@ -78,9 +78,9 @@ BasicMemorySlice<Block>& BasicMemorySlice<Block>::operator=(BasicMemorySlice&& o
     return *this;
 }
 
-template<class Block>
-void BasicMemorySlice<Block>::release(std::source_location location) noexcept {
-    if (!block_) BlockDiagnostics<Block>::report_invalid("cannot release an empty or already released slice", location);
+template<class TBlock>
+void BasicMemorySlice<TBlock>::release(std::source_location location) noexcept {
+    if (!block_) BlockDiagnostics<TBlock>::report_invalid("cannot release an empty or already released slice", location);
     // Clear the handle first; the final release may let the pool reuse the block immediately. Do not access the source afterward.
     auto* const block = std::exchange(block_, nullptr);
     const auto loan = std::exchange(loan_, {});
@@ -92,7 +92,7 @@ void BasicMemorySlice<Block>::release(std::source_location location) noexcept {
         std::lock_guard guard(loan); // Use the lock pointer stored in Loan directly without touching Block.
         if (!loan.is_valid()) {
             if (check_release_)
-                BlockDiagnostics<Block>::report_invalid("slice credential is no longer valid", location);
+                BlockDiagnostics<TBlock>::report_invalid("slice credential is no longer valid", location);
             return;
         }
         finished = block->release_slice(index, loan.generation(), location);
@@ -101,7 +101,7 @@ void BasicMemorySlice<Block>::release(std::source_location location) noexcept {
     if (finished) (void)loan.recycle();
 }
 
-template<bool is_n_alloc, bool is_n_use> class BasicBlock;
+template<bool TIsNAlloc, bool TIsNUse> class BasicBlock;
 using MemorySlice = BasicMemorySlice<BasicBlock<false, true>>;
 
 } // namespace TwoBufQueue

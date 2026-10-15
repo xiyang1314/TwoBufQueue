@@ -2,7 +2,7 @@
 
 #include "read_block.hpp"
 #include "TwoBufQueue/src/data/spsc_write_block.hpp"
-#include "TwoBufQueue/src/base_components/HandoffQueue/handoff_types.hpp"
+#include "TwoBufQueue/src/base_components/handoff_queue/handoff_types.hpp"
 #include <atomic>
 #include <exception>
 #include <type_traits>
@@ -15,11 +15,11 @@ enum class ToReadBlockError { none, invalid_source, range_too_large };
 // Ordinary template implementation of ReadWriterDataCallback; no inheritance required.
 // Each read_ctrl exclusively owns one instance; multiple instances may reference one MPSC output queue.
 // queue must outlive this object. Copy each source range completely; never partially acknowledge insufficient destination capacity.
-template<class Queue>
+template<class TQueue>
 class ToReadBlock {
-    static_assert(std::is_same_v<typename Queue::Resource, ReadBlock>);
+    static_assert(std::is_same_v<typename TQueue::Resource, ReadBlock>);
 public:
-    explicit ToReadBlock(Queue& queue) noexcept : queue_(queue) {}
+    explicit ToReadBlock(TQueue& queue) noexcept : queue_(queue) {}
     ~ToReadBlock() noexcept { flush(); }
     ToReadBlock(const ToReadBlock&) = delete;
     ToReadBlock& operator=(const ToReadBlock&) = delete;
@@ -81,13 +81,13 @@ private:
         return false;
     }
 
-    Queue& queue_;
-    typename Queue::ProducerLoan current_;
+    TQueue& queue_;
+    typename TQueue::ProducerLoan current_;
     std::int64_t read_time_ns_ = 0;
     std::atomic<ToReadBlockError> error_{ToReadBlockError::none};
     std::atomic<AcquireStatus> last_acquire_status_{AcquireStatus::Success};
 };
 
-template<class Queue> ToReadBlock(Queue&) -> ToReadBlock<Queue>;
+template<class TQueue> ToReadBlock(TQueue&) -> ToReadBlock<TQueue>;
 
 } // namespace TwoBufQueue

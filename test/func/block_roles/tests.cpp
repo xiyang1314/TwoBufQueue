@@ -6,12 +6,12 @@
 using namespace ft;
 using CommonBlock = WriterBlock<>::StorageBlock;
 
-template<class T> concept HasAllocate = requires(T& b) { b.allocate(1); };
-template<class T> concept HasReadSlice = requires(T& b) { b.allocate_read_slice(); };
-template<class T> concept HasWritePointer = requires(T& b) { b.write_ptr_; };
-template<class T> concept HasReadPosition = requires(T& b) { b.read_pos(); };
-template<class T> concept HasExplicitRange = requires(T& b) { b.make_slice(0, 1); };
-template<class T> concept HasReadArgument = requires(T& b) { b.allocate_read_slice(1); };
+template<class TValue> concept HasAllocate = requires(TValue& b) { b.allocate(1); };
+template<class TValue> concept HasReadSlice = requires(TValue& b) { b.allocate_read_slice(); };
+template<class TValue> concept HasWritePointer = requires(TValue& b) { b.write_ptr_; };
+template<class TValue> concept HasReadPosition = requires(TValue& b) { b.read_pos(); };
+template<class TValue> concept HasExplicitRange = requires(TValue& b) { b.make_slice(0, 1); };
+template<class TValue> concept HasReadArgument = requires(TValue& b) { b.allocate_read_slice(1); };
 
 static_assert(std::same_as<ReaderBlock<>::StorageBlock, CommonBlock>);
 static_assert(std::same_as<ReaderBlock<>::Slice, MemorySlice>);
@@ -60,8 +60,8 @@ static void mixed_batch() {
     CHECK(source.in_use_count() == 0 && saved.in_use_count() == 0);
 }
 
-template<class B> static void reader() {
-    auto pool = make_block_pool<TestBlockPool<B, false>>(128, 1, 1, {.max_slices_per_block = 3});
+template<class TBlock> static void reader() {
+    auto pool = make_block_pool<TestBlockPool<TBlock, false>>(128, 1, 1, {.max_slices_per_block = 3});
     for (unsigned round = 0; round < 32; ++round) {
         auto* b = pool.get().get();
         CHECK(b && b->state() == ReaderBlockState::Allocating && b->allocated_size() == 0);

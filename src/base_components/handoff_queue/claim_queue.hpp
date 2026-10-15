@@ -8,20 +8,20 @@ namespace TwoBufQueue {
 
 // Independent bounded claim queue: stores tickets only and invokes neither Pool nor user callbacks.
 // QueueTail uses lock-free indices; Keep briefly coordinates dequeue with cancelled-claim publication, never business processing.
-template<class Resource>
+template<class TResource>
 class ClaimQueue {
-    static_assert(PoolResource<Resource>);
+    static_assert(PoolResource<TResource>);
     enum class SlotState : std::uint64_t {
         Free, Reserved, Attaching, Producing, Publishing, Ready, Claimed, Finishing, Releasing
     };
     static constexpr std::uint64_t state_mask = 15;
     static constexpr std::uint64_t closed_bit = std::uint64_t{1} << 63;
 public:
-    using Loan = TwoBufQueue::Loan<Resource>;
-    template<bool C> using Ticket = QueueTicket<Resource, C>;
+    using Loan = TwoBufQueue::Loan<TResource>;
+    template<bool TC> using Ticket = QueueTicket<TResource, TC>;
     using ProducerLoan = Ticket<false>;
     using Claim = Ticket<true>;
-    using Completion = QueueCompletion<Resource>;
+    using Completion = QueueCompletion<TResource>;
     struct ReserveResult {
         AcquireStatus status;
         QueueReservation reservation;
@@ -110,8 +110,8 @@ public:
         claim = {};
         return true;
     }
-    template<bool C> [[nodiscard]] Completion begin_finish(Ticket<C>& value) noexcept {
-        if (!transition(value, C ? SlotState::Claimed : SlotState::Producing,
+    template<bool TC> [[nodiscard]] Completion begin_finish(Ticket<TC>& value) noexcept {
+        if (!transition(value, TC ? SlotState::Claimed : SlotState::Producing,
                         SlotState::Finishing)) return {};
         Completion result;
         result.owner_ = this;
@@ -142,7 +142,7 @@ public:
     [[nodiscard]] std::size_t capacity() const noexcept { return slots_.size(); }
     [[nodiscard]] bool has_ready() const noexcept { return ready_.has_ready(); }
     // Read stable slots only; never dereference a ticket's resource address after that resource might have been destroyed.
-    template<bool C> [[nodiscard]] HandoffState state(const Ticket<C>& value) const noexcept {
+    template<bool TC> [[nodiscard]] HandoffState state(const Ticket<TC>& value) const noexcept {
         if (value.owner_ != this || value.index_ >= slots_.size()) return HandoffState::Invalid;
         const auto current = slots_[value.index_].control.load(std::memory_order_acquire);
         if ((current >> 4) != value.id_) return HandoffState::Invalid;
@@ -210,15 +210,15 @@ private:
         }
         return {status, {}};
     }
-    template<class T> bool transition(const T& value, SlotState from, SlotState to) noexcept {
+    template<class TValue> bool transition(const TValue& value, SlotState from, SlotState to) noexcept {
         if (value.owner_ != this || value.index_ >= slots_.size()) return false;
         auto expected = control(value.id_, from);
         // Do not read slot.loan before winning CAS: an old ticket may race with attachment of another resource.
         return slots_[value.index_].control.compare_exchange_strong(expected, control(value.id_, to),
             std::memory_order_acq_rel, std::memory_order_relaxed);
     }
-    template<bool C> Ticket<C> ticket(std::size_t index, std::uint64_t id, Loan loan) const noexcept {
-        Ticket<C> result;
+    template<bool TC> Ticket<TC> ticket(std::size_t index, std::uint64_t id, Loan loan) const noexcept {
+        Ticket<TC> result;
         result.owner_ = this;
         result.index_ = index;
         result.id_ = id;

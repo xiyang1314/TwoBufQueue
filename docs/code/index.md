@@ -152,27 +152,27 @@ C++ · 54 lines
 
 Read these headers for lower-level behavior.
 
-[handoff_queue.hpp](https://xiyang1314.github.io/TwoBufQueue/docs/code/src/base_components/HandoffQueue/handoff_queue.hpp.html)
+[handoff_queue.hpp](https://xiyang1314.github.io/TwoBufQueue/docs/code/src/base_components/handoff_queue/handoff_queue.hpp.html)
 
 Resource handoff with multiple concurrency modes and consumer workers.
 
-src/base_components/HandoffQueue/handoff_queue.hpp
+src/base_components/handoff_queue/handoff_queue.hpp
 
 C++ · 102 lines
 
-[spsc_live_handoff_queue.hpp](https://xiyang1314.github.io/TwoBufQueue/docs/code/src/base_components/LiveHandoffQueue/spsc_live_handoff_queue.hpp.html)
+[spsc_live_handoff_queue.hpp](https://xiyang1314.github.io/TwoBufQueue/docs/code/src/base_components/live_handoff_queue/spsc_live_handoff_queue.hpp.html)
 
 SPSC resource handoff with access to data still being produced.
 
-src/base_components/LiveHandoffQueue/spsc_live_handoff_queue.hpp
+src/base_components/live_handoff_queue/spsc_live_handoff_queue.hpp
 
 C++ · 353 lines
 
-[warm_pool.hpp](https://xiyang1314.github.io/TwoBufQueue/docs/code/src/base_components/WarmPool/warm_pool.hpp.html)
+[warm_pool.hpp](https://xiyang1314.github.io/TwoBufQueue/docs/code/src/base_components/warm_pool/warm_pool.hpp.html)
 
 Resource creation, borrowing, return and capacity control.
 
-src/base_components/WarmPool/warm_pool.hpp
+src/base_components/warm_pool/warm_pool.hpp
 
 C++ · 375 lines
 

@@ -12,7 +12,7 @@
 
 #pragma once
 
-#include "TwoBufQueue/src/base_components/WarmPool/warm_pool.hpp"
+#include "TwoBufQueue/src/base_components/warm_pool/warm_pool.hpp"
 #include "TwoBufQueue/src/utils/spsc_queue.hpp"
 #include <cassert>
 
@@ -305,14 +305,14 @@ private:
         if (id == std::numeric_limits<std::uint64_t>::max()) std::terminate();
         return ++id;
     }
-    template<bool C> Ticket<C> make_ticket(Loan loan, std::uint64_t id) const noexcept {
-        Ticket<C> ticket;
+    template<bool TC> Ticket<TC> make_ticket(Loan loan, std::uint64_t id) const noexcept {
+        Ticket<TC> ticket;
         ticket.owner_ = this;
         ticket.id_ = id;
         ticket.loan_ = loan;
         return ticket;
     }
-    template<bool C> bool matches(const Ticket<C>& input, const Ticket<C>& active) const noexcept {
+    template<bool TC> bool matches(const Ticket<TC>& input, const Ticket<TC>& active) const noexcept {
         return active && input.owner_ == this && input.id_ == active.id_;
     }
     // Data members: preserve cache-line separation.

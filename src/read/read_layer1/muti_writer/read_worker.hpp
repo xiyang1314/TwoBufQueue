@@ -17,13 +17,13 @@
 namespace TwoBufQueue {
 
 // Manages threads, wakeups and stop only; ReadService<Callback> implements the read flow.
-template<class Callback>
+template<class TCallback>
 class ReadWorker {
 public:
     // config supplies every scan/wait/drain duration; callers may override all defaults.
     // Store configuration without starting a thread; register every writer before start.
     // The caller owns callback and must keep it alive beyond Worker; no interface inheritance required.
-    explicit ReadWorker(ReadConfig config, Callback& callback);
+    explicit ReadWorker(ReadConfig config, TCallback& callback);
     // Stop and join the internal thread; after fast stop/timeout, restart to drain or transfer pending with take_pending before destruction.
     ~ReadWorker() noexcept;
 
@@ -34,8 +34,8 @@ public:
 
     // Register a Writer with any publication count; call only before start.
     // WriterT accepts Writer or a WriterBase derivative and uses public read-only interfaces only.
-    template<class WriterT>
-    [[nodiscard]] bool add_writer(WriterT* writer) noexcept {
+    template<class TWriter>
+    [[nodiscard]] bool add_writer(TWriter* writer) noexcept {
         std::lock_guard<std::mutex> lock(mutex_);
         return service_.add_writer(writer, running_.load(std::memory_order_acquire));
     }
@@ -104,7 +104,7 @@ private:
     mutable std::mutex mutex_;
     // Construct the event first and destroy it last so Service's event reference stays valid throughout its lifetime.
     AutoResetEvent work_event_;
-    ReadService<Callback> service_;
+    ReadService<TCallback> service_;
     std::thread worker_thread_;
     // Worker owns thread execution, notifications and stop requests; Service's Items own per-writer state.
     std::atomic<bool> running_{false};
@@ -114,22 +114,22 @@ private:
     std::atomic<bool> fast_stop_requested_{false};
 };
 
-template<class Callback>
-ReadWorker<Callback>::ReadWorker(ReadConfig config, Callback& callback)
+template<class TCallback>
+ReadWorker<TCallback>::ReadWorker(ReadConfig config, TCallback& callback)
     : service_(config, callback, work_event_) {}
 
-template<class Callback>
-ReadWorker<Callback>::~ReadWorker() noexcept { stop(); }
+template<class TCallback>
+ReadWorker<TCallback>::~ReadWorker() noexcept { stop(); }
 
-template<class Callback>
-bool ReadWorker<Callback>::add_writer(std::nullptr_t writer) noexcept {
+template<class TCallback>
+bool ReadWorker<TCallback>::add_writer(std::nullptr_t writer) noexcept {
     std::lock_guard<std::mutex> lock(mutex_);
     return service_.add_writer(writer, running_.load(std::memory_order_acquire));
 }
 
 // Install every block-switch callback and start the reader; roll back every installation if thread creation fails.
-template<class Callback>
-bool ReadWorker<Callback>::start() noexcept {
+template<class TCallback>
+bool ReadWorker<TCallback>::start() noexcept {
     std::lock_guard<std::mutex> lock(mutex_);
     if (running_.load(std::memory_order_acquire)) return true;
     if (!service_.valid_start_state()) {
@@ -144,7 +144,7 @@ bool ReadWorker<Callback>::start() noexcept {
     service_.prepare_start();
     running_.store(true, std::memory_order_release);
     try {
-        worker_thread_ = std::thread(&ReadWorker<Callback>::run, this);
+        worker_thread_ = std::thread(&ReadWorker<TCallback>::run, this);
     } catch (...) {
         running_.store(false, std::memory_order_release);
         service_.detach_completed_callbacks();
@@ -155,8 +155,8 @@ bool ReadWorker<Callback>::start() noexcept {
 }
 
 // Follow the requested slow/fast stop mode, join the thread and detach writer callbacks.
-template<class Callback>
-void ReadWorker<Callback>::stop(ReadStopMode mode) noexcept {
+template<class TCallback>
+void ReadWorker<TCallback>::stop(ReadStopMode mode) noexcept {
     if (!running_.load(std::memory_order_acquire)) return;
     request_stop(mode);
     if (worker_thread_.joinable()) worker_thread_.join();
@@ -166,8 +166,8 @@ void ReadWorker<Callback>::stop(ReadStopMode mode) noexcept {
 }
 
 // Publish the stop condition before setting the event: sleeping threads wake and not-yet-waiting threads retain the signal.
-template<class Callback>
-void ReadWorker<Callback>::request_stop(ReadStopMode mode) noexcept {
+template<class TCallback>
+void ReadWorker<TCallback>::request_stop(ReadStopMode mode) noexcept {
     if (!running_.load(std::memory_order_acquire)) return;
     if (mode == ReadStopMode::fast)
         fast_stop_requested_.store(true, std::memory_order_release);
@@ -176,47 +176,47 @@ void ReadWorker<Callback>::request_stop(ReadStopMode mode) noexcept {
 }
 
 // Set the event when downstream frees space; retain the signal even before the reader waits.
-template<class Callback>
-void ReadWorker<Callback>::notify_memory_available() noexcept {
+template<class TCallback>
+void ReadWorker<TCallback>::notify_memory_available() noexcept {
     memory_retry_requested_.store(true, std::memory_order_release);
     notify_worker();
 }
 
 // acquire-load the worker-running flag as an instantaneous control-plane observation.
-template<class Callback>
-bool ReadWorker<Callback>::running() const noexcept {
+template<class TCallback>
+bool ReadWorker<TCallback>::running() const noexcept {
     return running_.load(std::memory_order_acquire);
 }
 
-template<class Callback>
-std::size_t ReadWorker<Callback>::writer_count() const noexcept {
+template<class TCallback>
+std::size_t ReadWorker<TCallback>::writer_count() const noexcept {
     std::lock_guard<std::mutex> lock(mutex_);
     return service_.writer_count();
 }
 
-template<class Callback>
-std::size_t ReadWorker<Callback>::pending_finished_count() const noexcept {
+template<class TCallback>
+std::size_t ReadWorker<TCallback>::pending_finished_count() const noexcept {
     return service_.pending_finished_count();
 }
 
-template<class Callback>
-ReadStats ReadWorker<Callback>::stats() const noexcept {
+template<class TCallback>
+ReadStats ReadWorker<TCallback>::stats() const noexcept {
     return service_.stats();
 }
 
-template<class Callback>
-ReadError ReadWorker<Callback>::error_code() const noexcept {
+template<class TCallback>
+ReadError ReadWorker<TCallback>::error_code() const noexcept {
     return service_.error_code();
 }
 
-template<class Callback>
-std::string ReadWorker<Callback>::last_error() const {
+template<class TCallback>
+std::string ReadWorker<TCallback>::last_error() const {
     return error_message(error_code());
 }
 
 // Main loop: save completed blocks -> scan active blocks -> bounded spin -> wait for event/timeout.
-template<class Callback>
-void ReadWorker<Callback>::run() noexcept {
+template<class TCallback>
+void ReadWorker<TCallback>::run() noexcept {
     // Attempt CPU binding.
     if (!pin_current_thread(service_.config().worker_cpu)) {
         service_.record_error(ReadError::cpu_affinity_failed);
@@ -246,8 +246,8 @@ void ReadWorker<Callback>::run() noexcept {
 }
 
 // Slow stop collects source data under one deadline; fast stop ends collection. External storage publishes output data.
-template<class Callback>
-void ReadWorker<Callback>::finish_remaining_work() noexcept {
+template<class TCallback>
+void ReadWorker<TCallback>::finish_remaining_work() noexcept {
     using Clock = AutoResetEvent::Clock;
     const auto now = Clock::now();
     const auto timeout = service_.config().finish_timeout;
@@ -277,8 +277,8 @@ void ReadWorker<Callback>::finish_remaining_work() noexcept {
 }
 
 // Bounded spin checks stop requests and tries to consume an event; a hit returns to the main loop.
-template<class Callback>
-bool ReadWorker<Callback>::spin_for_completed_work() noexcept {
+template<class TCallback>
+bool ReadWorker<TCallback>::spin_for_completed_work() noexcept {
     for (std::uint32_t spin = 0; spin < service_.config().idle_spin_count; ++spin) {
         if (stop_requested_.load(std::memory_order_acquire)) return true;
         if (work_event_.try_wait()) return true; // Return when data arrives.
@@ -288,16 +288,16 @@ bool ReadWorker<Callback>::spin_for_completed_work() noexcept {
 }
 
 // Wait for the larger of the configured minimum and remaining scan delay; an event can wake early.
-template<class Callback>
-bool ReadWorker<Callback>::wait_for_work() noexcept {
+template<class TCallback>
+bool ReadWorker<TCallback>::wait_for_work() noexcept {
     // The event checks the stop condition internally; request_stop sets the condition then the event to wake blocked waits.
     const SteadyClock::duration minimum_wait = service_.config().work_wait_min_interval;
     return work_event_.wait_for(std::max(minimum_wait, service_.next_scan_deadline()),
                                stop_requested_);
 }
 
-template<class Callback>
-void ReadWorker<Callback>::notify_worker() noexcept {
+template<class TCallback>
+void ReadWorker<TCallback>::notify_worker() noexcept {
     work_event_.set();
 }
 

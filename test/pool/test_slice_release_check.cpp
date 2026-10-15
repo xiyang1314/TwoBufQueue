@@ -19,12 +19,12 @@
 namespace TwoBufQueue {
 class BlockSlicesAllocatorForTest {
 public:
-    template<class Block>
-    static void release(Block* block, std::size_t index, std::uint64_t sequence) {
+    template<class TBlock>
+    static void release(TBlock* block, std::size_t index, std::uint64_t sequence) {
         block->slices_.release(index, sequence, std::source_location::current());
     }
-    template<class Block>
-    static auto snapshot(Block* block) {
+    template<class TBlock>
+    static auto snapshot(TBlock* block) {
         auto& m = block->slices_;
         std::vector<std::uint64_t> flags;
         const auto allocated = m.allocated_count_.load();
@@ -40,9 +40,9 @@ using Pool = TestBlockPool<ReaderBlock<>>;
 using Access = BlockSlicesAllocatorForTest;
 static const char* expected_error;
 
-template<class Block>
+template<class TBlock>
 static void scenario(std::string_view kind, bool strict) {
-    using Pool = TestBlockPool<Block, false>;
+    using Pool = TestBlockPool<TBlock, false>;
     ReaderBlock<>::Config config; // Default strict mode must remain enabled.
     assert(config.is_check_slice_release);
     if (!strict) config.is_check_slice_release = false;
@@ -95,9 +95,9 @@ static void scenario(std::string_view kind, bool strict) {
     { auto slice = block->allocate(8); finish_block(block); }
     assert(pool.in_use_count() == 0);
 }
-template<class Block>
+template<class TBlock>
 static void seal_release_race(bool check) {
-    using Pool = TestBlockPool<Block>;
+    using Pool = TestBlockPool<TBlock>;
     auto pool = make_block_pool<Pool>(64, 1, 1,
               ReaderBlock<>::Config{.is_check_slice_release = check});
     std::atomic<unsigned> recycled{0};

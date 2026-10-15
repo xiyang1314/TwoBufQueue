@@ -29,6 +29,6 @@ ctest --test-dir build -C Release -L catalog --output-on-failure
 
 ## 三、历史记录与平台范围
 
-[读端历史检查](https://xiyang1314.github.io/TwoBufQueue/test/reader/READ_CTRL_TESTS.html)按日期区分当时覆盖范围。[发布检查记录](../release-checks/summary.json)和[此前验证数据](../performance_data/release_20261011/release-checks/summary.json)保留实际平台、命令和限制，不能把旧子集数量当作今天的完整测试数量。
+[读端历史检查](https://xiyang1314.github.io/TwoBufQueue/test/reader/READ_CTRL_TESTS.html)按日期区分当时覆盖范围。[发布检查记录](../release_checks/summary.json)和[此前验证数据](../performance_data/release_20261011/release_checks/summary.json)保留实际平台、命令和限制，不能把旧子集数量当作今天的完整测试数量。
 
 Linux、Windows、macOS 及 sanitizer / 可选开源 SPSC 对照的 CI 已配置，远程执行要等仓库发布并实际运行。文档和界面翻译不改变库的非注释 C++ 内容，也不修改历史测量的源码快照。

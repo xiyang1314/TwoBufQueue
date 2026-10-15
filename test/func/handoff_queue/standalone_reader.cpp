@@ -1,5 +1,5 @@
-// Intentionally include Reader alone with an ordinary int queue, without WarmPool/HandoffQueue.
-#include "TwoBufQueue/src/base_components/HandoffQueue/handoff_reader.hpp"
+// Intentionally include Reader alone with an ordinary int queue, without warm_pool/HandoffQueue.
+#include "TwoBufQueue/src/base_components/handoff_queue/handoff_reader.hpp"
 #include <cassert>
 #include <iostream>
 

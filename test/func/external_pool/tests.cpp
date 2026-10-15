@@ -6,18 +6,18 @@
 
 using namespace ct;
 
-template<class S> void null_pool() {
+template<class TSlice> void null_pool() {
     bool caught = false;
-    try { S slices(nullptr); }
+    try { TSlice slices(nullptr); }
     catch (const std::invalid_argument&) { caught = true; }
     CHECK(caught);
 }
 
-template<class S> void lifetime() {
-    auto pool = make_block_pool<typename S::Pool>(64, 0, 1);
-    typename S::Slice held;
+template<class TSlice> void lifetime() {
+    auto pool = make_block_pool<typename TSlice::Pool>(64, 0, 1);
+    typename TSlice::Slice held;
     {
-        S slices(&pool);
+        TSlice slices(&pool);
         held = slices.allocate(32);
         CHECK(held);
         std::memset(held.data(), 0x57, held.size());
@@ -27,7 +27,7 @@ template<class S> void lifetime() {
     held.release();
     CHECK(pool.all_released() && pool.all_released());
     {
-        S slices(&pool);
+        TSlice slices(&pool);
         auto next = slices.allocate(64);
         CHECK(next && pool.resource_count() == 1);
         next.release();
@@ -35,9 +35,9 @@ template<class S> void lifetime() {
     CHECK(pool.all_released());
 }
 
-template<class S> void shared() {
-    auto pool = make_block_pool<typename S::Pool>(32, 0, 2, {.max_slices_per_block = 2});
-    S a(&pool), b(&pool);
+template<class TSlice> void shared() {
+    auto pool = make_block_pool<typename TSlice::Pool>(32, 0, 2, {.max_slices_per_block = 2});
+    TSlice a(&pool), b(&pool);
     auto a1 = a.allocate(16), b1 = b.allocate(16), a2 = a.allocate(16);
     CHECK(a1 && b1 && a2);
     std::memset(b1.data(), 0x39, b1.size());
@@ -101,18 +101,18 @@ void callback_lifetime() {
     pool.set_release_callback(nullptr, nullptr);
 }
 
-template<class S, unsigned writers_per_adapter> void concurrent_shared() {
-    constexpr unsigned adapters = 4, writers = adapters * writers_per_adapter;
+template<class TSlice, unsigned TWritersPerAdapter> void concurrent_shared() {
+    constexpr unsigned adapters = 4, writers = adapters * TWritersPerAdapter;
     constexpr unsigned each = 500, total = (writers + 1) * each;
-    auto pool = make_block_pool<typename S::Pool>(128, 2, 12, {.max_slices_per_block = 4}, 4);
-    std::array<std::unique_ptr<S>, adapters> slices;
-    for (auto& s : slices) s = std::make_unique<S>(&pool);
-    Channel<typename S::Slice> queue(32);
+    auto pool = make_block_pool<typename TSlice::Pool>(128, 2, 12, {.max_slices_per_block = 4}, 4);
+    std::array<std::unique_ptr<TSlice>, adapters> slices;
+    for (auto& s : slices) s = std::make_unique<TSlice>(&pool);
+    Channel<typename TSlice::Slice> queue(32);
     std::array<std::atomic<unsigned>, total> seen{};
     const auto deadline = Clock::now() + 45s;
     std::atomic<bool> stop_scan{false};
     auto retry = [&] { CHECK(Clock::now() < deadline); std::this_thread::yield(); };
-    auto publish_slice = [&](typename S::Slice& slice, unsigned id) {
+    auto publish_slice = [&](typename TSlice::Slice& slice, unsigned id) {
         const std::array<std::uint64_t, 2> record{id, ~std::uint64_t{id}};
         std::memcpy(slice.data(), record.data(), 16);
         while (!queue.push(slice)) retry();
@@ -143,8 +143,8 @@ template<class S, unsigned writers_per_adapter> void concurrent_shared() {
     std::vector<brq_support::JoiningThread> producers;
     for (unsigned id = 0; id < writers; ++id) producers.emplace_back([&, id] {
         for (unsigned i = 0; i < each; ++i) {
-            typename S::Slice slice;
-            while (!(slice = slices[id / writers_per_adapter]->allocate(16))) retry();
+            typename TSlice::Slice slice;
+            while (!(slice = slices[id / TWritersPerAdapter]->allocate(16))) retry();
             publish_slice(slice, id * each + i);
         }
     });

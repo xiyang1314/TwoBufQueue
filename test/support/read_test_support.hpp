@@ -25,7 +25,7 @@ inline void check(bool ok, const char* expression,
     }
 }
 #define CHECK(...) ::read_test::check(static_cast<bool>((__VA_ARGS__)), #__VA_ARGS__)
-template<class Predicate> bool wait_until(Predicate predicate, std::chrono::milliseconds timeout = 5s) {
+template<class TPredicate> bool wait_until(TPredicate predicate, std::chrono::milliseconds timeout = 5s) {
     const auto deadline = std::chrono::steady_clock::now() + timeout;
     while (!predicate()) {
         if (std::chrono::steady_clock::now() >= deadline) return false;

@@ -48,21 +48,21 @@ void write_read_cases(Cases &c) {
         CHECK(d.writer.write_mem(bytes.data(), 3)); d.drain();
         CHECK(d.receiver.messages == std::vector<Message>{{3, bytes}});
     }});
-    auto pub = [&]<unsigned N>() {
+    auto pub = [&]<unsigned TN>() {
         c.push_back(
-            {"W_publish_" + std::to_string(N), [] {
-                 Direct<N> d(512, 2);
+            {"W_publish_" + std::to_string(TN), [] {
+                 Direct<TN> d(512, 2);
                  auto *begin = d.writer.published_write_ptr();
-                 for (unsigned i = 0; i < N; ++i) {
+                 for (unsigned i = 0; i < TN; ++i) {
                      CHECK(d.writer.write(i));
-                     CHECK(d.writer.published_write_ptr() == begin + (i + 1 == N ? N * 6 : 0));
+                     CHECK(d.writer.published_write_ptr() == begin + (i + 1 == TN ? TN * 6 : 0));
                  }
                  CHECK(d.writer.write(99u));
-                 CHECK(d.writer.published_write_ptr() == begin + (N + (N == 1 ? 1 : 0)) * 6);
+                 CHECK(d.writer.published_write_ptr() == begin + (TN + (TN == 1 ? 1 : 0)) * 6);
                  d.writer.flush();
-                 CHECK(d.writer.published_write_ptr() == begin + (N + 1) * 6);
+                 CHECK(d.writer.published_write_ptr() == begin + (TN + 1) * 6);
                  d.drain();
-                 CHECK(d.receiver.messages.size() == N + 1);
+                 CHECK(d.receiver.messages.size() == TN + 1);
              }});
     };
     pub.operator()<1>();

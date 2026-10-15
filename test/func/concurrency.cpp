@@ -4,12 +4,12 @@
 #include "../support/block_test_support.hpp"
 #include "support.hpp"
 namespace ft {
-template <unsigned Pub> void pipeline(bool buffered, unsigned producers) {
+template <unsigned TPub> void pipeline(bool buffered, unsigned producers) {
     std::vector<std::unique_ptr<WriterFixture>> pools;
-    std::vector<std::unique_ptr<Writer<Pub>>> writers;
+    std::vector<std::unique_ptr<Writer<TPub>>> writers;
     for (unsigned i = 0; i < producers; ++i) {
         pools.push_back(std::make_unique<WriterFixture>(256, 2, 2));
-        writers.push_back(std::make_unique<Writer<Pub>>(&pools.back()->queue, static_cast<int>(i), pools.back()->backpressure));
+        writers.push_back(std::make_unique<Writer<TPub>>(&pools.back()->queue, static_cast<int>(i), pools.back()->backpressure));
     }
     Receiver rx;
     ReadConfig cfg;
@@ -110,8 +110,8 @@ template <unsigned Pub> void pipeline(bool buffered, unsigned producers) {
         CHECK(p->handoff_queue().pending_count() == 0);
     }
 }
-template <class Block> void seal_race() {
-    auto pool = make_block_pool<TestBlockPool<Block>>(64, 1, 1);
+template <class TBlock> void seal_race() {
+    auto pool = make_block_pool<TestBlockPool<TBlock>>(64, 1, 1);
     std::atomic<unsigned> recycled{0};
     pool.set_release_callback(
         [](void *p) noexcept { static_cast<std::atomic<unsigned> *>(p)->fetch_add(1); }, &recycled);

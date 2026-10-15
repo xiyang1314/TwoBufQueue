@@ -1,6 +1,6 @@
 #include "TwoBufQueue/src/data/spsc_write_block.hpp"
 #include "TwoBufQueue/src/data/spsc_read_block.hpp"
-#include "TwoBufQueue/src/base_components/WarmPool/warm_pool.hpp"
+#include "TwoBufQueue/src/base_components/warm_pool/warm_pool.hpp"
 #include "TwoBufQueue/src/utils/spsc_queue.hpp"
 #include <algorithm>
 #include <atomic>
@@ -14,9 +14,9 @@
 using namespace TwoBufQueue;
 #define CHECK(x) do { if (!(x)) { std::cerr << #x << ':' << __LINE__ << '\n'; std::abort(); } } while (false)
 
-template<class T> using Pool = WarmPool<T, true, SpscBlockFactory<T>>;
-template<class T> concept HasSlice = requires { typename T::Slice; };
-template<class T> concept HasAllocate = requires(T& block) { block.allocate(1); };
+template<class TValue> using Pool = WarmPool<TValue, true, SpscBlockFactory<TValue>>;
+template<class TValue> concept HasSlice = requires { typename TValue::Slice; };
+template<class TValue> concept HasAllocate = requires(TValue& block) { block.allocate(1); };
 static_assert(PoolResource<SpscBasicBlock> && PoolResource<SpscWriteBlock> && PoolResource<SpscReadBlock>);
 static_assert(!HasSlice<SpscWriteBlock> && !HasSlice<SpscReadBlock>);
 static_assert(!HasAllocate<SpscWriteBlock> && !HasAllocate<SpscReadBlock>);

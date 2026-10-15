@@ -10,7 +10,7 @@
 #include "TwoBufQueue/src/read/layer2/read_block_factory.hpp"
 #include "TwoBufQueue/src/read/layer2/to_read_block.hpp"
 #include "TwoBufQueue/src/read/layer2/read_callbacks.hpp"
-#include "TwoBufQueue/src/base_components/HandoffQueue/handoff_queue.hpp"
+#include "TwoBufQueue/src/base_components/handoff_queue/handoff_queue.hpp"
 
 #include <algorithm>
 #include <cstddef>
@@ -52,43 +52,43 @@ struct TwoBufQueueOptions {
 };
 
 // Detect sequence-capable WriterT (SeqWriter defines SeqType).
-template<class WriterT, class = void>
+template<class TWriter, class = void>
 struct is_seq_writer : std::false_type {};
-template<class WriterT>
-struct is_seq_writer<WriterT, std::void_t<typename WriterT::SeqType>> : std::true_type {};
+template<class TWriter>
+struct is_seq_writer<TWriter, std::void_t<typename TWriter::SeqType>> : std::true_type {};
 
-template<class WriterT, class = void>
+template<class TWriter, class = void>
 struct is_sync_writer : std::false_type {};
-template<class WriterT>
-struct is_sync_writer<WriterT, std::void_t<decltype(WriterT::is_sync)>>
-    : std::bool_constant<WriterT::is_sync> {};
+template<class TWriter>
+struct is_sync_writer<TWriter, std::void_t<decltype(TWriter::is_sync)>>
+    : std::bool_constant<TWriter::is_sync> {};
 
 // Select the per-record callback adapter from WriterT's record layout:
 // ordinary Writer uses make_record_callback ([length prefix][payload]);
 // SeqWriter uses make_seq_record_callback ([seq][length prefix][payload]) with a leading seq callback argument.
-template<class WriterT, class Callback>
-auto make_writer_record_callback(Callback callback) {
-    if constexpr (is_seq_writer<WriterT>::value) {
-        return make_seq_record_callback<typename WriterT::SeqType, typename WriterT::DataLen>(
+template<class TWriter, class TCallback>
+auto make_writer_record_callback(TCallback callback) {
+    if constexpr (is_seq_writer<TWriter>::value) {
+        return make_seq_record_callback<typename TWriter::SeqType, typename TWriter::DataLen>(
             std::move(callback));
     } else {
-        return make_record_callback<typename WriterT::DataLen>(std::move(callback));
+        return make_record_callback<typename TWriter::DataLen>(std::move(callback));
     }
 }
 
 // Shared internal pipeline skeleton: externally owned WriterT + output HandoffQueue + ReadWorker.
 // Writer owns all production/stop interfaces; queue owns reading, copying and consumer callbacks only.
 // This layer neither constructs/owns Writer nor forwards writes; applications call their own Writer directly.
-template<class WriterT, class BlockCallback>
+template<class TWriter, class TBlockCallback>
 class TwoBufQueueBase {
     using OutputPool = ReadBlockPool;
-    using OutputQueue = HandoffQueue<OutputPool, BlockCallback>;
+    using OutputQueue = HandoffQueue<OutputPool, TBlockCallback>;
     using Bridge = ToReadBlock<OutputQueue>;
     // Select the pipeline at construction; variant is used only for startup/stop/queries, never in read/callback hot paths.
     struct SingleReader {
         Bridge bridge;
         SingleReadWorker<Bridge> worker;
-        SingleReader(OutputQueue& output, WriterT& writer, const TwoBufQueueOptions& options)
+        SingleReader(OutputQueue& output, TWriter& writer, const TwoBufQueueOptions& options)
             : bridge(output), worker(options.read_config, bridge, writer) { (void)worker.start(); }
         template<class TFunction> void for_each(TFunction function) { function(worker); }
         template<class TFunction> void for_each(TFunction function) const { function(worker); }
@@ -97,7 +97,7 @@ class TwoBufQueueBase {
         // Neither object is movable; deque preserves stable addresses.
         std::deque<Bridge> bridges;
         std::deque<ReadWorker<Bridge>> workers;
-        MultiReaders(OutputQueue& output, std::initializer_list<WriterT*> writers,
+        MultiReaders(OutputQueue& output, std::initializer_list<TWriter*> writers,
                      const TwoBufQueueOptions& options) {
             if (writers.size() == 0) return;
             const auto count = std::clamp<std::size_t>(options.read_layer1_thread_count, 1, writers.size());
@@ -106,7 +106,7 @@ class TwoBufQueueBase {
                 workers.emplace_back(options.read_config, bridges.back());
             }
             std::size_t index = 0;
-            for (WriterT* writer : writers)
+            for (TWriter* writer : writers)
                 if (!workers[index++ % count].add_writer(writer)) return;
             for (auto& worker : workers) (void)worker.start();
         }
@@ -120,14 +120,14 @@ class TwoBufQueueBase {
 
 public:
     // Dedicated single-Writer constructor: no Writer list or multi-source Worker.
-    TwoBufQueueBase(WriterT& writer, BlockCallback block_callback, TwoBufQueueOptions options)
+    TwoBufQueueBase(TWriter& writer, TBlockCallback block_callback, TwoBufQueueOptions options)
         : output_pool_(options.output_pool_min, options.output_pool_max,
                        ReadBlockFactory{options.output_block_size, options.output_frame_capacity}),
           block_callback_(std::move(block_callback)),
           output_queue_(output_pool_, handoff_options(options), std::move(block_callback_)),
           readers_(std::in_place_type<SingleReader>, output_queue_, writer, options) {}
 
-    TwoBufQueueBase(std::initializer_list<WriterT*> writers, BlockCallback block_callback,
+    TwoBufQueueBase(std::initializer_list<TWriter*> writers, TBlockCallback block_callback,
                     TwoBufQueueOptions options)
         : output_pool_(options.output_pool_min, options.output_pool_max,
                        ReadBlockFactory{options.output_block_size, options.output_frame_capacity}),
@@ -215,7 +215,7 @@ private:
 #endif
 
     OutputPool output_pool_;
-    BlockCallback block_callback_;
+    TBlockCallback block_callback_;
     OutputQueue output_queue_;
     std::variant<SingleReader, MultiReaders> readers_;
     bool stopped_ = false;
@@ -248,23 +248,23 @@ private:
 //   writer.write_mem("hello", 5);
 //   writer.finish();   // The application finishes the producer.
 //   queue.stop();      // Consume every record and stop the threads.
-template<class RecordCallback, class WriterT>
+template<class TRecordCallback, class TWriter>
 class TwoBufQueue
-    : public TwoBufQueueBase<WriterT,
-          decltype(make_writer_record_callback<WriterT>(std::declval<RecordCallback>()))> {
-    using Base = TwoBufQueueBase<WriterT,
-        decltype(make_writer_record_callback<WriterT>(std::declval<RecordCallback>()))>;
-    static_assert(!is_sync_writer<WriterT>::value, "sync selection must match the Writer type");
+    : public TwoBufQueueBase<TWriter,
+          decltype(make_writer_record_callback<TWriter>(std::declval<TRecordCallback>()))> {
+    using Base = TwoBufQueueBase<TWriter,
+        decltype(make_writer_record_callback<TWriter>(std::declval<TRecordCallback>()))>;
+    static_assert(!is_sync_writer<TWriter>::value, "sync selection must match the Writer type");
 
 public:
     // Single writer: the most common case.
-    TwoBufQueue(RecordCallback callback, WriterT& writer, TwoBufQueueOptions options = {})
-        : Base(writer, make_writer_record_callback<WriterT>(std::move(callback)), record_options(options)) {}
+    TwoBufQueue(TRecordCallback callback, TWriter& writer, TwoBufQueueOptions options = {})
+        : Base(writer, make_writer_record_callback<TWriter>(std::move(callback)), record_options(options)) {}
 
     // Multiple writers share WriterT and have unique thread_id values; read_layer1_thread_count optionally enables multiple readers.
-    TwoBufQueue(RecordCallback callback, std::initializer_list<WriterT*> writers,
+    TwoBufQueue(TRecordCallback callback, std::initializer_list<TWriter*> writers,
                  TwoBufQueueOptions options = {})
-        : Base(writers, make_writer_record_callback<WriterT>(std::move(callback)), record_options(options)) {}
+        : Base(writers, make_writer_record_callback<TWriter>(std::move(callback)), record_options(options)) {}
 
 private:
     static TwoBufQueueOptions record_options(TwoBufQueueOptions options) {
@@ -276,35 +276,35 @@ private:
 
 // The synchronous path retains the original callback Context and borrowed Writers only, without output pools or reader threads.
 // Finish Writers and join producer threads before stop; only empty source blocks from construction/finish are returned here.
-template<class RecordCallback, class WriterT>
-    requires (is_sync_writer<WriterT>::value)
-class TwoBufQueue<RecordCallback, WriterT> {
-    static_assert(is_sync_writer<WriterT>::value, "sync selection must match the Writer type");
-    using Context = typename WriterT::SyncContextType;
-    static_assert(std::is_same_v<RecordCallback, typename Context::CallbackType>,
+template<class TRecordCallback, class TWriter>
+    requires (is_sync_writer<TWriter>::value)
+class TwoBufQueue<TRecordCallback, TWriter> {
+    static_assert(is_sync_writer<TWriter>::value, "sync selection must match the Writer type");
+    using Context = typename TWriter::SyncContextType;
+    static_assert(std::is_same_v<TRecordCallback, typename Context::CallbackType>,
                   "queue callback must match the SyncContext callback type");
     static_assert([] {
-        if constexpr (is_seq_writer<WriterT>::value)
+        if constexpr (is_seq_writer<TWriter>::value)
             return Context::template accepts_record<std::int32_t,
-                typename WriterT::SeqType, const std::byte*, std::size_t>;
+                typename TWriter::SeqType, const std::byte*, std::size_t>;
         else
             return Context::template accepts_record<std::int32_t,
                 const std::byte*, std::size_t>;
     }(), "sync callback must use the ordinary / SeqWriter noexcept record signature");
 
 public:
-    TwoBufQueue(RecordCallback callback, WriterT& writer, TwoBufQueueOptions = {})
+    TwoBufQueue(TRecordCallback callback, TWriter& writer, TwoBufQueueOptions = {})
         : context_(std::move(callback), false), writers_(&writer) {
         validate_writer(writer);
         writer.set_sync_callback(context_);
     }
 
-    TwoBufQueue(RecordCallback callback, std::initializer_list<WriterT*> writers,
+    TwoBufQueue(TRecordCallback callback, std::initializer_list<TWriter*> writers,
                 TwoBufQueueOptions = {})
         : context_(std::move(callback), writers.size() > 1),
-          writers_(std::in_place_type<std::vector<WriterT*>>, writers) {
+          writers_(std::in_place_type<std::vector<TWriter*>>, writers) {
         if (writers.size() == 0) throw std::invalid_argument("sync queue requires at least one writer");
-        const auto& list = std::get<std::vector<WriterT*>>(writers_);
+        const auto& list = std::get<std::vector<TWriter*>>(writers_);
         for (std::size_t i = 0; i < list.size(); ++i) {
             if (!list[i]) throw std::invalid_argument("sync writer must not be null");
             validate_writer(*list[i]);
@@ -323,7 +323,7 @@ public:
     void stop() noexcept {
         if (stopped_) return;
         stopped_ = true;
-        for_each_writer([&](WriterT& writer) {
+        for_each_writer([&](TWriter& writer) {
             writer.clear_sync_callback(context_);
             auto& source = writer.handoff_queue();
             if (source.current_producer()) {
@@ -350,55 +350,55 @@ public:
     [[nodiscard]] ReadStats stats() const noexcept { return {}; }
 
 private:
-    static void validate_writer(const WriterT& writer) {
+    static void validate_writer(const TWriter& writer) {
         if (writer.thread_id() < 0 || !writer.handoff_queue().current_producer() ||
             writer.handoff_queue().is_closed() || writer.handoff_queue().has_read_available_callback() ||
             writer.has_sync_callback())
             throw std::invalid_argument("sync writer must be live and exclusively bound to this queue");
     }
-    template<class Function>
-    void for_each_writer(Function function) noexcept {
-        if (auto* single = std::get_if<WriterT*>(&writers_)) function(**single);
-        else for (auto* writer : std::get<std::vector<WriterT*>>(writers_)) function(*writer);
+    template<class TFunction>
+    void for_each_writer(TFunction function) noexcept {
+        if (auto* single = std::get_if<TWriter*>(&writers_)) function(**single);
+        else for (auto* writer : std::get<std::vector<TWriter*>>(writers_)) function(*writer);
     }
 
     Context context_;
-    std::variant<WriterT*, std::vector<WriterT*>> writers_;
+    std::variant<TWriter*, std::vector<TWriter*>> writers_;
     bool stopped_ = false;
 };
 
 // Batch-callback form of the two-buffer queue: the callback receives the entire DataBatch (read-only frame views).
 // true accepts the whole batch; false leaves it unhandled for a complete retry next round.
 // Suitable for frameless writers such as Writer<1, false>, or applications processing whole batches for throughput.
-template<class BatchCallback, class WriterT>
+template<class TBatchCallback, class TWriter>
 class TwoBufQueueBatch
-    : public TwoBufQueueBase<WriterT,
-          decltype(make_batch_callback(std::declval<BatchCallback>()))> {
-    using Base = TwoBufQueueBase<WriterT,
-        decltype(make_batch_callback(std::declval<BatchCallback>()))>;
-    static_assert(!is_sync_writer<WriterT>::value,
+    : public TwoBufQueueBase<TWriter,
+          decltype(make_batch_callback(std::declval<TBatchCallback>()))> {
+    using Base = TwoBufQueueBase<TWriter,
+        decltype(make_batch_callback(std::declval<TBatchCallback>()))>;
+    static_assert(!is_sync_writer<TWriter>::value,
                   "non-void TSyncContext supports per-record TwoBufQueue callbacks, not DataBatch callbacks");
 
 public:
-    TwoBufQueueBatch(BatchCallback callback, WriterT& writer, TwoBufQueueOptions options = {})
+    TwoBufQueueBatch(TBatchCallback callback, TWriter& writer, TwoBufQueueOptions options = {})
         : Base(writer, make_batch_callback(std::move(callback)), options) {}
 
-    TwoBufQueueBatch(BatchCallback callback, std::initializer_list<WriterT*> writers,
+    TwoBufQueueBatch(TBatchCallback callback, std::initializer_list<TWriter*> writers,
                       TwoBufQueueOptions options = {})
         : Base(writers, make_batch_callback(std::move(callback)), options) {}
 };
 
 // Class template argument deduction obtains WriterT from the supplied writer, including ordinary Writer and SeqWriter.
-template<class RecordCallback, class WriterT>
-TwoBufQueue(RecordCallback, WriterT&, TwoBufQueueOptions = {}) -> TwoBufQueue<RecordCallback, WriterT>;
+template<class TRecordCallback, class TWriter>
+TwoBufQueue(TRecordCallback, TWriter&, TwoBufQueueOptions = {}) -> TwoBufQueue<TRecordCallback, TWriter>;
 
-template<class RecordCallback, class WriterT>
-TwoBufQueue(RecordCallback, std::initializer_list<WriterT*>, TwoBufQueueOptions = {}) -> TwoBufQueue<RecordCallback, WriterT>;
+template<class TRecordCallback, class TWriter>
+TwoBufQueue(TRecordCallback, std::initializer_list<TWriter*>, TwoBufQueueOptions = {}) -> TwoBufQueue<TRecordCallback, TWriter>;
 
-template<class BatchCallback, class WriterT>
-TwoBufQueueBatch(BatchCallback, WriterT&, TwoBufQueueOptions = {}) -> TwoBufQueueBatch<BatchCallback, WriterT>;
+template<class TBatchCallback, class TWriter>
+TwoBufQueueBatch(TBatchCallback, TWriter&, TwoBufQueueOptions = {}) -> TwoBufQueueBatch<TBatchCallback, TWriter>;
 
-template<class BatchCallback, class WriterT>
-TwoBufQueueBatch(BatchCallback, std::initializer_list<WriterT*>, TwoBufQueueOptions = {}) -> TwoBufQueueBatch<BatchCallback, WriterT>;
+template<class TBatchCallback, class TWriter>
+TwoBufQueueBatch(TBatchCallback, std::initializer_list<TWriter*>, TwoBufQueueOptions = {}) -> TwoBufQueueBatch<TBatchCallback, TWriter>;
 
 } // namespace TwoBufQueue

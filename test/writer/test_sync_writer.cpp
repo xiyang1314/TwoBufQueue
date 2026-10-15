@@ -13,8 +13,8 @@ using namespace TwoBufQueue;
 static void require(bool value, const char* message) {
     if (!value) throw std::runtime_error(message);
 }
-template<class Predicate>
-static bool until(Predicate predicate) {
+template<class TPredicate>
+static bool until(TPredicate predicate) {
     const auto deadline = std::chrono::steady_clock::now() + std::chrono::seconds{2};
     while (!predicate()) {
         if (std::chrono::steady_clock::now() >= deadline) return false;
@@ -23,8 +23,8 @@ static bool until(Predicate predicate) {
     return true;
 }
 // Cleanup for failed construction; never invoke user callbacks.
-template<class WriterT>
-static void finish_and_drain(WriterT& writer) {
+template<class TWriter>
+static void finish_and_drain(TWriter& writer) {
     writer.finish();
     auto& source = writer.handoff_queue();
     source.close();
@@ -94,10 +94,10 @@ static void plain_records(bool list_constructor) {
     require(ok && valid, "plain synchronous callback, payload layout or source lifecycle failed");
 }
 
-template<class Seq>
+template<class TSeq>
 static void seq_records() {
     const auto thread = std::this_thread::get_id();
-    constexpr Seq sequence = (std::numeric_limits<Seq>::max)();
+    constexpr TSeq sequence = (std::numeric_limits<TSeq>::max)();
     const std::uint16_t value = 123;
     const std::uint8_t tail = 4;
     std::array<std::byte, 3> packed;
@@ -105,7 +105,7 @@ static void seq_records() {
     std::memcpy(packed.data() + sizeof(value), &tail, sizeof(tail));
     unsigned received = 0;
     bool valid = true;
-    auto callback = [&](std::int32_t id, Seq seq, const std::byte* data, std::size_t size) noexcept -> void {
+    auto callback = [&](std::int32_t id, TSeq seq, const std::byte* data, std::size_t size) noexcept -> void {
         valid &= id == 2 && seq == sequence && std::this_thread::get_id() == thread;
         const auto index = received++;
         if (index == 0 || index == 1) {
@@ -113,7 +113,7 @@ static void seq_records() {
             if (size == packed.size()) valid &= std::memcmp(data, packed.data(), size) == 0;
         } else valid &= index == 2 && size == 0;
     };
-    auto writer = make_writer<SeqWriter<Seq, 1, true, std::uint16_t, SyncContext<decltype(callback)>>>({.thread_id = 2});
+    auto writer = make_writer<SeqWriter<TSeq, 1, true, std::uint16_t, SyncContext<decltype(callback)>>>({.thread_id = 2});
     ::TwoBufQueue::TwoBufQueue queue(callback, writer);
     const auto initial = writer.published_write_ptr();
     bool ok = writer.write(sequence, value, tail) && received == 1;
@@ -183,7 +183,7 @@ static void single_writer_without_lock(bool list_constructor) {
             "single Writer unexpectedly locked its callback or failed nested delivery");
 }
 
-template<bool WithSeq>
+template<bool TWithSeq>
 static void multi_writer_records() {
     constexpr unsigned writer_count = 4, per_writer = 1000;
     std::array<unsigned, writer_count> received{};
@@ -197,7 +197,7 @@ static void multi_writer_records() {
             std::uint32_t value = 0;
             std::memcpy(&value, data, sizeof(value));
             const auto index = static_cast<unsigned>(id);
-            if (value != received[index] || (WithSeq && seq != value) ||
+            if (value != received[index] || (TWithSeq && seq != value) ||
                 std::this_thread::get_id() != producer_threads[index]) valid.store(false);
             ++received[index]; // Ordinary non-atomic data, serialized by the queue's shared lock.
         }
@@ -205,7 +205,7 @@ static void multi_writer_records() {
         active.fetch_sub(1, std::memory_order_release);
     };
     auto callback = [&] {
-        if constexpr (WithSeq) {
+        if constexpr (TWithSeq) {
             return [&](std::int32_t id, std::uint32_t seq, const std::byte* data, std::size_t size) noexcept -> void {
                 check(id, seq, data, size);
             };
@@ -216,7 +216,7 @@ static void multi_writer_records() {
         }
     }();
     using Context = SyncContext<decltype(callback)>;
-    using MyWriter = std::conditional_t<WithSeq, SeqWriter<std::uint32_t, 1, true, std::uint16_t, Context>,
+    using MyWriter = std::conditional_t<TWithSeq, SeqWriter<std::uint32_t, 1, true, std::uint16_t, Context>,
                                       Writer<1, true, std::uint16_t, Context>>;
     auto w0 = make_writer<MyWriter>({.block_size = 16, .pool_min = 1, .pool_max = 1, .thread_id = 0});
     auto w1 = make_writer<MyWriter>({.block_size = 16, .pool_min = 1, .pool_max = 1, .thread_id = 1});
@@ -230,7 +230,7 @@ static void multi_writer_records() {
             producer_threads[i] = std::this_thread::get_id();
             for (std::uint32_t value = 0; value < per_writer; ++value) {
                 bool written;
-                if constexpr (WithSeq) {
+                if constexpr (TWithSeq) {
                     if (value % 2 == 0) written = writers[i]->write(value, value);
                     else written = writers[i]->write_mem(value, &value, sizeof(value));
                 } else {
