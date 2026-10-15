@@ -7,7 +7,7 @@ This separate experiment runs business work while reusing a small TwoBufQueue so
 ## 1. Build and reproduce
 
 ```sh
-python3 benchmarks/spsc/bootstrap_spsc.py
+python3 benchmarks/spsc/bootstrap_spsc.py --check-only
 cmake -S . -B build -DCMAKE_BUILD_TYPE=Release -DBRQ_BUILD_SPSC_BENCHMARKS=ON -DBRQ_ENABLE_POOL_DEPTH_STATS=OFF
 cmake --build build --target test_hot_path_cache
 build/test_hot_path_cache --self-test

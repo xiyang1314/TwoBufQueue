@@ -57,6 +57,8 @@
     "test/README.md",
     "test/README.zh-CN.md",
     "docs/index.zh-CN.md",
-    "docs/index.md"
+    "docs/index.md",
+    "third_party/spsc/README.md",
+    "third_party/spsc/README.zh-CN.md"
   ]
 }

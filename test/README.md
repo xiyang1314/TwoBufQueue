@@ -28,4 +28,4 @@ cmake --build build --parallel
 ctest --test-dir build --output-on-failure
 ```
 
-Benchmark harness tests are enabled with `BRQ_BUILD_SPSC_BENCHMARKS=ON` after [bootstrapping pinned dependencies](https://xiyang1314.github.io/TwoBufQueue/docs/code/benchmarks/spsc/bootstrap_spsc.py.html). See [the test guide](https://xiyang1314.github.io/TwoBufQueue/docs/development/TESTING.html) and [benchmark navigation](https://xiyang1314.github.io/TwoBufQueue/benchmarks/README.html).
+Benchmark harness tests are enabled with `BRQ_BUILD_SPSC_BENCHMARKS=ON` after [verifying the bundled pinned dependencies](https://xiyang1314.github.io/TwoBufQueue/docs/code/benchmarks/spsc/bootstrap_spsc.py.html). See [the test guide](https://xiyang1314.github.io/TwoBufQueue/docs/development/TESTING.html) and [benchmark navigation](https://xiyang1314.github.io/TwoBufQueue/benchmarks/README.html).

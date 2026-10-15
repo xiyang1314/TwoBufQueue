@@ -65,14 +65,14 @@ Consumer `CMakeLists.txt`:
 ```cmake
 cmake_minimum_required(VERSION 3.20)
 project(my_app LANGUAGES CXX)
-find_package(TwoBufQueue 0.1 CONFIG REQUIRED)
+find_package(TwoBufQueue 0.6 CONFIG REQUIRED)
 add_executable(my_app main.cpp)
 target_link_libraries(my_app PRIVATE TwoBufQueue::TwoBufQueue)
 ```
 
 Configure the consumer with `-DCMAKE_PREFIX_PATH=/absolute/path/to/install`. On macOS add `-DCMAKE_OSX_DEPLOYMENT_TARGET=14.4` when needed. Libraries, real headers, CMake package files, LICENSE and NOTICE are installed. The prefix may be moved as a whole: installed includes contain no source-tree forwarders. A compiled package is specific to its platform, architecture and compatible toolchain; this does not make binaries portable between operating systems.
 
-After installation, the application no longer depends on the original source directory. Move the complete install prefix and update `CMAKE_PREFIX_PATH`. The package version is 0.1.0 and accepts compatible versions within the same minor series; this does not imply that a GitHub Release has been created.
+After installation, the application no longer depends on the original source directory. Move the complete install prefix and update `CMAKE_PREFIX_PATH`. The package version is 0.6.0 and accepts compatible versions within the same minor series; this does not imply that a GitHub Release has been created.
 
 The [integration consumer](https://xiyang1314.github.io/TwoBufQueue/docs/code/test/integration/CMakeLists.txt.html) is runnable through `BRQ_INTEGRATION_MODE=add_subdirectory`, `fetchcontent`, or `package`. Example source-mode check:
 

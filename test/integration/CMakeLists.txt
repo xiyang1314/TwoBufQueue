@@ -5,7 +5,7 @@ endif()
 project(TwoBufQueueConsumer LANGUAGES CXX)
 set(BRQ_INTEGRATION_MODE "package" CACHE STRING "package, add_subdirectory, or fetchcontent")
 if(BRQ_INTEGRATION_MODE STREQUAL "package")
-  find_package(TwoBufQueue 0.1 CONFIG REQUIRED)
+  find_package(TwoBufQueue 0.6 CONFIG REQUIRED)
 elseif(BRQ_INTEGRATION_MODE STREQUAL "add_subdirectory" OR
        BRQ_INTEGRATION_MODE STREQUAL "fetchcontent")
   if(NOT BRQ_SOURCE_DIR)

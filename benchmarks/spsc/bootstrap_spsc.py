@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Fetch only pinned SPSC benchmark headers and licenses; never execute downloads."""
+"""Verify bundled SPSC headers and licenses, or restore missing pinned files; never execute downloads."""
 import argparse
 import base64
 import hashlib
@@ -27,7 +27,7 @@ def fetch(dep, entry):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--output", type=Path, default=Path(__file__).resolve().parents[2] / ".deps/spsc")
+    parser.add_argument("--output", type=Path, default=Path(__file__).resolve().parents[2] / "third_party/spsc")
     parser.add_argument("--check-only", action="store_true")
     args = parser.parse_args()
     manifest = json.loads(Path(__file__).with_name("spsc_dependencies.json").read_text())

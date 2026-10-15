@@ -1,2 +1,13 @@
 TwoBufQueue
 Copyright 2026 chuan lu
+
+Benchmark-only third-party sources are included under third_party/spsc/:
+- ReaderWriterQueue: Copyright (c) 2013-2021 Cameron Desrochers.
+  Simplified BSD license in readerwriterqueue/LICENSE.md; the semaphore code
+  retains its embedded zlib license in readerwriterqueue/atomicops.h.
+- rigtorp::SPSCQueue: Copyright (c) 2018 Erik Rigtorp.
+  MIT license in rigtorp/LICENSE.
+- atomic_queue: Copyright (c) 2019 Maxim Egorushkin.
+  MIT license in atomic_queue/LICENSE.
+These files retain their upstream licenses and copyright notices.
+Fixed commits and SHA-256 hashes: benchmarks/spsc/spsc_dependencies.json.

@@ -30,6 +30,9 @@ TOOLS = {'export_release.py','verify_release.py','unpack_performance_data.py',
          'build_code_html.mjs','code_highlight.mjs','refresh_release_manifest.py','localize_reading_pages.py','report_translations.json','report_pages.json'}
 DOC_SOURCES = json.loads((ROOT / 'tools/documentation_pages.json').read_text())['sources']
 DOC_HTML = {str(Path(name).with_suffix('.html')) for name in DOC_SOURCES}
+SPSC_DEPENDENCIES = json.loads((ROOT / 'benchmarks/spsc/spsc_dependencies.json').read_text())
+SPSC_FILES = {'third_party/spsc/' + name + '/' + entry['path']
+              for name, dependency in SPSC_DEPENDENCIES.items() for entry in dependency['files']}
 ROOT_FILES.update(name for name in DOC_SOURCES + list(DOC_HTML) if '/' not in name)
 from document_links import document_links, rewrite_document_links
 CODE_MANIFEST = ROOT / 'docs/code/code-manifest.json'
@@ -41,6 +44,7 @@ CODE_HTML.update(record['html_path_zh_cn'] for record in CODE_FILES if record.ge
 
 def included(relative):
     parts=relative.parts; name=relative.name
+    if relative.as_posix() in SPSC_FILES: return True
     if relative.as_posix() in DOC_SOURCES or relative.as_posix() in DOC_HTML or relative.as_posix() in CODE_HTML: return True
     if name=='.DS_Store' or '__pycache__' in parts or relative.suffix=='.pyc': return False
     if len(parts)==1: return name in ROOT_FILES

@@ -368,11 +368,11 @@ target_link_libraries(your_app PRIVATE TwoBufQueue::TwoBufQueue)
 作为其他工程的子项目时，测试和示例默认关闭。安装后接入：
 
 ```cmake
-find_package(TwoBufQueue 0.1 CONFIG REQUIRED)
+find_package(TwoBufQueue 0.6 CONFIG REQUIRED)
 target_link_libraries(your_app PRIVATE TwoBufQueue::TwoBufQueue)
 ```
 
-[接入文档](https://xiyang1314.github.io/TwoBufQueue/docs/guides/INTEGRATION.zh-CN.html) 包含安装命令、可迁移安装目录和 FetchContent 用法。CMake 包版本为 0.1.0，仅用于包版本识别，不表示已创建 Release 或标签。
+[接入文档](https://xiyang1314.github.io/TwoBufQueue/docs/guides/INTEGRATION.zh-CN.html) 包含安装命令、可迁移安装目录和 FetchContent 用法。CMake 包版本为 0.6.0，仅用于包版本识别，不表示已创建 Release 或标签。
 
 ### 5.4 使用边界
 

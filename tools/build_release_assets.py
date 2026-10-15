@@ -28,7 +28,7 @@ def archive(target, paths, prefix):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--version', default='0.1.0')
+    parser.add_argument('--version', default='0.6.0')
     parser.add_argument('--output', type=Path, default=ROOT / 'packages')
     args = parser.parse_args()
     if not args.version or any(c not in '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ.-' for c in args.version):

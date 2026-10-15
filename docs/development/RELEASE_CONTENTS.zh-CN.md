@@ -6,7 +6,7 @@
 
 The release directory contains current library source and headers, CMake package support, runnable examples, active regression/functional tests, CI, current SPSC comparisons and block-size/backlog tests, published reports and their referenced evidence. LICENSE and NOTICE remain at the root.
 
-发布副本包含现版源码、安装包配置、有效测试、全部可运行示例、中英文入口、当前性能测试程序、正式报告与其引用的复现数据。临时笔记、目录副本、`.DS_Store`、构建产物和依赖下载目录不进入上传清单。筛选不删除原项目或目标目录中的任何文件；目标目录已有的非发布文件由 Git 忽略。
+发布副本包含现版源码、安装包配置、有效测试、全部可运行示例、中英文入口、当前性能测试程序、正式报告与其引用的复现数据。固定版本的对比队列头文件和原始许可证包含在 `third_party/spsc/`，同时提供版本与校验信息。临时笔记、目录副本、`.DS_Store`、构建产物和可选下载缓存不进入上传清单。筛选不删除原项目或目标目录中的任何文件；目标目录已有的非发布文件由 Git 忽略。
 
 首页包含两组四图对比：8、16、32、64 B 消息的 Session 发送吞吐，以及批量发送后业务耗时与正常 13 ns 耗时的比值。两组图均直接读取保存的正式数据，不重新执行测试。
 

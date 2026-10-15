@@ -15,10 +15,10 @@ cmake --build build --config Release --parallel 2
 ctest --test-dir build -C Release --output-on-failure
 ```
 
-Run configurable benchmarks only after explicitly downloading their pinned, hash-checked benchmark dependencies:
+The pinned benchmark headers and licenses are bundled in `third_party/spsc/`. Verify them locally before building the comparison tools; no dependency download is required:
 
 ```sh
-python benchmarks/spsc/bootstrap_spsc.py
+python benchmarks/spsc/bootstrap_spsc.py --check-only
 cmake -S . -B build-bench -DCMAKE_BUILD_TYPE=Release -DBRQ_BUILD_SPSC_BENCHMARKS=ON -DBRQ_ENABLE_POOL_DEPTH_STATS=ON
 cmake --build build-bench --config Release --parallel 2
 ctest --test-dir build-bench -C Release --output-on-failure -L performance_harness
@@ -63,17 +63,17 @@ The workflow uses GitHub's [Pages actions](https://docs.github.com/en/pages/gett
 ## 五、Package the first release
 
 ```sh
-python tools/build_release_assets.py --version 0.1.0
+python tools/build_release_assets.py --version 0.6.0
 ```
 
 The visible `packages/` directory contains the source archive, complete packaged measurement evidence and SHA-256 checksums. It is ignored by Git. Keep all original samples; packing is lossless and is verified by `tools/verify_release.py`.
 
-After remote CI passes, tag the intended commit as `v0.1.0`, push the tag and create a GitHub Release. Use `CHANGELOG.md` as release notes and attach the generated files. No tag or public release is created by the exporter.
+After remote CI passes, tag the intended commit as `v0.6.0`, push the tag and create a GitHub Release. Use `CHANGELOG.md` as release notes and attach the generated files. No tag or public release is created by the exporter.
 
 Suggested repository description: **C++ producer–consumer queue with two-layer buffers, batch publication and transfer, and small producer memory use.** Topics: `cpp20`, `spsc`, `logging`, `low-latency`, `message-queue`, `benchmark`. These describe the component; performance conclusions remain specific to the disclosed experiments.
 
 
-运行 `python3 tools/build_release_assets.py --version 0.1.0` 后，包在可见的 `packages/` 目录：`TwoBufQueue-0.1.0-CN.zip`、`TwoBufQueue-0.1.0-EN.zip`，同时提供解压目录和 `packages/index.html` 下载导航。中文包打开 `index.html` 默认进入中文首页，英文包进入英文首页。两者的 C++ 源码、示例和编译配置完全相同；文档保留两种语言，功能 PR 只修改正式仓库。完整原始中文备份与发布包是两个不同用途的文件。
+运行 `python3 tools/build_release_assets.py --version 0.6.0` 后，包在可见的 `packages/` 目录：`TwoBufQueue-0.6.0-CN.zip`、`TwoBufQueue-0.6.0-EN.zip`，同时提供解压目录和 `packages/index.html` 下载导航。中文包打开 `index.html` 默认进入中文首页，英文包进入英文首页。两者的 C++ 源码、示例和编译配置完全相同；文档保留两种语言，功能 PR 只修改正式仓库。完整原始中文备份与发布包是两个不同用途的文件。
 
 ## 六、GitHub 首页与 HTML 文档网站
 

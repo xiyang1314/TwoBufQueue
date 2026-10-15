@@ -8,10 +8,9 @@ Use identical successful write counts, warmup counts, message lengths and callba
 
 ## 1. Build and run
 
-Requires Python 3.9+, CMake 3.20+ and a C++20 compiler. macOS requires 14.4+. The optional dependency downloader fetches only pinned headers and licenses and verifies the hashes in `spsc_dependencies.json`. Default library configuration does not download benchmark dependencies.
+Requires Python 3.9+, CMake 3.20+ and a C++20 compiler. macOS requires 14.4+. Pinned benchmark headers and licenses are bundled in `third_party/spsc/`. The check below verifies the hashes in `spsc_dependencies.json` without network access; ordinary library builds do not depend on these queues.
 
 ```sh
-python3 benchmarks/spsc/bootstrap_spsc.py
 python3 benchmarks/spsc/bootstrap_spsc.py --check-only
 cmake -S . -B build-spsc -DCMAKE_BUILD_TYPE=Release -DBRQ_BUILD_SPSC_BENCHMARKS=ON -DBRQ_BUILD_TESTS=OFF -DBRQ_BUILD_EXAMPLES=OFF -DBRQ_BUILD_FUNCTIONAL_TESTS=OFF
 cmake --build build-spsc --config Release --target brq_tunable_benchmark --parallel

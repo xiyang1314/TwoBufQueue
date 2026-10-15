@@ -1,5 +1,5 @@
-# Benchmark-only dependencies, explicitly bootstrapped; never fetched by configure.
-set(BRQ_SPSC_DEPS "${CMAKE_CURRENT_SOURCE_DIR}/.deps/spsc" CACHE PATH "Pinned SPSC benchmark headers")
+# Bundled benchmark-only dependencies; configure verifies hashes without network access.
+set(BRQ_SPSC_DEPS "${CMAKE_CURRENT_SOURCE_DIR}/third_party/spsc" CACHE PATH "Pinned SPSC benchmark headers")
 file(READ "${CMAKE_CURRENT_SOURCE_DIR}/benchmarks/spsc/spsc_dependencies.json" spsc_manifest)
 foreach(dep IN ITEMS rigtorp readerwriterqueue atomic_queue)
   string(JSON count LENGTH "${spsc_manifest}" ${dep} files)
@@ -8,7 +8,7 @@ foreach(dep IN ITEMS rigtorp readerwriterqueue atomic_queue)
     string(JSON path GET "${spsc_manifest}" ${dep} files ${i} path)
     string(JSON expected GET "${spsc_manifest}" ${dep} files ${i} sha256)
     if(NOT EXISTS "${BRQ_SPSC_DEPS}/${dep}/${path}")
-      message(FATAL_ERROR "Run python benchmarks/spsc/bootstrap_spsc.py; missing ${dep}/${path}")
+      message(FATAL_ERROR "Missing pinned benchmark dependency ${dep}/${path} in ${BRQ_SPSC_DEPS}; restore it with python benchmarks/spsc/bootstrap_spsc.py --output ${BRQ_SPSC_DEPS}")
     endif()
     file(SHA256 "${BRQ_SPSC_DEPS}/${dep}/${path}" actual)
     if(NOT actual STREQUAL expected)

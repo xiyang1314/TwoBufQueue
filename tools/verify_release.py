@@ -20,6 +20,18 @@ def verify(root, check_manifest=True):
     reading_path = root / 'tools/github_reading_pages.json'
     reading_pages = {page['markdown'] for page in json.loads(reading_path.read_text(encoding='utf-8'))['pages']} if reading_path.exists() else set()
     errors = []
+    dependency_manifest = root / 'benchmarks/spsc/spsc_dependencies.json'
+    if dependency_manifest.is_file():
+        dependencies = json.loads(dependency_manifest.read_text(encoding='utf-8'))
+        published = {record['path'] for record in records}
+        for name, dependency in dependencies.items():
+            for entry in dependency['files']:
+                relative = 'third_party/spsc/' + name + '/' + entry['path']
+                path = root / relative
+                if not path.is_file() or hashlib.sha256(path.read_bytes()).hexdigest() != entry['sha256']:
+                    errors.append('Bundled dependency hash mismatch: ' + relative)
+                if records and relative not in published:
+                    errors.append('Bundled dependency missing from publication manifest: ' + relative)
     for record in records if check_manifest else []:
         path = root / record['path']
         if not path.is_file() or hashlib.sha256(path.read_bytes()).hexdigest() != record['sha256']:

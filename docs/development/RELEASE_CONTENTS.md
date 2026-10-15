@@ -4,7 +4,7 @@
 
 The release directory contains current library source and headers, CMake package support, runnable examples, active regression/functional tests, CI, current SPSC comparisons and block-size/backlog tests, published reports and their referenced evidence. LICENSE and NOTICE remain at the root.
 
-Publication excludes temporary notes, directory copies, `.DS_Store`, build outputs and downloaded dependencies. Selection never deletes files in the original project or destination; existing destination extras remain ignored by Git.
+Pinned comparison headers and their original licenses are included under `third_party/spsc/`, together with version and hash information. Publication excludes temporary notes, directory copies, `.DS_Store`, build outputs and optional download caches. Selection never deletes files in the original project or destination; existing destination extras remain ignored by Git.
 
 The overview includes two sets of four charts: Session throughput for 8/16/32/64 B messages, and post-send business cost divided by the normal 13 ns reference. Both read saved formal results without running benchmarks again.
 

@@ -36,4 +36,5 @@
 | [发布步骤](https://xiyang1314.github.io/TwoBufQueue/docs/development/PUBLISHING.zh-CN.html) | GitHub 仓库、Pages 与中英文包 |
 | [参与贡献](https://xiyang1314.github.io/TwoBufQueue/CONTRIBUTING.zh-CN.html) | 提交功能和文档修改 |
 | [测试导航](https://xiyang1314.github.io/TwoBufQueue/test/README.zh-CN.html) | 按组件选择测试目录 |
+| [第三方对比队列](https://xiyang1314.github.io/TwoBufQueue/third_party/spsc/README.zh-CN.html) | 固定版本、原始许可证与离线构建 |
 | [性能程序导航](https://xiyang1314.github.io/TwoBufQueue/benchmarks/README.zh-CN.html) | 选择性能实验和参数遍历程序 |

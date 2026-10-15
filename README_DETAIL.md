@@ -366,11 +366,11 @@ target_link_libraries(your_app PRIVATE TwoBufQueue::TwoBufQueue)
 Tests and examples default to OFF when embedded in another project. For an installed package:
 
 ```cmake
-find_package(TwoBufQueue 0.1 CONFIG REQUIRED)
+find_package(TwoBufQueue 0.6 CONFIG REQUIRED)
 target_link_libraries(your_app PRIVATE TwoBufQueue::TwoBufQueue)
 ```
 
-[Integration instructions](https://xiyang1314.github.io/TwoBufQueue/docs/guides/INTEGRATION.html) cover installation, relocatable packages and `FetchContent`. The CMake package version is 0.1.0; no release tag is implied by that metadata.
+[Integration instructions](https://xiyang1314.github.io/TwoBufQueue/docs/guides/INTEGRATION.html) cover installation, relocatable packages and `FetchContent`. The CMake package version is 0.6.0; no release tag is implied by that metadata.
 
 ### 5.4 Usage boundaries
 

@@ -60,7 +60,7 @@ def main():
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--profile',type=pathlib.Path,default=ROOT/'benchmarks/profiles/burst_tail_1m.json')
     parser.add_argument('--executable',type=pathlib.Path)
-    parser.add_argument('--deps',type=pathlib.Path,default=ROOT/'.deps/spsc')
+    parser.add_argument('--deps',type=pathlib.Path,default=ROOT/'third_party/spsc')
     parser.add_argument('--build-dir',type=pathlib.Path,default=ROOT/'build-burst-showcase')
     parser.add_argument('--compiler');parser.add_argument('--jobs',type=int,default=4)
     parser.add_argument('--output',type=pathlib.Path,default=ROOT/'docs/performance_data'/('burst_tail_1m_'+time.strftime('%Y%m%d_%H%M%S')))

@@ -277,7 +277,7 @@ def main():
     p.add_argument('--executable',type=pathlib.Path)
     p.add_argument('--output',type=pathlib.Path,default=ROOT/'docs/performance_data'/('burst_showcase_'+time.strftime('%Y%m%d_%H%M%S')))
     p.add_argument('--report',type=pathlib.Path,default=ROOT/'docs/reports/burst/performance_burst_cache.html')
-    p.add_argument('--deps',type=pathlib.Path,default=ROOT/'.deps/spsc')
+    p.add_argument('--deps',type=pathlib.Path,default=ROOT/'third_party/spsc')
     p.add_argument('--build-dir',type=pathlib.Path,default=ROOT/'build-burst-showcase')
     p.add_argument('--compiler')
     p.add_argument('--jobs',type=int,default=4)

@@ -22,13 +22,13 @@
 从项目根目录运行：
 
 ```sh
-python3 benchmarks/spsc/bootstrap_spsc.py
+python3 benchmarks/spsc/bootstrap_spsc.py --check-only
 cmake -S . -B build-bench -DCMAKE_BUILD_TYPE=Release -DBRQ_BUILD_SPSC_BENCHMARKS=ON
 cmake --build build-bench --parallel
 ctest --test-dir build-bench --output-on-failure -L performance_harness
 ```
 
-依赖库需要明确下载，版本固定并校验哈希。`run_release_benchmarks.py` 运行对比并保存复现信息；`tune_spsc.py` 在给定内存预算中遍历参数；[plot_release.py](https://xiyang1314.github.io/TwoBufQueue/docs/code/benchmarks/spsc/plot_release.py.zh-CN.html) 只根据保存的数据画图，不重跑测试。
+固定版本的头文件和许可证已包含在 `third_party/spsc/`，上面的命令只校验本地文件，无需联网。具体见[第三方依赖说明](https://xiyang1314.github.io/TwoBufQueue/third_party/spsc/README.zh-CN.html)。`run_release_benchmarks.py` 运行对比并保存复现信息；`tune_spsc.py` 在给定内存预算中遍历参数；[plot_release.py](https://xiyang1314.github.io/TwoBufQueue/docs/code/benchmarks/spsc/plot_release.py.zh-CN.html) 只根据保存的数据画图，不重跑测试。
 
 统计内存池深度的块大小实验另需 `BRQ_ENABLE_POOL_DEPTH_STATS=ON`。正式性能对比使用默认未启用深度统计的构建。测试程序名称和命令行参数保持一致。
 

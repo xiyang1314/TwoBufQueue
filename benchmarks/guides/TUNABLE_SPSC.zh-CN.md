@@ -8,10 +8,9 @@
 
 ## 一、构建与运行
 
-需要 Python 3.9+、CMake 3.20+ 和 C++20 编译器。第三方代码只用于此可选基准，普通库构建不下载、不依赖它们。固定 commit、文件 SHA-256 和许可证记录在 `spsc_dependencies.json`；下载器仅取所需头文件与许可证，不执行第三方构建脚本。
+需要 Python 3.9+、CMake 3.20+ 和 C++20 编译器。第三方代码只用于此可选基准，普通库构建不下载、不依赖它们。固定版本的头文件和许可证已随项目放在 `third_party/spsc/`；commit、文件 SHA-256 和来源记录在 `spsc_dependencies.json`。下面的命令只校验本地文件，无需联网。
 
 ```sh
-python3 benchmarks/spsc/bootstrap_spsc.py
 python3 benchmarks/spsc/bootstrap_spsc.py --check-only
 cmake -S . -B build-spsc -DCMAKE_BUILD_TYPE=Release -DBRQ_BUILD_SPSC_BENCHMARKS=ON -DBRQ_BUILD_TESTS=OFF -DBRQ_BUILD_EXAMPLES=OFF -DBRQ_BUILD_FUNCTIONAL_TESTS=OFF
 cmake --build build-spsc --config Release --target brq_tunable_benchmark --parallel
@@ -48,7 +47,7 @@ python3 benchmarks/spsc/run_release_benchmarks.py --binary ./build-spsc/brq_tuna
 python3 benchmarks/spsc/run_release_benchmarks.py --binary ./build-spsc/brq_tunable_benchmark --output benchmark-results/smoke --report-dir benchmark-results/smoke/reports --cache 8 --messages 10000 --repetitions 1
 ```
 
-离线环境可在联网机器下载依赖，再通过 `-DBRQ_SPSC_DEPS=/absolute/path/to/deps` 指向同一目录。每次 CMake 配置均校验文件哈希。
+默认直接使用随项目提供的 `third_party/spsc/`，可离线构建。也可以通过 `-DBRQ_SPSC_DEPS=/absolute/path/to/deps` 指定其他依赖目录；每次 CMake 配置均校验文件哈希。
 
 ## 二、在自己的程序中使用测试类
 

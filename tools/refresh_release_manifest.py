@@ -18,6 +18,14 @@ def refresh(root, check=False):
     if len(previous) != len(manifest['files']):
         raise ValueError('Duplicate publication path')
     selected = set(previous)
+    dependencies = json.loads((root / 'benchmarks/spsc/spsc_dependencies.json').read_text(encoding='utf-8'))
+    for name, dependency in dependencies.items():
+        for entry in dependency['files']:
+            relative = 'third_party/spsc/' + name + '/' + entry['path']
+            path = root / relative
+            if not path.is_file() or hashlib.sha256(path.read_bytes()).hexdigest() != entry['sha256']:
+                raise ValueError('Bundled dependency differs from pinned upstream file: ' + relative)
+            selected.add(relative)
     documents = json.loads((root / 'tools/documentation_pages.json').read_text(encoding='utf-8'))
     for source in documents['sources']:
         if not source.endswith('.md'):

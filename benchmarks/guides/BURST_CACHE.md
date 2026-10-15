@@ -71,7 +71,7 @@ The saved compiler, optimization flags and settings are reused without reselecti
 `test_burst_cache` uses the same 32 B message and callback computation across transports, with independent TwoBufQueue copy/callback threads. Business work follows a shuffled dependency chain and updates 8 nodes per call through the same non-inlined function. The diagnostic can vary source-pool bytes, burst size, workset, timing groups and backlog targets. Small samples must not be promoted into formal p999 conclusions.
 
 ```sh
-python3 benchmarks/spsc/bootstrap_spsc.py
+python3 benchmarks/spsc/bootstrap_spsc.py --check-only
 cmake -S . -B build-burst -DCMAKE_BUILD_TYPE=Release -DBRQ_BUILD_SPSC_BENCHMARKS=ON -DBRQ_ENABLE_POOL_DEPTH_STATS=OFF
 cmake --build build-burst --target test_burst_cache --parallel
 build-burst/test_burst_cache --transport two_buf_queue --source_pool_bytes 16384 --burst_bytes 4194304 --callback_iterations 256 --repeats 1

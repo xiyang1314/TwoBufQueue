@@ -23,7 +23,7 @@ def source_files():
 
 parser=argparse.ArgumentParser(description=__doc__)
 parser.add_argument('--binary', type=Path, required=True)
-parser.add_argument('--deps', type=Path, default=R/'.deps/spsc')
+parser.add_argument('--deps', type=Path, default=R/'third_party/spsc')
 parser.add_argument('--output', type=Path, required=True, help='New immutable results directory')
 parser.add_argument('--report-dir', type=Path, default=R/'docs/reports/comparison')
 parser.add_argument('--profile', type=Path, default=R/'benchmarks/profiles/spsc_release.json')

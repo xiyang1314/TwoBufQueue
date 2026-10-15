@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>性能测试使用的第三方队列 · TwoBufQueue</title><link rel="stylesheet" href="../../docs/assets/readme.css"></head><body><!-- Generated from third_party/spsc/README.zh-CN.md; SHA256 dbc8ca128b6d0baa8dfe0bbd09e6615804d27719243f566bb9674131ef86276a. --><a class="skip-link" href="#content">跳到正文</a><header class="site-header"><div class="header-inner"><a class="brand" href="../../README.zh-CN.html"><span class="brand-symbol" aria-hidden="true"><i></i><i></i></span>TwoBufQueue<span class="brand-version">C++</span></a><nav aria-label="主要导航"><a href="../../README.zh-CN.html">项目首页</a><a href="../../docs/guides/API.zh-CN.html">接口指南</a><a href="../../examples/README.zh-CN.html">使用示例</a><a href="../../docs/code/index.zh-CN.html">代码阅读</a><a href="../../docs/reports/index.zh-CN.html">性能报告</a></nav><div class="languages"><a href="README.html">EN</a><a href="README.zh-CN.html" aria-current="page">中文</a></div></div></header><div class="page-layout guide-layout" id="top"><aside class="toc"><p class="toc-label">本页目录</p><nav aria-label="目录"><a class="toc-depth-2" href="#包含的版本">一、包含的版本</a><a class="toc-depth-2" href="#离线构建">二、离线构建</a><a class="toc-depth-2" href="#恢复与升级">三、恢复与升级</a></nav><div class="toc-footer"><a href="../../README.zh-CN.html">回到首页</a></div></aside><main id="content" class="guide-main"><section class="guide-hero"><div class="eyebrow"><span></span>TWOBUFQUEUE · 文档</div><h1>性能测试使用的第三方队列</h1><p><a href="README.html">English</a> · <a href="README.zh-CN.html">简体中文</a></p>
+<p>这里保存 SPSC 对比测试需要的固定版本头文件和许可证，随仓库、源码包和中英文发布包一起提供。构建性能测试不需要再下载这些依赖；正常使用 TwoBufQueue 库也不依赖它们。</p>
+</section><details class="mobile-toc"><summary>本页目录</summary><nav><a class="toc-depth-2" href="#包含的版本">一、包含的版本</a><a class="toc-depth-2" href="#离线构建">二、离线构建</a><a class="toc-depth-2" href="#恢复与升级">三、恢复与升级</a></nav></details><article class="guide-content"><h2 id="包含的版本">一、包含的版本</h2>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>上游项目</th>
+<th>版本</th>
+<th>固定提交</th>
+<th>许可证</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><a href="https://github.com/cameron314/readerwriterqueue">cameron314/readerwriterqueue</a></td>
+<td>v1.0.6</td>
+<td><code>8e7627d18c2108aca178888d88514179899a044f</code></td>
+<td>BSD-2-Clause; embedded zlib</td>
+</tr>
+<tr>
+<td><a href="https://github.com/rigtorp/SPSCQueue">rigtorp/SPSCQueue</a></td>
+<td>commit</td>
+<td><code>1053918dbd251fbff69b24ef27fa5d51c29ec2af</code></td>
+<td>MIT</td>
+</tr>
+<tr>
+<td><a href="https://github.com/max0x7ba/atomic_queue">max0x7ba/atomic_queue</a></td>
+<td>commit</td>
+<td><code>74fb62f86e6c3b0db824932a5c5e4bfb0125e2cc</code></td>
+<td>MIT</td>
+</tr>
+</tbody></table></div>
+<p>这里只包含测试需要的文件，并非上游仓库的完整副本。原始头文件、版权声明和许可证保持原样；ReaderWriterQueue 的 <code>atomicops.h</code> 中还保留了信号量实现的 zlib 许可证。</p>
+<p>完整文件列表、来源地址和 SHA-256 校验值见 <code>benchmarks/spsc/spsc_dependencies.json</code>。本次只是把已有测试依赖放入项目，没有改变上游版本或测试负载。</p>
+<h2 id="离线构建">二、离线构建</h2>
+<p>在项目根目录执行：</p>
+<div class="code-frame"><div class="code-label">Shell</div><pre tabindex="0"><code class="language-sh"><span class="syntax-keyword">python3</span> benchmarks/spsc/bootstrap_spsc.py --check-only
+<span class="syntax-keyword">cmake</span> -S . -B build-bench -DCMAKE_BUILD_TYPE=Release -DBRQ_BUILD_SPSC_BENCHMARKS=ON
+<span class="syntax-keyword">cmake</span> --build build-bench --parallel
+<span class="syntax-keyword">ctest</span> --test-dir build-bench --output-on-failure -L performance_harness</code></pre></div><p>CMake 默认从 <code>third_party/spsc/</code> 读取依赖，并校验每个头文件和许可证。仍可通过 <code>-DBRQ_SPSC_DEPS=/依赖目录的绝对路径</code> 指定其他目录，校验规则相同。</p>
+<h2 id="恢复与升级">三、恢复与升级</h2>
+<p>如果误删了文件，可运行 <code>python3 benchmarks/spsc/bootstrap_spsc.py</code>，从固定提交下载缺少的文件。已有文件的校验值不一致时会报错，不会覆盖。使用 <code>--check-only</code> 只校验本地文件，不访问网络。</p>
+<p>主动升级第三方版本时，需要一起更新依赖清单中的提交号、地址、校验值和对应的原始文件，保留许可证，然后重新构建并校验对比测试。历史性能数据不会随依赖升级而改写。</p>
+<p>实验选择与复现方式见<a href="../../benchmarks/README.zh-CN.html">性能测试导航</a>。</p>
+</article><footer class="site-footer"><span>TwoBufQueue · C++ · Apache-2.0</span><span><a href="../../README.zh-CN.html">项目首页</a><a href="#top">回到顶部 ↑</a></span></footer></main></div></body></html>

@@ -22,13 +22,13 @@ Benchmarks are grouped by the workload they measure. The library's default build
 From the repository root:
 
 ```sh
-python3 benchmarks/spsc/bootstrap_spsc.py
+python3 benchmarks/spsc/bootstrap_spsc.py --check-only
 cmake -S . -B build-bench -DCMAKE_BUILD_TYPE=Release -DBRQ_BUILD_SPSC_BENCHMARKS=ON
 cmake --build build-bench --parallel
 ctest --test-dir build-bench --output-on-failure -L performance_harness
 ```
 
-Dependencies are explicitly downloaded, pinned and hash-checked. `run_release_benchmarks.py` saves complete reproduction evidence; `tune_spsc.py` searches parameters within the configured memory budget; [plot_release.py](https://xiyang1314.github.io/TwoBufQueue/docs/code/benchmarks/spsc/plot_release.py.html) plots saved results without measuring again.
+Pinned headers and licenses are included in `third_party/spsc/`; the command above verifies them without network access. See [bundled dependency details](https://xiyang1314.github.io/TwoBufQueue/third_party/spsc/README.html). `run_release_benchmarks.py` saves complete reproduction evidence; `tune_spsc.py` searches parameters within the configured memory budget; [plot_release.py](https://xiyang1314.github.io/TwoBufQueue/docs/code/benchmarks/spsc/plot_release.py.html) plots saved results without measuring again.
 
 The block-depth experiments additionally require `BRQ_ENABLE_POOL_DEPTH_STATS=ON`. Formal performance comparisons use the default uninstrumented build. The executable names and command-line parameters are unchanged.
 

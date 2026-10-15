@@ -28,4 +28,4 @@ cmake --build build --parallel
 ctest --test-dir build --output-on-failure
 ```
 
-先[准备固定版本的对比依赖](https://xiyang1314.github.io/TwoBufQueue/docs/code/benchmarks/spsc/bootstrap_spsc.py.zh-CN.html)，再开启 `BRQ_BUILD_SPSC_BENCHMARKS=ON`，即可运行性能框架检查。完整说明见[测试指南](https://xiyang1314.github.io/TwoBufQueue/docs/development/TESTING.zh-CN.html)和[性能测试导航](https://xiyang1314.github.io/TwoBufQueue/benchmarks/README.zh-CN.html)。
+先[校验项目自带的固定版本对比依赖](https://xiyang1314.github.io/TwoBufQueue/docs/code/benchmarks/spsc/bootstrap_spsc.py.zh-CN.html)，再开启 `BRQ_BUILD_SPSC_BENCHMARKS=ON`，即可运行性能框架检查。完整说明见[测试指南](https://xiyang1314.github.io/TwoBufQueue/docs/development/TESTING.zh-CN.html)和[性能测试导航](https://xiyang1314.github.io/TwoBufQueue/benchmarks/README.zh-CN.html)。

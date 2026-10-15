@@ -4,10 +4,10 @@
 
 ## 一、构建与复现
 
-依赖由现有 `bootstrap_spsc.py` 下载并校验，CMake 不自动访问网络。
+依赖头文件和许可证已包含在 `third_party/spsc/`；`bootstrap_spsc.py --check-only` 和 CMake 均只校验本地文件，不访问网络。
 
 ```sh
-python3 benchmarks/spsc/bootstrap_spsc.py
+python3 benchmarks/spsc/bootstrap_spsc.py --check-only
 cmake -S . -B build -DCMAKE_BUILD_TYPE=Release \
   -DBRQ_BUILD_SPSC_BENCHMARKS=ON -DBRQ_ENABLE_POOL_DEPTH_STATS=OFF
 cmake --build build --target test_hot_path_cache

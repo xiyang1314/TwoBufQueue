@@ -33,7 +33,7 @@ cmake --install build-package --config Release --prefix ./install
 ```cmake
 cmake_minimum_required(VERSION 3.20)
 project(my_app LANGUAGES CXX)
-find_package(TwoBufQueue 0.1 CONFIG REQUIRED)
+find_package(TwoBufQueue 0.6 CONFIG REQUIRED)
 add_executable(my_app main.cpp)
 target_link_libraries(my_app PRIVATE TwoBufQueue::TwoBufQueue)
 ```

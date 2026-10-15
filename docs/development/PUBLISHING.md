@@ -13,10 +13,10 @@ cmake --build build --config Release --parallel 2
 ctest --test-dir build -C Release --output-on-failure
 ```
 
-Run configurable benchmarks only after explicitly downloading their pinned, hash-checked benchmark dependencies:
+The pinned benchmark headers and licenses are bundled in `third_party/spsc/`. Verify them locally before building the comparison tools; no dependency download is required:
 
 ```sh
-python benchmarks/spsc/bootstrap_spsc.py
+python benchmarks/spsc/bootstrap_spsc.py --check-only
 cmake -S . -B build-bench -DCMAKE_BUILD_TYPE=Release -DBRQ_BUILD_SPSC_BENCHMARKS=ON -DBRQ_ENABLE_POOL_DEPTH_STATS=ON
 cmake --build build-bench --config Release --parallel 2
 ctest --test-dir build-bench -C Release --output-on-failure -L performance_harness
@@ -75,17 +75,17 @@ The workflow uses GitHub's [Pages actions](https://docs.github.com/en/pages/gett
 ## 6. Package the first release
 
 ```sh
-python tools/build_release_assets.py --version 0.1.0
+python tools/build_release_assets.py --version 0.6.0
 ```
 
 The visible `packages/` directory contains the source archive, complete packaged measurement evidence and SHA-256 checksums. It is ignored by Git. Keep all original samples; packing is lossless and is verified by `tools/verify_release.py`.
 
-After remote CI passes, tag the intended commit as `v0.1.0`, push the tag and create a GitHub Release. Use `CHANGELOG.md` as release notes and attach the generated files. No tag or public release is created by the exporter.
+After remote CI passes, tag the intended commit as `v0.6.0`, push the tag and create a GitHub Release. Use `CHANGELOG.md` as release notes and attach the generated files. No tag or public release is created by the exporter.
 
 Suggested repository description: **C++ producer–consumer queue with two-layer buffers, batch publication and transfer, and small producer memory use.** Topics: `cpp20`, `spsc`, `logging`, `low-latency`, `message-queue`, `benchmark`. These describe the component; performance conclusions remain specific to the disclosed experiments.
 
 
-The visible `packages/` directory contains `TwoBufQueue-0.1.0-EN.zip` and `TwoBufQueue-0.1.0-CN.zip`, unpacked copies, and an HTML download index. Open `index.html` inside either package for its default language. Both contain the same canonical C++ code and both documentation languages; they are generated release artifacts rather than independently maintained implementations. Submit feature changes against the shared repository. ZIPs belong in GitHub Release attachments; generated packages are ignored by Git. The separate original Chinese backup is not the CN release package.
+The visible `packages/` directory contains `TwoBufQueue-0.6.0-EN.zip` and `TwoBufQueue-0.6.0-CN.zip`, unpacked copies, and an HTML download index. Open `index.html` inside either package for its default language. Both contain the same canonical C++ code and both documentation languages; they are generated release artifacts rather than independently maintained implementations. Submit feature changes against the shared repository. ZIPs belong in GitHub Release attachments; generated packages are ignored by Git. The separate original Chinese backup is not the CN release package.
 
 ## 7. Repository README and the HTML documentation site
 

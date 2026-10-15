@@ -118,7 +118,7 @@ def main():
     parser.add_argument('--output',type=Path,default=ROOT/'docs/performance_data'/('burst_from_empty_'+time.strftime('%Y%m%d_%H%M%S')))
     parser.add_argument('--report',type=Path,default=ROOT/'docs/reports/burst/performance_burst_from_empty.html')
     parser.add_argument('--build-dir',type=Path,default=ROOT/'build-burst-empty')
-    parser.add_argument('--deps',type=Path,default=ROOT/'.deps/spsc')
+    parser.add_argument('--deps',type=Path,default=ROOT/'third_party/spsc')
     parser.add_argument('--compiler');parser.add_argument('--jobs',type=int,default=3)
     parser.add_argument('--resume',action='store_true');parser.add_argument('--render-only',action='store_true')
     args=parser.parse_args();folder=args.output.resolve();report=args.report.resolve()

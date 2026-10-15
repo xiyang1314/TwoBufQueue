@@ -38,8 +38,8 @@
       "language": "python",
       "category": "benchmarks",
       "lines": 158,
-      "bytes": 16360,
-      "sha256": "cc35ad0ada67c4c2dce2d9ee948fa87a1598f860b8869415e2989bc656b83535",
+      "bytes": 16366,
+      "sha256": "dbbe4370d113aadf31ffe09362c2e6baf24aa0169ce735e9c52e5eb9ebca0d5e",
       "description": "Complete source referenced by the documentation. / 文档引用的完整源文件。",
       "referenced_by": [
         "benchmarks/README.html",
@@ -68,8 +68,8 @@
       "language": "python",
       "category": "benchmarks",
       "lines": 55,
-      "bytes": 2247,
-      "sha256": "3879ae7506fa9a6a68be9921122d157535ec2b8aab7c694eb8a1be441bf6124b",
+      "bytes": 2273,
+      "sha256": "57beda1284ec91e9c12cf4dc2c160d5146f706cd2593a5d51cebfea2a36501ca",
       "description": "Complete source referenced by the documentation. / 文档引用的完整源文件。",
       "referenced_by": [
         "test/README.html",
@@ -99,8 +99,8 @@
       "language": "python",
       "category": "benchmarks",
       "lines": 220,
-      "bytes": 23127,
-      "sha256": "72c58f80f3321ce5b1253aad51e5136ad6555fd3a1978cc25cf51200be24d896",
+      "bytes": 23133,
+      "sha256": "cde9a375f79d8729e06311b288e443cac7a907fd4c9cf8a8dc915a5cfd6674db",
       "description": "Run configured measurements, validate payloads and save all records. / 按配置运行正式测试、校验负载，并保存环境和全部测量记录。",
       "referenced_by": [
         "benchmarks/README.html",
@@ -550,7 +550,7 @@
       "category": "build",
       "lines": 32,
       "bytes": 1380,
-      "sha256": "a2f8d5d000fab5520e0a77f6d68e2c0d93b8ca572d8a0630e12eaf4c3f37b114",
+      "sha256": "5580d6c60cfc9dcbde451a35ce53de3f99d55918ed0192ea9256d0d82d7c4b88",
       "description": "Check vendored, FetchContent and installed-package integration. / 验证本地源码、FetchContent 和安装包三种工程接入方式。",
       "referenced_by": [
         "docs/guides/INTEGRATION.html"

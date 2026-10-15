@@ -3,9 +3,9 @@
   "markdown_fragments": {
     "CHANGELOG.md": {
       "changelog": "changelog",
-      "010--prepared-for-the-first-public-release": "010--prepared-for-the-first-public-release",
-      "-prepared-for-the-first-public-release": "010--prepared-for-the-first-public-release",
-      "prepared-for-the-first-public-release": "010--prepared-for-the-first-public-release"
+      "060--2026-10-15": "060--2026-10-15",
+      "-2026-10-15": "060--2026-10-15",
+      "2026-10-15": "060--2026-10-15"
     },
     "CONTRIBUTING.md": {
       "contributing": "contributing",
@@ -1614,12 +1614,31 @@
       "独立单-writer-实现验证2026-10-08": "独立单-writer-实现验证2026-10-08",
       "独立单-writer-实现验证-2026-10-08": "独立单-writer-实现验证2026-10-08",
       "当前接口的发布检查": "当前接口的发布检查"
-    }
+    },
+    "third_party/spsc/README.md": {
+      "third-party-queues-for-benchmarks": "third-party-queues-for-benchmarks",
+      "1-included-versions": "1-included-versions",
+      "included-versions": "1-included-versions",
+      "2-build-without-downloading": "2-build-without-downloading",
+      "build-without-downloading": "2-build-without-downloading",
+      "3-restore-or-update-dependencies": "3-restore-or-update-dependencies",
+      "restore-or-update-dependencies": "3-restore-or-update-dependencies"
+    },
+    "third_party/spsc/README.zh-CN.md": {
+      "性能测试使用的第三方队列": "性能测试使用的第三方队列",
+      "一包含的版本": "一包含的版本",
+      "包含的版本": "一包含的版本",
+      "二离线构建": "二离线构建",
+      "离线构建": "二离线构建",
+      "三恢复与升级": "三恢复与升级",
+      "恢复与升级": "三恢复与升级"
+    },
+    "third_party/spsc/readerwriterqueue/LICENSE.md": {}
   },
   "html_fragments": {
     "CHANGELOG.md": {
       "changelog": "changelog",
-      "010--prepared-for-the-first-public-release": "prepared-for-the-first-public-release"
+      "060--2026-10-15": "2026-10-15"
     },
     "CONTRIBUTING.md": {
       "contributing": "contributing",
@@ -2573,7 +2592,20 @@
       "本次结果2026-10-04": "本次结果-2026-10-04",
       "独立单-writer-实现验证2026-10-08": "独立单-writer-实现验证-2026-10-08",
       "当前接口的发布检查": "当前接口的发布检查"
-    }
+    },
+    "third_party/spsc/README.md": {
+      "third-party-queues-for-benchmarks": "third-party-queues-for-benchmarks",
+      "1-included-versions": "included-versions",
+      "2-build-without-downloading": "build-without-downloading",
+      "3-restore-or-update-dependencies": "restore-or-update-dependencies"
+    },
+    "third_party/spsc/README.zh-CN.md": {
+      "性能测试使用的第三方队列": "性能测试使用的第三方队列",
+      "一包含的版本": "包含的版本",
+      "二离线构建": "离线构建",
+      "三恢复与升级": "恢复与升级"
+    },
+    "third_party/spsc/readerwriterqueue/LICENSE.md": {}
   },
   "pages": [
     {

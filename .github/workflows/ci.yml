@@ -84,15 +84,9 @@ jobs:
           else
             echo "BRQ_SOURCE=." >> "$GITHUB_ENV"
           fi
-      - uses: actions/cache@v4
-        with:
-          path: |
-            .deps
-            src/TwoBufQueue/.deps
-          key: brq-deps-${{ runner.os }}-spsc-pinned-v1-${{ hashFiles('**/spsc_dependencies.json') }}
-      - name: Fetch verified benchmark-only dependencies
+      - name: Verify bundled benchmark-only dependencies
         shell: bash
-        run: python "$BRQ_SOURCE/benchmarks/spsc/bootstrap_spsc.py"
+        run: python "$BRQ_SOURCE/benchmarks/spsc/bootstrap_spsc.py" --check-only
       - name: Build and validate adapters
         shell: bash
         run: |
@@ -125,9 +119,9 @@ jobs:
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v4
-      - name: Fetch verified benchmark headers
+      - name: Verify bundled benchmark headers
         shell: bash
-        run: python benchmarks/spsc/bootstrap_spsc.py
+        run: python benchmarks/spsc/bootstrap_spsc.py --check-only
       - name: Build instrumented pool contracts
         shell: bash
         run: |

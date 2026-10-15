@@ -36,4 +36,5 @@ Original measurements remain in `performance_data/`. Source views remain in [cod
 | [Publishing](https://xiyang1314.github.io/TwoBufQueue/docs/development/PUBLISHING.html) | GitHub repository, Pages and bilingual packages |
 | [Contributing](https://xiyang1314.github.io/TwoBufQueue/CONTRIBUTING.html) | Proposing code and documentation changes |
 | [Test index](https://xiyang1314.github.io/TwoBufQueue/test/README.html) | Tests grouped by component |
+| [Bundled comparison queues](https://xiyang1314.github.io/TwoBufQueue/third_party/spsc/README.html) | Fixed versions, original licenses and offline builds |
 | [Benchmark index](https://xiyang1314.github.io/TwoBufQueue/benchmarks/README.html) | Performance experiments and parameter searches |
