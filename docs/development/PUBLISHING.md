@@ -70,7 +70,7 @@ In repository Settings → Pages → Build and deployment, select **GitHub Actio
 
 README and the report index feature [continuous sending and business performance](https://xiyang1314.github.io/TwoBufQueue/docs/reports/burst/performance_burst_from_empty.html), where every batch starts with zero pending messages. The earlier [prepared-backlog report](https://xiyang1314.github.io/TwoBufQueue/docs/reports/burst/performance_burst_cache.html) is labelled as a separate historical experiment. The HTML generator rebuilds both current overview figures from saved results: Session submission throughput for four message sizes, and post-send business cost divided by the fixed 13 ns reference. It also writes SVG figures for the Markdown overview. The historical absolute-cost figure remains available through `python3 tools/plot_burst_release.py`. These commands do not run benchmarks.
 
-The workflow uses GitHub's [Pages actions](https://docs.github.com/en/pages/getting-started-with-github-pages/using-custom-workflows-with-github-pages). It is manually dispatched so preparing or pushing source alone does not publish the site.
+The workflow uses GitHub's [Pages actions](https://docs.github.com/en/pages/getting-started-with-github-pages/using-custom-workflows-with-github-pages). After regenerated HTML pages, documentation assets, or the publication manifest are pushed to main, it automatically publishes the website. The workflow can also be run manually to retry a deployment.
 
 ## 6. Package the first release
 

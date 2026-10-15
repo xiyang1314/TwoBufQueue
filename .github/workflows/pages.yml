@@ -1,5 +1,14 @@
 name: Publish performance reports
 on:
+  push:
+    branches: [main]
+    paths:
+      - "README*.html"
+      - "docs/**"
+      - "release-manifest.json"
+      - "tools/build_pages.py"
+      - "tools/verify_release.py"
+      - ".github/workflows/pages.yml"
   workflow_dispatch:
 permissions:
   contents: read

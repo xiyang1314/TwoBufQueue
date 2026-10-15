@@ -4,7 +4,7 @@
   "source_tree_modified_by_export": false,
   "git_history_copied": false,
   "file_count": 804,
-  "total_bytes": 66960873,
+  "total_bytes": 66961469,
   "preserved_unselected_files": [
     ".DS_Store",
     ".github/.DS_Store",
@@ -1061,8 +1061,8 @@
     },
     {
       "path": ".github/workflows/pages.yml",
-      "bytes": 1004,
-      "sha256": "5044b747b938667d998fe76ca5d3aeef78f78f3bffd338e10da61a4ba7154c46",
+      "bytes": 1220,
+      "sha256": "04518a3dd500a77129fe6a58ee5339c99a3509f3399de53dc112d242f5cc2d5f",
       "source_path": ".github/workflows/pages.yml",
       "source_sha256": "bcfec095a2c362b17a51e01b2aeaeb3377c4df93be409d0b9cf7ad339238687e"
     },
@@ -2250,27 +2250,27 @@
     },
     {
       "path": "docs/development/PUBLISHING.html",
-      "bytes": 15529,
-      "sha256": "2ed9778c42618d5e40625adc20f87fd628a3048206ed364d4ac2a4f7d114c452",
+      "bytes": 15640,
+      "sha256": "f7b18904a1a467f574f855fea450f78bdde10668c4b49382500f21799668d22b",
       "source_path": "docs/PUBLISHING.html",
       "source_sha256": "db8e949cc0220cd5adbf8bfa8dc66a6b46a241212c20f834af55d4e1ed2d5ad9"
     },
     {
       "path": "docs/development/PUBLISHING.md",
-      "bytes": 10025,
-      "sha256": "0ef0f08395981c8048cf2719a98c9588e0f6d0b2039abfe6ad5a2af8e0c989ad",
+      "bytes": 10136,
+      "sha256": "5e203a61c481de51303cfa2b054a5e9da5590ec34b7dadc7d07adf91528da482",
       "source_path": "docs/PUBLISHING.md",
       "source_sha256": "08ad3465a8f33473d3ab621a302279934c4ad6efb32f3fff15f93b4c2bd77768"
     },
     {
       "path": "docs/development/PUBLISHING.zh-CN.html",
-      "bytes": 14514,
-      "sha256": "9bd0bd9336a1c9057401c1b67868dc45596e92ff48ddfb89465f6420cbcd55e4"
+      "bytes": 14593,
+      "sha256": "1d05df1b3ef8a5cc050f4ab17c698c4d92c712995f3d4f1d36df6cca8a651ba3"
     },
     {
       "path": "docs/development/PUBLISHING.zh-CN.md",
-      "bytes": 9401,
-      "sha256": "13ff8538db6b25125c00f54c2fcd7c842fc8c8784f230668505e4392961f7c82"
+      "bytes": 9480,
+      "sha256": "171bdf875808963e1505146cf7c405351633fd5f8f118b9e8eadb5159a084bce"
     },
     {
       "path": "docs/development/RELEASE_CONTENTS.html",
@@ -6390,6 +6390,6 @@
       "source_sha256": "a8f1af99e01b0e16ef09a6c5d6c4dbff1f5d5ff3ba7ffef601423bd68bf47164"
     }
   ],
-  "refreshed_at": "2026-10-15T10:00:20.681117+08:00",
+  "refreshed_at": "2026-10-15T10:17:44.442650+08:00",
   "refresh_policy": "bytes/sha256 describe current canonical files; source_path/source_sha256 retain original export provenance where present."
 }
