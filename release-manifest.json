@@ -4,7 +4,7 @@
   "source_tree_modified_by_export": false,
   "git_history_copied": false,
   "file_count": 816,
-  "total_bytes": 67096243,
+  "total_bytes": 67096399,
   "preserved_unselected_files": [
     ".DS_Store",
     ".github/.DS_Store",
@@ -1172,51 +1172,51 @@
     },
     {
       "path": "README.html",
-      "bytes": 30632,
-      "sha256": "64c6ff9291538486c0b0bc4eefe19496dd807f26115ac385b3358f05a69659ff",
+      "bytes": 30666,
+      "sha256": "c75338fd4cd99126712475cee47f89fa22ff60938c52cec80c0b4bb415a58490",
       "source_path": "README.html",
       "source_sha256": "11654733c104777e7609e19ec7befe248a0e8548a111a4aaa261b2a15fa856d8"
     },
     {
       "path": "README.md",
-      "bytes": 10076,
-      "sha256": "5be82b3c5bcb1067fda5d4af3b14f89f795d38434e5e00f05ecb262987b39db4",
+      "bytes": 10093,
+      "sha256": "a3cba887ccd818fbcb44fe5d5e72a33ab62b7e97329a850f76b6d4d4c872f7df",
       "source_path": "README.md",
       "source_sha256": "e8f7460dd765d2d84b8866401b47012720c71fc26d2430daba2f744c84753be4"
     },
     {
       "path": "README.zh-CN.html",
-      "bytes": 30049,
-      "sha256": "9e1b38f00a74be2ffb510a191a467bf07fdf14ed36d277b425b39298e8ec0aff",
+      "bytes": 30067,
+      "sha256": "12fdc84223a132d6b0b232a60f73d24b269c2313d62400b281b1503c185dcac7",
       "source_path": "README.zh-CN.html",
       "source_sha256": "996674e7697dd5e4d7b971dbd250f2b779c9f776083f31dec7d635236f963362"
     },
     {
       "path": "README.zh-CN.md",
-      "bytes": 9673,
-      "sha256": "1679cf4366e20a8ade5b3b19ef6e4bf9163aa0d70d9bb8c926465d4b8a742417",
+      "bytes": 9682,
+      "sha256": "f06710b771ce4f9fbaed403341ddd5fc678d648822b225bef6e36340315136dd",
       "source_path": "README.zh-CN.md",
       "source_sha256": "663a8da5cbc706c83603d1ce2f77e321af4f7a42c1afa7d80b8df74d6f7a4dfa"
     },
     {
       "path": "README_DETAIL.html",
-      "bytes": 58503,
-      "sha256": "8f367b3d4edb88451495d5e4ef595eeed6b62e89a59a1c444b2315c5baea2974"
+      "bytes": 58537,
+      "sha256": "946f01518d60b8cc08f6b3d127298a73018aee5cf6a9cec298373b59d2f2e33e"
     },
     {
       "path": "README_DETAIL.md",
-      "bytes": 31811,
-      "sha256": "3ba9c26d56c7b9c4cbe3b89ea76b7efb45019832e0973c223d789496d6a413d2"
+      "bytes": 31828,
+      "sha256": "86f83d3a650ec4a8ef4919a4740da0de5034ce319b42abca8cf4e638e630ad33"
     },
     {
       "path": "README_DETAIL.zh-CN.html",
-      "bytes": 55525,
-      "sha256": "ea411ac032278763f8cd638c9581df8908909e700cd2037fc69292569c4bca99"
+      "bytes": 55543,
+      "sha256": "90052a506f898ce97b5ede3f1fd1e9a9c3c50e398c41ed957c278c3c6596d6b8"
     },
     {
       "path": "README_DETAIL.zh-CN.md",
-      "bytes": 29549,
-      "sha256": "5d868ff3aa986d780af23a32a22d8a9a1f9f953e406bfae85b710645452ade1a"
+      "bytes": 29558,
+      "sha256": "e043d526f7ec16332aa2122358a12425055d2ff187eade9f49bbb96dd75006dd"
     },
     {
       "path": "START_HERE.html",
@@ -6450,6 +6450,6 @@
       "source_sha256": "a8f1af99e01b0e16ef09a6c5d6c4dbff1f5d5ff3ba7ffef601423bd68bf47164"
     }
   ],
-  "refreshed_at": "2026-10-15T11:38:59.457747+08:00",
+  "refreshed_at": "2026-10-15T14:27:19.262044+08:00",
   "refresh_policy": "bytes/sha256 describe current canonical files; source_path/source_sha256 retain original export provenance where present."
 }
